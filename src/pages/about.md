@@ -21,3 +21,5 @@ Just to remind myself, what even am I using.
 - **Personal Desktop**: [Arch Linux](https://www.archlinux.org/)
 - **Terminal**: [Alacritty](https://github.com/alacritty/alacritty)
 - **Others**: [Tmux](https://github.com/tmux/tmux)
+
+_Want to see my beautifully ~curated~ riced desktop, which I have ~wasted time~ lovingly crafted over all these years? Check out my [dotfiles repo](https://github.com/devadathamb/dotfiles)._
