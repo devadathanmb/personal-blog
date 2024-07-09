@@ -1,6 +1,7 @@
 ---
 author: Devadathan M B
 pubDatetime: 2024-07-08T12:46:09Z
+modDatetime: 2024-07-09T06:46:00Z
 title: "Fyle Offsite: A Revival of Joy and Connection"
 featured: true
 draft: false
@@ -73,7 +74,7 @@ As the date approached, during the last week before the offsite, I received my t
 
 Day 0 of the offsite was dedicated to travel. Participants from various locations, including myself, traveled to Bangalore to prepare for the upcoming events. We were grouped based on our flight arrival times at Bangalore Airport to facilitate coordination and travel to our accommodation at the Holiday Inn in Indira Nagar, Bangalore—a detail I'll delve into shortly.
 
-My flight was scheduled to depart at 12:45 PM, arriving in Bangalore around 2:15 PM. After packing and going through the usual airport procedures, I boarded the flight. Despite a less-than-ideal flight experience, thankfully, the journey from Kochi to Bangalore was relatively short. Upon arrival at the Bangalore Airport, I wandered through the departure terminal, feeling a bit like a lost child, searching for my group. Unable to locate them, I reached out to [Supratik](https://in.linkedin.com/in/supratik-chakrabarty-172a19185), who was nearby. We connected, and soon after, we found [Simran](https://in.linkedin.com/in/simran-kaur-2578371a0) as well. With the group together, we were ready to head to the hotel.
+My flight was scheduled to depart at 12:45 PM, arriving in Bangalore around 2:15 PM. After packing and going through the usual airport procedures, I boarded the flight. Despite a less-than-ideal flight experience, thankfully, the journey from Kochi to Bangalore was relatively short. Upon arrival at the Bangalore Airport, I wandered through the departure terminal, feeling a bit like a lost child, searching for my group. Unable to locate them, I reached out to [Supratik](https://in.linkedin.com/in/supratik-chakrabarty-172a19185) (from the sales team), who was nearby. We connected, and soon after, we found [Simran](https://in.linkedin.com/in/simran-kaur-2578371a0) (from the CS team) as well. With the group together, we were ready to head to the hotel.
 
 
 ##### **First Meetings and Connections**
@@ -148,7 +149,7 @@ After lunch, I returned to my room accompanied by [Prakash](https://in.linkedin.
 
 ##### **Evening Activities: From Tea and Games to Dinner and Talent**
 
-After the match, we enjoyed some coffee and pakodas for tea, and whenever a group of us gathered, there were always friendly hellos exchanged. The tea session transitioned into an evening filled with group activities. Normally, I tend to avoid such organized events as they often come across as cringe-worthy to me, and I've been judged for my stance on this. However, this particular session didn't strike me as cringy as some I've experienced in the past, though parts of it were amusingly so. One activity involved building a catapult using pipes within teams, and it was amusing to witness the comical contraptions we all managed to create, especially considering two of our engineering managers were in our team. Equally entertaining was seeing what others had come up with, particularly Nilesh's team and the scam Nilesh pulled off to win the competition.
+After the match, we enjoyed some coffee and pakodas for tea, and whenever a group of us gathered, there were always friendly hellos exchanged. The tea session transitioned into an evening filled with group activities. Normally, I tend to avoid such organized events as they often come across as cringe-worthy to me, and I've been judged for my stance on this. However, this particular session didn't strike me as cringy as some I've experienced in the past, though parts of it were amusingly so. One activity involved building a catapult using pipes within teams, and it was amusing to witness the comical contraptions we all managed to create, especially considering two of our engineering managers were in our team. Equally entertaining was seeing what others had come up with, particularly [Nilesh's](https://in.linkedin.com/in/nileshpant) team and the scam Nilesh pulled off to win the competition.
 
 Later, we enjoyed a sumptuous dinner followed by a talent night around the bonfire, where different individuals showcased their talents. Throughout all of this, the banter and jokes were ceaseless, primarily led by the seniors.
 
