@@ -111,7 +111,8 @@ As everyone retired to their rooms for the night, we lingered a while longer, sh
 The official start of Day 1 began with a breathtaking realization of the view from Holiday Inn. Nestled near Bangalore's racecourses, the hotel afforded a stunning vista that captivated me. In the morning, I found myself gazing out at a scene where horses were being prepared for races, skyscrapers loomed in the background, and the bustle of Bangalore's traffic painted a dynamic backdrop.
 
 ![holiday-inn-view-1](@assets/fyle-offsite/holiday-inn-view-1.jpg)
-![holiday-inn-view-3](@assets/fyle-offsite/holiday-inn-view-3.jpg)
+
+<!-- ![holiday-inn-view-3](@assets/fyle-offsite/holiday-inn-view-3.jpg) -->
 
 The beauty of the moment was such that one could easily spend hours just taking in the sights. It was a view that resonated with both tranquility and vibrancy, offering a glimpse into the city's diverse energies.
 
