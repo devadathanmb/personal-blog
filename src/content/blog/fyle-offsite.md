@@ -9,8 +9,7 @@ tags:
   - fyle
   - offsite
   - reflections
-description:
-  An enriching journey beyond the confines of terminals and code editors, where shared moments and newfound friendships illuminated the vibrant joy of togetherness.
+description: An enriching journey beyond the confines of terminals and code editors, where shared moments and newfound friendships illuminated the vibrant joy of togetherness.
 ---
 
 Amidst the laughter and camaraderie of Fyle's spirited offsite, moments of connection and celebration echo in the solitude, reminding me of life's fleeting joys.
@@ -19,9 +18,9 @@ Amidst the laughter and camaraderie of Fyle's spirited offsite, moments of conne
 
 ## Setting the Stage: A Brief Overview
 
-As of early July, while writing this blog, I am currently working as an Engineering Intern at [Fyle](https://www.fylehq.com), having joined the company just over a month ago. 
+As of early July, while writing this blog, I am currently working as an Engineering Intern at [Fyle](https://www.fylehq.com), having joined the company just over a month ago.
 
-Fyle is a SaaS expense management software that simplifies expense tracking and management. Founded in 2016, Fyle transitioned to full remote operations after COVID-19 pandemic in 2020. 
+Fyle is a SaaS expense management software that simplifies expense tracking and management. Founded in 2016, Fyle transitioned to full remote operations after COVID-19 pandemic in 2020.
 
 This blog captures my firsthand experience at the Fyle offsite, a biannual event that promises both fun and meaningful connections among colleagues.
 
@@ -37,8 +36,8 @@ Please forgive me if I've missed out on some names or events; as humans, we can 
 
 Ultimately, I hope it serves as a source of comfort during challenging times, reminding me of the good memories when needed the most.
 
-
 ## The journey begins
+
 ### From Curiosity to Participation: The Offsite Journey
 
 I joined Fyle on May 16th, amidst the final rush of my end semester exams. Earlier in May, I had my interviews and accepted the offer on May 9th. During my initial research about Fyle, I stumbled upon a [blog](https://stories.fylehq.com/p/6-months-internship-experience-at-fyle) by [Roshan Mahtre](https://www.linkedin.com/in/roshanmhatre/), an MTS at Fyle, where he detailed his experiences with Fyle's offsite events. At the time, though, the idea of an offsite didn't particularly excite me, despite [Khushi](https://in.linkedin.com/in/khushi-sharma-b4369a1b1) from the People Success Team briefly mentioning it during onboarding.
@@ -49,7 +48,7 @@ I initially hesitated. This was my first professional experience, and I was unsu
 
 The very next day, I received a message from [Yitzhak](https://in.linkedin.com/in/yitzhak-a-b4427a1a3) from the People Success team to fill out the [RSVP form](https://en.wikipedia.org/wiki/RSVP#:~:text=RSVP%20is%20an%20initialism%20derived,considered%20formal%20and%20old%2Dfashioned.). It covered flight ticket preferences and food preferences. And yeah, Fyle covers all travel and accommodation expenses; you don't have to pay a single penny.
 
-### The Work Journey: Before the offsite 
+### The Work Journey: Before the offsite
 
 After joining Fyle, my initial weeks were spent meeting people and completing the curated onboarding coursework provided by Fyle for a comprehensive onboarding experience. Balancing work alongside my ongoing exams posed a challenge, but I managed to navigate both successfully.
 
@@ -70,12 +69,12 @@ As the date approached, during the last week before the offsite, I received my t
 ### Offsite Days
 
 #### Day 0: Arrivals and Beginnings
+
 ##### **Arrival and Grouping**
 
 Day 0 of the offsite was dedicated to travel. Participants from various locations, including myself, traveled to Bangalore to prepare for the upcoming events. We were grouped based on our flight arrival times at Bangalore Airport to facilitate coordination and travel to our accommodation at the Holiday Inn in Indira Nagar, Bangalore—a detail I'll delve into shortly.
 
 My flight was scheduled to depart at 12:45 PM, arriving in Bangalore around 2:15 PM. After packing and going through the usual airport procedures, I boarded the flight. Despite a less-than-ideal flight experience, thankfully, the journey from Kochi to Bangalore was relatively short. Upon arrival at the Bangalore Airport, I wandered through the departure terminal, feeling a bit like a lost child, searching for my group. Unable to locate them, I reached out to [Supratik](https://in.linkedin.com/in/supratik-chakrabarty-172a19185) (from the sales team), who was nearby. We connected, and soon after, we found [Simran](https://in.linkedin.com/in/simran-kaur-2578371a0) (from the CS team) as well. With the group together, we were ready to head to the hotel.
-
 
 ##### **First Meetings and Connections**
 
@@ -85,39 +84,39 @@ While we were ready to depart, we decided to wait for [Puru Kaushik](https://in.
 
 During the journey, our discussions ranged from work-related matters to personal anecdotes and jokes. By the time we reached the hotel, I already felt at home among my new colleagues.
 
-
 ##### **Meeting My Beloved Team**
 
-After a journey of over an hour from the airport, I finally arrived at the hotel around 4:30 PM. Checking in, I immediately connected with fellow attendees. Soon after, I headed to the room I shared with Prabhakar, a fellow newcomer to Fyle. After receiving a message from Prabhakar about our team gathering on the top floor, I eagerly joined them—meeting my beloved team members in person for the first time was a truly special moment. 
+After a journey of over an hour from the airport, I finally arrived at the hotel around 4:30 PM. Checking in, I immediately connected with fellow attendees. Soon after, I headed to the room I shared with Prabhakar, a fellow newcomer to Fyle. After receiving a message from Prabhakar about our team gathering on the top floor, I eagerly joined them—meeting my beloved team members in person for the first time was a truly special moment.
 
 There were so many amazing people present that it's hard to name them all without missing someone. Nevertheless, everyone I met was incredibly warm and welcoming. We returned to our room for a relaxed chat, even calling up [Pradeep](https://www.linkedin.com/in/thepradeepgupta/), a former Fyle employee in Bangalore, to catch up and share laughs.
 
-During our conversations, I had the pleasure of meeting [Astha](https://in.linkedin.com/in/bistaastha) from the frontend team, who amusingly kept noting my resemblance to a former Fyle employee. 
+During our conversations, I had the pleasure of meeting [Astha](https://in.linkedin.com/in/bistaastha) from the frontend team, who amusingly kept noting my resemblance to a former Fyle employee.
 
-Eventually, we decided to venture out for dinner and booked cabs to [Meghana Foods](https://g.co/kgs/vzpaiY1), a renowned biryani spot in Bangalore. We ordered a mix of veg and non-veg biryanis, along with other delectable dishes, enjoying not just the food but also the endless banter and jokes shared by our senior colleagues. 
+Eventually, we decided to venture out for dinner and booked cabs to [Meghana Foods](https://g.co/kgs/vzpaiY1), a renowned biryani spot in Bangalore. We ordered a mix of veg and non-veg biryanis, along with other delectable dishes, enjoying not just the food but also the endless banter and jokes shared by our senior colleagues.
 
-The cab rides were just as entertaining, filled with both light-hearted jokes and meaningful conversations. 
+The cab rides were just as entertaining, filled with both light-hearted jokes and meaningful conversations.
 
-Back at the hotel, we continued the fun by playing cards until midnight—an unexpectedly delightful experience despite my eventual loss. The evening was punctuated by the arrival of several interesting personalities, adding to the lively atmosphere. 
+Back at the hotel, we continued the fun by playing cards until midnight—an unexpectedly delightful experience despite my eventual loss. The evening was punctuated by the arrival of several interesting personalities, adding to the lively atmosphere.
 
 ##### **Day 0 : Reflections**
 
-Reflecting on the day, it struck me how seamlessly I had integrated into the group; it felt as if I had known everyone for years. It was undeniably one of the most enjoyable moments I had experienced in recent years. 
+Reflecting on the day, it struck me how seamlessly I had integrated into the group; it felt as if I had known everyone for years. It was undeniably one of the most enjoyable moments I had experienced in recent years.
 
 As everyone retired to their rooms for the night, we lingered a while longer, sharing stories about our lives before finally calling it a night. And with that, Day 0 concluded—function returned 0 without any errors, just like in programming terms, but with a lot more joy and camaraderie.
 
 #### Day 1
+
 ##### **Morning Reflections at Holiday Inn**
 
 The official start of Day 1 began with a breathtaking realization of the view from Holiday Inn. Nestled near Bangalore's racecourses, the hotel afforded a stunning vista that captivated me. In the morning, I found myself gazing out at a scene where horses were being prepared for races, skyscrapers loomed in the background, and the bustle of Bangalore's traffic painted a dynamic backdrop.
 
 ![holiday-inn-view-1](@assets/fyle-offsite/holiday-inn-view-1.jpg)
-![holiday-inn-view-3](@assets/fyle-offsite/holiday-inn-view-3.JPG)
+![holiday-inn-view-3](@assets/fyle-offsite/holiday-inn-view-3.jpg)
 
 The beauty of the moment was such that one could easily spend hours just taking in the sights. It was a view that resonated with both tranquility and vibrancy, offering a glimpse into the city's diverse energies.
 
 ![holiday-inn-view-2](@assets/fyle-offsite/holiday-inn-view-2.jpg)
-![holiday-inn-view-4](@assets/fyle-offsite/holiday-inn-view-4.JPG)
+![holiday-inn-view-4](@assets/fyle-offsite/holiday-inn-view-4.jpg)
 
 Reflecting on this serene start to the day, I couldn't help but joke about returning once I've earned enough to justify splurging on such luxuries for more than just a day!
 
@@ -133,7 +132,7 @@ Throughout the journey, I had the opportunity to meet numerous fascinating indiv
 
 ##### **Arrival at Clarks Exotica**
 
-Upon our arrival at Clarks Exotica, I was greeted by [Sanskar](https://in.linkedin.com/in/sanskarssh), my go-to buddy at Fyle who has been a pillar of support whenever I face challenges, whether technical or otherwise. He has also been instrumental in helping me grasp the intricacies of our product. 
+Upon our arrival at Clarks Exotica, I was greeted by [Sanskar](https://in.linkedin.com/in/sanskarssh), my go-to buddy at Fyle who has been a pillar of support whenever I face challenges, whether technical or otherwise. He has also been instrumental in helping me grasp the intricacies of our product.
 
 ![clarks](@assets/fyle-offsite/clarks-3.jpg)
 ![clarks](@assets/fyle-offsite/clarks-4.jpg)
@@ -160,8 +159,8 @@ After the match, we enjoyed some coffee and pakodas for tea, and whenever a grou
 
 Later, we enjoyed a sumptuous dinner followed by a talent night around the bonfire, where different individuals showcased their talents. Throughout all of this, the banter and jokes were ceaseless, primarily led by the seniors.
 
+#### Day 2: Unity and Celebration
 
-#### Day 2: Unity and Celebration 
 ##### **Team Photo Session**
 
 Day 2 started with a refreshing breakfast, setting the tone for another eventful day at the offsite. The morning kicked off with a team-wide photo session, bringing everyone together regardless of their teams. It was a moment to capture the unity and spirit of the entire Fyle team in one frame.
@@ -202,9 +201,8 @@ Day 3 was a travel day for most people. After waking up, I quickly realized it w
 
 Since my uncle was in Bangalore, he came to see me and take me around the city a bit. Although we couldn't see much because the resort is about an hour from the actual city, we did manage to visit [Phoenix Marketcity](https://g.co/kgs/mf5TnSf). We did some shopping, and he then dropped me off at the airport.
 
-After checking in and completing the usual procedures, I found myself waiting for my boarding call with a cup of overpriced airport coffee. As I settled into my seat and looked out the airplane window, the sun was setting, casting a beautiful bluish-yellow tint over the fields of Karnataka. The view was serene, a perfect backdrop for reflection. I thought about the past three or four days, the people I met, the laughter we shared, and the memories we created. 
+After checking in and completing the usual procedures, I found myself waiting for my boarding call with a cup of overpriced airport coffee. As I settled into my seat and looked out the airplane window, the sun was setting, casting a beautiful bluish-yellow tint over the fields of Karnataka. The view was serene, a perfect backdrop for reflection. I thought about the past three or four days, the people I met, the laughter we shared, and the memories we created.
 
-With the fields stretching out below and the sky turning into a canvas of soft hues, I felt a sense of calm wash over me. It was a moment to ponder the essence of life, to ask myself, *"Is this what life is all about?"* The journey, the connections, the fleeting yet precious moments—everything seemed to align in that instant, giving me a profound sense of contentment and a renewed perspective on what truly matters.
-
+With the fields stretching out below and the sky turning into a canvas of soft hues, I felt a sense of calm wash over me. It was a moment to ponder the essence of life, to ask myself, _"Is this what life is all about?"_ The journey, the connections, the fleeting yet precious moments—everything seemed to align in that instant, giving me a profound sense of contentment and a renewed perspective on what truly matters.
 
 Thanks to everyone for making this such a memorable time.
