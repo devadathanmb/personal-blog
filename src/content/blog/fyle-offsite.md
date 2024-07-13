@@ -112,10 +112,12 @@ As everyone retired to their rooms for the night, we lingered a while longer, sh
 The official start of Day 1 began with a breathtaking realization of the view from Holiday Inn. Nestled near Bangalore's racecourses, the hotel afforded a stunning vista that captivated me. In the morning, I found myself gazing out at a scene where horses were being prepared for races, skyscrapers loomed in the background, and the bustle of Bangalore's traffic painted a dynamic backdrop.
 
 ![holiday-inn-view-1](@assets/fyle-offsite/holiday-inn-view-1.jpg)
+![holiday-inn-view-3](@assets/fyle-offsite/holiday-inn-view-3.JPG)
 
 The beauty of the moment was such that one could easily spend hours just taking in the sights. It was a view that resonated with both tranquility and vibrancy, offering a glimpse into the city's diverse energies.
 
 ![holiday-inn-view-2](@assets/fyle-offsite/holiday-inn-view-2.jpg)
+![holiday-inn-view-4](@assets/fyle-offsite/holiday-inn-view-4.JPG)
 
 Reflecting on this serene start to the day, I couldn't help but joke about returning once I've earned enough to justify splurging on such luxuries for more than just a day!
 
@@ -133,11 +135,16 @@ Throughout the journey, I had the opportunity to meet numerous fascinating indiv
 
 Upon our arrival at Clarks Exotica, I was greeted by [Sanskar](https://in.linkedin.com/in/sanskarssh), my go-to buddy at Fyle who has been a pillar of support whenever I face challenges, whether technical or otherwise. He has also been instrumental in helping me grasp the intricacies of our product. 
 
+![clarks](@assets/fyle-offsite/clarks-3.jpg)
+![clarks](@assets/fyle-offsite/clarks-4.jpg)
+
 ##### **State of the Union at Lotus Banquet**
 
 After settling in and dropping off our bags for check-in, we headed to the "State of the Union" session at Lotus Banquet.
 
 This session was a pivotal moment where I had the opportunity to meet more colleagues, especially those based in Bangalore. It was here that I also had the privilege of meeting Fyle's CEO, [Yashwanth Madhusudan](https://in.linkedin.com/in/yashwanthm), and our CTO, [Sivaramakrishnan Narayanan](https://in.linkedin.com/in/sivaramakrishnannarayanan). The discussion centered around Fyle's achievements, our goals for the upcoming quarter, and insights into our product roadmap. It was inspiring to witness their commitment to prioritizing employee well-being and growth within the company culture.
+
+![clarks](@assets/fyle-offsite/clarks-1.jpg)
 
 ##### **Luxurious Lunch and Team Bonding**
 
@@ -164,6 +171,8 @@ Day 2 started with a refreshing breakfast, setting the tone for another eventful
 ##### **Exploring and Connecting**
 
 The day unfolded without a rigid schedule, allowing everyone the freedom to choose their activities. Some headed to the pool for relaxation, while others engaged in games like table tennis and various resort offerings. I spent some time near the pool, engaging in an enlightening conversation with [Dimple](https://in.linkedin.com/in/dimple-kaluram-hemanth-2073a5158), the frontend engineering manager. It was a pleasant opportunity to connect beyond work discussions.
+
+![clarks-pool](@assets/fyle-offsite/clarks-2.jpg)
 
 ##### **Cricket Finals and Chai Snacks**
 
