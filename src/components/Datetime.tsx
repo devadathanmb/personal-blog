@@ -3,6 +3,7 @@ import { LOCALE } from "@config";
 interface DatetimesProps {
   pubDatetime: string | Date;
   modDatetime: string | Date | undefined | null;
+  readingTime?: string;
 }
 
 interface Props extends DatetimesProps {
@@ -15,6 +16,7 @@ export default function Datetime({
   modDatetime,
   size = "sm",
   className,
+  readingTime
 }: Props) {
   return (
     <div className={`flex items-center space-x-2 opacity-80 ${className}`}>
@@ -40,6 +42,7 @@ export default function Datetime({
           pubDatetime={pubDatetime}
           modDatetime={modDatetime}
         />
+      <span> ({readingTime})</span>
       </span>
     </div>
   );
