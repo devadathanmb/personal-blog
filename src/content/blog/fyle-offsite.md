@@ -64,6 +64,8 @@ Initially perplexed by the challenge amidst ongoing exams, I eventually schedule
 
 Soon enough, I realized how quickly time flies. The offsite was scheduled for the first week of July (specifically July 5th). While I was starting to settle into my role after the initial overwhelm of being a newcomer, I still harbored doubts about how the offsite would unfold. It would be my first time meeting many of my colleagues in person, despite our weekly sync-up calls as a team. This mix of skepticism and curiosity left me both excited and nervous about the upcoming gathering.
 
+![offsite](@assets/fyle-offsite/offsite.png)
+
 As the date approached, during the last week before the offsite, I received my tickets and the detailed itinerary. It was finally time to pack for the offsite. Despite lingering doubts, I gathered my belongings, preparing for what lay ahead.
 
 ### Offsite Days
@@ -144,7 +146,7 @@ After settling in and dropping off our bags for check-in, we headed to the "Stat
 
 This session was a pivotal moment where I had the opportunity to meet more colleagues, especially those based in Bangalore. It was here that I also had the privilege of meeting Fyle's CEO, [Yashwanth Madhusudan](https://in.linkedin.com/in/yashwanthm), and our CTO, [Sivaramakrishnan Narayanan](https://in.linkedin.com/in/sivaramakrishnannarayanan). The discussion centered around Fyle's achievements, our goals for the upcoming quarter, and insights into our product roadmap. It was inspiring to witness their commitment to prioritizing employee well-being and growth within the company culture.
 
-![clarks](@assets/fyle-offsite/clarks-1.jpg)
+![clarks-pool](@assets/fyle-offsite/clarks-2.jpg)
 
 ##### **Luxurious Lunch and Team Bonding**
 
@@ -172,7 +174,7 @@ Day 2 started with a refreshing breakfast, setting the tone for another eventful
 
 The day unfolded without a rigid schedule, allowing everyone the freedom to choose their activities. Some headed to the pool for relaxation, while others engaged in games like table tennis and various resort offerings. I spent some time near the pool, engaging in an enlightening conversation with [Dimple](https://in.linkedin.com/in/dimple-kaluram-hemanth-2073a5158), the frontend engineering manager. It was a pleasant opportunity to connect beyond work discussions.
 
-![clarks-pool](@assets/fyle-offsite/clarks-2.jpg)
+![clarks-pool](@assets/fyle-offsite/clarks-1.jpg)
 
 ##### **Cricket Finals and Chai Snacks**
 
