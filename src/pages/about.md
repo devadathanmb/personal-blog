@@ -3,15 +3,15 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-Who even am I? Well, you might already have an inkling (if you've been paying attention). I'm Devadathan M B, a freshly-minted 2024 graduate in Computer Science Engineering. Currently, I'm honing my craft as a software engineering intern at Fyle.
+Who am I? If you've been paying attention, you might have a hint. I'm Devadathan M B, a 2024 Computer Science Engineering graduate, currently diving into the world of software engineering as an intern at Fyle.
 
-My days are spent meticulously trying to craft high-performant backend systems that never seem to fully satisfy expectations.
+My days are filled with the challenge of crafting efficient backend systems that never quite meet my own high standards.
 
-Please don't take that too seriously though—I'm primarily focused on backend work for now. However, I'm always up for tackling any challenging problem that comes my way.
+But don’t take that too seriously—I’m focused on backend work for now, though I’m open to tackling any challenging problem that comes my way.
 
-Beyond the lines of code, I'm a staunch supporter of open-source software, inspired by the principles of freedom and collaboration that define the Linux and FOSS community.
+Outside of tech, I’m a passionate advocate for open-source software, driven by the values of freedom and collaboration championed by the Linux and FOSS community.
 
-So, if you're curious about how a software engineer like me navigates through the bits and bytes of technology while trying to make sense of the chaotic world we live in, stick around.
+Well, that’s still some tech, I guess? 😄 Anyway, if you’re interested in exploring a variety of perspectives on life and technology, and how they intersect, feel free to stick around. It’s all about trying to make sense of this chaotic world we live in.
 
 ## Tools I use
 
@@ -22,4 +22,4 @@ Just to remind myself, what even am I using.
 - **Terminal**: [Alacritty](https://github.com/alacritty/alacritty)
 - **Others**: [Tmux](https://github.com/tmux/tmux)
 
-_Want to see my beautifully ~curated~ riced desktop, which I have ~wasted time~ lovingly crafted over all these years? Check out my [dotfiles repo](https://github.com/devadathamb/dotfiles)._
+_Want to see my beautifully ~curated~ riced desktop, which I have ~wasted time~ lovingly crafted over all these years? Check out my [dotfiles repo](https://github.com/devadathanmb/dotfiles)._

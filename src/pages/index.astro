@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
@@ -24,132 +25,156 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   <main id="main-content">
     <section id="hero">
       <h1>Hello friend!</h1>
-
       <p>
-      Hey there, unsuspecting internet wanderer!
-      <br/>
-      <br/>
-      How did you end up here? Since you’re here, why not hang out in my digital den?
-      <br/>
-      <br/>
-      I’m Devadathan M B, also known as Dev—a software engineer extraordinaire from India.
-      <br/>
-      <br/>
-      Let’s dive into the bits and bytes of tech together and explore my illogically depressing philosophy of the world!
+        Hey there, curious explorer.
+        <br />
+        <br />
+        Ever find yourself wandering through the vast expanse of the internet, searching
+        for meaning? Well, since you’ve ended up here, why not settle in and explore
+        my digital refuge?
+        <br />
+        <br />
+        I’m Devadathan M B, but you can call me Dev, from India.
+        <br />
+        <br />
+        Join me as we delve into the world of tech and unravel my often melancholic
+        reflections on life’s complexities.
       </p>
-      <br/>
+      <br />
       <p>
-        Want to know more about me? Read my 
-        <LinkButton
-          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-          href="/about"
+        <p>
+          Want to know more about me? Read my
+          <LinkButton
+            className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+            href="/about"
           >
-          ABOUT
-        </LinkButton>
-        page.
+            ABOUT
+          </LinkButton>
+          page.
+        </p>
+        <p>
+          Want to see some cool stuff I've built so far? Check out the
+          <LinkButton
+            className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+            href="/projects"
+          >
+            PROJECTS
+          </LinkButton>
+          page.
+        </p>
+        <p>
+          Or are you in for some reading mood? Head over to
+          <LinkButton
+            className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+            href="/posts"
+          >
+            POSTS
+          </LinkButton>
+          then.
+        </p>
+        {
+          // only display if at least one social link is enabled
+          socialCount > 0 && (
+            <div class="social-wrapper">
+              <div class="social-links">Social Links:</div>
+              <Socials />
+            </div>
+          )
+        }
       </p>
+
+      <Hr />
+
       {
-        // only display if at least one social link is enabled
-        socialCount > 0 && (
-          <div class="social-wrapper">
-            <div class="social-links">Social Links:</div>
-            <Socials />
-          </div>
-        )
-      }
-    </section>
-
-    <Hr />
-
-    {
-      featuredPosts.length > 0 && (
-        <>
-          <section id="featured">
-            <h2>Featured</h2>
-            <ul>
-              {featuredPosts.map(({ data, slug }) => (
-                <Card
-                  href={`/posts/${slug}/`}
-                  frontmatter={data}
-                  secHeading={false}
-                />
-              ))}
-            </ul>
-          </section>
-          {recentPosts.length > 0 && <Hr />}
-        </>
-      )
-    }
-
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts">
-          <h2>Recent Posts</h2>
-          <ul>
-            {recentPosts.map(
-              ({ data, slug }, index) =>
-                index < 4 && (
+        featuredPosts.length > 0 && (
+          <>
+            <section id="featured">
+              <h2>Featured</h2>
+              <ul>
+                {featuredPosts.map(({ data, slug }) => (
                   <Card
                     href={`/posts/${slug}/`}
                     frontmatter={data}
                     secHeading={false}
                   />
-                )
-            )}
-          </ul>
-        </section>
-      )
-    }
+                ))}
+              </ul>
+            </section>
+            {recentPosts.length > 0 && <Hr />}
+          </>
+        )
+      }
 
-    <div class="all-posts-btn-wrapper">
-      <LinkButton href="/posts/">
-        All Posts
-        <svg xmlns="http://www.w3.org/2000/svg"
-          ><path
-            d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-          ></path>
-        </svg>
-      </LinkButton>
-    </div>
+      {
+        recentPosts.length > 0 && (
+          <section id="recent-posts">
+            <h2>Recent Posts</h2>
+            <ul>
+              {recentPosts.map(
+                ({ data, slug }, index) =>
+                  index < 4 && (
+                    <Card
+                      href={`/posts/${slug}/`}
+                      frontmatter={data}
+                      secHeading={false}
+                    />
+                  )
+              )}
+            </ul>
+          </section>
+        )
+      }
+
+      <div class="all-posts-btn-wrapper">
+        <LinkButton href="/posts/">
+          All Posts
+          <svg xmlns="http://www.w3.org/2000/svg"
+            ><path
+              d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+            ></path>
+          </svg>
+        </LinkButton>
+      </div>
+    </section>
+
+    <Footer />
   </main>
 
-  <Footer />
+  <style>
+    /* ===== Hero Section ===== */
+    #hero {
+      @apply pb-6 pt-8;
+    }
+    #hero h1 {
+      @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
+    }
+    #hero .rss-link {
+      @apply mb-6;
+    }
+    #hero .rss-icon {
+      @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
+    }
+    #hero p {
+      @apply my-2;
+    }
+    .social-wrapper {
+      @apply mt-4 flex flex-col sm:flex-row sm:items-center;
+    }
+    .social-links {
+      @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
+    }
+
+    /* ===== Featured & Recent Posts Sections ===== */
+    #featured,
+    #recent-posts {
+      @apply pb-6 pt-12;
+    }
+    #featured h2,
+    #recent-posts h2 {
+      @apply text-2xl font-semibold tracking-wide;
+    }
+    .all-posts-btn-wrapper {
+      @apply my-8 text-center;
+    }
+  </style>
 </Layout>
-
-<style>
-  /* ===== Hero Section ===== */
-  #hero {
-    @apply pb-6 pt-8;
-  }
-  #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
-  }
-  #hero .rss-link {
-    @apply mb-6;
-  }
-  #hero .rss-icon {
-    @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
-  }
-  #hero p {
-    @apply my-2;
-  }
-  .social-wrapper {
-    @apply mt-4 flex flex-col sm:flex-row sm:items-center;
-  }
-  .social-links {
-    @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
-  }
-
-  /* ===== Featured & Recent Posts Sections ===== */
-  #featured,
-  #recent-posts {
-    @apply pb-6 pt-12;
-  }
-  #featured h2,
-  #recent-posts h2 {
-    @apply text-2xl font-semibold tracking-wide;
-  }
-  .all-posts-btn-wrapper {
-    @apply my-8 text-center;
-  }
-</style>
