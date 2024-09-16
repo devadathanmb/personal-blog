@@ -6,13 +6,12 @@ title: "Fyle Offsite: A Revival of Joy and Connection"
 featured: true
 draft: false
 tags:
+  - personal
+  - personal blog
   - fyle
   - offsite
-  - reflections
 description: An enriching journey beyond the confines of terminals and code editors, where shared moments and newfound friendships illuminated the vibrant joy of togetherness.
 ---
-
-Amidst the laughter and camaraderie of Fyle's spirited offsite, moments of connection and celebration echo in the solitude, reminding me of life's fleeting joys.
 
 ## Table of contents
 

@@ -3,21 +3,20 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-Who am I? If you've been paying attention, you might have a hint. I'm Devadathan M B, a 2024 Computer Science Engineering graduate, currently diving into the world of software engineering as an intern at Fyle.
+Well, who am I? I'm Devadathan M B, a 2024 Computer Science Engineering graduate, currently working as a Member of Technical Staff (MTS) at [Fyle](https://www.fylehq.com/).
 
-My days are filled with the challenge of crafting efficient backend systems that never quite meet my own high standards.
+My days are spent learning and crafting backend systems, and I bet I pick up something new every day. I’m definitely more of a backend guy, but hey, I think [React compiler](https://react.dev/learn/react-compiler) is cool, and [Qwick signals](https://qwik.dev/docs/components/state/) are pretty neat too. So don’t underestimate my frontend knowledge, even if I still might struggle with centering a div at times.
 
-But don’t take that too seriously—I’m focused on backend work for now, though I’m open to tackling any challenging problem that comes my way.
+Outside of tech, I’m a big supporter of open-source software, driven by the freedom and collaboration ideals of the [Linux](https://linux.org/) and [FOSS](https://en.wikipedia.org/wiki/Free_and_open-source_software) community.
 
-Outside of tech, I’m a passionate advocate for open-source software, driven by the values of freedom and collaboration championed by the Linux and FOSS community.
-
-Well, that’s still some tech, I guess? 😄 Anyway, if you’re interested in exploring a variety of perspectives on life and technology, and how they intersect, feel free to stick around. It’s all about trying to make sense of this chaotic world we live in.
+Yeah, that’s still tech-related, but if you’re interested in different takes on life and tech and how they intersect, feel free to stick around. It’s all about making sense of this chaotic world we live in.
 
 ## Tools I use
 
 Just to remind myself, what even am I using.
 
 - **Editor**: [Neovim](https://neovim.io/)
+  - Or [VSCode](https://code.visualstudio.com/) when I need to get some actual work done lol
 - **Personal Desktop**: [Arch Linux](https://www.archlinux.org/)
 - **Terminal**: [Alacritty](https://github.com/alacritty/alacritty)
 - **Others**: [Tmux](https://github.com/tmux/tmux)

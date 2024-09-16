@@ -34,7 +34,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         my digital refuge?
         <br />
         <br />
-        I’m Devadathan M B, but you can call me Dev, from India.
+        I’m Devadathan M B, but you can call me <i>Dev</i>, from India.
         <br />
         <br />
         Join me as we delve into the world of tech and unravel my often melancholic
@@ -42,35 +42,37 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       </p>
       <br />
       <p>
-        <p>
-          Want to know more about me? Read my
-          <LinkButton
-            className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-            href="/about"
-          >
-            ABOUT
-          </LinkButton>
-          page.
-        </p>
-        <p>
-          Want to see some cool stuff I've built so far? Check out the
-          <LinkButton
-            className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-            href="/projects"
-          >
-            PROJECTS
-          </LinkButton>
-          page.
-        </p>
-        <p>
-          Or are you in for some reading mood? Head over to
-          <LinkButton
-            className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-            href="/posts"
-          >
-            POSTS
-          </LinkButton>
-          then.
+        <p class="page-section">
+          <p class="italic font-semibold page-item">
+            - Want to know more about me? Read my
+            <LinkButton
+              className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+              href="/about"
+            >
+              ABOUT
+            </LinkButton>
+            page.
+          </p>
+          <p class="italic font-semibold page-item">
+            - Want to see some cool stuff I've built so far? Check out the
+            <LinkButton
+              className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+              href="/projects"
+            >
+              PROJECTS
+            </LinkButton>
+            page.
+          </p>
+          <p class="italic font-semibold page-item">
+            - Or are you in for some reading mood? Head over to
+            <LinkButton
+              className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+              href="/posts"
+            >
+              POSTS
+            </LinkButton>
+            then.
+          </p>
         </p>
         {
           // only display if at least one social link is enabled
