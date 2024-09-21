@@ -2,15 +2,14 @@
 author: Devadathan M B
 pubDatetime: 2023-07-29T15:20:35Z
 title: Autologin in Linux using Getty
-featured: true
+featured: false
 draft: false
 tags:
   - linux
   - autologin
   - systemd
   - getty
-description:
-  How to enable autologin in Linux using Getty.
+description: How to enable autologin in Linux using Getty.
 ---
 
 This post will explain how you can enable/disable autologin in Linux distros using the Getty systemd service.

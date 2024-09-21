@@ -7,17 +7,13 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
-import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
-import { SOCIALS } from "@config";
 
 const posts = await getCollection("blog");
 
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
-
-const socialCount = SOCIALS.filter(social => social.active).length;
 ---
 
 <Layout>
@@ -41,50 +37,6 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         reflections on life’s complexities.
       </p>
       <br />
-      <p>
-        <p class="page-section">
-          <p class="italic font-semibold page-item">
-            - Want to know more about me? Read my
-            <LinkButton
-              className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-              href="/about"
-            >
-              ABOUT
-            </LinkButton>
-            page.
-          </p>
-          <p class="italic font-semibold page-item">
-            - Want to see some cool stuff I've built so far? Check out the
-            <LinkButton
-              className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-              href="/projects"
-            >
-              PROJECTS
-            </LinkButton>
-            page.
-          </p>
-          <p class="italic font-semibold page-item">
-            - Or are you in for some reading mood? Head over to
-            <LinkButton
-              className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-              href="/posts"
-            >
-              POSTS
-            </LinkButton>
-            then.
-          </p>
-        </p>
-        {
-          // only display if at least one social link is enabled
-          socialCount > 0 && (
-            <div class="social-wrapper">
-              <div class="social-links">Social Links:</div>
-              <Socials />
-            </div>
-          )
-        }
-      </p>
-
       <Hr />
 
       {
