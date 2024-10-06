@@ -26,6 +26,11 @@
               "title": "Intro to Kubernetes - Puppet Talk",
               "url": "https://www.youtube.com/watch?v=HlAXp0-M6SY",
               "type": "Video"
+            },
+            {
+              "title": "Mastering Chaos - Netflix guide to Microservices - QCon Talk",
+              "type": "Video",
+              "url": "https://www.youtube.com/watch?v=CZ3wIuvmHeM"
             }
           ]
         },
