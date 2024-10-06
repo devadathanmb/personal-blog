@@ -1,9 +1,13 @@
 ---
 layout: ../layouts/LinksLayout.astro
-title: "undefined"
+title: "Cool Links"
+
 ---
+
 The below is a collection of links that I find interesting or useful. More like a bookmarking page for myself but you might find it useful too.
+
 ---
+
 ## Table of contents
 
 ## Backend Engineering
@@ -14,6 +18,7 @@ Core backend engineering resources and tools including frameworks, databases, an
 3. Kubernetes Deep Dive - CCNA Talk - [Video](https://www.youtube.com/watch?v=ZuIQurh_kDk)
 4. Intro to Kubernetes - Puppet Talk - [Video](https://www.youtube.com/watch?v=HlAXp0-M6SY)
 5. Mastering Chaos - Netflix guide to Microservices - QCon Talk - [Video](https://www.youtube.com/watch?v=CZ3wIuvmHeM)
+6. Scaling Instagram - QCon Talk - [Video](https://www.youtube.com/watch?v=hnpzNAPiC0E)
 ### Databases
 1. CMU Intro to Database Systems - [Video Playlist](https://www.youtube.com/watch?v=vdPALZ-GCfI&list=PLSE8ODhjZXjbj8BMuIrRcacnQh20hmY9g)
 2. Postgres Tuning - PGConf Talk - [Video](https://www.youtube.com/watch?v=XB2lF_Z9cbs&t=179s)
