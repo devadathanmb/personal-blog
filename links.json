@@ -1,0 +1,187 @@
+{
+  "sections": [
+    {
+      "name": "Backend Engineering",
+      "description": "Core backend engineering resources and tools including frameworks, databases, and other tools.",
+      "subsections": [
+        {
+          "name": "Infrastructure",
+          "links": [
+            {
+              "title": "Intro to microservices, docker and kubernetes",
+              "url": "https://www.youtube.com/watch?v=1xo-0gCVhTU&list=PLqq-6Pq4lTTZSKAFG6aCDVDP86Qx4lNas",
+              "type": "Video"
+            },
+            {
+              "title": "DNS Toys - India FOSS Talk",
+              "url": "https://www.youtube.com/watch?v=ANmFZ8rbmnc",
+              "type": "Video"
+            },
+            {
+              "title": "Kubernetes Deep Dive - CCNA Talk",
+              "url": "https://www.youtube.com/watch?v=ZuIQurh_kDk",
+              "type": "Video"
+            },
+            {
+              "title": "Intro to Kubernetes - Puppet Talk",
+              "url": "https://www.youtube.com/watch?v=HlAXp0-M6SY",
+              "type": "Video"
+            }
+          ]
+        },
+        {
+          "name": "Databases",
+          "links": [
+            {
+              "title": "CMU Intro to Database Systems",
+              "url": "https://www.youtube.com/watch?v=vdPALZ-GCfI&list=PLSE8ODhjZXjbj8BMuIrRcacnQh20hmY9g",
+              "type": "Video Playlist"
+            },
+            {
+              "title": "Postgres Tuning - PGConf Talk",
+              "url": "https://www.youtube.com/watch?v=XB2lF_Z9cbs&t=179s",
+              "type": "Video"
+            },
+            {
+              "title": "Postgres Worst Practices - PGConf Talk",
+              "url": "https://www.youtube.com/watch?v=ZArwO4gNf6o",
+              "type": "Video"
+            },
+            {
+              "title": "MultiThreaded Postgres - PGConf Talk",
+              "url": "https://www.youtube.com/watch?v=1_8Kc9nBh20",
+              "type": "Video"
+            }
+          ]
+        },
+        {
+          "name": "Python",
+          "links": [
+            {
+              "title": "SQLAlchemy Sessions In Depth - Pyconf Talk",
+              "url": "https://www.youtube.com/watch?v=uAtaKr5HOdA",
+              "type": "Video"
+            },
+            {
+              "title": "Async SQLAlchemy - PyConf Talk",
+              "url": "https://www.youtube.com/watch?v=1Ruy2b8yyBQ",
+              "type": "Video"
+            },
+            {
+              "title": "Django vs Flask - PyConf Talk",
+              "url": "https://youtu.be/UY2JMZjQspY?feature=shared",
+              "type": "Video"
+            },
+            {
+              "title": "WSGI - PyConf Talk",
+              "url": "https://youtu.be/WqrCnVAkLIo?feature=shared",
+              "type": "Video"
+            }
+          ]
+        },
+        {
+          "name": "Node.js",
+          "links": [
+            {
+              "title": "Non-blocking I/O",
+              "url": "https://medium.com/ing-blog/how-does-non-blocking-io-work-under-the-hood-6299d2953c74#:~:text=Non%2Dblocking%20IO%20under%20the,read%20from%20a%20network%20socket.",
+              "type": "Blog"
+            },
+            {
+              "title": "Node.js first talk by Ryan Dahl - JSConf Talk",
+              "url": "https://www.youtube.com/watch?v=EeYvFl7li9E",
+              "type": "Video"
+            },
+            {
+              "title": "History of Node.js - Ryan Dahl Talk",
+              "url": "https://youtu.be/SAc0vQCC6UQ?feature=shared",
+              "type": "Video"
+            },
+            {
+              "title": "Introduction to Node.js by Ryan Dahl",
+              "url": "https://youtu.be/jo_B4LTHi3I",
+              "type": "Video"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Frontend Engineering",
+      "description": "Core frontend engineering stuff including frameworks, libraries, and other tools.",
+      "subsections": [
+        {
+          "name": "React",
+          "links": [
+            {
+              "title": "React Fiber - React Conf Talk",
+              "url": "https://www.youtube.com/watch?v=ZCuYPiUIONs",
+              "type": "Video"
+            }
+          ]
+        },
+        {
+          "name": "JavaScript",
+          "links": [
+            {
+              "title": "Execution Context Explained",
+              "url": "https://www.freecodecamp.org/news/execution-context-how-javascript-works-behind-the-scenes/",
+              "type": "Blog"
+            },
+            {
+              "title": "JavaScript OOPS",
+              "url": "https://www.youtube.com/watch?v=aAAS9cEuFYI",
+              "type": "Video"
+            },
+            {
+              "title": "JavaScript Engines - JSConf Talk",
+              "url": "https://www.youtube.com/watch?v=p-iiEDtpy6I",
+              "type": "Video"
+            },
+            {
+              "title": "V8 Internals - CSSConf Talk",
+              "url": "https://www.youtube.com/watch?v=m9cTaYI95Zc",
+              "type": "Video"
+            },
+            {
+              "title": "Immutable Data Structures - JSConf Talk",
+              "url": "https://www.youtube.com/watch?v=Wo0qiGPSV-s",
+              "type": "Video"
+            },
+            {
+              "title": "RXJS - Netflix Engineering Talk",
+              "url": "https://www.youtube.com/watch?v=AslncyG8whg",
+              "type": "Video"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Systems Engineering",
+      "description": "Low level stuff baby. Operating systems, networking, and other systems engineering resources.",
+      "subsections": [
+        {
+          "name": "Linux",
+          "links": [
+            {
+              "title": "Why should you write a Wayland Compositor",
+              "url": "https://www.youtube.com/watch?v=FUif2GxwgBc",
+              "type": "Video"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Life, Philosophy, and Productivity?",
+      "description": "No self help (because it is fake). Anything else will do.",
+      "subsections": []
+    },
+    {
+      "name": "Anything else?",
+      "description": "Anything that doesn't fit into the above categories.",
+      "subsections": []
+    }
+  ]
+}
