@@ -5,11 +5,9 @@ title: "About"
 
 Well, who am I? I'm Devadathan M B, a 2024 Computer Science Engineering graduate, currently working as a Member of Technical Staff (MTS) at [Fyle](https://www.fylehq.com/).
 
-My days are spent learning and crafting backend systems, and I bet I pick up something new every day. I’m definitely more of a backend guy, but hey, I think [React compiler](https://react.dev/learn/react-compiler) is cool, and [Qwick signals](https://qwik.dev/docs/components/state/) are pretty neat too. So don’t underestimate my frontend knowledge, even if I still might struggle with centering a div at times.
+I mostly work in backend, but I’m always down to learn or explore anything that excites me—whether it’s low-level systems, hardware, LLMs, or even frontend.
 
-Outside of tech, I’m a big supporter of open-source software, driven by the freedom and collaboration ideals of the [Linux](https://linux.org/) and [FOSS](https://en.wikipedia.org/wiki/Free_and_open-source_software) community.
-
-Yeah, that’s still tech-related, but if you’re interested in different takes on life and tech and how they intersect, feel free to stick around. It’s all about making sense of this chaotic world we live in.
+Outside of tech, I play chess from time to time. That’s pretty much it—no life outside of tech, lol.
 
 ## Tools I use
 

@@ -12,14 +12,24 @@
     --color-card-muted: 205, 205, 205;
     --color-border: 236, 233, 233;
   }
-  html[data-theme="dark"] {
-    --color-fill: 20, 28, 40; /* Even darker shade */
+
+  /* html[data-theme="dark"] {
+    --color-fill: 20, 28, 40;
     --color-text-base: 230, 230, 230;
     --color-accent: 26, 217, 217;
     --color-card: 63, 75, 90;
     --color-card-muted: 89, 107, 129;
     --color-border: 59, 70, 85;
-  }
+  } */
+
+html[data-theme="dark"] {
+    --color-fill: 15, 20, 25;          /* Dark background */
+    --color-text-base: 230, 230, 230;  /* Light gray text */
+    --color-accent: 0, 184, 255;       /* Vivid cyan-blue accent */
+    --color-card: 28, 35, 45;          /* Card background with a slight contrast */
+    --color-card-muted: 41, 50, 63;    /* Muted card background */
+    --color-border: 103, 137, 159;     /* Muted blue for borders */
+}
 
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
