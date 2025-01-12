@@ -9,7 +9,7 @@ tags:
   - personal blog
   - internshiip
   - fyle
-description: Documenting my journey into Fyle
+description: That's how I got a job
 ---
 
 While writing this blog, I'm currently working as an **MTS - 1** at [Fyle](https://www.fylehq.com/). This blog is to document my journey into Fyle. Just as a reminder for myself, in case I forget one day.
