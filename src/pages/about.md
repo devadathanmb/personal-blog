@@ -3,7 +3,7 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-Well, who am I? I'm Devadathan M B, a 2024 Computer Science Engineering graduate, currently working as a Member of Technical Staff (MTS) at [Fyle](https://www.fylehq.com/).
+Well, who am I? I'm _Devadathan_ (also known as _Dev_ among people who can't pronounce my name correctly), a 2024 Computer Science Engineering graduate, currently working as a Member of Technical Staff (MTS) at [Fyle](https://www.fylehq.com/).
 
 I mostly work in backend, but I’m always down to learn or explore anything that excites me—whether it’s low-level systems, hardware, LLMs, or even frontend.
 

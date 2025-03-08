@@ -2,6 +2,7 @@
 import { LOCALE, SITE } from "@config";
 import "@styles/base.css";
 import { ViewTransitions } from "astro:transitions";
+import CursorEffect from "@components/CursorEffect.astro";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -106,10 +107,10 @@ const socialImageURL = new URL(
     }
 
     <ViewTransitions />
-
     <script is:inline src="/toggle-theme.js"></script>
   </head>
   <body>
     <slot />
+    <CursorEffect />
   </body>
 </html>

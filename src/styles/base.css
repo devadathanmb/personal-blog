@@ -5,32 +5,41 @@
 @layer base {
   :root,
   html[data-theme="light"] {
-    --color-fill: 251, 254, 251;
-    --color-text-base: 40, 39, 40;
-    --color-accent: 0, 108, 172;
-    --color-card: 230, 230, 230;
-    --color-card-muted: 205, 205, 205;
-    --color-border: 236, 233, 233;
+    --color-fill: 255, 255, 255; /* GitHub light background */
+    --color-text-base: 36, 41, 47; /* GitHub light text */
+    --color-accent: 9, 105, 218; /* GitHub light blue */
+    --color-card: 246, 248, 250; /* GitHub light card */
+    --color-card-muted: 239, 241, 243; /* GitHub light card muted */
+    --color-border: 208, 215, 222; /* GitHub light border */
+    --color-success: 31, 136, 61; /* GitHub light success */
+    --color-danger: 207, 34, 46; /* GitHub light danger */
+    --color-warning: 154, 103, 0; /* GitHub light warning */
+    --color-info: 49, 130, 206; /* GitHub light info */
+    --cursor-light: rgba(9, 105, 218, 0.12);
+    --cursor-light-core: rgba(9, 105, 218, 0.25);
+    --floating-light: rgba(157, 190, 255, 0.3); /* Magical blue glow */
+    --floating-light-core: rgba(108, 162, 255, 0.8); /* Bright blue core */
+    --floating-trail: rgba(190, 227, 255, 0.15); /* Light blue trail */
+    --floating-sparkle: rgba(235, 245, 255, 0.4); /* White-blue sparkle */
   }
-
-  /* html[data-theme="dark"] {
-    --color-fill: 20, 28, 40;
-    --color-text-base: 230, 230, 230;
-    --color-accent: 26, 217, 217;
-    --color-card: 63, 75, 90;
-    --color-card-muted: 89, 107, 129;
-    --color-border: 59, 70, 85;
-  } */
-
-html[data-theme="dark"] {
-    --color-fill: 15, 20, 25;          /* Dark background */
-    --color-text-base: 230, 230, 230;  /* Light gray text */
-    --color-accent: 0, 184, 255;       /* Vivid cyan-blue accent */
-    --color-card: 28, 35, 45;          /* Card background with a slight contrast */
-    --color-card-muted: 41, 50, 63;    /* Muted card background */
-    --color-border: 103, 137, 159;     /* Muted blue for borders */
-}
-
+  html[data-theme="dark"] {
+    --color-fill: 13, 17, 23; /* GitHub dark background */
+    --color-text-base: 230, 237, 243; /* GitHub dark text */
+    --color-accent: 88, 166, 255; /* GitHub dark blue */
+    --color-card: 22, 27, 34; /* GitHub dark card */
+    --color-card-muted: 33, 38, 45; /* GitHub dark card muted */
+    --color-border: 48, 54, 61; /* GitHub dark border */
+    --color-success: 46, 160, 67; /* GitHub dark success */
+    --color-danger: 248, 81, 73; /* GitHub dark danger */
+    --color-warning: 187, 128, 9; /* GitHub dark warning */
+    --color-info: 88, 166, 255; /* GitHub dark info */
+    --cursor-light: rgba(88, 166, 255, 0.15);
+    --cursor-light-core: rgba(88, 166, 255, 0.25);
+    --floating-light: rgba(157, 190, 255, 0.25);
+    --floating-light-core: rgba(108, 162, 255, 0.6);
+    --floating-trail: rgba(190, 227, 255, 0.1);
+    --floating-sparkle: rgba(235, 245, 255, 0.3);
+  }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
     display: none;
@@ -40,11 +49,17 @@ html[data-theme="dark"] {
     display: block;
   }
   body {
-    @apply flex min-h-[100svh] flex-col bg-skin-fill font-mono text-skin-base 
+    @apply flex min-h-[100svh] flex-col bg-skin-fill font-['Maple_Mono'] text-skin-base 
     selection:bg-skin-accent selection:bg-opacity-70 selection:text-skin-inverted;
+    font-feature-settings:
+      "liga" 1,
+      "calt" 1,
+      "ss01" 1;
   }
-  section,
-  footer {
+  main {
+    @apply flex-grow pb-12;
+  }
+  .main-container {
     @apply mx-auto max-w-3xl px-4;
   }
   a {
@@ -68,9 +83,8 @@ html[data-theme="dark"] {
     prose-figcaption:!text-skin-base prose-figcaption:opacity-70
     prose-strong:!text-skin-base
 
-    
     prose-code:rounded prose-code:bg-skin-card 
-    prose-code:bg-opacity-75 prose-code:p-1 
+    prose-code:bg-opacity-75 prose-code:p-1 prose-code:!text-skin-base
     prose-code:before:!content-none prose-code:after:!content-none
     prose-ol:!text-skin-base 
     prose-ul:overflow-x-clip prose-ul:!text-skin-base prose-li:marker:!text-skin-accent
@@ -78,7 +92,7 @@ html[data-theme="dark"] {
     prose-th:border-skin-line prose-td:border 
     prose-td:border-skin-line prose-img:!my-2 
     prose-img:mx-auto prose-img:border-2 
-    prose-img:border-skin-line prose-hr:!border-skin-line;
+    prose-img:border-skin-line;
   }
   .prose a {
     @apply break-words hover:!text-skin-accent;
@@ -101,14 +115,101 @@ html[data-theme="dark"] {
     @apply hidden;
   }
 
+  /* GitHub-style buttons */
+  .gh-button {
+    @apply inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5
+    text-sm font-medium no-underline decoration-0 transition-all duration-200
+    ease-in-out hover:no-underline hover:decoration-0 focus:no-underline;
+  }
+  .gh-button-primary {
+    @apply gh-button border-[#2ea043] bg-[#238636] text-white
+    no-underline decoration-0 hover:border-[#3fb950] hover:bg-[#2ea043]
+    hover:text-white hover:no-underline hover:shadow-sm focus:no-underline
+    active:scale-[0.98] active:transform active:bg-[#1f7a31];
+  }
+  .gh-button-secondary {
+    @apply gh-button border-skin-line bg-skin-card text-skin-base
+    no-underline decoration-0 hover:bg-skin-card-muted
+    hover:text-skin-base hover:no-underline hover:shadow-sm
+    focus:no-underline active:scale-[0.98] active:transform;
+  }
+  .gh-button svg {
+    @apply h-4 w-4 fill-current transition-transform duration-200
+    group-hover:translate-x-0.5;
+  }
+
+  /* GitHub-style tags */
+  .gh-tag {
+    @apply inline-flex items-center rounded-full border border-[#1f6feb29] bg-[#1f6feb14] px-3
+    py-1 text-sm font-medium text-[#539bf5] 
+    transition-colors duration-200 hover:bg-[#1f6feb29] dark:border-[#1f6feb29] dark:bg-[#1f6feb29]
+    dark:text-[#539bf5] dark:hover:bg-[#1f6feb42];
+  }
+
+  /* GitHub-style section headers */
+  .gh-section-header {
+    @apply mb-3 border-b border-skin-line pb-2 text-base font-semibold text-skin-base;
+  }
+
   /* ===== scrollbar ===== */
   html {
     overflow-y: scroll;
   }
 
+  /* Gradient text animation */
+  @keyframes gradient-text {
+    0% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: -100% 50%;
+    }
+  }
+
+  @keyframes logo-gradient {
+    0% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: -100% 50%;
+    }
+  }
+
+  .gradient-text {
+    background: linear-gradient(
+      90deg,
+      rgba(230, 237, 243, 0.8) 0%,
+      rgba(88, 166, 255, 1) 25%,
+      rgba(230, 237, 243, 0.8) 50%,
+      rgba(88, 166, 255, 1) 75%,
+      rgba(230, 237, 243, 0.8) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-text 4s linear infinite;
+  }
+
+  .logo {
+    background: linear-gradient(
+      90deg,
+      rgba(230, 237, 243, 0.95) 0%,
+      rgba(88, 166, 255, 1) 25%,
+      rgba(230, 237, 243, 0.95) 50%,
+      rgba(88, 166, 255, 1) 75%,
+      rgba(230, 237, 243, 0.95) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: logo-gradient 4s linear infinite;
+  }
+
   /* width */
   ::-webkit-scrollbar {
-    @apply w-3;
+    @apply w-2;
   }
 
   /* Track */
@@ -118,7 +219,7 @@ html[data-theme="dark"] {
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    @apply bg-skin-card;
+    @apply rounded-full bg-skin-card;
   }
 
   /* Handle on hover */
@@ -133,6 +234,85 @@ html[data-theme="dark"] {
 
   pre > code {
     white-space: pre;
+  }
+
+  /* Replace custom font with IBM Plex Mono */
+  pre,
+  code {
+    font-family: "IBM Plex Mono", monospace;
+  }
+
+  /* Clean cursor glow effect */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: radial-gradient(
+        15px circle at var(--cursor-x, 0) var(--cursor-y, 0),
+        var(--cursor-light-core),
+        transparent 100%
+      ),
+      radial-gradient(
+        600px circle at var(--cursor-x, 0) var(--cursor-y, 0),
+        var(--cursor-light),
+        transparent 40%
+      );
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    will-change: transform;
+  }
+
+  /* Different blend modes for light and dark themes */
+  html[data-theme="light"] body::before {
+    mix-blend-mode: multiply;
+  }
+
+  html[data-theme="dark"] body::before {
+    mix-blend-mode: screen;
+  }
+
+  /* Show cursor light when active */
+  body.cursor-active::before {
+    opacity: 1;
+  }
+
+  /* Enhance hover effects with magical interaction */
+  a:hover::before,
+  button:hover::before,
+  [role="button"]:hover::before {
+    transform: scale(1.1);
+    animation: sparkle 0.8s ease-in-out;
+  }
+
+  /* Special interaction when orb meets cursor */
+  body.cursor-active.floating-light-active::before {
+    animation:
+      cursorPulse 2s ease-in-out infinite,
+      sparkle 1s ease-in-out;
+    filter: brightness(1.2);
+  }
+
+  /* Subtle animation keyframes */
+  @keyframes cursorPulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* Apply subtle pulse animation when cursor is active */
+  body.cursor-active::before {
+    animation: cursorPulse 2s ease-in-out infinite;
   }
 }
 

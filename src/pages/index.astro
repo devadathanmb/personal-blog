@@ -1,6 +1,5 @@
 ---
 import { getCollection } from "astro:content";
-
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
@@ -19,8 +18,8 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 <Layout>
   <Header />
   <main id="main-content">
-    <section id="hero">
-      <h1>Hello friend!</h1>
+    <section id="hero" class="mx-auto max-w-3xl px-4">
+      <h1 class="text-3xl font-bold sm:text-5xl">Hello friend!</h1>
       <p>
         Hey there, curious explorer.
         <br />
@@ -28,12 +27,12 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         Welcome to my little corner of the internet.
         <br />
         <br />
-        Hey, I’m Devadathan, a software engineer from India. <i>Dev</i> is what most
+        Hey, I'm Devadathan, a software engineer from India. <i>Dev</i> is what most
         people call me.
         <br />
         <br />
         This is the place where I may write about tech, software development, my
-        thoughts, and occasionally reflect on life’s complexities (a.k.a. my rants).
+        thoughts, and occasionally reflect on life's complexities (a.k.a. my rants).
       </p>
       <br />
       <Hr />
@@ -89,9 +88,8 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         </LinkButton>
       </div>
     </section>
-
-    <Footer />
   </main>
+  <Footer />
 
   <style>
     /* ===== Hero Section ===== */

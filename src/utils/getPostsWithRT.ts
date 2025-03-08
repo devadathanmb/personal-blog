@@ -8,10 +8,10 @@ type GlobResult = {
 export const getReadingTime = async () => {
   const globPosts = import.meta.glob("../content/blog/*.md");
   const mapFrontmatter = new Map<string, string | undefined>();
-  
+
   await Promise.all(
     Object.entries(globPosts).map(async ([_, globPost]) => {
-      const post = await globPost() as GlobResult;
+      const post = (await globPost()) as GlobResult;
       const frontmatter = post.frontmatter;
       mapFrontmatter.set(
         slugifyStr(frontmatter.title),
@@ -19,7 +19,7 @@ export const getReadingTime = async () => {
       );
     })
   );
-  
+
   return mapFrontmatter;
 };
 

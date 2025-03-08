@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Card from "@components/ProjectCard";
+import { SITE } from "@config";
+
+export interface Props {
+  projects: CollectionEntry<"projects">[];
+}
+
+const { projects } = Astro.props;
+---
+
+<Layout title={`Projects | ${SITE.title}`}>
+  <Header activeNav="projects" />
+  <Main pageTitle="Projects" pageDesc="A collection of projects I've worked on">
+    <ul>
+      {projects.map(project => <Card project={project} />)}
+    </ul>
+  </Main>
+  <Footer />
+</Layout>
