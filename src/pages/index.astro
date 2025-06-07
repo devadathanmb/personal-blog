@@ -6,40 +6,25 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
+import Terminal from "@components/Terminal.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 
 const posts = await getCollection("blog");
 
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+// const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 ---
 
 <Layout>
   <Header activeNav="home" />
   <main id="main-content">
-    <section id="hero" class="mx-auto max-w-3xl px-4">
-      <h1 class="text-3xl font-bold sm:text-5xl"><i>Hello friend!</i></h1>
-      <p>
-        Hey there, curious explorer.
-        <br />
-        <br />
-        Welcome to my little corner of the internet.
-        <br />
-        <br />
-        Hey, I'm Devadathan, a software engineer from India. <i>Dev</i> is what most
-        people call me.
-        <br />
-        <br />
-        This is the place where I may write about tech, software development, my
-        thoughts, and occasionally reflect on life's complexities (a.k.a. my rants).
-      </p>
-      <br />
-      <Hr />
+    <section id="hero" class="mx-auto max-w-5xl px-4">
+      <Terminal />
 
-      {
-        featuredPosts.length > 0 && (
-          <>
+      <div class="content-sections mx-auto max-w-4xl">
+        {
+          featuredPosts.length > 0 && (
             <section id="featured">
               <h2>Featured</h2>
               <ul>
@@ -52,40 +37,19 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
                 ))}
               </ul>
             </section>
-            {recentPosts.length > 0 && <Hr />}
-          </>
-        )
-      }
+          )
+        }
 
-      {
-        recentPosts.length > 0 && (
-          <section id="recent-posts">
-            <h2>Recent Posts</h2>
-            <ul>
-              {recentPosts.map(
-                ({ data, slug }, index) =>
-                  index < 4 && (
-                    <Card
-                      href={`/posts/${slug}/`}
-                      frontmatter={data}
-                      secHeading={false}
-                    />
-                  )
-              )}
-            </ul>
-          </section>
-        )
-      }
-
-      <div class="all-posts-btn-wrapper">
-        <LinkButton href="/posts/">
-          All Posts
-          <svg xmlns="http://www.w3.org/2000/svg"
-            ><path
-              d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-            ></path>
-          </svg>
-        </LinkButton>
+        <div class="all-posts-btn-wrapper">
+          <LinkButton href="/posts/">
+            All Posts
+            <svg xmlns="http://www.w3.org/2000/svg"
+              ><path
+                d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+              ></path>
+            </svg>
+          </LinkButton>
+        </div>
       </div>
     </section>
   </main>
@@ -96,6 +60,11 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     #hero {
       @apply pb-6 pt-8;
     }
+
+    .content-sections {
+      @apply mt-16;
+    }
+
     #hero h1 {
       @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
     }
@@ -118,11 +87,11 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     /* ===== Featured & Recent Posts Sections ===== */
     #featured,
     #recent-posts {
-      @apply pb-6 pt-12;
+      @apply pb-6 pt-8;
     }
     #featured h2,
     #recent-posts h2 {
-      @apply text-2xl font-semibold tracking-wide;
+      @apply text-2xl font-semibold tracking-wide mb-6;
     }
     .all-posts-btn-wrapper {
       @apply my-8 text-center;

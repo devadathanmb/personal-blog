@@ -20,23 +20,25 @@
   src: url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-italic.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-italic.woff) format('woff');
 }
 
-/* maple-mono-latin-800-normal */
+
+/* maple-mono-latin-700-normal */
 @font-face {
   font-family: 'Maple Mono';
   font-style: normal;
   font-display: swap;
-  font-weight: 800;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-800-normal.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-800-normal.woff) format('woff');
+  font-weight: 700;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-normal.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-normal.woff) format('woff');
 }
 
-/* maple-mono-latin-800-italic */
+/* maple-mono-latin-700-italic */
 @font-face {
   font-family: 'Maple Mono';
   font-style: italic;
   font-display: swap;
-  font-weight: 800;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-800-italic.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-800-italic.woff) format('woff');
+  font-weight: 700;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-italic.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-italic.woff) format('woff');
 }
+
 
 @layer base {
   :root,
@@ -91,7 +93,7 @@
     font-feature-settings: "liga" 1, "calt" 1, "ss01" 1, "zero" 1, "cv02" 1, "cv03" 1, "cv04" 1;
     -webkit-font-feature-settings: "liga" 1, "calt" 1, "ss01" 1, "zero" 1, "cv02" 1, "cv03" 1, "cv04" 1;
     -moz-font-feature-settings: "liga" 1, "calt" 1, "ss01" 1, "zero" 1, "cv02" 1, "cv03" 1, "cv04" 1;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.020em;
   }
   main {
     @apply flex-grow pb-12;
