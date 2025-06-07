@@ -10,7 +10,7 @@ tags:
   - personal blog
   - fyle
   - offsite
-description: An enriching journey beyond the confines of terminals and code editors, where shared moments and newfound friendships illuminated the vibrant joy of togetherness.
+description: Beyond terminals and code editors, happy moments and long lasting memories :)
 ---
 
 ## Table of contents

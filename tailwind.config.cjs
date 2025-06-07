@@ -53,6 +53,12 @@ module.exports = {
         },
         transparent: "transparent",
       },
+      textDecorationColor: {
+        skin: {
+          base: withOpacity("--color-text-base"),
+          accent: withOpacity("--color-accent"),
+        },
+      },
       fontFamily: {
         mono: ["IBM Plex Mono", "monospace"],
       },
