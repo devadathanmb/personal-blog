@@ -93,7 +93,7 @@
     font-feature-settings: "liga" 1, "calt" 1, "ss01" 1, "zero" 1, "cv02" 1, "cv03" 1, "cv04" 1;
     -webkit-font-feature-settings: "liga" 1, "calt" 1, "ss01" 1, "zero" 1, "cv02" 1, "cv03" 1, "cv04" 1;
     -moz-font-feature-settings: "liga" 1, "calt" 1, "ss01" 1, "zero" 1, "cv02" 1, "cv03" 1, "cv04" 1;
-    letter-spacing: -0.020em;
+    letter-spacing: -0.025em;
   }
   main {
     @apply flex-grow pb-12;

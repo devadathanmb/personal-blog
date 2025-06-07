@@ -26,7 +26,7 @@ const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
         {
           featuredPosts.length > 0 && (
             <section id="featured">
-              <h2>Featured</h2>
+              <h2>Featured Blogs</h2>
               <ul>
                 {featuredPosts.map(({ data, slug }) => (
                   <Card
