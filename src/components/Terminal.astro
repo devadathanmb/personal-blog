@@ -48,18 +48,20 @@
       <span class="username">Dev</span><span class="at-symbol">@</span><span
         class="hostname">Machine</span
       ><span class="path">:~$</span>
-      <span class="command valid-command">ls -la mindspace/</span>
+      <span class="command valid-command"
+        >ls -la <span class="path">mindspace/</span></span
+      >
     </div>
     <div class="terminal-output">
-      drwxr-xr-x backend-engineering/
+      <span class="terminal-permissions">drwxr-xr-x</span> backend-engineering/
       <br />
-      drwxr-xr-x linux/
+      <span class="terminal-permissions">drwxr-xr-x</span> linux/
       <br />
-      drwxr-xr-x cloud/
+      <span class="terminal-permissions">drwxr-xr-x</span> cloud/
       <br />
-      drwxr-xr-x homelab/
+      <span class="terminal-permissions">drwxr-xr-x</span> homelab/
       <br />
-      rw-r--r--- .and-more/
+      <span class="terminal-permissions">rw-r--r---</span> .and-more/
     </div>
 
     <div class="terminal-line">
@@ -176,6 +178,10 @@
     margin-left: 1.5rem;
     margin-bottom: 1rem;
     word-wrap: break-word;
+  }
+
+  .terminal-permissions {
+    color: rgb(var(--color-info));
   }
 
   .cursor-blink {

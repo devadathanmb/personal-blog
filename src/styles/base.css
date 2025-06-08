@@ -63,7 +63,7 @@
   html[data-theme="dark"] {
     --color-fill: 13, 17, 23; /* GitHub dark background */
     --color-text-base: 230, 237, 243; /* GitHub dark text */
-    --color-accent: 88, 166, 255; /* GitHub dark blue */
+    --color-accent: 0, 202, 255;
     --color-card: 22, 27, 34; /* GitHub dark card */
     --color-card-muted: 33, 38, 45; /* GitHub dark card muted */
     --color-border: 48, 54, 61; /* GitHub dark border */
@@ -152,6 +152,12 @@
   }
   .prose h2#table-of-contents + p {
     @apply hidden;
+  }
+
+  /* Reduced letter spacing for all heading elements */
+  h1, h2, h3, h4, h5, h6,
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    letter-spacing: -0.05em !important;
   }
 
   /* GitHub-style buttons */
