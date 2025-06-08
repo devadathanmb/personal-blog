@@ -59,6 +59,10 @@
     --floating-light-core: rgba(108, 162, 255, 0.8); /* Bright blue core */
     --floating-trail: rgba(190, 227, 255, 0.15); /* Light blue trail */
     --floating-sparkle: rgba(235, 245, 255, 0.4); /* White-blue sparkle */
+    --logo-accent: 68, 138, 255; /* Subtle logo accent blue */
+    --color-terminal-green: 34, 197, 94; /* Light neonish terminal green */
+    --color-tag: 88, 166, 255; /* Bright readable tag color */
+    --color-tag-bg: 88, 166, 255; /* Tag background */
   }
   html[data-theme="dark"] {
     --color-fill: 13, 17, 23; /* GitHub dark background */
@@ -77,6 +81,10 @@
     --floating-light-core: rgba(108, 162, 255, 0.6);
     --floating-trail: rgba(190, 227, 255, 0.1);
     --floating-sparkle: rgba(235, 245, 255, 0.3);
+    --logo-accent: 108, 162, 255; /* Subtle logo accent blue */
+    --color-terminal-green: 74, 222, 128; /* Brighter neonish terminal green for dark mode */
+    --color-tag: 156, 203, 255; /* Softer readable tag color for dark mode */
+    --color-tag-bg: 156, 203, 255; /* Tag background for dark mode */
   }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
@@ -185,10 +193,16 @@
 
   /* GitHub-style tags */
   .gh-tag {
-    @apply inline-flex items-center rounded-full border border-[#1f6feb29] bg-[#1f6feb14] px-3
-    py-1 text-sm font-medium text-[#539bf5] 
-    transition-colors duration-200 hover:bg-[#1f6feb29] dark:border-[#1f6feb29] dark:bg-[#1f6feb29]
-    dark:text-[#539bf5] dark:hover:bg-[#1f6feb42];
+    @apply inline-flex items-center rounded-full border px-3
+    py-1 my-1 text-sm font-medium transition-colors duration-200;
+    border-color: rgba(var(--color-tag-bg), 0.3);
+    background-color: rgba(var(--color-tag-bg), 0.15);
+    color: rgb(var(--color-tag));
+  }
+  
+  .gh-tag:hover {
+    background-color: rgba(var(--color-tag-bg), 0.25);
+    border-color: rgba(var(--color-tag-bg), 0.4);
   }
 
   /* GitHub-style section headers */
@@ -212,11 +226,11 @@
   }
 
   @keyframes logo-gradient {
-    0% {
-      background-position: 100% 50%;
+    0%, 100% {
+      background-position: 0% 50%;
     }
-    100% {
-      background-position: -100% 50%;
+    50% {
+      background-position: 100% 50%;
     }
   }
 
@@ -236,20 +250,38 @@
     animation: gradient-text 4s linear infinite;
   }
 
+  /* Dark mode logo gradient */
   .logo {
     background: linear-gradient(
       90deg,
-      rgba(230, 237, 243, 0.95) 0%,
-      rgba(88, 166, 255, 1) 25%,
-      rgba(230, 237, 243, 0.95) 50%,
-      rgba(88, 166, 255, 1) 75%,
-      rgba(230, 237, 243, 0.95) 100%
+      rgba(230, 237, 243, 0.893) 0%,
+      rgb(var(--logo-accent)) 30%,
+      rgba(230, 237, 243, 0.9) 50%,
+      rgb(var(--logo-accent)) 70%,
+      rgba(230, 237, 243, 0.856) 100%
     );
-    background-size: 200% 100%;
+    background-size: 300% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: logo-gradient 4s linear infinite;
+    animation: logo-gradient 8s ease-in-out infinite;
+  }
+
+  /* Light mode logo gradient */
+  html[data-theme="light"] .logo {
+    background: linear-gradient(
+      90deg,
+      rgba(36, 41, 47, 1) 0%,
+      rgb(var(--logo-accent)) 30%,
+      rgba(36, 41, 47, 1) 50%,
+      rgb(var(--logo-accent)) 70%,
+      rgba(36, 41, 47, 1) 100%
+    );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: logo-gradient 8s ease-in-out infinite;
   }
 
   /* width */
