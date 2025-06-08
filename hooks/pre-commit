@@ -1,0 +1,116 @@
+#!/bin/bash
+
+# Pre-commit hook to automatically manage timestamps in blog posts
+# This script will:
+# 1. Set pubDatetime for new blog posts (when missing)
+# 2. Update modDatetime for existing posts being modified
+
+# Get current timestamp in ISO 8601 format
+current_timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+# Function to update timestamps in a markdown file
+update_timestamps() {
+    local file="$1"
+    local is_new_file="$2"
+    
+    # Skip if file doesn't exist or isn't a markdown file
+    [[ ! -f "$file" || ! "$file" =~ \.md$ ]] && return
+    
+    # Skip if not in blog directory
+    [[ ! "$file" =~ src/content/blog/ ]] && return
+    
+    echo "Processing blog post: $file"
+    
+    # Check if file has frontmatter
+    if ! head -n 1 "$file" | grep -q "^---$"; then
+        echo "  No frontmatter found, skipping..."
+        return
+    fi
+    
+    # Create a temporary file
+    temp_file=$(mktemp)
+    
+    # Process the file
+    awk -v timestamp="$current_timestamp" -v is_new="$is_new_file" '
+    BEGIN { in_frontmatter = 0; frontmatter_end = 0; has_pubDatetime = 0; has_modDatetime = 0 }
+    
+    # Start of frontmatter
+    /^---$/ && NR == 1 { 
+        in_frontmatter = 1
+        print $0
+        next
+    }
+    
+    # End of frontmatter
+    /^---$/ && in_frontmatter && !frontmatter_end {
+        frontmatter_end = 1
+        in_frontmatter = 0
+        
+        # Add pubDatetime if new file and missing
+        if (is_new == "true" && !has_pubDatetime) {
+            print "pubDatetime: " timestamp
+        }
+        
+        # Add or update modDatetime for existing files
+        if (is_new == "false" && !has_modDatetime) {
+            print "modDatetime: " timestamp
+        }
+        
+        print $0
+        next
+    }
+    
+    # Inside frontmatter
+    in_frontmatter {
+        if (/^pubDatetime:/) {
+            has_pubDatetime = 1
+            if (is_new == "true") {
+                # For new files, set pubDatetime
+                print "pubDatetime: " timestamp
+            } else {
+                # For existing files, keep original pubDatetime
+                print $0
+            }
+        } else if (/^modDatetime:/) {
+            has_modDatetime = 1
+            # Always update modDatetime for existing files
+            if (is_new == "false") {
+                print "modDatetime: " timestamp
+            } else {
+                print $0
+            }
+        } else {
+            print $0
+        }
+        next
+    }
+    
+    # Outside frontmatter
+    !in_frontmatter { print $0 }
+    ' "$file" > "$temp_file"
+    
+    # Replace original file with updated content
+    mv "$temp_file" "$file"
+    
+    # Add the file back to staging
+    git add "$file"
+    
+    echo "  Updated timestamps for $file"
+}
+
+# Get list of staged files
+staged_files=$(git diff --cached --name-only)
+
+# Process each staged file
+for file in $staged_files; do
+    # Check if this is a new file or modified file
+    if git diff --cached --diff-filter=A --name-only | grep -q "^$file$"; then
+        # New file
+        update_timestamps "$file" "true"
+    elif git diff --cached --diff-filter=M --name-only | grep -q "^$file$"; then
+        # Modified file
+        update_timestamps "$file" "false"
+    fi
+done
+
+exit 0
