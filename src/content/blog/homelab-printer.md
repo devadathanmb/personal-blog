@@ -19,7 +19,7 @@ Around the end of 2024, my free-tier cloud VMs were nearing their expiration, an
 
 I bought a [Raspberry Pi 5 Model B (8GB RAM)](https://www.raspberrypi.com/products/raspberry-pi-5/), a 256GB SD card with good write endurance, a case, and the power supply. Flashed [Debian Bookworm Server](https://www.debian.org/releases/bookworm/) onto it, installed [Docker](https://www.docker.com/) and some essentials, and started hosting a few of my services. Even with containers and a couple of headless browsers humming along, the Pi just chilled.
 
-_See, the how the Pis is barely sweating:_
+_See, how the Pi is barely sweating:_
 ![Raspberry Pi 5 Model B](../../assets/homelab-printer/neofetch.png)
 ![PI HTOP Usage](../../assets/homelab-printer/htop.png)
 
@@ -27,9 +27,19 @@ _See, the how the Pis is barely sweating:_
 
 I had an [Epson L3110](https://www.epson.co.in/Support/Printers/All-In-One/L-Series/Epson-L3110/s/SPT_C11CG87504) inktank printer at home for years. It’s reliable, prints well — but it’s strictly USB. No Wi-Fi. No network capability.
 
-So any time someone had to print something, the routine was: transfer the file to a laptop, plug in the printer, hit print. Minor task, but annoying enough that everyone in the house had collectively developed printer amnesia.
+Every time someone needed to print, the drill looked like a mini side quest:
 
-At one point, I even tried using the USB port on my router. Looked promising — until I realized it was vendor-locked and the flashing hacks would be a pain. I always had a feeling the Pi could handle it, but the motivation was missing.
+- Transfer the file to a laptop or phone with a USB-C port
+- Boot up the device
+- Plug in the printer
+- Move the file over
+- Hit print
+- Wait for the job to finish
+- Unplug the printer
+
+All in, it’s a solid 5-minute ritual—every single time. Printing shouldn’t feel like compiling code with 100+ dependencies.
+
+One thing I tried was using the USB port on my router. It looked promising—right up until I ran into vendor lock-in. Flashing custom firmware was more trouble than it was worth. I always had a feeling the Pi could handle it, just never got around to setting it up.
 
 ## Finally deciding to fix it
 
@@ -193,7 +203,7 @@ http://raspberrypi.local:631
 
 > Replace `raspberrypi` with your Pi’s hostname if changed.
 
-## 10. Some Caveats That You Should Know
+## Some Caveats That You Should Know
 
 - Android support is inconsistent. Some devices detect mDNS printers, some don’t. Blame Android.
 
