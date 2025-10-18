@@ -4,41 +4,55 @@
 
 /* maple-mono-latin-400-normal */
 @font-face {
-  font-family: 'Maple Mono';
+  font-family: "Maple Mono";
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-normal.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-normal.woff) format('woff');
+  src:
+    url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-normal.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-normal.woff)
+      format("woff");
 }
 
 /* maple-mono-latin-400-italic */
 @font-face {
-  font-family: 'Maple Mono';
+  font-family: "Maple Mono";
   font-style: italic;
   font-display: swap;
   font-weight: 400;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-italic.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-italic.woff) format('woff');
+  src:
+    url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-italic.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-italic.woff)
+      format("woff");
 }
-
 
 /* maple-mono-latin-700-normal */
 @font-face {
-  font-family: 'Maple Mono';
+  font-family: "Maple Mono";
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-normal.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-normal.woff) format('woff');
+  src:
+    url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-normal.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-normal.woff)
+      format("woff");
 }
 
 /* maple-mono-latin-700-italic */
 @font-face {
-  font-family: 'Maple Mono';
+  font-family: "Maple Mono";
   font-style: italic;
   font-display: swap;
   font-weight: 700;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-italic.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-italic.woff) format('woff');
+  src:
+    url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-italic.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-italic.woff)
+      format("woff");
 }
-
 
 @layer base {
   :root,
@@ -82,7 +96,8 @@
     --floating-trail: rgba(190, 227, 255, 0.1);
     --floating-sparkle: rgba(235, 245, 255, 0.3);
     --logo-accent: 108, 162, 255; /* Subtle logo accent blue */
-    --color-terminal-green: 74, 222, 128; /* Brighter neonish terminal green for dark mode */
+    --color-terminal-green:
+      74, 222, 128; /* Brighter neonish terminal green for dark mode */
     --color-tag: 156, 203, 255; /* Softer readable tag color for dark mode */
     --color-tag-bg: 156, 203, 255; /* Tag background for dark mode */
   }
@@ -97,10 +112,31 @@
   body {
     @apply flex min-h-[100svh] flex-col bg-skin-fill text-skin-base 
     selection:bg-skin-accent selection:bg-opacity-70 selection:text-skin-inverted;
-    font-family: 'Maple Mono', monospace;
-    font-feature-settings: "liga" 1, "calt" 1, "ss01" 1, "zero" 1, "cv02" 1, "cv03" 1, "cv04" 1;
-    -webkit-font-feature-settings: "liga" 1, "calt" 1, "ss01" 1, "zero" 1, "cv02" 1, "cv03" 1, "cv04" 1;
-    -moz-font-feature-settings: "liga" 1, "calt" 1, "ss01" 1, "zero" 1, "cv02" 1, "cv03" 1, "cv04" 1;
+    font-family: "Maple Mono", monospace;
+    font-feature-settings:
+      "liga" 1,
+      "calt" 1,
+      "ss01" 1,
+      "zero" 1,
+      "cv02" 1,
+      "cv03" 1,
+      "cv04" 1;
+    -webkit-font-feature-settings:
+      "liga" 1,
+      "calt" 1,
+      "ss01" 1,
+      "zero" 1,
+      "cv02" 1,
+      "cv03" 1,
+      "cv04" 1;
+    -moz-font-feature-settings:
+      "liga" 1,
+      "calt" 1,
+      "ss01" 1,
+      "zero" 1,
+      "cv02" 1,
+      "cv03" 1,
+      "cv04" 1;
     letter-spacing: -0.025em;
   }
   main {
@@ -131,7 +167,7 @@
     prose-strong:!text-skin-base
 
     prose-code:rounded prose-code:bg-skin-card 
-    prose-code:bg-opacity-75 prose-code:p-1 prose-code:!text-skin-base
+    prose-code:bg-opacity-75 prose-code:p-1 
     prose-code:before:!content-none prose-code:after:!content-none
     prose-ol:!text-skin-base 
     prose-ul:overflow-x-clip prose-ul:!text-skin-base prose-li:marker:!text-skin-accent
@@ -163,8 +199,18 @@
   }
 
   /* Reduced letter spacing for all heading elements */
-  h1, h2, h3, h4, h5, h6,
-  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
     letter-spacing: -0.05em !important;
   }
 
@@ -193,13 +239,13 @@
 
   /* GitHub-style tags */
   .gh-tag {
-    @apply inline-flex items-center rounded-full border px-3
-    py-1 my-1 text-sm font-medium transition-colors duration-200;
+    @apply my-1 inline-flex items-center rounded-full border
+    px-3 py-1 text-sm font-medium transition-colors duration-200;
     border-color: rgba(var(--color-tag-bg), 0.3);
     background-color: rgba(var(--color-tag-bg), 0.15);
     color: rgb(var(--color-tag));
   }
-  
+
   .gh-tag:hover {
     background-color: rgba(var(--color-tag-bg), 0.25);
     border-color: rgba(var(--color-tag-bg), 0.4);
@@ -226,7 +272,8 @@
   }
 
   @keyframes logo-gradient {
-    0%, 100% {
+    0%,
+    100% {
       background-position: 0% 50%;
     }
     50% {
@@ -319,6 +366,23 @@
     font-family: "Maple Mono", monospace;
   }
 
+  /* Inline code styling with proper contrast */
+  .prose code:not(pre code) {
+    color: rgb(var(--color-text-base)) !important;
+  }
+
+  /* Light mode inline code */
+  html[data-theme="light"] .prose code:not(pre code) {
+    color: rgb(36, 41, 47) !important; /* Dark text for light mode */
+    background-color: rgba(var(--color-card), 0.75) !important;
+  }
+
+  /* Dark mode inline code */
+  html[data-theme="dark"] .prose code:not(pre code) {
+    color: rgb(230, 237, 243) !important; /* Light text for dark mode */
+    background-color: rgba(var(--color-card), 0.75) !important;
+  }
+
   /* Clean cursor glow effect */
   body::before {
     content: "";
@@ -329,7 +393,8 @@
     height: 100%;
     pointer-events: none;
     z-index: 999;
-    background: radial-gradient(
+    background:
+      radial-gradient(
         15px circle at var(--cursor-x, 0) var(--cursor-y, 0),
         var(--cursor-light-core),
         transparent 100%

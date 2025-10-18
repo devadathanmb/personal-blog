@@ -12,27 +12,37 @@ tags:
 description: How to enable autologin in Linux using Getty.
 ---
 
-This post will explain how you can enable/disable autologin in Linux distros using the Getty systemd service.
+This post will explain how you can enable/disable autologin in Linux distros using the Getty systemd
+service.
 
 ## Table of contents
 
 ## Why?
 
-Well sometimes, you're too lazy even to type the password right? Or you're running a minimalistic system without a login manager and you don't want to get stuck in the tty typing username and password everytime to login. This is where the getty service is gonna help you out.
+Well sometimes, you're too lazy even to type the password right? Or you're running a minimalistic
+system without a login manager and you don't want to get stuck in the tty typing username and
+password everytime to login. This is where the getty service is gonna help you out.
 
 ## What is Getty?
 
-In traditional Unix-like systems, a "getty" is a program that manages the login process on virtual terminals (VTs) or consoles.
+In traditional Unix-like systems, a "getty" is a program that manages the login process on virtual
+terminals (VTs) or consoles.
 
-The name "getty" stands for "get tty" (get teletype) and originates from the time when teletypes were commonly used as input/output devices.
+The name "getty" stands for "get tty" (get teletype) and originates from the time when teletypes
+were commonly used as input/output devices.
 
-Getty is responsible for prompting users for their username and password when they access a terminal, and it spawns a login shell after successful authentication.
+Getty is responsible for prompting users for their username and password when they access a
+terminal, and it spawns a login shell after successful authentication.
 
-In modern Linux distributions that use systemd, the getty service is often managed by systemd, which is a system and service manager for Linux operating systems. systemd takes care of starting and managing getty instances, as well as other system services. The getty service is responsible for displaying the login prompt and managing user logins on virtual terminals.
+In modern Linux distributions that use systemd, the getty service is often managed by systemd, which
+is a system and service manager for Linux operating systems. systemd takes care of starting and
+managing getty instances, as well as other system services. The getty service is responsible for
+displaying the login prompt and managing user logins on virtual terminals.
 
 ## No password means easy hecking?
 
-Well, fair question. But if you're already using a non-encrypted drive there's pretty much no base for that argument.
+Well, fair question. But if you're already using a non-encrypted drive there's pretty much no base
+for that argument.
 
 **Physical access = God access**
 

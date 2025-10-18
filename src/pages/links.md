@@ -3,7 +3,9 @@ layout: ../layouts/LinksLayout.astro
 title: "Cool Links"
 ---
 
-The below is a collection of links that I find interesting or useful. More like a bookmarking page for myself but you might find it useful too.
+The below is a collection of links that I find interesting or useful. More like a bookmarking page
+for myself but you might find it useful too. This is maintained by an automation that runs from my
+Phone. No manual edits.
 
 ---
 
@@ -15,17 +17,20 @@ Core backend engineering resources and tools including frameworks, databases, an
 
 ### Infrastructure
 
-1. Intro to microservices, docker and kubernetes - [Video](https://www.youtube.com/watch?v=1xo-0gCVhTU&list=PLqq-6Pq4lTTZSKAFG6aCDVDP86Qx4lNas)
+1. Intro to microservices, docker and kubernetes -
+   [Video](https://www.youtube.com/watch?v=1xo-0gCVhTU&list=PLqq-6Pq4lTTZSKAFG6aCDVDP86Qx4lNas)
 2. DNS Toys - India FOSS Talk - [Video](https://www.youtube.com/watch?v=ANmFZ8rbmnc)
 3. Kubernetes Deep Dive - CCNA Talk - [Video](https://www.youtube.com/watch?v=ZuIQurh_kDk)
 4. Intro to Kubernetes - Puppet Talk - [Video](https://www.youtube.com/watch?v=HlAXp0-M6SY)
-5. Mastering Chaos - Netflix guide to Microservices - QCon Talk - [Video](https://www.youtube.com/watch?v=CZ3wIuvmHeM)
+5. Mastering Chaos - Netflix guide to Microservices - QCon Talk -
+   [Video](https://www.youtube.com/watch?v=CZ3wIuvmHeM)
 6. Scaling Instagram - QCon Talk - [Video](https://www.youtube.com/watch?v=hnpzNAPiC0E)
 7. Design microservices the right way - QCon Talk - [Video](https://youtu.be/j6ow-UemzBc)
 
 ### Databases
 
-1. CMU Intro to Database Systems - [Video Playlist](https://www.youtube.com/watch?v=vdPALZ-GCfI&list=PLSE8ODhjZXjbj8BMuIrRcacnQh20hmY9g)
+1. CMU Intro to Database Systems -
+   [Video Playlist](https://www.youtube.com/watch?v=vdPALZ-GCfI&list=PLSE8ODhjZXjbj8BMuIrRcacnQh20hmY9g)
 2. Postgres Tuning - PGConf Talk - [Video](https://www.youtube.com/watch?v=XB2lF_Z9cbs&t=179s)
 3. Postgres Worst Practices - PGConf Talk - [Video](https://www.youtube.com/watch?v=ZArwO4gNf6o)
 4. MultiThreaded Postgres - PGConf Talk - [Video](https://www.youtube.com/watch?v=1_8Kc9nBh20)
@@ -39,8 +44,10 @@ Core backend engineering resources and tools including frameworks, databases, an
 
 ### Node.js
 
-1. Non-blocking I/O - [Blog](https://medium.com/ing-blog/how-does-non-blocking-io-work-under-the-hood-6299d2953c74#:~:text=Non%2Dblocking%20IO%20under%20the,read%20from%20a%20network%20socket.)
-2. Node.js first talk by Ryan Dahl - JSConf Talk - [Video](https://www.youtube.com/watch?v=EeYvFl7li9E)
+1. Non-blocking I/O -
+   [Blog](https://medium.com/ing-blog/how-does-non-blocking-io-work-under-the-hood-6299d2953c74#:~:text=Non%2Dblocking%20IO%20under%20the,read%20from%20a%20network%20socket.)
+2. Node.js first talk by Ryan Dahl - JSConf Talk -
+   [Video](https://www.youtube.com/watch?v=EeYvFl7li9E)
 3. History of Node.js - Ryan Dahl Talk - [Video](https://youtu.be/SAc0vQCC6UQ?feature=shared)
 4. Introduction to Node.js by Ryan Dahl - [Video](https://youtu.be/jo_B4LTHi3I)
 
@@ -54,7 +61,8 @@ Core frontend engineering stuff including frameworks, libraries, and other tools
 
 ### JavaScript
 
-1. Execution Context Explained - [Blog](https://www.freecodecamp.org/news/execution-context-how-javascript-works-behind-the-scenes/)
+1. Execution Context Explained -
+   [Blog](https://www.freecodecamp.org/news/execution-context-how-javascript-works-behind-the-scenes/)
 2. JavaScript OOPS - [Video](https://www.youtube.com/watch?v=aAAS9cEuFYI)
 3. JavaScript Engines - JSConf Talk - [Video](https://www.youtube.com/watch?v=p-iiEDtpy6I)
 4. V8 Internals - CSSConf Talk - [Video](https://www.youtube.com/watch?v=m9cTaYI95Zc)
