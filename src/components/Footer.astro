@@ -3,6 +3,8 @@ import Hr from "./Hr.astro";
 import Socials from "./Socials.astro";
 
 const currentYear = new Date().getFullYear();
+const commitHash = import.meta.env.GIT_COMMIT_HASH || "unknown";
+const githubRepo = "https://github.com/devadathanmb/personal-blog";
 
 export interface Props {
   noMarginTop?: boolean;
@@ -22,6 +24,15 @@ const { noMarginTop = false } = Astro.props;
         <span>All rights reserved.</span>
       </div>
     </div>
+  </div>
+  <div class="deploy-info">
+    ⚡ Deployed commit: <a
+      href={`${githubRepo}/commit/${commitHash}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="commit-link"
+      title="View commit on GitHub">{commitHash}</a
+    >
   </div>
 </footer>
 
@@ -43,5 +54,11 @@ const { noMarginTop = false } = Astro.props;
   }
   .separator {
     @apply hidden sm:inline;
+  }
+  .deploy-info {
+    @apply pb-4 text-center text-sm opacity-60 transition-opacity hover:opacity-80;
+  }
+  .commit-link {
+    @apply font-mono underline decoration-dashed underline-offset-2 transition-all hover:decoration-solid;
   }
 </style>

@@ -6,6 +6,7 @@ import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
 import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
+import { execSync } from "child_process";
 
 // https://astro.build/config
 export default defineConfig({
@@ -36,6 +37,11 @@ export default defineConfig({
   vite: {
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
+    },
+    define: {
+      "import.meta.env.GIT_COMMIT_HASH": JSON.stringify(
+        execSync("git rev-parse --short HEAD").toString().trim()
+      ),
     },
   },
   scopedStyleStrategy: "where",
