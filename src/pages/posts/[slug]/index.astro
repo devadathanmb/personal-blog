@@ -6,6 +6,7 @@ import getSortedPosts from "@utils/getSortedPosts";
 import getPageNumbers from "@utils/getPageNumbers";
 import getPostsWithRT from "@utils/getPostsWithRT";
 import getPagination from "@utils/getPagination";
+import getReadingTime from "reading-time";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -32,7 +33,19 @@ const { post } = Astro.props;
 
 const posts = await getCollection("blog");
 
-const sortedPosts = getSortedPosts(posts);
+// Calculate reading time for pagination pages
+const postsWithReadingTime = posts.map(post => {
+  const readingTimeResult = getReadingTime(post.body);
+  return {
+    ...post,
+    data: {
+      ...post.data,
+      readingTime: readingTimeResult.text,
+    },
+  };
+});
+
+const sortedPosts = getSortedPosts(postsWithReadingTime);
 
 const pagination = getPagination({
   posts: sortedPosts,
