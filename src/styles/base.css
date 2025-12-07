@@ -55,33 +55,12 @@
 }
 
 @layer base {
+  /* Default to Dark Mode */
   :root,
-  html[data-theme="light"] {
-    --color-fill: 255, 255, 255; /* GitHub light background */
-    --color-text-base: 36, 41, 47; /* GitHub light text */
-    --color-accent: 9, 105, 218; /* GitHub light blue */
-    --color-card: 246, 248, 250; /* GitHub light card */
-    --color-card-muted: 239, 241, 243; /* GitHub light card muted */
-    --color-border: 208, 215, 222; /* GitHub light border */
-    --color-success: 31, 136, 61; /* GitHub light success */
-    --color-danger: 207, 34, 46; /* GitHub light danger */
-    --color-warning: 154, 103, 0; /* GitHub light warning */
-    --color-info: 49, 130, 206; /* GitHub light info */
-    --cursor-light: rgba(9, 105, 218, 0.12);
-    --cursor-light-core: rgba(9, 105, 218, 0.25);
-    --floating-light: rgba(157, 190, 255, 0.3); /* Magical blue glow */
-    --floating-light-core: rgba(108, 162, 255, 0.8); /* Bright blue core */
-    --floating-trail: rgba(190, 227, 255, 0.15); /* Light blue trail */
-    --floating-sparkle: rgba(235, 245, 255, 0.4); /* White-blue sparkle */
-    --logo-accent: 68, 138, 255; /* Subtle logo accent blue */
-    --color-terminal-green: 34, 197, 94; /* Light neonish terminal green */
-    --color-tag: 88, 166, 255; /* Bright readable tag color */
-    --color-tag-bg: 88, 166, 255; /* Tag background */
-  }
   html[data-theme="dark"] {
     --color-fill: 13, 17, 23; /* GitHub dark background */
     --color-text-base: 230, 237, 243; /* GitHub dark text */
-    --color-accent: 0, 202, 255;
+    --color-accent: 56, 189, 248; /* More vibrant sky blue */
     --color-card: 22, 27, 34; /* GitHub dark card */
     --color-card-muted: 33, 38, 45; /* GitHub dark card muted */
     --color-border: 48, 54, 61; /* GitHub dark border */
@@ -89,17 +68,41 @@
     --color-danger: 248, 81, 73; /* GitHub dark danger */
     --color-warning: 187, 128, 9; /* GitHub dark warning */
     --color-info: 88, 166, 255; /* GitHub dark info */
-    --cursor-light: rgba(88, 166, 255, 0.15);
-    --cursor-light-core: rgba(88, 166, 255, 0.25);
-    --floating-light: rgba(157, 190, 255, 0.25);
-    --floating-light-core: rgba(108, 162, 255, 0.6);
-    --floating-trail: rgba(190, 227, 255, 0.1);
+    --cursor-light: rgba(56, 189, 248, 0.15);
+    --cursor-light-core: rgba(56, 189, 248, 0.25);
+    --floating-light: rgba(56, 189, 248, 0.25);
+    --floating-light-core: rgba(56, 189, 248, 0.6);
+    --floating-trail: rgba(56, 189, 248, 0.1);
     --floating-sparkle: rgba(235, 245, 255, 0.3);
-    --logo-accent: 108, 162, 255; /* Subtle logo accent blue */
-    --color-terminal-green:
-      74, 222, 128; /* Brighter neonish terminal green for dark mode */
-    --color-tag: 156, 203, 255; /* Softer readable tag color for dark mode */
-    --color-tag-bg: 156, 203, 255; /* Tag background for dark mode */
+    --logo-accent: 56, 189, 248;
+    --color-terminal-green: 74, 222, 128;
+    --color-tag: 125, 211, 252; /* Light sky blue */
+    --color-tag-bg: 56, 189, 248; /* Tag background for dark mode */
+  }
+
+  /* Light Mode Override */
+  html[data-theme="light"] {
+    --color-fill: 255, 255, 255; /* GitHub light background */
+    --color-text-base: 36, 41, 47; /* GitHub light text */
+    --color-accent: 37, 99, 235; /* Unified with Logo Accent */
+    --color-card: 246, 248, 250; /* GitHub light card */
+    --color-card-muted: 239, 241, 243; /* GitHub light card muted */
+    --color-border: 208, 215, 222; /* GitHub light border */
+    --color-success: 31, 136, 61; /* GitHub light success */
+    --color-danger: 207, 34, 46; /* GitHub light danger */
+    --color-warning: 154, 103, 0; /* GitHub light warning */
+    --color-info: 37, 99, 235; /* Unified info color */
+    --cursor-light: rgba(37, 99, 235, 0.12);
+    --cursor-light-core: rgba(37, 99, 235, 0.25);
+    --floating-light: rgba(37, 99, 235, 0.3);
+    --floating-light-core: rgba(37, 99, 235, 0.8);
+    --floating-trail: rgba(37, 99, 235, 0.15);
+    --floating-sparkle: rgba(255, 255, 255, 0.4);
+    --logo-accent:
+      37, 99, 235; /* Darker blue for better visibility in light mode */
+    --color-terminal-green: 34, 197, 94; /* Light neonish terminal green */
+    --color-tag: 37, 99, 235; /* Unified tag color */
+    --color-tag-bg: 37, 99, 235; /* Tag background */
   }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
@@ -112,7 +115,7 @@
   body {
     @apply flex min-h-[100svh] flex-col bg-skin-fill text-skin-base 
     selection:bg-skin-accent selection:bg-opacity-70 selection:text-skin-inverted;
-    font-family: "Maple Mono", monospace;
+    font-family: "JetBrains Mono", monospace;
     font-feature-settings:
       "liga" 1,
       "calt" 1,
@@ -158,7 +161,7 @@
     sm:scale-110;
   }
   .prose {
-    @apply prose-headings:!mb-3 prose-headings:!text-skin-base 
+    @apply max-w-5xl prose-headings:!mb-3 prose-headings:!text-skin-base 
     prose-h3:italic prose-p:!text-skin-base 
     prose-a:!text-skin-base prose-a:!decoration-dashed prose-a:underline-offset-8
     hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent
@@ -275,9 +278,11 @@
     0%,
     100% {
       background-position: 0% 50%;
+      background-size: 200% 100%;
     }
     50% {
       background-position: 100% 50%;
+      background-size: 200% 100%;
     }
   }
 
@@ -297,38 +302,25 @@
     animation: gradient-text 4s linear infinite;
   }
 
-  /* Dark mode logo gradient */
+  /* Dark mode logo - Solid Accent */
   .logo {
-    background: linear-gradient(
-      90deg,
-      rgba(230, 237, 243, 0.893) 0%,
-      rgb(var(--logo-accent)) 30%,
-      rgba(230, 237, 243, 0.9) 50%,
-      rgb(var(--logo-accent)) 70%,
-      rgba(230, 237, 243, 0.856) 100%
-    );
-    background-size: 300% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: logo-gradient 8s ease-in-out infinite;
+    color: rgb(var(--logo-accent));
+    text-shadow: 0 0 15px rgba(var(--logo-accent), 0.3);
+    transition: all 0.3s ease;
   }
 
-  /* Light mode logo gradient */
+  .logo:hover {
+    text-shadow: 0 0 20px rgba(var(--logo-accent), 0.6);
+  }
+
+  /* Light mode logo - Solid Accent */
   html[data-theme="light"] .logo {
-    background: linear-gradient(
-      90deg,
-      rgba(36, 41, 47, 1) 0%,
-      rgb(var(--logo-accent)) 30%,
-      rgba(36, 41, 47, 1) 50%,
-      rgb(var(--logo-accent)) 70%,
-      rgba(36, 41, 47, 1) 100%
-    );
-    background-size: 300% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: logo-gradient 8s ease-in-out infinite;
+    color: rgb(var(--logo-accent));
+    text-shadow: none;
+  }
+
+  html[data-theme="light"] .logo:hover {
+    text-shadow: 0 0 10px rgba(var(--logo-accent), 0.2);
   }
 
   /* width */
@@ -459,10 +451,27 @@
 }
 
 @layer components {
+  .glass {
+    @apply bg-skin-fill bg-opacity-70 backdrop-blur-md;
+  }
   .display-none {
     @apply hidden;
   }
   .focus-outline {
     @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
+  }
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

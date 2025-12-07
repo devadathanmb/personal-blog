@@ -1,0 +1,15 @@
+---
+export interface Props {
+  noPadding?: boolean;
+  className?: string;
+}
+
+const { noPadding = false, className = "" } = Astro.props;
+---
+
+<div class={`mx-auto max-w-5xl ${noPadding ? "px-0" : "px-4"} ${className}`}>
+  <div
+    class="h-[1px] w-full bg-gradient-to-r from-transparent via-[rgb(var(--color-border))] to-transparent opacity-75"
+  >
+  </div>
+</div>

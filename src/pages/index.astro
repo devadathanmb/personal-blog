@@ -4,9 +4,9 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
-import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
 import Terminal from "@components/Terminal.astro";
+import Separator from "@components/Separator.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import getReadingTime from "reading-time";
 
@@ -35,12 +35,14 @@ const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
     <section id="hero" class="mx-auto max-w-5xl px-4">
       <Terminal />
 
-      <div class="content-sections mx-auto max-w-4xl">
+      <Separator className="my-8 sm:my-12" />
+
+      <div class="content-sections mx-auto max-w-5xl">
         {
           featuredPosts.length > 0 && (
             <section id="featured">
               <h2>Featured Blogs</h2>
-              <ul>
+              <ul class="space-y-4">
                 {featuredPosts.map(({ data, slug }) => (
                   <Card
                     href={`/posts/${slug}/`}

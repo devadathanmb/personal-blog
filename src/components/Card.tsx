@@ -19,22 +19,34 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
 
   return (
     <li className="my-6">
-      <a
-        href={href}
-        className="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
-      >
-        {secHeading ? (
-          <h2 {...headerProps}>{title}</h2>
-        ) : (
-          <h3 {...headerProps}>{title}</h3>
-        )}
-      </a>
-      <Datetime
-        pubDatetime={pubDatetime}
-        modDatetime={modDatetime}
-        readingTime={readingTime}
-      />
-      <p>{description}</p>
+      <div className="group relative rounded-xl border border-transparent bg-transparent p-4 transition-all hover:border-skin-line/50 hover:bg-skin-card/50 hover:shadow-lg hover:backdrop-blur-sm">
+        <a
+          href={href}
+          className="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+        >
+          {secHeading ? (
+            <h2
+              {...headerProps}
+              className="text-xl font-bold text-skin-accent group-hover:text-skin-accent"
+            >
+              {title}
+            </h2>
+          ) : (
+            <h3
+              {...headerProps}
+              className="text-xl font-bold text-skin-accent group-hover:text-skin-accent"
+            >
+              {title}
+            </h3>
+          )}
+        </a>
+        <Datetime
+          pubDatetime={pubDatetime}
+          modDatetime={modDatetime}
+          readingTime={readingTime}
+        />
+        <p className="mt-2 text-skin-base opacity-90">{description}</p>
+      </div>
     </li>
   );
 }
