@@ -1,7 +1,6 @@
 ---
 import { SITE } from "@config";
 import LinkButton from "./LinkButton.astro";
-import Separator from "./Separator.astro";
 
 export interface Props {
   activeNav?:
@@ -17,7 +16,9 @@ export interface Props {
 const { activeNav } = Astro.props;
 ---
 
-<header class="glass sticky top-0 z-30 w-full transition-all duration-300">
+<header
+  class="glass sticky top-0 z-30 w-full transition-all duration-300 ease-out"
+>
   <div class="nav-container">
     <div class="top-nav-wrap">
       <a
@@ -133,7 +134,6 @@ const { activeNav } = Astro.props;
     </div>
   </div>
 </header>
-<Separator />
 
 <style>
   /* #skip-to-content {
