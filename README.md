@@ -30,8 +30,7 @@ pnpm run build
 ## Docker
 
 ```bash
-docker build -t personal-blog .
-docker run -p 4321:80 personal-blog
+docker-compose up -d
 ```
 
 ## License
