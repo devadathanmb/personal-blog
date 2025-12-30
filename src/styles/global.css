@@ -1,0 +1,140 @@
+@import "tailwindcss";
+@import "./typography.css";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root,
+html[data-theme="light"] {
+  --background: rgb(255 255 255); /* GitHub white */
+  --foreground: rgb(36 41 47); /* GitHub dark text */
+  --accent: rgb(37 99 235); /* GitHub blue */
+  --muted: rgb(246 248 250); /* GitHub light gray */
+  --border: rgb(208 215 222); /* GitHub border */
+  --terminal-green: rgb(34 197 94); /* Terminal green */
+  --cursor-light: rgba(37, 99, 235, 0.12);
+  --cursor-light-core: rgba(37, 99, 235, 0.25);
+}
+
+html[data-theme="dark"] {
+  --background: rgb(13 17 23); /* GitHub dark bg */
+  --foreground: rgb(230 237 243); /* GitHub light text */
+  --accent: rgb(56 189 248); /* Vibrant sky blue */
+  --muted: rgb(22 27 34); /* GitHub dark card */
+  --border: rgb(48 54 61); /* GitHub dark border */
+  --terminal-green: rgb(74 222 128); /* Terminal green */
+  --cursor-light: rgba(56, 189, 248, 0.15);
+  --cursor-light-core: rgba(56, 189, 248, 0.25);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-terminal-green: var(--terminal-green);
+
+  --font-mono:
+    "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-accent/75;
+    scrollbar-width: auto;
+    scrollbar-color: var(--color-muted) transparent;
+  }
+  html {
+    @apply overflow-y-scroll scroll-smooth;
+  }
+  body {
+    @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent/75 selection:text-background;
+    letter-spacing: -0.025em;
+  }
+  a,
+  button {
+    @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  section,
+  footer {
+    @apply mx-auto max-w-app px-4;
+  }
+}
+
+@utility max-w-app {
+  @apply max-w-5xl;
+}
+
+.active-nav {
+  @apply underline decoration-wavy decoration-2 underline-offset-4;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s infinite step-start;
+}
+
+/* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
+/* Anything that has been anchored to should have extra scroll margin */
+:target {
+  scroll-margin-block: 1rem;
+}
+
+/* Cursor Animation Effect */
+@supports (backdrop-filter: blur(1px)) {
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background:
+      radial-gradient(
+        15px circle at var(--cursor-x, 0) var(--cursor-y, 0),
+        var(--cursor-light-core),
+        transparent 100%
+      ),
+      radial-gradient(
+        600px circle at var(--cursor-x, 0) var(--cursor-y, 0),
+        var(--cursor-light),
+        transparent 40%
+      );
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  body.cursor-active::before {
+    opacity: 1;
+  }
+
+  @keyframes cursorPulse {
+    0%,
+    100% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.1);
+    }
+  }
+
+  body.cursor-active::before {
+    animation: cursorPulse 2s ease-in-out infinite;
+  }
+}

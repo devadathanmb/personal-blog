@@ -1,4 +1,36 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+# Format and lint staged files
+pnpm run format
+pnpm run lint
 
-npx lint-staged
+# Update modDatetime for modified blog posts (only if not draft)
+git diff --cached --name-status |
+grep -i '^M.*src/content/blog/.*\.md$' |
+while read _ file; do
+  filecontent=$(cat "$file")
+  frontmatter=$(echo "$filecontent" | awk -v RS='---' 'NR==2{print}')
+  draft=$(echo "$frontmatter" | awk '/^draft: /{print $2}')
+  
+  if [ "$draft" = "false" ]; then
+    # Update modDatetime
+    sed -i.bak -E "s/^modDatetime:.*$/modDatetime: $(date -u +"%Y-%m-%dT%H:%M:%S")Z/" "$file"
+    rm "${file}.bak"
+    git add "$file"
+  fi
+done
+
+# Add pubDatetime for new blog posts (if missing)
+git diff --cached --name-status |
+grep -i '^A.*src/content/blog/.*\.md$' |
+while read _ file; do
+  filecontent=$(cat "$file")
+  
+  # Check if pubDatetime exists
+  if ! echo "$filecontent" | grep -q "^pubDatetime:"; then
+    # Add pubDatetime after the title
+    sed -i.bak -E "/^title:/a\\
+pubDatetime: $(date -u +"%Y-%m-%dT%H:%M:%S")Z
+" "$file"
+    rm "${file}.bak"
+    git add "$file"
+  fi
+done

@@ -1,0 +1,69 @@
+---
+import type { CollectionEntry } from "astro:content";
+import IconGitHub from "@/assets/icons/IconGitHub.svg";
+import IconExternalLink from "@/assets/icons/IconExternalLink.svg";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const { data, id } = project;
+const { title, description, techStack, repoUrl, demoUrl } = data;
+---
+
+<li
+  class="my-6 rounded-md border border-border bg-muted p-4 transition-all duration-200 hover:border-accent hover:shadow-md"
+>
+  <a href={`/projects/${id}/`} class="group mb-3 block">
+    <h2
+      class="text-xl font-semibold text-foreground transition-colors duration-200 group-hover:text-accent"
+    >
+      {title}
+    </h2>
+    <p class="mt-2 text-sm text-foreground opacity-90 group-hover:opacity-100">
+      {description}
+    </p>
+  </a>
+
+  {
+    techStack && techStack.length > 0 && (
+      <div class="mb-4 flex flex-wrap gap-2">
+        {techStack.map(tech => (
+          <span class="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
+            {tech}
+          </span>
+        ))}
+      </div>
+    )
+  }
+
+  <div class="flex gap-2">
+    {
+      repoUrl && (
+        <a
+          href={repoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-accent/90"
+        >
+          <IconGitHub width={16} height={16} />
+          View Source
+        </a>
+      )
+    }
+    {
+      demoUrl && (
+        <a
+          href={demoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-md border border-accent px-4 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent/10"
+        >
+          <IconExternalLink width={16} height={16} />
+          Live Demo
+        </a>
+      )
+    }
+  </div>
+</li>
