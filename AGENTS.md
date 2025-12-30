@@ -104,8 +104,29 @@ description: "Project description"
 - **Styling:** Tailwind CSS v4 (with `@tailwindcss/vite` plugin)
 - **Content:** Astro Content Layer with glob loader
 - **Search:** Pagefind (generated during build)
+- **Comments:** Giscus (GitHub Discussions integration via React)
 - **Package manager:** pnpm (required - do NOT use npm/yarn)
 - **API endpoints:** `/api/alive` - healthcheck endpoint (returns 200 with JSON)
+
+## Giscus Comments
+
+**Files:**
+- Component: `src/components/Comments.tsx`
+- Layout: `src/layouts/PostDetails.astro`
+- Config: `src/config.ts` (GISCUS object)
+
+**Dependencies:** `@astrojs/react`, `@giscus/react`, `react`, `react-dom`
+
+**Implementation:**
+- React component with `client:only="react"` directive
+- MutationObserver syncs theme from HTML `data-theme` attribute
+- Requires `react()` in `astro.config.ts` integrations array
+
+**Configuration:** Edit `GISCUS` object in `src/config.ts`
+
+**Common Issues:**
+- Build error "No valid renderer": Install React integration and add to astro.config.ts
+- Comments not appearing: Verify GitHub Discussions enabled and IDs are correct
 
 ## Testing changes
 

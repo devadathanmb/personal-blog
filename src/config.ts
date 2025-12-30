@@ -25,13 +25,13 @@ export const SITE = {
 export const GISCUS = {
   enabled: true,
   repo: "devadathanmb/personal-blog",
-  repoId: "YOUR_REPO_ID", // Get from https://giscus.app
-  category: "Comments",
-  categoryId: "YOUR_CATEGORY_ID", // Get from https://giscus.app
+  repoId: "R_kgDOMTeYEQ",
+  category: "Announcements",
+  categoryId: "DIC_kwDOMTeYEc4C0Y-6",
   mapping: "pathname",
   reactionsEnabled: true,
   emitMetadata: false,
-  inputPosition: "top",
+  inputPosition: "bottom",
   theme: "preferred_color_scheme",
   lang: "en",
 } as const;

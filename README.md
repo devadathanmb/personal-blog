@@ -55,23 +55,19 @@ The hooks are managed by [husky](https://typicode.github.io/husky/) and set up a
 
 ## Giscus Comments
 
-This blog uses [Giscus](https://giscus.app/) for comments. To set it up:
+This blog uses [Giscus](https://giscus.app/) for comments powered by GitHub Discussions.
 
-1. Go to [giscus.app](https://giscus.app/)
-2. Enter your repository: `devadathanmb/personal-blog`
-3. Enable Discussions in your GitHub repository settings
-4. Copy the `data-repo-id` and `data-category-id` values
-5. Update `src/config.ts`:
-   ```ts
-   export const GISCUS = {
-     enabled: true,
-     repoId: "YOUR_REPO_ID",      // Replace with your repo ID
-     categoryId: "YOUR_CATEGORY_ID", // Replace with your category ID
-     // ... other settings
-   };
-   ```
+Comments are configured in `src/config.ts`. To disable, set `GISCUS.enabled` to `false`.
 
-Comments will automatically sync with your site theme (light/dark mode).
+### Setup
+
+If you want to use this for your own repository:
+
+1. Enable GitHub Discussions in your repository settings
+2. Visit [giscus.app](https://giscus.app/) and enter your repository details
+3. Copy the generated `data-repo-id` and `data-category-id` values
+4. Update `src/config.ts` with those values
+5. Run `pnpm run build`
 
 ## Project Structure
 
