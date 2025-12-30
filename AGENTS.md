@@ -156,3 +156,5 @@ Pre-commit hook (`.husky/pre-commit`):
 2. Adds `pubDatetime` for new blog posts if missing
 
 Hooks auto-install via `pnpm install` (package.json `prepare` script).
+
+**Note:** The `prepare` script uses `husky || true` to prevent build failures in production environments (like Vercel) where devDependencies aren't installed.
