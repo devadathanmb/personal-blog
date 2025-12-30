@@ -234,7 +234,6 @@ http://raspberrypi.local:631
 - Android support is inconsistent. Some devices detect mDNS printers, some don’t. Blame Android.
 
 - If it fails, install the [**NetPrinter app**](https://netprinter.app/) — it works because:
-
   - It supports IPP natively (what CUPS exposes)
   - Lets you manually enter the printer URL:
     ```

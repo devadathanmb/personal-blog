@@ -7,15 +7,18 @@ My personal blog built with [Astro](https://astro.build/), based on the [AstroPa
 ### Without Docker
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/devadathanmb/personal-blog.git
    cd personal-blog
    ```
 
 2. Install dependencies
+
    ```bash
    pnpm install
    ```
+
    This will also set up git hooks automatically via husky.
 
 3. Start the development server
@@ -28,6 +31,7 @@ The site will be available at `http://localhost:4321`
 ### With Docker
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/devadathanmb/personal-blog.git
    cd personal-blog
@@ -74,7 +78,3 @@ pnpm run format     # Format code
 ---
 
 Based on [AstroPaper](https://github.com/satnaing/astro-paper) by [Sat Naing](https://satnaing.dev)
-
-
-
-

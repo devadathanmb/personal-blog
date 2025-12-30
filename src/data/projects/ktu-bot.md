@@ -1,7 +1,6 @@
 ---
 title: "KTU Bot"
-description:
-  "A Telegram bot client designed to streamline most interactions possible on the KTU website."
+description: "A Telegram bot client designed to streamline most interactions possible on the KTU website."
 featured: true
 tags: ["telegram-bot", "typescript", "node.js", "firebase"]
 techStack:
