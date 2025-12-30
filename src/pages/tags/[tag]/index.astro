@@ -1,29 +1,33 @@
 ---
 import { getCollection } from "astro:content";
+import type { Page } from "astro";
+import type { CollectionEntry } from "astro:content";
 import TagPosts from "@layouts/TagPosts.astro";
 import getPostsByTag from "@utils/getPostsByTag";
-import getPagination from "@utils/getPagination";
 import getUniqueTags from "@utils/getUniqueTags";
 import getReadingTime from "reading-time";
+import { SITE } from "@config";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
 
   const tags = getUniqueTags(posts);
 
   return tags.map(({ tag, tagName }) => {
     return {
       params: { tag },
-      props: { tag, tagName, posts },
+      props: { tag, tagName },
     };
   });
 }
 
-const { tag, tagName, posts } = Astro.props;
+const { tag, tagName } = Astro.props;
+
+const posts = await getCollection("blog", ({ data }) => !data.draft);
 
 // Calculate reading time for each post from body
 const postsWithReadingTime = posts.map(post => {
-  const readingTimeResult = getReadingTime(post.body);
+  const readingTimeResult = getReadingTime(post.body!);
   return {
     ...post,
     data: {
@@ -35,11 +39,27 @@ const postsWithReadingTime = posts.map(post => {
 
 const postsByTag = getPostsByTag(postsWithReadingTime, tag);
 
-const pagination = getPagination({
-  posts: postsByTag,
-  page: 1,
-  isIndex: true,
-});
+// Create Page object manually for index page
+const pageSize = SITE.postPerPage;
+const totalPages = Math.ceil(postsByTag.length / pageSize);
+const paginatedPosts = postsByTag.slice(0, pageSize);
+
+const page: Page<CollectionEntry<"blog">> = {
+  data: paginatedPosts,
+  start: 0,
+  end: Math.min(pageSize - 1, postsByTag.length - 1),
+  size: pageSize,
+  total: postsByTag.length,
+  currentPage: 1,
+  lastPage: totalPages,
+  url: {
+    current: `/tags/${tag}`,
+    prev: undefined,
+    next: totalPages > 1 ? `/tags/${tag}/2` : undefined,
+    first: `/tags/${tag}`,
+    last: totalPages > 1 ? `/tags/${tag}/${totalPages}` : `/tags/${tag}`,
+  },
+};
 ---
 
-<TagPosts {...pagination} {tag} {tagName} />
+<TagPosts {page} {tag} {tagName} />

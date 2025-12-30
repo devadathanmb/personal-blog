@@ -8,7 +8,20 @@ export const SITE: Site = {
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
   postPerPage: 3,
+  postPerIndex: 3,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
+  showArchives: true,
+  showBackButton: true,
+  timezone: "UTC",
+  lang: "en",
+  dir: "ltr",
+  profile: "",
+  dynamicOgImage: true,
+  editPost: {
+    enabled: false,
+    url: "",
+    text: "Edit",
+  },
 };
 
 export const LOCALE = {

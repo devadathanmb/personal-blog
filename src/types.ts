@@ -8,7 +8,20 @@ export type Site = {
   ogImage?: string;
   lightAndDarkMode: boolean;
   postPerPage: number;
+  postPerIndex: number;
   scheduledPostMargin: number;
+  showArchives: boolean;
+  showBackButton: boolean;
+  timezone: string;
+  lang: string;
+  dir: string;
+  profile: string;
+  dynamicOgImage: boolean;
+  editPost: {
+    enabled: boolean;
+    url: string;
+    text: string;
+  };
 };
 
 export type SocialObjects = {

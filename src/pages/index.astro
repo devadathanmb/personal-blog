@@ -1,115 +1,121 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "@layouts/Layout.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import LinkButton from "@components/LinkButton.astro";
-import Card from "@components/Card";
-import Terminal from "@components/Terminal.astro";
-import Separator from "@components/Separator.astro";
-import getSortedPosts from "@utils/getSortedPosts";
-import getReadingTime from "reading-time";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Socials from "@/components/Socials.astro";
+import LinkButton from "@/components/LinkButton.astro";
+import Card from "@/components/Card.astro";
+import Hr from "@/components/Hr.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+import IconRss from "@/assets/icons/IconRss.svg";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import { SITE } from "@/config";
+import { SOCIALS } from "@/constants";
 
 const posts = await getCollection("blog");
 
-// Calculate reading time for each post from body
-const postsWithReadingTime = posts.map(post => {
-  const readingTimeResult = getReadingTime(post.body);
-  return {
-    ...post,
-    data: {
-      ...post.data,
-      readingTime: readingTimeResult.text,
-    },
-  };
-});
-
-const sortedPosts = getSortedPosts(postsWithReadingTime);
+const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-// const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 ---
 
 <Layout>
-  <Header activeNav="home" />
-  <main id="main-content">
-    <section id="hero" class="mx-auto max-w-5xl px-4">
-      <Terminal />
+  <Header />
+  <main id="main-content" data-layout="index">
+    <section id="hero" class="pb-6 pt-8">
+      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
+        Mingalaba
+      </h1>
+      <a
+        target="_blank"
+        href="/rss.xml"
+        class="inline-block"
+        aria-label="rss feed"
+        title="RSS Feed"
+      >
+        <IconRss
+          width={20}
+          height={20}
+          class="stroke-accent stroke-3 scale-125 rtl:-rotate-90"
+        />
+        <span class="sr-only">RSS Feed</span>
+      </a>
 
-      <Separator className="my-8 sm:my-12" />
-
-      <div class="content-sections mx-auto max-w-5xl">
-        {
-          featuredPosts.length > 0 && (
-            <section id="featured">
-              <h2>Featured Blogs</h2>
-              <ul class="space-y-4">
-                {featuredPosts.map(({ data, slug }) => (
-                  <Card
-                    href={`/posts/${slug}/`}
-                    frontmatter={data}
-                    secHeading={false}
-                  />
-                ))}
-              </ul>
-            </section>
-          )
-        }
-
-        <div class="all-posts-btn-wrapper">
-          <LinkButton href="/posts/">
-            All Posts
-            <svg xmlns="http://www.w3.org/2000/svg"
-              ><path
-                d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-              ></path>
-            </svg>
-          </LinkButton>
-        </div>
-      </div>
+      <p>
+        AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro
+        blog theme. This theme follows best practices and provides accessibility
+        out of the box. Light and dark mode are supported by default. Moreover,
+        additional color schemes can also be configured.
+      </p>
+      <p class="mt-2">
+        Read the blog posts or check
+        <LinkButton
+          class="hover:text-accent underline decoration-dashed underline-offset-4"
+          href="https://github.com/satnaing/astro-paper#readme"
+        >
+          README
+        </LinkButton> for more info.
+      </p>
+      {
+        // only display if at least one social link is enabled
+        SOCIALS.length > 0 && (
+          <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
+            <div class="mb-1 me-2 whitespace-nowrap sm:mb-0">Social Links:</div>
+            <Socials />
+          </div>
+        )
+      }
     </section>
+
+    <Hr />
+
+    {
+      featuredPosts.length > 0 && (
+        <>
+          <section id="featured" class="pb-6 pt-12">
+            <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
+            <ul>
+              {featuredPosts.map(data => (
+                <Card variant="h3" {...data} />
+              ))}
+            </ul>
+          </section>
+          {recentPosts.length > 0 && <Hr />}
+        </>
+      )
+    }
+
+    {
+      recentPosts.length > 0 && (
+        <section id="recent-posts" class="pb-6 pt-12">
+          <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
+          <ul>
+            {recentPosts.map(
+              (data, index) =>
+                index < SITE.postPerIndex && <Card variant="h3" {...data} />
+            )}
+          </ul>
+        </section>
+      )
+    }
+
+    <div class="my-8 text-center">
+      <LinkButton href="/posts/">
+        All Posts
+        <IconArrowRight class="inline-block rtl:-rotate-180" />
+      </LinkButton>
+    </div>
   </main>
   <Footer />
-
-  <style>
-    /* ===== Hero Section ===== */
-    #hero {
-      @apply pb-6 pt-8;
-    }
-
-    .content-sections {
-      @apply mt-16;
-    }
-
-    #hero h1 {
-      @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
-    }
-    #hero .rss-link {
-      @apply mb-6;
-    }
-    #hero .rss-icon {
-      @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
-    }
-    #hero p {
-      @apply my-2;
-    }
-    .social-wrapper {
-      @apply mt-4 flex flex-col sm:flex-row sm:items-center;
-    }
-    .social-links {
-      @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
-    }
-
-    /* ===== Featured & Recent Posts Sections ===== */
-    #featured,
-    #recent-posts {
-      @apply pb-6 pt-8;
-    }
-    #featured h2,
-    #recent-posts h2 {
-      @apply mb-6 text-2xl font-semibold tracking-wide;
-    }
-    .all-posts-btn-wrapper {
-      @apply my-8 text-center;
-    }
-  </style>
 </Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
+      ?.dataset?.layout;
+    if (indexLayout) {
+      sessionStorage.setItem("backUrl", "/");
+    }
+  });
+</script>

@@ -19,7 +19,7 @@ export default () => {
           right: "-1px",
           border: "4px solid #000",
           background: "#ecebeb",
-          opacity: "0.9",
+          opacity: 0.9,
           borderRadius: "4px",
           display: "flex",
           justifyContent: "center",
@@ -27,7 +27,7 @@ export default () => {
           width: "88%",
           height: "80%",
         }}
-      />
+      ></div>
 
       <div
         style={{

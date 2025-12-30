@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function ProjectCard({ project }: Props) {
-  const { data: frontmatter, slug } = project;
+  const { data: frontmatter, id } = project;
   const { title, description, techStack, repoUrl, demoUrl } = frontmatter;
 
   const headerProps = {
@@ -17,7 +17,7 @@ export default function ProjectCard({ project }: Props) {
 
   return (
     <li className="my-6 rounded-md border border-skin-line bg-skin-card p-4 transition-all duration-200 hover:border-skin-accent hover:border-opacity-50 hover:shadow-md">
-      <a href={`/projects/${slug}/`} className="group mb-3 block">
+      <a href={`/projects/${id}/`} className="group mb-3 block">
         <h2 {...headerProps}>{title}</h2>
         <p className="mt-2 text-sm text-skin-base opacity-90 group-hover:opacity-100">
           {description}

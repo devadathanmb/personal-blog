@@ -6,7 +6,7 @@ type GlobResult = {
 };
 
 export const getReadingTime = async () => {
-  const globPosts = import.meta.glob("../content/blog/*.md");
+  const globPosts = import.meta.glob("../data/blog/*.md");
   const mapFrontmatter = new Map<string, string | undefined>();
 
   await Promise.all(

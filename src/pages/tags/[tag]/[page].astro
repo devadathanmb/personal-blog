@@ -1,20 +1,20 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
+import type { Page } from "astro";
 import TagPosts from "@layouts/TagPosts.astro";
 import getUniqueTags from "@utils/getUniqueTags";
 import getPostsByTag from "@utils/getPostsByTag";
 import getPageNumbers from "@utils/getPageNumbers";
-import getPagination from "@utils/getPagination";
 import getReadingTime from "reading-time";
+import { SITE } from "@config";
 
 export interface Props {
-  post: CollectionEntry<"blog">;
   tag: string;
   tagName: string;
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
 
   const tags = getUniqueTags(posts);
 
@@ -29,14 +29,14 @@ export async function getStaticPaths() {
   });
 }
 
-const { page } = Astro.params;
+const { page: pageParam } = Astro.params;
 const { tag, tagName } = Astro.props;
 
 const posts = await getCollection("blog", ({ data }) => !data.draft);
 
 // Calculate reading time for each post from body
 const postsWithReadingTime = posts.map(post => {
-  const readingTimeResult = getReadingTime(post.body);
+  const readingTimeResult = getReadingTime(post.body!);
   return {
     ...post,
     data: {
@@ -48,10 +48,36 @@ const postsWithReadingTime = posts.map(post => {
 
 const postsByTag = getPostsByTag(postsWithReadingTime, tag);
 
-const pagination = getPagination({
-  posts: postsByTag,
-  page,
-});
+// Create Page object manually
+const pageSize = SITE.postPerPage;
+const currentPage = Number(pageParam);
+const totalPages = Math.ceil(postsByTag.length / pageSize);
+const start = (currentPage - 1) * pageSize;
+const end = Math.min(start + pageSize - 1, postsByTag.length - 1);
+const paginatedPosts = postsByTag.slice(start, start + pageSize);
+
+const page: Page<CollectionEntry<"blog">> = {
+  data: paginatedPosts,
+  start,
+  end,
+  size: pageSize,
+  total: postsByTag.length,
+  currentPage,
+  lastPage: totalPages,
+  url: {
+    current: `/tags/${tag}/${currentPage}`,
+    prev:
+      currentPage > 1
+        ? currentPage === 2
+          ? `/tags/${tag}`
+          : `/tags/${tag}/${currentPage - 1}`
+        : undefined,
+    next:
+      currentPage < totalPages ? `/tags/${tag}/${currentPage + 1}` : undefined,
+    first: `/tags/${tag}`,
+    last: `/tags/${tag}/${totalPages}`,
+  },
+};
 ---
 
-<TagPosts {...pagination} {tag} {tagName} />
+<TagPosts {page} {tag} {tagName} />

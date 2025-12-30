@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@import "./typography.css";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root,
+html[data-theme="light"] {
+  --background: #fdfdfd;
+  --foreground: #282728;
+  --accent: #006cac;
+  --muted: #e6e6e6;
+  --border: #ece9e9;
+}
+
+html[data-theme="dark"] {
+  --background: #212737;
+  --foreground: #eaedf3;
+  --accent: #ff6b01;
+  --muted: #343f60;
+  --border: #ab4b08;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+
+  /* Custom skin colors from base.css */
+  --color-text-skin-base: rgb(var(--color-text-base));
+  --color-text-skin-accent: rgb(var(--color-accent));
+  --color-text-skin-inverted: rgb(var(--color-fill));
+  --color-text-skin-terminal-green: rgb(var(--color-terminal-green));
+
+  --color-bg-skin-fill: rgb(var(--color-fill));
+  --color-bg-skin-accent: rgb(var(--color-accent));
+  --color-bg-skin-inverted: rgb(var(--color-text-base));
+  --color-bg-skin-card: rgb(var(--color-card));
+  --color-bg-skin-card-muted: rgb(var(--color-card-muted));
+
+  --color-border-skin-line: rgb(var(--color-border));
+  --color-border-skin-fill: rgb(var(--color-text-base));
+  --color-border-skin-accent: rgb(var(--color-accent));
+
+  --color-fill-skin-base: rgb(var(--color-text-base));
+  --color-fill-skin-accent: rgb(var(--color-accent));
+
+  --color-decoration-skin-base: rgb(var(--color-text-base));
+  --color-decoration-skin-accent: rgb(var(--color-accent));
+}
+
+@layer base {
+  * {
+    @apply border-border outline-accent/75;
+    scrollbar-width: auto;
+    scrollbar-color: var(--color-muted) transparent;
+  }
+  html {
+    @apply overflow-y-scroll scroll-smooth;
+  }
+  body {
+    @apply bg-background text-foreground selection:bg-accent/75 selection:text-background flex min-h-svh flex-col font-mono;
+  }
+  a,
+  button {
+    @apply outline-accent outline-offset-1 focus-visible:no-underline focus-visible:outline-dashed focus-visible:outline-2;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  section,
+  footer {
+    @apply max-w-app mx-auto px-4;
+  }
+}
+
+@utility max-w-app {
+  @apply max-w-3xl;
+}
+
+.active-nav {
+  @apply underline decoration-wavy decoration-2 underline-offset-4;
+}
+
+/* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
+/* Anything that has been anchored to should have extra scroll margin */
+:target {
+  scroll-margin-block: 1rem;
+}
