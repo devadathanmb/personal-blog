@@ -4,7 +4,7 @@ export const SITE = {
   profile: "https://devadathanmb.in",
   desc: "Devadathan's corner of life on the internet",
   title: "Devadathan",
-  ogImage: "astropaper-og.jpg",
+  ogImage: "",
   lightAndDarkMode: true,
   postPerIndex: 4,
   postPerPage: 3,
