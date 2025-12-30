@@ -51,6 +51,7 @@ src/
 ├── components/      # Astro/React components
 ├── layouts/         # Page layouts
 ├── pages/           # Routes (Astro file-based routing)
+│   └── api/         # API endpoints
 ├── styles/          # Global CSS + Tailwind
 ├── utils/           # Helper functions
 ├── config.ts        # SITE object - site metadata
@@ -104,6 +105,7 @@ description: "Project description"
 - **Content:** Astro Content Layer with glob loader
 - **Search:** Pagefind (generated during build)
 - **Package manager:** pnpm (required - do NOT use npm/yarn)
+- **API endpoints:** `/api/alive` - healthcheck endpoint (returns 200 with JSON)
 
 ## Testing changes
 
