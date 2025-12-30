@@ -20,7 +20,7 @@
     "@giscus/react": "^3.1.0",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.1.11",
-    "astro": "^5.12.0",
+    "astro": "^5.16.6",
     "dayjs": "^1.11.13",
     "lodash.kebabcase": "^4.1.1",
     "react": "^19.2.3",
@@ -35,13 +35,13 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "@pagefind/default-ui": "^1.3.0",
-    "@shikijs/transformers": "^3.7.0",
+    "@shikijs/transformers": "^3.20.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/lodash.kebabcase": "^4.1.9",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "@typescript-eslint/parser": "^8.36.0",
-    "eslint": "^9.30.1",
+    "@typescript-eslint/parser": "^8.51.0",
+    "eslint": "^9.39.2",
     "eslint-plugin-astro": "^1.3.1",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
@@ -50,6 +50,13 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.13",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.36.0"
+    "typescript-eslint": "^8.51.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "js-yaml": ">=4.1.1",
+      "mdast-util-to-hast": ">=13.2.1",
+      "brace-expansion": ">=1.1.12"
+    }
   }
 }
