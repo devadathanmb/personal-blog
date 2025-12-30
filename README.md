@@ -4,41 +4,29 @@ My personal blog built with [Astro](https://astro.build/), based on the [AstroPa
 
 ## Setup
 
+### Without Docker
+
 ```bash
 # Install dependencies
 pnpm install
 
-# Start dev server
+# Start development server
 pnpm run dev
-
-# Build for production
-pnpm run build
 ```
 
-## Commands
+The site will be available at `http://localhost:4321`
 
-| Command                 | Action                        |
-| :---------------------- | :---------------------------- |
-| `pnpm install`          | Install dependencies          |
-| `pnpm run dev`          | Start dev server              |
-| `pnpm run build`        | Build for production          |
-| `pnpm run preview`      | Preview production build      |
-| `pnpm run format`       | Format code with Prettier     |
-| `pnpm run lint`         | Lint with ESLint              |
-| `pnpm run astro check`  | Type check                    |
-
-## Docker
+### With Docker
 
 ```bash
 docker-compose up -d
 ```
 
-## License
-
-MIT
+The site will be available at `http://localhost:4321`
 
 ---
 
 Based on [AstroPaper](https://github.com/satnaing/astro-paper) by [Sat Naing](https://satnaing.dev)
+
 
 
