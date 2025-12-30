@@ -6,6 +6,7 @@ import IconLinkedin from "@/assets/icons/IconLinkedin.svg";
 import IconWhatsapp from "@/assets/icons/IconWhatsapp.svg";
 import IconFacebook from "@/assets/icons/IconFacebook.svg";
 import IconTelegram from "@/assets/icons/IconTelegram.svg";
+import IconDiscord from "@/assets/icons/IconDiscord.svg";
 import IconPinterest from "@/assets/icons/IconPinterest.svg";
 import { SITE } from "@/config";
 
@@ -34,6 +35,12 @@ export const SOCIALS: Social[] = [
     href: "mailto:devadathanmb@gmail.com",
     linkTitle: `Send an email to ${SITE.title}`,
     icon: IconMail,
+  },
+  {
+    name: "Discord",
+    href: "https://discord.com/users/dev_on_discrd",
+    linkTitle: `${SITE.title} on Discord`,
+    icon: IconDiscord,
   },
   {
     name: "Telegram",

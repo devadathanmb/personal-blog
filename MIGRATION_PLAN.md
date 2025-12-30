@@ -19,9 +19,11 @@
    - Copied blog assets (images) to `src/assets/`
    - Added projects collection to `src/content.config.ts`
    - Fixed image import paths (`@assets/` → `../../assets/`)
+   - Migrated about page content with personal introduction
 5. **Configuration**
    - Updated `src/config.ts` with site details (title, author, description, etc.)
-   - Updated `src/constants.ts` with social links (GitHub, LinkedIn, Mail, Telegram)
+   - Updated `src/constants.ts` with social links (GitHub, LinkedIn, Mail, Discord, Telegram)
+   - Created Discord icon SVG and added to social links
 6. **Theme Refactoring**
    - Applied GitHub color scheme to `src/styles/global.css`
    - Light mode: GitHub white/dark text/blue accent
@@ -30,19 +32,62 @@
 7. **Terminal Component**
    - Copied `Terminal.astro` from old blog
    - Added to homepage with responsive GitHub-themed styling
-8. **Footer Enhancement**
+   - **Refined to match authentic terminal aesthetics**:
+     - Username: "Dev" (capitalized for personal branding)
+     - Commands (`whoami`, `cat`, `ls`) in bright green
+     - Hostname in terminal green
+     - Username and @ symbol in white (#e6edf3)
+     - Directories in bright blue (#58a6ff) - matching real terminal colors
+     - Files in white/light gray
+     - Removed excessive noise (no permission details, clean output)
+     - Clean `ls` output showing just directories and files
+     - Normal font weight (400) for natural appearance
+   - Better semantic HTML with specific classes for each element type
+   - Consistent styling between dark and light themes
+   - Authentic terminal look without being cluttered
+8. **Header Enhancement**
+   - Migrated terminal-style prompt logo: `Dev@Machine:~$_`
+   - Added terminal-green color variable to theme
+   - Added blinking cursor animation
+   - Proper color scheme: blue accent, green for "Machine", blinking cursor
+9. **Homepage Layout Refinement**
+   - Wrapped Terminal and blog sections in consistent container (max-w-5xl)
+   - Applied proper spacing and alignment for visual hierarchy
+   - Featured and Recent Posts sections now match Terminal width
+   - Fixed nested section issue causing width constraint problems
+   - Changed inner sections to divs to avoid CSS conflicts
+   - Improved responsive behavior with proper padding
+   - Added letter-spacing: -0.025em to body for tighter text
+   - Added tracking-tight to card titles for better readability
+   - Added mt-2 spacing between card date and description
+10. **Footer Enhancement**
    - Added git commit hash injection via Vite define in `astro.config.ts`
    - Footer displays clickable commit hash linking to GitHub
-9. **Projects Pages**
-   - Created `/projects` listing page
-   - Created `/projects/[slug]` detail page route
-   - Created `ProjectCard.astro` component
-   - Added `IconExternalLink.svg` icon
-   - Adapted to Astro v5 content collection API (render function, id instead of slug)
-10. **Testing & Verification**
+   - Added animated shine effect to deployed commit text
+   - Shine animation moves gradient across text (7s linear infinite)
+   - Different gradients for light/dark themes
+   - Hover pauses animation and restores normal text color
+11. **Projects Pages**
+    - Created `/projects` listing page
+    - Created `/projects/[slug]` detail page route
+    - Created `ProjectCard.astro` component
+    - Added `IconExternalLink.svg` icon
+    - Adapted to Astro v5 content collection API (render function, id instead of slug)
+    - Fixed typography styling to use `app-prose` class for consistent styling
+    - Fixed description color from `opacity-80` to `text-foreground/90` for better readability
+    - Removed `prose-lg` to use default prose sizing matching blog posts
+12. **Testing & Verification**
     - Build passes: 35 pages generated (28 base + 7 project pages)
     - `pnpm astro check` passes with 0 errors
     - All blog posts, projects, and assets loading correctly
+13. **Reading Time Feature**
+    - Installed `reading-time` package (v1.5.0)
+    - Created `src/utils/readingTime.ts` utility with proper TypeScript types
+    - Updated `Datetime.astro` component to accept and display reading time
+    - Updated `Card.astro` to calculate reading time from post body
+    - Updated `PostDetails.astro` layout to show reading time on individual posts
+    - Reading time displays in format "X min read" alongside date
+    - Separated by bullet point (•) for clean visual hierarchy
 
 ### 📦 Ready for Deployment
 

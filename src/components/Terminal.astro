@@ -16,7 +16,7 @@
       <span class="username">Dev</span><span class="at-symbol">@</span><span
         class="hostname">Machine</span
       ><span class="path">:~$</span>
-      <span class="command valid-command">whoami</span>
+      <span class="valid-command">whoami</span>
     </div>
     <div class="terminal-output">Software Engineer | Tech Enthusiast</div>
 
@@ -24,10 +24,8 @@
       <span class="username">Dev</span><span class="at-symbol">@</span><span
         class="hostname">Machine</span
       ><span class="path">:~$</span>
-      <span>
-        <span class="command valid-command">cat</span>
-        <span>about_me.txt</span>
-      </span>
+      <span class="valid-command">cat</span>
+      <span class="argument">about_me.txt</span>
     </div>
     <div class="terminal-output">
       Hey there, curious explorer! 👋
@@ -48,27 +46,26 @@
       <span class="username">Dev</span><span class="at-symbol">@</span><span
         class="hostname">Machine</span
       ><span class="path">:~$</span>
-      <span class="command valid-command"
-        >ls -la <span class="path">mindspace/</span></span
-      >
+      <span class="valid-command">ls</span>
+      <span class="path">mindspace/</span>
     </div>
     <div class="terminal-output">
-      <span class="terminal-permissions">drwxr-xr-x</span> backend-engineering/
+      <span class="directory">backend-engineering/</span>
       <br />
-      <span class="terminal-permissions">drwxr-xr-x</span> linux/
+      <span class="directory">linux/</span>
       <br />
-      <span class="terminal-permissions">drwxr-xr-x</span> cloud/
+      <span class="directory">cloud/</span>
       <br />
-      <span class="terminal-permissions">drwxr-xr-x</span> homelab/
+      <span class="directory">homelab/</span>
       <br />
-      <span class="terminal-permissions">rw-r--r---</span> .and-more/
+      <span class="file-name">.and-more</span>
     </div>
 
     <div class="terminal-line">
       <span class="username">Dev</span><span class="at-symbol">@</span><span
         class="hostname">Machine</span
       ><span class="path">:~$</span>
-      <span class="command cursor-blink">_</span>
+      <span class="cursor-blink">_</span>
     </div>
   </div>
 </div>
@@ -81,7 +78,7 @@
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     max-width: 60rem;
     width: 100%;
-    margin: 2rem auto 3rem auto;
+    margin: 2rem auto 0 auto;
     font-family: inherit;
     overflow: hidden;
   }
@@ -145,17 +142,17 @@
   }
 
   .username {
-    color: #7dd3fc;
+    color: var(--color-accent);
     margin-right: 0;
   }
 
   .at-symbol {
-    color: #f0f6fc;
+    color: #e6edf3;
     margin: 0;
   }
 
   .hostname {
-    color: #fbbf24;
+    color: var(--color-terminal-green);
     margin: 0;
   }
 
@@ -170,7 +167,18 @@
   }
 
   .valid-command {
-    color: rgb(var(--color-terminal-green));
+    color: var(--color-terminal-green);
+    font-weight: 400;
+  }
+
+  .command-flag {
+    color: var(--color-terminal-green);
+    margin-left: 0.25rem;
+  }
+
+  .argument {
+    color: #e6edf3;
+    margin-left: 0.25rem;
   }
 
   .terminal-output {
@@ -180,8 +188,19 @@
     word-wrap: break-word;
   }
 
-  .terminal-permissions {
-    color: rgb(var(--color-info));
+  .file-permissions {
+    color: #58a6ff;
+    margin-right: 0.5rem;
+    font-family: monospace;
+  }
+
+  .directory {
+    color: #58a6ff;
+    font-weight: 400;
+  }
+
+  .file-name {
+    color: #e6edf3;
   }
 
   .cursor-blink {
@@ -215,15 +234,15 @@
   }
 
   html[data-theme="light"] .username {
-    color: #0284c7;
+    color: var(--color-accent);
   }
 
   html[data-theme="light"] .at-symbol {
-    color: #1f2328;
+    color: #24292f;
   }
 
   html[data-theme="light"] .hostname {
-    color: #d97706;
+    color: var(--color-terminal-green);
   }
 
   html[data-theme="light"] .path {
@@ -231,21 +250,43 @@
   }
 
   html[data-theme="light"] .command {
-    color: #1f2328;
+    color: #24292f;
   }
 
   html[data-theme="light"] .valid-command {
-    color: rgb(var(--color-terminal-green));
+    color: var(--color-terminal-green);
+    font-weight: 400;
+  }
+
+  html[data-theme="light"] .command-flag {
+    color: var(--color-terminal-green);
+  }
+
+  html[data-theme="light"] .argument {
+    color: #24292f;
   }
 
   html[data-theme="light"] .terminal-output {
     color: #656d76;
   }
 
+  html[data-theme="light"] .file-permissions {
+    color: #0969da;
+  }
+
+  html[data-theme="light"] .directory {
+    color: #0969da;
+    font-weight: 400;
+  }
+
+  html[data-theme="light"] .file-name {
+    color: #24292f;
+  }
+
   /* Mobile responsive styles */
   @media (max-width: 768px) {
     .terminal-container {
-      margin: 1rem 0 3rem 0;
+      margin: 1rem auto 0 auto;
       border-radius: 6px;
       max-width: none;
     }
@@ -277,7 +318,7 @@
 
   @media (max-width: 480px) {
     .terminal-container {
-      margin: 0.5rem 0 3rem 0;
+      margin: 0.5rem auto 0 auto;
     }
 
     .terminal-header {

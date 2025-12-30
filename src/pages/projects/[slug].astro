@@ -31,7 +31,7 @@ const { Content } = await render(project);
       <div class="mb-28">
         <header class="mb-8 mt-8">
           <h1 class="mb-3 text-3xl font-bold tracking-tight">{title}</h1>
-          <p class="text-base leading-relaxed opacity-80">
+          <p class="text-base leading-relaxed text-foreground/90">
             {description}
           </p>
 
@@ -77,7 +77,7 @@ const { Content } = await render(project);
           </div>
         </header>
 
-        <article class="prose prose-lg max-w-none border-t border-border pt-6">
+        <article class="app-prose max-w-none border-t border-border pt-6">
           <Content />
         </article>
       </div>

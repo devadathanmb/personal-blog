@@ -10,6 +10,7 @@ html[data-theme="light"] {
   --accent: rgb(37 99 235);            /* GitHub blue */
   --muted: rgb(246 248 250);           /* GitHub light gray */
   --border: rgb(208 215 222);          /* GitHub border */
+  --terminal-green: rgb(34 197 94);    /* Terminal green */
 }
 
 html[data-theme="dark"] {
@@ -18,6 +19,7 @@ html[data-theme="dark"] {
   --accent: rgb(56 189 248);           /* Vibrant sky blue */
   --muted: rgb(22 27 34);              /* GitHub dark card */
   --border: rgb(48 54 61);             /* GitHub dark border */
+  --terminal-green: rgb(74 222 128);   /* Terminal green */
 }
 
 @theme inline {
@@ -26,6 +28,7 @@ html[data-theme="dark"] {
   --color-accent: var(--accent);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-terminal-green: var(--terminal-green);
 
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
@@ -42,6 +45,7 @@ html[data-theme="dark"] {
   }
   body {
     @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent/75 selection:text-background;
+    letter-spacing: -0.025em;
   }
   a,
   button {
@@ -63,6 +67,19 @@ html[data-theme="dark"] {
 
 .active-nav {
   @apply underline decoration-wavy decoration-2 underline-offset-4;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s infinite step-start;
 }
 
 /* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
