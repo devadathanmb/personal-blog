@@ -17,7 +17,10 @@ const sortedProjects = projects.sort((a, b) => {
 
 <Layout title={`Projects | ${SITE.title}`}>
   <Header />
-  <Main pageTitle="Projects" pageDesc="A collection of projects I've worked on">
+  <Main
+    pageTitle="Projects"
+    pageDesc="A selection of projects I’ve worked on (not exhaustive, and not always fully up to date — my GitHub has the rest)."
+  >
     <ul>
       {sortedProjects.map(project => <ProjectCard project={project} />)}
     </ul>
