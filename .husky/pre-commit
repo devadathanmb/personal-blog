@@ -1,5 +1,6 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+# Format and lint staged files
+pnpm run format
+pnpm run lint
 
 # Update modDatetime for modified blog posts (only if not draft)
 git diff --cached --name-status |
