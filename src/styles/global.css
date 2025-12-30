@@ -5,19 +5,19 @@
 
 :root,
 html[data-theme="light"] {
-  --background: #fdfdfd;
-  --foreground: #282728;
-  --accent: #006cac;
-  --muted: #e6e6e6;
-  --border: #ece9e9;
+  --background: rgb(255 255 255);      /* GitHub white */
+  --foreground: rgb(36 41 47);         /* GitHub dark text */
+  --accent: rgb(37 99 235);            /* GitHub blue */
+  --muted: rgb(246 248 250);           /* GitHub light gray */
+  --border: rgb(208 215 222);          /* GitHub border */
 }
 
 html[data-theme="dark"] {
-  --background: #212737;
-  --foreground: #eaedf3;
-  --accent: #ff6b01;
-  --muted: #343f60;
-  --border: #ab4b08;
+  --background: rgb(13 17 23);         /* GitHub dark bg */
+  --foreground: rgb(230 237 243);      /* GitHub light text */
+  --accent: rgb(56 189 248);           /* Vibrant sky blue */
+  --muted: rgb(22 27 34);              /* GitHub dark card */
+  --border: rgb(48 54 61);             /* GitHub dark border */
 }
 
 @theme inline {
