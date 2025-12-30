@@ -24,4 +24,3 @@ without trying to turn every thought into a product.
 
 This is where I write things down so they don’t get lost. Some of it is finished, some of it isn’t.
 Both are intentional, and written with emotion.
-
