@@ -7,7 +7,7 @@ import getReadingTime from "reading-time";
  */
 export function calculateReadingTime(content: string | undefined): string {
   if (!content) return "0 min read";
-  
+
   const result = getReadingTime(content);
   return result.text;
 }

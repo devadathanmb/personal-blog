@@ -1,10 +1,10 @@
 export const SITE = {
-  website: "https://devadathanmb.tech",
+  website: "https://devadathanmb.in",
   author: "Devadathan M B",
-  profile: "https://devadathanmb.tech",
+  profile: "https://devadathanmb.in",
   desc: "Devadathan's corner of life on the internet",
   title: "Devadathan",
-  ogImage: "astropaper-og.jpg",
+  ogImage: "",
   lightAndDarkMode: true,
   postPerIndex: 4,
   postPerPage: 3,
