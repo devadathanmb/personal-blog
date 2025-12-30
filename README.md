@@ -49,6 +49,26 @@ This project uses git hooks to automatically manage blog post dates:
 
 The hooks are managed by [husky](https://typicode.github.io/husky/) and set up automatically during `pnpm install`.
 
+## Giscus Comments
+
+This blog uses [Giscus](https://giscus.app/) for comments. To set it up:
+
+1. Go to [giscus.app](https://giscus.app/)
+2. Enter your repository: `devadathanmb/personal-blog`
+3. Enable Discussions in your GitHub repository settings
+4. Copy the `data-repo-id` and `data-category-id` values
+5. Update `src/config.ts`:
+   ```ts
+   export const GISCUS = {
+     enabled: true,
+     repoId: "YOUR_REPO_ID",      // Replace with your repo ID
+     categoryId: "YOUR_CATEGORY_ID", // Replace with your category ID
+     // ... other settings
+   };
+   ```
+
+Comments will automatically sync with your site theme (light/dark mode).
+
 ## Project Structure
 
 ```

@@ -21,3 +21,17 @@ export const SITE = {
   lang: "en",
   timezone: "Asia/Kolkata",
 } as const;
+
+export const GISCUS = {
+  enabled: true,
+  repo: "devadathanmb/personal-blog",
+  repoId: "YOUR_REPO_ID", // Get from https://giscus.app
+  category: "Comments",
+  categoryId: "YOUR_CATEGORY_ID", // Get from https://giscus.app
+  mapping: "pathname",
+  reactionsEnabled: true,
+  emitMetadata: false,
+  inputPosition: "top",
+  theme: "preferred_color_scheme",
+  lang: "en",
+} as const;
