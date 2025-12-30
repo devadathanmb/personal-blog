@@ -1,0 +1,55 @@
+<script>
+  interface CursorPosition {
+    clientX: number;
+    clientY: number;
+  }
+
+  class CursorEffect {
+    private isMoving: boolean = false;
+    private timeoutId: number | null = null;
+    private lastTime: number = 0;
+    private readonly throttleInterval: number = 10;
+
+    constructor() {
+      this.init();
+    }
+
+    private updateCursor = (e: CursorPosition): void => {
+      document.body.style.setProperty("--cursor-x", `${e.clientX}px`);
+      document.body.style.setProperty("--cursor-y", `${e.clientY}px`);
+
+      if (!this.isMoving) {
+        this.isMoving = true;
+        document.body.classList.add("cursor-active");
+      }
+
+      if (this.timeoutId) {
+        window.clearTimeout(this.timeoutId);
+      }
+
+      this.timeoutId = window.setTimeout(() => {
+        this.isMoving = false;
+        document.body.classList.remove("cursor-active");
+      }, 100);
+    };
+
+    private handleMouseMove = (e: MouseEvent): void => {
+      const now = Date.now();
+      if (now - this.lastTime >= this.throttleInterval) {
+        this.lastTime = now;
+        this.updateCursor(e);
+      }
+    };
+
+    private init(): void {
+      document.addEventListener("mousemove", this.handleMouseMove, {
+        passive: true,
+      });
+    }
+  }
+
+  // Initialize the cursor effect
+  document.addEventListener("DOMContentLoaded", () => {
+    new CursorEffect();
+  });
+</script>

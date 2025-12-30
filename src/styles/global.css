@@ -11,6 +11,8 @@ html[data-theme="light"] {
   --muted: rgb(246 248 250);           /* GitHub light gray */
   --border: rgb(208 215 222);          /* GitHub border */
   --terminal-green: rgb(34 197 94);    /* Terminal green */
+  --cursor-light: rgba(37, 99, 235, 0.12);
+  --cursor-light-core: rgba(37, 99, 235, 0.25);
 }
 
 html[data-theme="dark"] {
@@ -20,6 +22,8 @@ html[data-theme="dark"] {
   --muted: rgb(22 27 34);              /* GitHub dark card */
   --border: rgb(48 54 61);             /* GitHub dark border */
   --terminal-green: rgb(74 222 128);   /* Terminal green */
+  --cursor-light: rgba(56, 189, 248, 0.15);
+  --cursor-light-core: rgba(56, 189, 248, 0.25);
 }
 
 @theme inline {
@@ -86,4 +90,48 @@ html[data-theme="dark"] {
 /* Anything that has been anchored to should have extra scroll margin */
 :target {
   scroll-margin-block: 1rem;
+}
+
+/* Cursor Animation Effect */
+@supports (backdrop-filter: blur(1px)) {
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background:
+      radial-gradient(
+        15px circle at var(--cursor-x, 0) var(--cursor-y, 0),
+        var(--cursor-light-core),
+        transparent 100%
+      ),
+      radial-gradient(
+        600px circle at var(--cursor-x, 0) var(--cursor-y, 0),
+        var(--cursor-light),
+        transparent 40%
+      );
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  body.cursor-active::before {
+    opacity: 1;
+  }
+
+  @keyframes cursorPulse {
+    0%, 100% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.1);
+    }
+  }
+
+  body.cursor-active::before {
+    animation: cursorPulse 2s ease-in-out infinite;
+  }
 }

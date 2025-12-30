@@ -2,6 +2,7 @@
 import { ClientRouter } from "astro:transitions";
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
 import { SITE } from "@/config";
+import CursorEffect from "@/components/CursorEffect.astro";
 import "@/styles/global.css";
 
 export interface Props {
@@ -142,6 +143,7 @@ const structuredData = {
   </head>
   <body>
     <slot />
+    <CursorEffect />
   </body>
 </html>
 
