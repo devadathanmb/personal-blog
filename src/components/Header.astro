@@ -16,8 +16,10 @@ const currentPath =
   pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
 
 const isActive = (path: string) => {
-  const currentPathArray = currentPath.split("/").filter(p => p.trim());
-  const pathArray = path.split("/").filter(p => p.trim());
+  const currentPathArray = currentPath
+    .split("/")
+    .filter((p: string) => p.trim());
+  const pathArray = path.split("/").filter((p: string) => p.trim());
 
   return currentPath === path || currentPathArray[0] === pathArray[0];
 };
