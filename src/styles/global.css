@@ -50,7 +50,8 @@ html[data-theme="dark"] {
   }
   body {
     @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent/75 selection:text-background;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.015em;
+    font-size: 1.1rem;
   }
   a,
   button {
