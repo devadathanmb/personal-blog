@@ -1,4 +1,5 @@
 import { defineConfig, envField } from "astro/config";
+import { execSync } from "child_process";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
@@ -42,6 +43,11 @@ export default defineConfig({
     plugins: [tailwindcss()],
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
+    },
+    define: {
+      "import.meta.env.GIT_COMMIT_HASH": JSON.stringify(
+        execSync("git rev-parse --short HEAD").toString().trim()
+      ),
     },
   },
   image: {
