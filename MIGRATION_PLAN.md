@@ -88,6 +88,48 @@
     - Updated `PostDetails.astro` layout to show reading time on individual posts
     - Reading time displays in format "X min read" alongside date
     - Separated by bullet point (•) for clean visual hierarchy
+14. **Cursor Animation Effect**
+    - Migrated `CursorEffect.astro` component from old blog
+    - **Refactored for better code quality**:
+      - Removed unnecessary OOP class structure (single-instance usage)
+      - Removed redundant `CursorPosition` interface
+      - Simplified to module-level functions and variables
+      - Named constants: `THROTTLE_MS` (10), `HIDE_DELAY_MS` (100)
+      - Fixed TypeScript types with `ReturnType<typeof setTimeout>`
+      - Reduced code from 55 to 37 lines (33% reduction)
+    - Added cursor CSS variables and styles to `global.css`:
+      - Dual radial gradients (15px core + 600px glow)
+      - Smooth opacity transitions (0 → 1)
+      - Pulse animation when active
+      - Theme-aware colors (blue in both themes)
+      - Progressive enhancement with @supports
+    - Integrated into `Layout.astro` for global availability
+    - Performant with throttling, z-index 999, pointer-events none
+15. **Git Hooks Setup**
+    - Created `.husky/pre-commit` hook for automatic date management
+    - **For modified posts** (draft: false):
+      - Auto-updates `modDatetime` to current UTC time
+      - Only applies to published posts, not drafts
+    - **For new posts**:
+      - Auto-adds `pubDatetime` if missing
+    - Added `"prepare": "husky"` script to package.json
+    - Hooks set up automatically on `pnpm install`
+    - Based on AstroPaper article: https://astro-paper.pages.dev/posts/setting-dates-via-git-hooks/
+16. **Cleanup & Documentation**
+    - Removed AstroPaper-specific artifacts:
+      - Deleted `.github/` folder (CODE_OF_CONDUCT, CONTRIBUTING, issue templates, PR template)
+      - Removed `AstroPaper-lighthouse-score.svg`
+      - Removed `cz.yaml` (Commitizen config)
+      - Kept Docker files (Dockerfile, docker-compose.yml, .dockerignore)
+    - Restored CI workflow (`.github/workflows/ci.yml`):
+      - Runs linting, format checking, and builds on PRs
+      - Updated to pnpm v10.15.0
+    - **Improved README**:
+      - Added numbered steps for setup (with/without Docker)
+      - Added Git Hooks section explaining auto-date feature
+      - Added Project Structure overview
+      - Added Common Commands reference
+      - Better organization while staying concise
 
 ### 📦 Ready for Deployment
 
@@ -105,16 +147,27 @@ All essential features migrated successfully. Branch ready to push and merge.
 
 ## Migration Complete! 🎉
 
-All essential features have been successfully migrated:
+All essential features have been successfully migrated and refactored:
 - ✅ Fresh Astro Paper v5.5.0 installation
 - ✅ Content migrated (5 blog posts + 6 projects)
 - ✅ GitHub color theme applied
-- ✅ Terminal component on homepage
-- ✅ Git commit hash in footer
+- ✅ Terminal component on homepage (refactored with authentic colors)
+- ✅ Header with terminal logo and blinking cursor
+- ✅ Footer with animated shine effect on git commit hash
+- ✅ Reading time feature on all posts
+- ✅ Cursor gradient animation effect (refactored from class to functions)
+- ✅ Git hooks for automatic date management
 - ✅ Projects listing and detail pages
-- ✅ Build passing (35 pages generated)
+- ✅ CI workflow for quality checks
+- ✅ Cleaned up AstroPaper artifacts
+- ✅ Improved README with clear setup instructions
+- ✅ Build passing (35+ pages generated)
 
-Ready to push to remote and deploy!
+**Total Commits:** 10+ commits with detailed changelogs
+**Code Quality:** All checks passing, refactored where needed
+**Documentation:** README updated, git hooks explained
+
+Ready for merge and deployment!
 
 ---
 
