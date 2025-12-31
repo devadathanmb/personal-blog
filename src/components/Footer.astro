@@ -115,35 +115,39 @@ const { noMarginTop = false } = Astro.props;
 <style>
   @keyframes shine {
     from {
-      background-position: 200% center;
+      background-position: 250% center;
     }
     to {
-      background-position: -200% center;
+      background-position: -250% center;
     }
   }
 
   .shine-text {
-    --shine-dim: rgba(230, 237, 243, 0.7);
+    --shine-dim: rgba(230, 237, 243, 0.5);
     --shine-bright: rgb(255, 255, 255);
+    --shine-glow: rgba(139, 148, 158, 0.9);
     display: inline-block;
     background: linear-gradient(
-      120deg,
+      110deg,
       var(--shine-dim) 0%,
-      var(--shine-dim) 40%,
+      var(--shine-dim) 35%,
+      var(--shine-glow) 45%,
       var(--shine-bright) 50%,
-      var(--shine-dim) 60%,
+      var(--shine-glow) 55%,
+      var(--shine-dim) 65%,
       var(--shine-dim) 100%
     );
-    background-size: 200% auto;
+    background-size: 250% auto;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shine 7s linear infinite;
+    animation: shine 8s linear infinite;
   }
 
   html[data-theme="light"] .shine-text {
-    --shine-dim: rgba(36, 41, 47, 0.7);
-    --shine-bright: rgb(36, 41, 47);
+    --shine-dim: rgba(36, 41, 47, 0.5);
+    --shine-bright: rgb(0, 0, 0);
+    --shine-glow: rgba(36, 41, 47, 0.85);
   }
 
   .shine-text:hover {
@@ -151,15 +155,12 @@ const { noMarginTop = false } = Astro.props;
   }
 
   .shine-text a {
-    text-decoration-color: var(--shine-dim);
-    transition: all 0.2s ease;
+    text-decoration-color: rgba(139, 148, 158, 0.5);
+    transition: text-decoration-color 0.2s ease;
   }
 
   .shine-text a:is(:hover, :focus) {
-    color: var(--shine-bright);
-    text-decoration-color: var(--shine-bright);
-    background: none;
-    -webkit-text-fill-color: var(--shine-bright);
+    text-decoration-color: rgba(139, 148, 158, 0.8);
   }
 
   .made-with {
