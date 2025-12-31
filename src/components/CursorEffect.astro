@@ -37,7 +37,9 @@
     const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
 
     if (hasFinePointer) {
-      document.addEventListener("mousemove", handleMouseMove, { passive: true });
+      document.addEventListener("mousemove", handleMouseMove, {
+        passive: true,
+      });
     }
   });
 </script>
