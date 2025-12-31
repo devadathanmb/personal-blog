@@ -21,9 +21,27 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 <Layout>
   <Header />
   <main id="main-content" data-layout="index">
-    <section id="hero" class="mx-auto max-w-5xl px-4 pt-8 pb-6">
-      <Terminal />
+    <section id="hero" class="hero-section">
+      <div class="hero-content">
+        <Terminal />
+      </div>
+      <div class="scroll-indicator">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+    </section>
 
+    <section id="content-section" class="mx-auto max-w-5xl px-4 pt-8 pb-6">
       <div class="my-8 sm:my-12">
         <Hr noPadding={true} />
       </div>
@@ -77,12 +95,134 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
   <Footer />
 </Layout>
 
+<style>
+  .hero-section {
+    min-height: calc(100vh - 5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 2rem 1rem;
+  }
+
+  .hero-content {
+    width: 100%;
+    max-width: 60rem;
+    margin: 0 auto;
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-text-muted, #6b7280);
+    animation: bounce 2s infinite;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+
+  .scroll-indicator:hover {
+    opacity: 1;
+  }
+
+  .scroll-indicator.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #content-section {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateX(-50%) translateY(0);
+    }
+    40% {
+      transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+      transform: translateX(-50%) translateY(-5px);
+    }
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    .hero-section {
+      min-height: calc(
+        100dvh - 4rem
+      ); /* Use dynamic viewport height on mobile, accounting for header */
+      padding: 1rem;
+    }
+
+    .scroll-indicator {
+      bottom: 1rem;
+    }
+  }
+</style>
+
 <script>
   document.addEventListener("astro:page-load", () => {
     const indexLayout = (document.querySelector("#main-content") as HTMLElement)
       ?.dataset?.layout;
     if (indexLayout) {
       sessionStorage.setItem("backUrl", "/");
+    }
+
+    // Smooth scroll to content when scroll indicator is clicked
+    const scrollIndicator = document.querySelector(".scroll-indicator");
+    const contentSection = document.querySelector("#content-section");
+
+    if (scrollIndicator && contentSection) {
+      scrollIndicator.addEventListener("click", () => {
+        contentSection.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+
+    // Hide scroll indicator when user scrolls past hero section
+    const heroSection = document.querySelector(".hero-section");
+    if (heroSection && scrollIndicator) {
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              scrollIndicator.classList.remove("hidden");
+            } else {
+              scrollIndicator.classList.add("hidden");
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+      observer.observe(heroSection);
     }
   });
 </script>
