@@ -1,0 +1,80 @@
+---
+// TerminalLine component - renders a terminal prompt line
+// Content after the prompt is passed via default slot
+---
+
+<div class="terminal-line">
+  <span class="username">Dev</span><span class="at-symbol">@</span><span
+    class="hostname">Machine</span
+  ><span class="path">:~</span><span class="prompt">$</span>
+  <slot />
+</div>
+
+<style>
+  .terminal-line {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .terminal-line:first-child {
+    margin-top: 0;
+  }
+
+  .username {
+    color: var(--color-accent);
+    margin-right: 0;
+  }
+
+  .at-symbol {
+    color: #e6edf3;
+    margin: 0;
+  }
+
+  .hostname {
+    color: var(--color-terminal-green);
+    margin: 0;
+  }
+
+  .path {
+    color: #58a6ff;
+    margin-right: 0.25rem;
+  }
+
+  .prompt {
+    color: #58a6ff;
+    margin-right: 0.25rem;
+  }
+
+  /* Light mode adjustments */
+  html[data-theme="light"] .username {
+    color: var(--color-accent);
+  }
+
+  html[data-theme="light"] .at-symbol {
+    color: #24292f;
+  }
+
+  html[data-theme="light"] .hostname {
+    color: var(--color-terminal-green);
+  }
+
+  html[data-theme="light"] .path {
+    color: #0969da;
+  }
+
+  html[data-theme="light"] .prompt {
+    color: #0969da;
+  }
+
+  /* Mobile responsive styles - hide verbose prompt parts, show only $ */
+  @media (max-width: 768px) {
+    .username,
+    .at-symbol,
+    .hostname,
+    .path {
+      display: none;
+    }
+  }
+</style>

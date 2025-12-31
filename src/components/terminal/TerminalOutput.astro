@@ -1,0 +1,34 @@
+---
+// TerminalOutput component - renders command output
+---
+
+<div class="terminal-output">
+  <slot />
+</div>
+
+<style>
+  .terminal-output {
+    color: #e6edf3;
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+    word-wrap: break-word;
+  }
+
+  /* Light mode */
+  html[data-theme="light"] .terminal-output {
+    color: #656d76;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .terminal-output {
+      margin-left: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .terminal-output {
+      margin-left: 0.75rem;
+    }
+  }
+</style>

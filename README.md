@@ -10,7 +10,6 @@ Based on [AstroPaper](https://github.com/satnaing/astro-paper) theme.
 <img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/6c469c59-cff3-4e2a-93e8-585c4b46970b" />
 <img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/ceb92264-1440-420e-8c0b-384fe10491df" />
 
-
 <!-- Add screenshot of blog post here -->
 <img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/6f200750-cf81-4693-b603-64abf6be39d9" />
 <img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/053ba632-1d5f-4fa2-96c2-396628835895" />

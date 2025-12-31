@@ -6,7 +6,7 @@ import Footer from "@/components/Footer.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import Card from "@/components/Card.astro";
 import Hr from "@/components/Hr.astro";
-import Terminal from "@/components/Terminal.astro";
+import { HeroTerminal } from "@/components/terminal";
 import getSortedPosts from "@/utils/getSortedPosts";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import { SITE } from "@/config";
@@ -23,7 +23,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
   <main id="main-content" data-layout="index">
     <section id="hero" class="hero-section">
       <div class="hero-content">
-        <Terminal />
+        <HeroTerminal />
       </div>
       <div class="scroll-indicator">
         <svg
