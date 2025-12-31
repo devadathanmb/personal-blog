@@ -26,6 +26,78 @@ const { noMarginTop = false } = Astro.props;
     </div>
   </div>
   <div
+    class="made-with pb-4 text-center text-sm opacity-70 transition-opacity hover:opacity-100"
+  >
+    <span class="flex items-center justify-center gap-1.5">
+      Made with Love
+      <svg
+        class="heart-icon"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+        ></path>
+      </svg>
+      using
+      <a
+        href="https://astro.build"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1 transition-all hover:opacity-80"
+        title="Built with Astro"
+      >
+        <svg
+          class="astro-icon"
+          width="20"
+          height="20"
+          viewBox="0 0 256 366"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid"
+        >
+          <path
+            fill="url(#astroGradient)"
+            d="M182.022 9.147c2.982 3.702 4.502 8.697 7.543 18.687L256 246.074a276.467 276.467 0 0 0-79.426-26.891L133.318 73.008a5.63 5.63 0 0 0-10.802.017L79.784 219.11A276.453 276.453 0 0 0 0 246.04l66.76-218.207c3.007-9.84 4.494-14.761 7.431-18.441C77.328 5.069 81.933 2.452 86.93.778 92.29-.207 98.375-.207 110.545-.207h35.615c12.136 0 18.204 0 23.548.96 4.975 1.655 9.564 4.24 13.314 7.513Z"
+          ></path>
+          <path
+            fill="url(#astroGradient2)"
+            d="M189.972 256.46c-10.952 9.364-32.812 15.751-57.992 15.751-30.904 0-56.807-9.621-63.68-22.56-2.458 7.415-3.009 15.903-3.009 21.324 0 0-1.619 26.623 16.898 45.14 0-9.615 7.795-17.41 17.41-17.41 16.48 0 16.46 14.378 16.446 26.043l-.001 1.041c0 17.705 10.82 32.883 26.21 39.28a35.685 35.685 0 0 1-3.588-15.647c0-16.886 9.913-23.173 21.435-30.48 9.167-5.814 19.353-12.274 26.372-25.232a47.588 47.588 0 0 0 5.742-22.735c0-5.06-.786-9.938-2.243-14.516Z"
+          ></path>
+          <defs>
+            <linearGradient
+              id="astroGradient"
+              x1="128"
+              x2="128"
+              y1="-.207"
+              y2="246.074"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="currentColor"></stop>
+              <stop offset="1" stop-color="currentColor" stop-opacity=".5"
+              ></stop>
+            </linearGradient>
+            <linearGradient
+              id="astroGradient2"
+              x1="128"
+              x2="128"
+              y1="256.461"
+              y2="365.655"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="currentColor"></stop>
+              <stop offset="1" stop-color="currentColor" stop-opacity=".5"
+              ></stop>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="astro-text">Astro</span>
+      </a>
+    </span>
+  </div>
+  <div
     class="deploy-info pb-6 text-center text-sm opacity-70 transition-opacity hover:opacity-100"
   >
     <span class="shine-text">
@@ -88,5 +160,52 @@ const { noMarginTop = false } = Astro.props;
     text-decoration-color: var(--shine-bright);
     background: none;
     -webkit-text-fill-color: var(--shine-bright);
+  }
+
+  .made-with {
+    font-size: 0.875rem;
+  }
+
+  .astro-icon {
+    color: #ff5d01;
+    transition: transform 0.3s ease;
+  }
+
+  .astro-text {
+    font-weight: 500;
+    color: #ff5d01;
+  }
+
+  .made-with a:hover .astro-icon {
+    transform: rotate(10deg) scale(1.1);
+  }
+
+  .heart-icon {
+    color: #ef4444;
+    animation: heartbeat 2s ease-in-out infinite;
+  }
+
+  @keyframes heartbeat {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    10%,
+    30% {
+      transform: scale(1.1);
+    }
+    20%,
+    40% {
+      transform: scale(1);
+    }
+  }
+
+  html[data-theme="light"] .astro-icon,
+  html[data-theme="light"] .astro-text {
+    color: #ff5d01;
+  }
+
+  html[data-theme="light"] .heart-icon {
+    color: #dc2626;
   }
 </style>
