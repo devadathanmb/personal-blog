@@ -36,17 +36,23 @@ const TERMINAL_MESSAGES = [
       <span class="valid-command">whoami</span>
     </TerminalLine>
     <TerminalOutput>
-      Software Engineer | Backend | Still figuring it out
+      Devadathan <span class="aka-text">(aka Dev)</span>
     </TerminalOutput>
+
+    <TerminalLine>
+      <span class="valid-command">echo</span>
+      <span class="argument">$STATUS</span>
+    </TerminalLine>
+    <TerminalOutput> Software engineer | Still figuring it out </TerminalOutput>
 
     <TerminalLine>
       <span class="valid-command">file</span>
       <span class="argument">about.txt</span>
     </TerminalLine>
     <TerminalOutput>
-      about.txt: symbolic link to <a href="/about" class="symlink-path">
-        <span class="url-full">devadathanmb.in/about</span>
-        <span class="url-short">/about</span>
+      about.txt: symbolic link → <a href="/about" class="symlink-path">
+        <span class="url-full">[devadathanmb.in/about]</span>
+        <span class="url-short">[/about]</span>
       </a>
     </TerminalOutput>
 
@@ -65,9 +71,10 @@ const TERMINAL_MESSAGES = [
             return (
               <div class="remote-line">
                 <span class="remote-name">{social.name}</span>
+                <span class="arrow">→</span>
                 <a href={`/socials/${slug}`} class="remote-url">
-                  <span class="url-full">devadathanmb.in/socials/{slug}</span>
-                  <span class="url-short">/socials/{slug}</span>
+                  <span class="url-full">[devadathanmb.in/socials/{slug}]</span>
+                  <span class="url-short">[/socials/{slug}]</span>
                 </a>
               </div>
             );
@@ -161,6 +168,10 @@ const TERMINAL_MESSAGES = [
     margin-left: 0.25rem;
   }
 
+  .aka-text {
+    font-style: italic;
+  }
+
   .symlink-path {
     color: var(--color-accent);
     text-decoration: none;
@@ -177,12 +188,18 @@ const TERMINAL_MESSAGES = [
     display: flex;
     gap: 1rem;
     margin-bottom: 0.25rem;
+    align-items: center;
   }
 
   .remote-name {
     color: #f0f6fc;
     font-weight: 400;
     min-width: 5.5rem;
+    flex-shrink: 0;
+  }
+
+  .arrow {
+    color: #8b949e;
     flex-shrink: 0;
   }
 
@@ -277,6 +294,10 @@ const TERMINAL_MESSAGES = [
 
   html[data-theme="light"] .remote-name {
     color: #24292f;
+  }
+
+  html[data-theme="light"] .arrow {
+    color: #656d76;
   }
 
   html[data-theme="light"] .remote-url {
