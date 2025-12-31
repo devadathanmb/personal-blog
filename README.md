@@ -1,96 +1,93 @@
 # Personal Blog
 
-My personal blog built with [Astro](https://astro.build/), based on the [AstroPaper](https://github.com/satnaing/astro-paper) theme.
+A fast, minimal personal blog built with [Astro](https://astro.build/). Features markdown blog posts, project showcases, GitHub Discussions-powered comments, and automatic date management via git hooks.
+
+Based on [AstroPaper](https://github.com/satnaing/astro-paper) theme.
+
+## Screenshots
+
+<!-- Add screenshot of homepage here -->
+
+<!-- Add screenshot of blog post here -->
+
+<!-- Add screenshot of projects page here -->
+
+## Features
+
+- Markdown-based blog posts and project pages
+- GitHub Discussions integration for comments (Giscus)
+- Automatic post date management with git hooks
+- Docker support for easy deployment
+- Code formatting and linting
 
 ## Setup
 
 ### Without Docker
 
-1. Clone the repository
+```bash
+git clone https://github.com/devadathanmb/personal-blog.git
+cd personal-blog
+pnpm install  # Automatically sets up git hooks via husky
+pnpm run dev
+```
 
-   ```bash
-   git clone https://github.com/devadathanmb/personal-blog.git
-   cd personal-blog
-   ```
-
-2. Install dependencies
-
-   ```bash
-   pnpm install
-   ```
-
-   This will also set up git hooks automatically via husky.
-
-3. Start the development server
-   ```bash
-   pnpm run dev
-   ```
-
-The site will be available at `http://localhost:4321`
+Visit `http://localhost:4321`
 
 ### With Docker
 
-1. Clone the repository
+```bash
+git clone https://github.com/devadathanmb/personal-blog.git
+cd personal-blog
+docker-compose up -d
+```
 
-   ```bash
-   git clone https://github.com/devadathanmb/personal-blog.git
-   cd personal-blog
-   ```
+Visit `http://localhost:4321`
 
-2. Start with docker-compose
-   ```bash
-   docker-compose up -d
-   ```
+## Configuration
 
-The site will be available at `http://localhost:4321`
+### Git Hooks
 
-## Git Hooks
+Automatically manages blog post dates via [husky](https://typicode.github.io/husky/):
 
-This project uses git hooks to automatically manage blog post dates:
+- New posts: Adds `pubDatetime` on commit
+- Modified posts: Updates `modDatetime` (skips drafts)
 
-- **New posts**: Automatically adds `pubDatetime` when you commit a new blog post
-- **Modified posts**: Updates `modDatetime` when you edit published posts (not drafts)
+### Giscus Comments
 
-The hooks are managed by [husky](https://typicode.github.io/husky/) and set up automatically during `pnpm install`.
+Comments powered by GitHub Discussions via [Giscus](https://giscus.app/). Configure in `src/config.ts`.
 
-## Giscus Comments
+To set up for your repository:
 
-This blog uses [Giscus](https://giscus.app/) for comments powered by GitHub Discussions.
-
-Comments are configured in `src/config.ts`. To disable, set `GISCUS.enabled` to `false`.
-
-### Setup
-
-If you want to use this for your own repository:
-
-1. Enable GitHub Discussions in your repository settings
-2. Visit [giscus.app](https://giscus.app/) and enter your repository details
-3. Copy the generated `data-repo-id` and `data-category-id` values
-4. Update `src/config.ts` with those values
-5. Run `pnpm run build`
+1. Enable GitHub Discussions in repository settings
+2. Generate config at [giscus.app](https://giscus.app/)
+3. Update `data-repo-id` and `data-category-id` in `src/config.ts`
 
 ## Project Structure
 
 ```
 src/
 ├── content/
-│   ├── blog/       # Blog posts (markdown)
-│   └── projects/   # Project pages (markdown)
-├── components/     # Reusable components
+│   ├── blog/       # Blog posts
+│   └── projects/   # Project pages
+├── components/     # UI components
 ├── layouts/        # Page layouts
 └── styles/         # Global styles
 ```
 
-## Common Commands
+## Commands
 
-```bash
-pnpm run dev        # Start development server
-pnpm run build      # Build for production
-pnpm run preview    # Preview production build
-pnpm run lint       # Lint code
-pnpm run format     # Format code
-```
+| Command            | Description              |
+| ------------------ | ------------------------ |
+| `pnpm run dev`     | Start development server |
+| `pnpm run build`   | Build for production     |
+| `pnpm run preview` | Preview production build |
+| `pnpm run lint`    | Lint code                |
+| `pnpm run format`  | Format code              |
 
----
+## License
+
+MIT
+
+## Credits
 
 Based on [AstroPaper](https://github.com/satnaing/astro-paper) by [Sat Naing](https://satnaing.dev)
