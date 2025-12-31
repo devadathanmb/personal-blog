@@ -7,8 +7,21 @@ import TerminalOutput from "./TerminalOutput.astro";
 // Extract domain from SITE.website (removes https://)
 const domain = SITE.website.replace(/^https?:\/\//, "");
 
+// Fun tooltips for social links
+const SOCIAL_TOOLTIPS: Record<string, string> = {
+  GitHub: "Where the code lives... and sometimes dies",
+  LinkedIn: "Professional me (I swear I'm serious)",
+  Mail: "Slide into my inbox!",
+  Discord: "Let's chat and procrastinate together",
+  Telegram: "For when email is too mainstream",
+};
+
 const TERMINAL_MESSAGES = [
   "# You're awesome :)",
+  "# Welcome to the void... I mean, my blog!",
+  "# Making bugs since 2002... wait, features!",
+  "# Hey! You found me on the internet!",
+  `# ${new Date().getFullYear()} is the year of the Linux Desktop!`,
   "rm -fr / --no-preserve-root # For removing French",
   "# There's no place like 127.0.0.1",
   "sudo rm -rf /problems # if it was that easy",
@@ -22,6 +35,10 @@ const TERMINAL_MESSAGES = [
   "cat /dev/null > expectations",
   "make clean && make mistakes",
   "ps aux | grep purpose",
+  "# There are 10 types of people: those who understand binary",
+  "git blame # always someone else's fault",
+  "# 99 little bugs in the code, 99 bugs in the code...",
+  "chmod 777 # what could go wrong?",
   "exit 1 # try again tomorrow",
 ];
 ---
@@ -29,41 +46,61 @@ const TERMINAL_MESSAGES = [
 <div class="terminal-container">
   <div class="terminal-header">
     <div class="terminal-buttons">
-      <span class="btn btn-close"></span>
-      <span class="btn btn-minimize"></span>
-      <span class="btn btn-maximize"></span>
+      <span class="btn btn-close" title="Nice try! I'm immortal"></span>
+      <span class="btn btn-minimize" title="Minimizing existential dread..."
+      ></span>
+      <span class="btn btn-maximize" title="Already at max awesomeness"></span>
     </div>
     <div class="terminal-title">Dev@Machine:~$</div>
   </div>
   <div class="terminal-body">
-    <TerminalLine>
-      <span class="valid-command">whoami</span>
-    </TerminalLine>
+    <TerminalLine><span class="valid-command">whoami</span></TerminalLine>
     <TerminalOutput>
       Devadathan <span class="aka-text">(aka Dev)</span>
     </TerminalOutput>
 
-    <TerminalLine>
-      <span class="valid-command">echo</span>
-      <span class="argument">$STATUS</span>
-    </TerminalLine>
+    <TerminalLine
+      ><span class="valid-command">echo</span>
+      <span class="argument">$STATUS</span></TerminalLine
+    >
     <TerminalOutput> Software engineer | Still figuring it out </TerminalOutput>
 
-    <TerminalLine>
-      <span class="valid-command">file</span>
-      <span class="argument">about.txt</span>
-    </TerminalLine>
+    <TerminalLine
+      ><span class="valid-command">file</span>
+      <span class="argument">about.txt</span></TerminalLine
+    >
     <TerminalOutput>
-      about.txt: symbolic link → <a href="/about" class="symlink-path">
-        <span class="url-full">[{domain}/about]</span>
-        <span class="url-short">[/about]</span>
-      </a>
+      about.txt: symbolic link → <span class="url-container">
+        <a
+          href="/about"
+          class="symlink-path"
+          title="So you wanna know about me ah?"
+          data-url={`${SITE.website}/about`}
+        >
+          <span class="url-full">[{domain}/about]</span>
+          <span class="url-short">[/about]</span>
+        </a>
+        <button class="copy-btn" data-copy-url={`${SITE.website}/about`}>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+            ></path>
+          </svg>
+        </button>
+      </span>
     </TerminalOutput>
 
-    <TerminalLine>
-      <span class="valid-command">git</span>
-      <span class="argument">remote -v</span>
-    </TerminalLine>
+    <TerminalLine
+      ><span class="valid-command">git</span>
+      <span class="argument">remote -v</span></TerminalLine
+    >
     <TerminalOutput>
       <div class="git-remotes">
         {
@@ -76,12 +113,37 @@ const TERMINAL_MESSAGES = [
               <div class="remote-line">
                 <span class="remote-name">{social.name}</span>
                 <span class="arrow">→</span>
-                <a href={`/socials/${slug}`} class="remote-url">
-                  <span class="url-full">
-                    [{domain}/socials/{slug}]
-                  </span>
-                  <span class="url-short">[/socials/{slug}]</span>
-                </a>
+                <span class="url-container">
+                  <a
+                    href={`/socials/${slug}`}
+                    class="remote-url"
+                    title={
+                      SOCIAL_TOOLTIPS[social.name] || "Check out my profile"
+                    }
+                    data-url={`${SITE.website}/socials/${slug}`}
+                  >
+                    <span class="url-full">
+                      [{domain}/socials/{slug}]
+                    </span>
+                    <span class="url-short">[/socials/{slug}]</span>
+                  </a>
+                  <button
+                    class="copy-btn"
+                    data-copy-url={`${SITE.website}/socials/${slug}`}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                    </svg>
+                  </button>
+                </span>
               </div>
             );
           })
@@ -134,18 +196,42 @@ const TERMINAL_MESSAGES = [
     width: 0.75rem;
     height: 0.75rem;
     border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .btn:hover {
+    transform: scale(1.15);
+    filter: brightness(1.2);
+  }
+
+  .btn:active {
+    transform: scale(0.95);
   }
 
   .btn-close {
     background-color: #ff5f56;
   }
 
+  .btn-close:hover {
+    box-shadow: 0 0 8px rgba(255, 95, 86, 0.6);
+  }
+
   .btn-minimize {
     background-color: #ffbd2e;
   }
 
+  .btn-minimize:hover {
+    box-shadow: 0 0 8px rgba(255, 189, 46, 0.6);
+  }
+
   .btn-maximize {
     background-color: #27ca3f;
+  }
+
+  .btn-maximize:hover {
+    box-shadow: 0 0 8px rgba(39, 202, 63, 0.6);
   }
 
   .terminal-title {
@@ -176,6 +262,44 @@ const TERMINAL_MESSAGES = [
 
   .aka-text {
     font-style: italic;
+  }
+
+  .url-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  .copy-btn {
+    opacity: 0;
+    background: none;
+    border: none;
+    color: #8b949e;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+  }
+
+  .url-container:hover .copy-btn {
+    opacity: 1;
+  }
+
+  .copy-btn:hover {
+    color: var(--color-terminal-green);
+    background-color: rgba(139, 148, 158, 0.1);
+  }
+
+  .copy-btn:active {
+    transform: scale(0.95);
+  }
+
+  .copy-btn.copied {
+    color: var(--color-terminal-green);
   }
 
   .symlink-path {
@@ -231,10 +355,12 @@ const TERMINAL_MESSAGES = [
   .typing-container {
     display: inline-block;
     margin-left: 0.25rem;
+    max-width: calc(100% - 2rem);
   }
 
   .typed-text {
     min-width: 1ch;
+    display: inline;
   }
 
   .typed-text :global(.cmd) {
@@ -306,6 +432,15 @@ const TERMINAL_MESSAGES = [
     color: #656d76;
   }
 
+  html[data-theme="light"] .copy-btn {
+    color: #656d76;
+  }
+
+  html[data-theme="light"] .copy-btn:hover {
+    color: var(--color-terminal-green);
+    background-color: rgba(101, 109, 118, 0.1);
+  }
+
   html[data-theme="light"] .remote-url {
     color: var(--color-accent);
   }
@@ -351,8 +486,17 @@ const TERMINAL_MESSAGES = [
     }
 
     .terminal-body {
-      padding: 1.25rem;
+      padding: 1rem;
       min-height: 250px;
+    }
+
+    .remote-line {
+      gap: 0.5rem;
+    }
+
+    .typing-container {
+      margin-left: 0;
+      display: inline;
     }
 
     .url-short {
@@ -374,8 +518,12 @@ const TERMINAL_MESSAGES = [
     }
 
     .terminal-body {
-      padding: 1rem;
+      padding: 0.75rem;
       min-height: 200px;
+    }
+
+    .remote-line {
+      gap: 0.375rem;
     }
 
     .terminal-buttons {
@@ -399,7 +547,8 @@ const TERMINAL_MESSAGES = [
     );
     if (messages.length === 0) return;
 
-    let messageIndex = 0;
+    // Start with a random message for variety
+    let messageIndex = Math.floor(Math.random() * messages.length);
     let charIndex = 0;
     let isDeleting = false;
     let isPaused = false;
@@ -507,4 +656,41 @@ const TERMINAL_MESSAGES = [
 
   // Initialize on page load
   document.addEventListener("astro:page-load", initTypingAnimation);
+
+  // Copy to clipboard functionality
+  function initCopyButtons() {
+    const copyButtons = document.querySelectorAll(".copy-btn");
+
+    copyButtons.forEach(button => {
+      button.addEventListener("click", async e => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const url = button.getAttribute("data-copy-url");
+        if (!url) return;
+
+        try {
+          await navigator.clipboard.writeText(url);
+
+          // Visual feedback
+          button.classList.add("copied");
+          const originalHTML = button.innerHTML;
+          button.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          `;
+
+          setTimeout(() => {
+            button.classList.remove("copied");
+            button.innerHTML = originalHTML;
+          }, 1500);
+        } catch {
+          // Clipboard API failed - button won't show feedback
+        }
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", initCopyButtons);
 </script>
