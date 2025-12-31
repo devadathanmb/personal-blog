@@ -33,6 +33,11 @@
 
   // Initialize on DOM ready
   document.addEventListener("DOMContentLoaded", () => {
-    document.addEventListener("mousemove", handleMouseMove, { passive: true });
+    // Only enable cursor effect on devices with a fine pointer (mouse)
+    const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+
+    if (hasFinePointer) {
+      document.addEventListener("mousemove", handleMouseMove, { passive: true });
+    }
   });
 </script>
