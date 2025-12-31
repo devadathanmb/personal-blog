@@ -8,14 +8,14 @@ So — who am I?
 I’m _Devadathan_ (or _Dev_, usually because that’s easier), a 2024 Computer Science Engineering
 graduate, currently working as an engineer at [Sage (formerly Fyle)](https://fylehq.com).
 
-I work mostly on backend systems — APIs, migrations, background jobs, and parts of software that tend
-to stay around longer than expected. I’m drawn to work where choices don’t disappear after a sprint,
-where systems carry their history, and understanding them takes time.
+I spend most of my time doing engineering, mostly on backend systems. I care about how systems are put together, how decisions show up
+later, and whether the code makes sense when you come back to it after time has passed. That’s the
+part that interests me.
 
-That care spills into how I work day to day. I keep a well-worn set of tools, configurations, and
-notes — dotfiles, workflows, and small utilities — not out of obsession, but as a way of keeping the
-spirit of the work alive. I value simplicity, ownership, and software that respects both the people
-who use it and the people who maintain it.
+Because of that, I’m particular about how I work. I keep my own tools, dotfiles, and workflows
+because engineering is thinking-heavy work, and I want fewer things getting in the way of that.
+It’s not about productivity hacks or aesthetics — it’s just about having an environment that
+doesn’t fight back while I’m trying to reason about things.
 
 Outside of work, I spend time reading, thinking, and paying attention. Sometimes that’s about
 technology, sometimes about people, patterns, or ideas that don’t ask to be resolved quickly. I’m

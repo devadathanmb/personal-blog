@@ -6,10 +6,9 @@ title: "Fyle Offsite: A Revival of Joy and Connection"
 featured: true
 draft: false
 tags:
-  - personal
   - personal blog
   - fyle
-  - offsite
+  - work
 description: Beyond terminals and code editors, happy moments and long lasting memories :)
 ---
 
@@ -112,7 +111,7 @@ being a newcomer, I still harbored doubts about how the offsite would unfold. It
 time meeting many of my colleagues in person, despite our weekly sync-up calls as a team. This mix
 of skepticism and curiosity left me both excited and nervous about the upcoming gathering.
 
-![offsite](../../assets/fyle-offsite/offsite.png)
+![offsite](@/assets/fyle-offsite/offsite.png)
 
 As the date approached, during the last week before the offsite, I received my tickets and the
 detailed itinerary. It was finally time to pack for the offsite. Despite lingering doubts, I
@@ -204,21 +203,21 @@ morning, I found myself gazing out at a scene where horses were being prepared f
 skyscrapers loomed in the background, and the bustle of Bangalore's traffic painted a dynamic
 backdrop.
 
-![holiday-inn-view-1](../../assets/fyle-offsite/holiday-inn-view-1.jpg)
+![holiday-inn-view-1](@/assets/fyle-offsite/holiday-inn-view-1.jpg)
 
-<!-- ![holiday-inn-view-3](../../assets/fyle-offsite/holiday-inn-view-3.jpg) -->
+<!-- ![holiday-inn-view-3](@/assets/fyle-offsite/holiday-inn-view-3.jpg) -->
 
 The beauty of the moment was such that one could easily spend hours just taking in the sights. It
 was a view that resonated with both tranquility and vibrancy, offering a glimpse into the city's
 diverse energies.
 
-![holiday-inn-view-2](../../assets/fyle-offsite/holiday-inn-view-2.jpg)
-![holiday-inn-view-4](../../assets/fyle-offsite/holiday-inn-view-4.jpg)
+![holiday-inn-view-2](@/assets/fyle-offsite/holiday-inn-view-2.jpg)
+![holiday-inn-view-4](@/assets/fyle-offsite/holiday-inn-view-4.jpg)
 
 Reflecting on this serene start to the day, I couldn't help but joke about returning once I've
 earned enough to justify splurging on such luxuries for more than just a day!
 
-<!-- ![holiday-inn-view-video](../../assets/fyle-offsite/holiday-inn-view.webm) -->
+<!-- ![holiday-inn-view-video](@/assets/fyle-offsite/holiday-inn-view.webm) -->
 
 After a quick breakfast, we hurriedly prepared for our journey to
 [Clarks Exotica](https://g.co/kgs/ttzibmj), a serene resort nestled in the Nandi Hills near
@@ -245,7 +244,7 @@ Upon our arrival at Clarks Exotica, I was greeted by
 support whenever I face challenges, whether technical or otherwise. He has also been instrumental in
 helping me grasp the intricacies of our product.
 
-![clarks](../../assets/fyle-offsite/clarks-3.jpg) ![clarks](../../assets/fyle-offsite/clarks-4.jpg)
+![clarks](@/assets/fyle-offsite/clarks-3.jpg) ![clarks](@/assets/fyle-offsite/clarks-4.jpg)
 
 ##### **State of the Union at Lotus Banquet**
 
@@ -260,7 +259,7 @@ centered around Fyle's achievements, our goals for the upcoming quarter, and ins
 product roadmap. It was inspiring to witness their commitment to prioritizing employee well-being
 and growth within the company culture.
 
-![clarks-pool](../../assets/fyle-offsite/clarks-2.jpg)
+![clarks-pool](@/assets/fyle-offsite/clarks-2.jpg)
 
 ##### **Luxurious Lunch and Team Bonding**
 
@@ -279,7 +278,7 @@ nod to the cost-effective and practical nature of street cricket rules. Since I 
 participating, I enjoyed watching the match unfold, soaking in the excitement, banter, and spirited
 camaraderie from the sidelines.
 
-![cricket-image](../../assets/fyle-offsite/cricket.jpg)
+![cricket-image](@/assets/fyle-offsite/cricket.jpg)
 
 ##### **Evening Activities: From Tea and Games to Dinner and Talent**
 
@@ -306,7 +305,7 @@ Day 2 started with a refreshing breakfast, setting the tone for another eventful
 The morning kicked off with a team-wide photo session, bringing everyone together regardless of
 their teams. It was a moment to capture the unity and spirit of the entire Fyle team in one frame.
 
-![group-photo](../../assets/fyle-offsite/group-photo.jpg)
+![group-photo](@/assets/fyle-offsite/group-photo.jpg)
 
 ##### **Exploring and Connecting**
 
@@ -316,7 +315,7 @@ resort offerings. I spent some time near the pool, engaging in an enlightening c
 [Dimple](https://in.linkedin.com/in/dimple-kaluram-hemanth-2073a5158), the frontend engineering
 manager. It was a pleasant opportunity to connect beyond work discussions.
 
-![clarks-pool](../../assets/fyle-offsite/clarks-1.jpg)
+![clarks-pool](@/assets/fyle-offsite/clarks-1.jpg)
 
 ##### **Cricket Finals and Chai Snacks**
 

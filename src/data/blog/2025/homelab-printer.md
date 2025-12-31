@@ -5,8 +5,6 @@ title: Giving My Old USB Printer a New Life with a Raspberry Pi
 featured: true
 draft: false
 tags:
-  - raspberry pi
-  - printer
   - homelab
 description:
   Breathing new life into an old USB-only printer by turning it into a network printer using a
@@ -32,8 +30,8 @@ a 256GB SD card with good write endurance, a case, and the power supply. Flashed
 Even with containers and a couple of headless browsers humming along, the Pi just chilled.
 
 _See, how the Pi is barely sweating:_
-![Raspberry Pi 5 Model B](../../assets/homelab-printer/neofetch.png)
-![PI HTOP Usage](../../assets/homelab-printer/htop.png)
+![Raspberry Pi 5 Model B](@/assets/homelab-printer/neofetch.png)
+![PI HTOP Usage](@/assets/homelab-printer/htop.png)
 
 ## The printer problem
 
@@ -74,7 +72,7 @@ My plan: connect the USB printer to the Pi, install and configure CUPS, make the
 network-accessible — and ideally never deal with file transfers for printing again.
 
 _This is a dead simple diagram of the setup:_
-![Working Diagram](../../assets/homelab-printer/working-diagram.png)
+![Working Diagram](@/assets/homelab-printer/working-diagram.png)
 
 ## Enough Talk, How to do it?
 
@@ -182,7 +180,7 @@ http://<your-pi-ip>:631
 
 _You should see the CUPS web UI like this:_
 
-![CUPS Web UI](../../assets/homelab-printer/cups-web-ui.png)
+![CUPS Web UI](@/assets/homelab-printer/cups-web-ui.png)
 
 ### 7. Add the printer via web interface
 
@@ -252,7 +250,7 @@ Steps:
 
 After one hour of hacking. This is what I got:
 
-![Screenshot of the working setup](../../assets/homelab-printer/screenshot.png)
+![Screenshot of the working setup](@/assets/homelab-printer/screenshot.png)
 
 No more cable swapping, no more file transfers, no more printer amnesia. Just a printer that shows
 up on the network like it should’ve from day one.

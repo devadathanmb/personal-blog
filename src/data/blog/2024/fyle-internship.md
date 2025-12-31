@@ -5,10 +5,10 @@ title: My Journey to an Internship at Fyle
 featured: true
 draft: false
 tags:
-  - personal
   - personal blog
   - internshiip
   - fyle
+  - work
 description: That's how I got a job
 ---
 

@@ -6,9 +6,6 @@ featured: false
 draft: false
 tags:
   - linux
-  - autologin
-  - systemd
-  - getty
 description: How to enable autologin in Linux using Getty.
 ---
 
