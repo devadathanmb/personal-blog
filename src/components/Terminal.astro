@@ -28,7 +28,7 @@
       <span class="argument">about_me.txt</span>
     </div>
     <div class="terminal-output">
-      Hey there, curious explorer! 👋
+      Hey there, curious explorer! <span class="wave">👋</span>
       <br />
       Welcome to my little corner of the internet.
       <br />
@@ -50,13 +50,15 @@
       <span class="path">mindspace/</span>
     </div>
     <div class="terminal-output">
-      <span class="directory">backend-engineering/</span>
+      <a href="/tags/backend-engineering" class="directory"
+        >backend-engineering/</a
+      >
       <br />
-      <span class="directory">linux/</span>
+      <a href="/tags/linux" class="directory">linux/</a>
       <br />
-      <span class="directory">cloud/</span>
+      <a href="/tags/cloud" class="directory">cloud/</a>
       <br />
-      <span class="directory">homelab/</span>
+      <a href="/tags/homelab" class="directory">homelab/</a>
       <br />
       <span class="file-name">.and-more</span>
     </div>
@@ -196,6 +198,13 @@
   .directory {
     color: #58a6ff;
     font-weight: 400;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .directory:hover {
+    color: #79c0ff;
+    text-decoration: underline;
   }
 
   .file-name {
@@ -206,6 +215,13 @@
     animation: blink 1s infinite;
   }
 
+  .wave {
+    display: inline-block;
+    animation: wave 2.5s infinite;
+    animation-delay: 0.5s;
+    transform-origin: 70% 70%;
+  }
+
   @keyframes blink {
     0%,
     50% {
@@ -214,6 +230,31 @@
     51%,
     100% {
       opacity: 0;
+    }
+  }
+
+  @keyframes wave {
+    0% {
+      transform: rotate(0deg);
+    }
+    10% {
+      transform: rotate(14deg);
+    }
+    20% {
+      transform: rotate(-8deg);
+    }
+    30% {
+      transform: rotate(14deg);
+    }
+    40% {
+      transform: rotate(-4deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+    60%,
+    100% {
+      transform: rotate(0deg);
     }
   }
 
@@ -276,6 +317,12 @@
   html[data-theme="light"] .directory {
     color: #0969da;
     font-weight: 400;
+    text-decoration: none;
+  }
+
+  html[data-theme="light"] .directory:hover {
+    color: #0550ae;
+    text-decoration: underline;
   }
 
   html[data-theme="light"] .file-name {
