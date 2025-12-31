@@ -151,42 +151,14 @@ const TERMINAL_MESSAGES = [
     overflow-x: auto;
   }
 
-  .command {
-    color: #f0f6fc;
-    word-break: break-all;
-  }
-
   .valid-command {
     color: var(--color-terminal-green);
     font-weight: 400;
   }
 
-  .command-flag {
-    color: var(--color-terminal-green);
-    margin-left: 0.25rem;
-  }
-
   .argument {
     color: #e6edf3;
     margin-left: 0.25rem;
-  }
-
-  .file-permissions {
-    color: #58a6ff;
-    margin-right: 0.5rem;
-    font-family: monospace;
-  }
-
-  .directory {
-    color: #58a6ff;
-    font-weight: 400;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .directory:hover {
-    color: #79c0ff;
-    text-decoration: underline;
   }
 
   .symlink-path {
@@ -197,7 +169,7 @@ const TERMINAL_MESSAGES = [
   }
 
   .symlink-path:hover {
-    color: #79c0ff;
+    color: var(--color-terminal-green);
     text-decoration: underline;
   }
 
@@ -233,10 +205,6 @@ const TERMINAL_MESSAGES = [
     display: inline;
   }
 
-  .file-name {
-    color: #e6edf3;
-  }
-
   .typing-container {
     display: inline-block;
     margin-left: 0.25rem;
@@ -262,13 +230,6 @@ const TERMINAL_MESSAGES = [
     animation: blink 1s infinite;
   }
 
-  .wave {
-    display: inline-block;
-    animation: wave 2.5s infinite;
-    animation-delay: 0.5s;
-    transform-origin: 70% 70%;
-  }
-
   @keyframes blink {
     0%,
     50% {
@@ -277,31 +238,6 @@ const TERMINAL_MESSAGES = [
     51%,
     100% {
       opacity: 0;
-    }
-  }
-
-  @keyframes wave {
-    0% {
-      transform: rotate(0deg);
-    }
-    10% {
-      transform: rotate(14deg);
-    }
-    20% {
-      transform: rotate(-8deg);
-    }
-    30% {
-      transform: rotate(14deg);
-    }
-    40% {
-      transform: rotate(-4deg);
-    }
-    50% {
-      transform: rotate(10deg);
-    }
-    60%,
-    100% {
-      transform: rotate(0deg);
     }
   }
 
@@ -320,36 +256,13 @@ const TERMINAL_MESSAGES = [
     color: #1f2328;
   }
 
-  html[data-theme="light"] .command {
-    color: #24292f;
-  }
-
   html[data-theme="light"] .valid-command {
     color: var(--color-terminal-green);
     font-weight: 400;
   }
 
-  html[data-theme="light"] .command-flag {
-    color: var(--color-terminal-green);
-  }
-
   html[data-theme="light"] .argument {
     color: #24292f;
-  }
-
-  html[data-theme="light"] .file-permissions {
-    color: #0969da;
-  }
-
-  html[data-theme="light"] .directory {
-    color: #0969da;
-    font-weight: 400;
-    text-decoration: none;
-  }
-
-  html[data-theme="light"] .directory:hover {
-    color: #0550ae;
-    text-decoration: underline;
   }
 
   html[data-theme="light"] .symlink-path {
@@ -358,7 +271,7 @@ const TERMINAL_MESSAGES = [
   }
 
   html[data-theme="light"] .symlink-path:hover {
-    color: #0550ae;
+    color: var(--color-terminal-green);
     text-decoration: underline;
   }
 
@@ -385,10 +298,6 @@ const TERMINAL_MESSAGES = [
 
   html[data-theme="light"] .typed-text :global(.comment) {
     color: #656d76;
-  }
-
-  html[data-theme="light"] .file-name {
-    color: #24292f;
   }
 
   /* Mobile responsive styles */
