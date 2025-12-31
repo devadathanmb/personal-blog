@@ -9,7 +9,7 @@ html[data-theme="light"] {
   --foreground: rgb(36 41 47); /* GitHub dark text */
   --accent: rgb(37 99 235); /* GitHub blue */
   --muted: rgb(246 248 250); /* GitHub light gray */
-  --border: rgb(208 215 222); /* GitHub border */
+  --border: rgb(120 150 190); /* Darker blue-tinted border for light mode */
   --terminal-green: rgb(34 197 94); /* Terminal green */
   --cursor-light: rgba(37, 99, 235, 0.12);
   --cursor-light-core: rgba(37, 99, 235, 0.25);
@@ -20,7 +20,7 @@ html[data-theme="dark"] {
   --foreground: rgb(230 237 243); /* GitHub light text */
   --accent: rgb(56 189 248); /* Vibrant sky blue */
   --muted: rgb(22 27 34); /* GitHub dark card */
-  --border: rgb(48 54 61); /* GitHub dark border */
+  --border: rgb(85 105 135); /* Crisp blue-tinted border */
   --terminal-green: rgb(74 222 128); /* Terminal green */
   --cursor-light: rgba(56, 189, 248, 0.15);
   --cursor-light-core: rgba(56, 189, 248, 0.25);
@@ -50,8 +50,8 @@ html[data-theme="dark"] {
   }
   body {
     @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent/75 selection:text-background;
+    @apply text-base sm:text-[1.1rem];
     letter-spacing: -0.015em;
-    font-size: 1.1rem;
   }
   a,
   button {
