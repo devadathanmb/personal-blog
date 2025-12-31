@@ -1,0 +1,26 @@
+---
+import { SOCIALS } from "@/constants";
+
+export function getStaticPaths() {
+  // Generate paths for all socials + email alias
+  const paths = SOCIALS.map(social => ({
+    params: { social: social.name.toLowerCase() },
+    props: { href: social.href },
+  }));
+
+  // Add email alias for Mail
+  const mailEntry = SOCIALS.find(s => s.name.toLowerCase() === "mail");
+  if (mailEntry) {
+    paths.push({
+      params: { social: "email" },
+      props: { href: mailEntry.href },
+    });
+  }
+
+  return paths;
+}
+
+const { href } = Astro.props;
+
+return Astro.redirect(href, 301);
+---
