@@ -44,136 +44,178 @@ const TERMINAL_MESSAGES = [
 ];
 ---
 
-<div class="terminal-container">
-  <div class="terminal-header">
-    <div class="terminal-buttons">
-      <span class="btn btn-close" title="Nice try! I'm immortal"></span>
-      <span class="btn btn-minimize" title="Minimizing existential dread..."
-      ></span>
-      <span class="btn btn-maximize" title="Already at max awesomeness"></span>
-    </div>
-    <div class="terminal-title">Dev@Machine:~$</div>
-  </div>
-  <div class="terminal-body">
-    <TerminalLine><span class="valid-command">whoami</span></TerminalLine>
-    <TerminalOutput>
-      Devadathan <span class="aka-text">(Known among most as Dev)</span>
-    </TerminalOutput>
-
-    <TerminalLine
-      ><span class="valid-command">echo</span>
-      <span class="argument">$STATUS</span></TerminalLine
-    >
-    <TerminalOutput> Software engineer | Still figuring it out </TerminalOutput>
-
-    <TerminalLine
-      ><span class="valid-command">file</span>
-      <span class="argument">about.txt</span></TerminalLine
-    >
-    <TerminalOutput>
-      about.txt:
-      <IconArrowRight class="arrow" />
-      <span class="url-container">
-        <a
-          href="/about"
-          class="symlink-path"
-          title="So you wanna know about me ah?"
-          data-url={`${SITE.website}/about`}
-        >
-          <span class="url-full">[{domain}/about]</span>
-          <span class="url-short">[/about]</span>
-        </a>
-        <button class="copy-btn" data-copy-url={`${SITE.website}/about`}>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
-            ></path>
-          </svg>
-        </button>
-      </span>
-    </TerminalOutput>
-
-    <TerminalLine
-      ><span class="valid-command">git</span>
-      <span class="argument">remote -v</span></TerminalLine
-    >
-    <TerminalOutput>
-      <div class="git-remotes">
-        {
-          SOCIALS.map(social => {
-            const slug =
-              social.name.toLowerCase() === "mail"
-                ? "email"
-                : social.name.toLowerCase();
-            return (
-              <div class="remote-line">
-                <span class="remote-name">{social.name}</span>
-                <IconArrowRight class="arrow" />
-                <span class="url-container">
-                  <a
-                    href={`/socials/${slug}`}
-                    class="remote-url"
-                    title={
-                      SOCIAL_TOOLTIPS[social.name] || "Check out my profile"
-                    }
-                    data-url={`${SITE.website}/socials/${slug}`}
-                  >
-                    <span class="url-full">
-                      [{domain}/socials/{slug}]
-                    </span>
-                    <span class="url-short">[/socials/{slug}]</span>
-                  </a>
-                  <button
-                    class="copy-btn"
-                    data-copy-url={`${SITE.website}/socials/${slug}`}
-                  >
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                    </svg>
-                  </button>
-                </span>
-              </div>
-            );
-          })
-        }
+<div class="terminal-wrapper">
+  <div class="terminal-container">
+    <div class="terminal-header">
+      <div class="terminal-buttons">
+        <span class="btn btn-close" title="Nice try! I'm immortal"></span>
+        <span class="btn btn-minimize" title="Minimizing existential dread..."
+        ></span>
+        <span class="btn btn-maximize" title="Already at max awesomeness"
+        ></span>
       </div>
-    </TerminalOutput>
+      <div class="terminal-title">Dev@Machine:~$</div>
+    </div>
+    <div class="terminal-body">
+      <TerminalLine><span class="valid-command">whoami</span></TerminalLine>
+      <TerminalOutput>
+        Devadathan <span class="aka-text">(Known among most as Dev)</span>
+      </TerminalOutput>
 
-    <TerminalLine>
-      <span class="typing-container">
-        <span
-          class="typed-text"
-          data-messages={JSON.stringify(TERMINAL_MESSAGES)}></span>
-        <span class="cursor-blink">_</span>
-      </span>
-    </TerminalLine>
+      <TerminalLine
+        ><span class="valid-command">echo</span>
+        <span class="argument">$STATUS</span></TerminalLine
+      >
+      <TerminalOutput>
+        Software engineer | Still figuring it out
+      </TerminalOutput>
+
+      <TerminalLine
+        ><span class="valid-command">file</span>
+        <span class="argument">about.txt</span></TerminalLine
+      >
+      <TerminalOutput>
+        about.txt:
+        <IconArrowRight class="arrow" />
+        <span class="url-container">
+          <a
+            href="/about"
+            class="symlink-path"
+            title="So you wanna know about me ah?"
+            data-url={`${SITE.website}/about`}
+          >
+            <span class="url-full">[{domain}/about]</span>
+            <span class="url-short">[/about]</span>
+          </a>
+          <button class="copy-btn" data-copy-url={`${SITE.website}/about`}>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+              ></path>
+            </svg>
+          </button>
+        </span>
+      </TerminalOutput>
+
+      <TerminalLine
+        ><span class="valid-command">git</span>
+        <span class="argument">remote -v</span></TerminalLine
+      >
+      <TerminalOutput>
+        <div class="git-remotes">
+          {
+            SOCIALS.map(social => {
+              const slug =
+                social.name.toLowerCase() === "mail"
+                  ? "email"
+                  : social.name.toLowerCase();
+              return (
+                <div class="remote-line">
+                  <span class="remote-name">{social.name}</span>
+                  <IconArrowRight class="arrow" />
+                  <span class="url-container">
+                    <a
+                      href={`/socials/${slug}`}
+                      class="remote-url"
+                      title={
+                        SOCIAL_TOOLTIPS[social.name] || "Check out my profile"
+                      }
+                      data-url={`${SITE.website}/socials/${slug}`}
+                    >
+                      <span class="url-full">
+                        [{domain}/socials/{slug}]
+                      </span>
+                      <span class="url-short">[/socials/{slug}]</span>
+                    </a>
+                    <button
+                      class="copy-btn"
+                      data-copy-url={`${SITE.website}/socials/${slug}`}
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <rect
+                          x="9"
+                          y="9"
+                          width="13"
+                          height="13"
+                          rx="2"
+                          ry="2"
+                        />
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                      </svg>
+                    </button>
+                  </span>
+                </div>
+              );
+            })
+          }
+        </div>
+      </TerminalOutput>
+
+      <TerminalLine>
+        <span class="typing-container">
+          <span
+            class="typed-text"
+            data-messages={JSON.stringify(TERMINAL_MESSAGES)}></span>
+          <span class="cursor-blink">_</span>
+        </span>
+      </TerminalLine>
+    </div>
   </div>
 </div>
 
 <style>
-  .terminal-container {
-    background-color: #1a1e23;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  .terminal-wrapper {
+    position: relative;
     max-width: 60rem;
     width: 100%;
     margin: 2rem auto 0 auto;
+    padding: 2px;
+    border-radius: 8px;
+    background: var(--color-border);
+    overflow: hidden;
+  }
+
+  .terminal-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    background: conic-gradient(
+      from 0deg at 50% 50%,
+      var(--color-border) 0deg,
+      var(--color-border) 60deg,
+      var(--color-accent) 90deg,
+      var(--color-accent) 120deg,
+      var(--color-border) 150deg,
+      var(--color-border) 360deg
+    );
+    animation: rotate-border 8s linear infinite;
+  }
+
+  @keyframes rotate-border {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .terminal-container {
+    position: relative;
+    background-color: #1a1e23;
+    border-radius: 7px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     font-family: inherit;
     overflow: hidden;
   }
@@ -399,9 +441,12 @@ const TERMINAL_MESSAGES = [
   }
 
   /* Light mode adjustments */
+  html[data-theme="light"] .terminal-wrapper {
+    background: var(--color-border);
+  }
+
   html[data-theme="light"] .terminal-container {
     background-color: #f8f9fa;
-    border-color: var(--color-border);
   }
 
   html[data-theme="light"] .terminal-header {
@@ -472,10 +517,14 @@ const TERMINAL_MESSAGES = [
 
   /* Mobile responsive styles */
   @media (max-width: 768px) {
-    .terminal-container {
+    .terminal-wrapper {
       margin: 1rem auto 0 auto;
       border-radius: 6px;
       max-width: none;
+    }
+
+    .terminal-container {
+      border-radius: 5px;
     }
 
     .terminal-header {
@@ -517,7 +566,7 @@ const TERMINAL_MESSAGES = [
   }
 
   @media (max-width: 480px) {
-    .terminal-container {
+    .terminal-wrapper {
       margin: 0.5rem auto 0 auto;
     }
 
