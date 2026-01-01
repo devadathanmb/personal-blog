@@ -4,6 +4,7 @@ import { SITE } from "@/config";
 import TerminalLine from "./TerminalLine.astro";
 import TerminalOutput from "./TerminalOutput.astro";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import IconCopy from "@/assets/icons/IconCopy.svg";
 
 // Extract domain from SITE.website (removes https://)
 const domain = SITE.website.replace(/^https?:\/\//, "");
@@ -88,18 +89,7 @@ const TERMINAL_MESSAGES = [
             <span class="url-short">[/about]</span>
           </a>
           <button class="copy-btn" data-copy-url={`${SITE.website}/about`}>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
-              ></path>
-            </svg>
+            <IconCopy />
           </button>
         </span>
       </TerminalOutput>
@@ -138,24 +128,7 @@ const TERMINAL_MESSAGES = [
                       class="copy-btn"
                       data-copy-url={`${SITE.website}/socials/${slug}`}
                     >
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                      >
-                        <rect
-                          x="9"
-                          y="9"
-                          width="13"
-                          height="13"
-                          rx="2"
-                          ry="2"
-                        />
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                      </svg>
+                      <IconCopy />
                     </button>
                   </span>
                 </div>
@@ -733,7 +706,7 @@ const TERMINAL_MESSAGES = [
           button.classList.add("copied");
           const originalHTML = button.innerHTML;
           button.innerHTML = `
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
           `;

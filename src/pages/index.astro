@@ -9,6 +9,7 @@ import Hr from "@/components/Hr.astro";
 import { HeroTerminal } from "@/components/terminal";
 import getSortedPosts from "@/utils/getSortedPosts";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import IconChevronDown from "@/assets/icons/IconChevronDown.svg";
 import { SITE } from "@/config";
 
 const posts = await getCollection("blog");
@@ -26,18 +27,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         <HeroTerminal />
       </div>
       <div class="scroll-indicator">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <IconChevronDown />
       </div>
     </section>
 
