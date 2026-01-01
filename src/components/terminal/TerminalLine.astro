@@ -12,8 +12,8 @@
 
 <style>
   .terminal-line {
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 0.25rem;
     word-wrap: break-word;
     overflow-wrap: break-word;
   }
@@ -70,6 +70,11 @@
 
   /* Mobile responsive styles - hide verbose prompt parts, show only $ */
   @media (max-width: 768px) {
+    .terminal-line {
+      margin-top: 0.75rem;
+      margin-bottom: 0.125rem;
+    }
+
     .username,
     .at-symbol,
     .hostname,

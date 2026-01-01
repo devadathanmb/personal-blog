@@ -37,11 +37,12 @@ const TERMINAL_MESSAGES = [
   "cat /dev/null > expectations",
   "make clean && make mistakes",
   "ps aux | grep purpose",
-  "# There are 10 types of people: those who understand binary",
-  "git blame # always someone else's fault",
-  "# 99 little bugs in the code, 99 bugs in the code...",
   "chmod 777 # what could go wrong?",
   "exit 1 # try again tomorrow",
+  "npm audit # anxiety intensifies",
+  "terraform apply # last words",
+  "claude --dangerously-skip-permissions",
+  "# It's always DNS",
 ];
 ---
 
@@ -63,35 +64,57 @@ const TERMINAL_MESSAGES = [
         Devadathan <span class="aka-text">(Known among most as Dev)</span>
       </TerminalOutput>
 
-      <TerminalLine
+      <!-- <TerminalLine
         ><span class="valid-command">echo</span>
         <span class="argument">$STATUS</span></TerminalLine
       >
       <TerminalOutput>
         Software engineer | Still figuring it out
-      </TerminalOutput>
+      </TerminalOutput> -->
 
       <TerminalLine
-        ><span class="valid-command">file</span>
-        <span class="argument">about.txt</span></TerminalLine
+        ><span class="valid-command">ls</span>
+        <span class="argument">-l ~/me</span></TerminalLine
       >
       <TerminalOutput>
-        about.txt:
-        <IconArrowRight class="arrow" />
-        <span class="url-container">
-          <a
-            href="/about"
-            class="symlink-path"
-            title="So you wanna know about me ah?"
-            data-url={`${SITE.website}/about`}
-          >
-            <span class="url-full">[{domain}/about]</span>
-            <span class="url-short">[/about]</span>
-          </a>
-          <button class="copy-btn" data-copy-url={`${SITE.website}/about`}>
-            <IconCopy />
-          </button>
-        </span>
+        <div class="git-remotes">
+          <div class="remote-line">
+            <span class="remote-name">"About Me"</span>
+            <IconArrowRight class="arrow" />
+            <span class="url-container">
+              <a
+                href="/about"
+                class="remote-url"
+                title="So you wanna know about me ah?"
+                data-url={`${SITE.website}/about`}
+              >
+                <span class="url-full">[{domain}/about]</span>
+                <span class="url-short">[/about]</span>
+              </a>
+              <button class="copy-btn" data-copy-url={`${SITE.website}/about`}>
+                <IconCopy />
+              </button>
+            </span>
+          </div>
+          <div class="remote-line">
+            <span class="remote-name">"My Posts"</span>
+            <IconArrowRight class="arrow" />
+            <span class="url-container">
+              <a
+                href="/posts"
+                class="remote-url"
+                title="Check out what I've been writing"
+                data-url={`${SITE.website}/posts`}
+              >
+                <span class="url-full">[{domain}/posts]</span>
+                <span class="url-short">[/posts]</span>
+              </a>
+              <button class="copy-btn" data-copy-url={`${SITE.website}/posts`}>
+                <IconCopy />
+              </button>
+            </span>
+          </div>
+        </div>
       </TerminalOutput>
 
       <TerminalLine
@@ -152,11 +175,20 @@ const TERMINAL_MESSAGES = [
 
 <style>
   .terminal-wrapper {
+    /* Terminal color variables - dark theme */
+    --terminal-text: #e6edf3;
+    --terminal-link: #58a6ff;
+    --terminal-muted: #8b949e;
+    --terminal-bg: #1a1e23;
+    --terminal-header-bg: #21262d;
+    --terminal-secondary-text: #c9d1d9;
+    --terminal-at-symbol: #e6edf3;
+
     position: relative;
     max-width: 60rem;
     width: 100%;
     margin: 2rem auto 0 auto;
-    padding: 2px;
+    padding: 1px;
     border-radius: 8px;
     background: var(--color-border);
     overflow: hidden;
@@ -186,7 +218,7 @@ const TERMINAL_MESSAGES = [
 
   .terminal-container {
     position: relative;
-    background-color: #1a1e23;
+    background-color: var(--terminal-bg);
     border-radius: 7px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     font-family: inherit;
@@ -194,7 +226,7 @@ const TERMINAL_MESSAGES = [
   }
 
   .terminal-header {
-    background-color: #21262d;
+    background-color: var(--terminal-header-bg);
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     padding: 0.75rem 1rem;
@@ -253,7 +285,7 @@ const TERMINAL_MESSAGES = [
   }
 
   .terminal-title {
-    color: #f0f6fc;
+    color: var(--terminal-text);
     font-size: 0.875rem;
     font-weight: 500;
     white-space: nowrap;
@@ -274,7 +306,7 @@ const TERMINAL_MESSAGES = [
   }
 
   .argument {
-    color: #e6edf3;
+    color: var(--terminal-text);
     margin-left: 0.25rem;
   }
 
@@ -293,7 +325,7 @@ const TERMINAL_MESSAGES = [
     opacity: 0;
     background: none;
     border: none;
-    color: #8b949e;
+    color: var(--terminal-muted);
     cursor: pointer;
     padding: 0.25rem;
     display: inline-flex;
@@ -340,14 +372,14 @@ const TERMINAL_MESSAGES = [
   }
 
   .remote-name {
-    color: #f0f6fc;
+    color: var(--terminal-text);
     font-weight: 400;
     min-width: 5.5rem;
     flex-shrink: 0;
   }
 
   .arrow {
-    color: #c9d1d9;
+    color: var(--terminal-secondary-text);
     flex-shrink: 0;
     display: inline-block;
     vertical-align: middle;
@@ -391,11 +423,11 @@ const TERMINAL_MESSAGES = [
   }
 
   .typed-text :global(.args) {
-    color: #e6edf3;
+    color: var(--terminal-text);
   }
 
   .typed-text :global(.comment) {
-    color: #8b949e;
+    color: var(--terminal-muted);
   }
 
   .cursor-blink {
@@ -415,20 +447,29 @@ const TERMINAL_MESSAGES = [
 
   /* Light mode adjustments */
   html[data-theme="light"] .terminal-wrapper {
+    /* Light theme color overrides */
+    --terminal-text: #24292f;
+    --terminal-link: #0969da;
+    --terminal-muted: #656d76;
+    --terminal-bg: #f8f9fa;
+    --terminal-header-bg: #e9ecef;
+    --terminal-secondary-text: #424a53;
+    --terminal-at-symbol: #24292f;
+
     background: var(--color-border);
   }
 
   html[data-theme="light"] .terminal-container {
-    background-color: #f8f9fa;
+    background-color: var(--terminal-bg);
   }
 
   html[data-theme="light"] .terminal-header {
-    background-color: #e9ecef;
+    background-color: var(--terminal-header-bg);
     border-bottom-color: var(--color-border);
   }
 
   html[data-theme="light"] .terminal-title {
-    color: #1f2328;
+    color: var(--terminal-text);
   }
 
   html[data-theme="light"] .valid-command {
@@ -437,7 +478,7 @@ const TERMINAL_MESSAGES = [
   }
 
   html[data-theme="light"] .argument {
-    color: #24292f;
+    color: var(--terminal-text);
   }
 
   html[data-theme="light"] .symlink-path {
@@ -451,15 +492,15 @@ const TERMINAL_MESSAGES = [
   }
 
   html[data-theme="light"] .remote-name {
-    color: #24292f;
+    color: var(--terminal-text);
   }
 
   html[data-theme="light"] .arrow {
-    color: #424a53;
+    color: var(--terminal-secondary-text);
   }
 
   html[data-theme="light"] .copy-btn {
-    color: #656d76;
+    color: var(--terminal-muted);
   }
 
   html[data-theme="light"] .copy-btn:hover {
@@ -481,11 +522,11 @@ const TERMINAL_MESSAGES = [
   }
 
   html[data-theme="light"] .typed-text :global(.args) {
-    color: #24292f;
+    color: var(--terminal-text);
   }
 
   html[data-theme="light"] .typed-text :global(.comment) {
-    color: #656d76;
+    color: var(--terminal-muted);
   }
 
   /* Mobile responsive styles */
