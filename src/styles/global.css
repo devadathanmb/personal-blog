@@ -5,11 +5,11 @@
 
 :root,
 html[data-theme="light"] {
-  --background: rgb(255 255 255); /* GitHub white */
+  --background: rgb(246 248 250); /* Cool blue-tinted off-white */
   --foreground: rgb(36 41 47); /* GitHub dark text */
   --accent: rgb(37 99 235); /* GitHub blue */
-  --muted: rgb(246 248 250); /* GitHub light gray */
-  --border: rgb(120 150 190); /* Darker blue-tinted border for light mode */
+  --muted: rgb(234 237 242); /* Darker blue-gray for cards */
+  --border: rgb(96 125 165); /* Darker border for visibility */
   --terminal-green: rgb(34 197 94); /* Terminal green */
   --cursor-light: rgba(37, 99, 235, 0.12);
   --cursor-light-core: rgba(37, 99, 235, 0.25);
@@ -35,7 +35,8 @@ html[data-theme="dark"] {
   --color-terminal-green: var(--terminal-green);
 
   --font-mono:
-    "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    /* "Space Mono", */
+    "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
 }
 
