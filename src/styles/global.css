@@ -16,11 +16,11 @@ html[data-theme="light"] {
 }
 
 html[data-theme="dark"] {
-  --background: rgb(13 17 23); /* GitHub dark bg */
-  --foreground: rgb(230 237 243); /* GitHub light text */
+  --background: rgb(16 21 27); /* Optimized dark navy for depth */
+  --foreground: rgb(226 233 240); /* Softer white reduces halation */
   --accent: rgb(56 189 248); /* Vibrant sky blue */
-  --muted: rgb(22 27 34); /* GitHub dark card */
-  --border: rgb(85 105 135); /* Crisp blue-tinted border */
+  --muted: rgb(28 35 44); /* Darker contrast for cards */
+  --border: rgb(100 130 165); /* Lighter for visibility */
   --terminal-green: rgb(74 222 128); /* Terminal green */
   --cursor-light: rgba(56, 189, 248, 0.15);
   --cursor-light-core: rgba(56, 189, 248, 0.25);
