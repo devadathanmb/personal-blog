@@ -161,7 +161,7 @@ const TERMINAL_MESSAGES = [
         </div>
       </TerminalOutput>
 
-      <TerminalLine>
+      <TerminalLine class="typing-line">
         <span class="typing-container">
           <span
             class="typed-text"
@@ -405,6 +405,11 @@ const TERMINAL_MESSAGES = [
 
   .url-full {
     display: inline;
+  }
+
+  :global(.terminal-line.typing-line) {
+    height: 3.25rem;
+    overflow: hidden;
   }
 
   .typing-container {
