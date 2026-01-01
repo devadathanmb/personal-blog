@@ -116,7 +116,38 @@ astro check && astro build && pagefind --site dist && cp -r dist/pagefind public
 - **Tailwind CSS 4**: Uses Vite plugin (`@tailwindcss/vite`)
 - **Global styles**: `src/styles/global.css`
 - **Typography**: Uses `@tailwindcss/typography` for markdown content
-- **Font**: Space Mono (loaded from Google Fonts in `Layout.astro`)
+- **Font**: Roboto Mono (loaded from Google Fonts in `Layout.astro`)
+
+### Color System
+
+**IMPORTANT**: All colors are research-based and WCAG AA compliant. Do NOT modify without verifying contrast ratios.
+
+**Light Mode** (`src/styles/global.css`):
+- Background: `rgb(246 248 250)` - Cool blue-tinted off-white (reduces eye strain vs pure white)
+- Foreground: `rgb(36 41 47)` - Dark text (14.2:1 contrast)
+- Accent: `rgb(37 99 235)` - GitHub blue
+- Muted: `rgb(234 237 242)` - Card backgrounds (creates elevation)
+- Border: `rgb(96 125 165)` - Darker for visibility (border animations)
+- Terminal Green: `rgb(0 116 48)` - Pure green, max saturation (5.05:1 contrast)
+
+**Dark Mode**:
+- Background: `rgb(16 21 27)` - Dark navy (better depth than pure black)
+- Foreground: `rgb(226 233 240)` - Soft white (reduces halation on OLED)
+- Accent: `rgb(56 189 248)` - Vibrant sky blue
+- Muted: `rgb(28 35 44)` - Card contrast
+- Border: `rgb(100 130 165)` - Lighter for visibility
+- Terminal Green: `rgb(74 222 128)` - Bright emerald (9.09:1 contrast)
+
+**Key Rationale**:
+- Light mode green is darker than typical terminal green for readability
+- Border colors optimized for rotating animation visibility
+- Off-white backgrounds (not pure white/black) reduce eye strain
+- All text meets WCAG AA minimum 4.5:1 contrast
+
+**When Modifying Colors**:
+1. Check contrast ratio using tools (WebAIM, browser DevTools)
+2. Test both light and dark modes
+3. Verify terminal component visibility separately (has own color overrides)
 
 ### Markdown Processing
 

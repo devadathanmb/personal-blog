@@ -14,7 +14,6 @@ Based on [AstroPaper](https://github.com/satnaing/astro-paper) theme.
 <img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/ba20fe50-de35-476f-afd4-e61be623bb68" />
 <img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/cd0aa7c2-6a50-4258-a840-b195b27cfd2d" />
 
-
 ## Features
 
 - Markdown-based blog posts and project pages
