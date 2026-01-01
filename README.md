@@ -6,15 +6,14 @@ Based on [AstroPaper](https://github.com/satnaing/astro-paper) theme.
 
 ## Screenshots
 
-<!-- Add screenshot of homepage here -->
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/6c469c59-cff3-4e2a-93e8-585c4b46970b" />
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/ceb92264-1440-420e-8c0b-384fe10491df" />
+<!-- Dark Mode -->
+<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/bec3425b-69fa-4b7b-8012-7010ef0b5e8a" />
+<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/7cf74d65-812c-4b81-9e1c-68b7e27a965a" />
 
-<!-- Add screenshot of blog post here -->
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/6f200750-cf81-4693-b603-64abf6be39d9" />
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/053ba632-1d5f-4fa2-96c2-396628835895" />
+<!-- Light Mode -->
+<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/ba20fe50-de35-476f-afd4-e61be623bb68" />
+<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/cd0aa7c2-6a50-4258-a840-b195b27cfd2d" />
 
-<!-- Add screenshot of projects page here -->
 
 ## Features
 
