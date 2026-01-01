@@ -3,6 +3,7 @@ import { SOCIALS } from "@/constants";
 import { SITE } from "@/config";
 import TerminalLine from "./TerminalLine.astro";
 import TerminalOutput from "./TerminalOutput.astro";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 
 // Extract domain from SITE.website (removes https://)
 const domain = SITE.website.replace(/^https?:\/\//, "");
@@ -71,19 +72,7 @@ const TERMINAL_MESSAGES = [
     >
     <TerminalOutput>
       about.txt:
-      <svg
-        class="arrow"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path d="M5 12h14M12 5l7 7-7 7"></path>
-      </svg>
+      <IconArrowRight class="arrow" />
       <span class="url-container">
         <a
           href="/about"
@@ -126,19 +115,7 @@ const TERMINAL_MESSAGES = [
             return (
               <div class="remote-line">
                 <span class="remote-name">{social.name}</span>
-                <svg
-                  class="arrow"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+                <IconArrowRight class="arrow" />
                 <span class="url-container">
                   <a
                     href={`/socials/${slug}`}
@@ -360,6 +337,8 @@ const TERMINAL_MESSAGES = [
     display: inline-block;
     vertical-align: middle;
     margin: 0 0.25rem;
+    width: 1rem;
+    height: 1rem;
   }
 
   .remote-url {
