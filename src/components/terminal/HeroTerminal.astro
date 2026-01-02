@@ -408,8 +408,14 @@ const TERMINAL_MESSAGES = [
   }
 
   :global(.terminal-line.typing-line) {
-    height: 3.25rem;
     overflow: hidden;
+  }
+
+  /* Only apply fixed height on small screens where wrapping occurs */
+  @media (max-width: 600px) {
+    :global(.terminal-line.typing-line) {
+      height: 3.25rem;
+    }
   }
 
   .typing-container {
