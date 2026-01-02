@@ -1,9 +1,11 @@
 ---
 // TerminalLine component - renders a terminal prompt line
 // Content after the prompt is passed via default slot
+const { class: className, ...rest } = Astro.props;
+const classes = className ? `terminal-line ${className}` : "terminal-line";
 ---
 
-<div class="terminal-line">
+<div class={classes} {...rest}>
   <span class="username">Dev</span><span class="at-symbol">@</span><span
     class="hostname">Machine</span
   ><span class="path">:~</span><span class="prompt">$</span>
