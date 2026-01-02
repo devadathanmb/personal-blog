@@ -653,24 +653,47 @@ const TERMINAL_MESSAGES = [
         commentPart = text.substring(hashIndex);
       }
 
-      // Split command part: first word is command, rest are args
-      const trimmed = commandPart.trim();
-      const firstSpaceIndex = trimmed.indexOf(" ");
+      // Split by shell operators (|, ||, &&, ;) while preserving them
+      // Regex captures operators with optional surrounding whitespace
+      const segments = commandPart.split(/(\s*(?:\|\||&&|;|\|)\s*)/);
 
       let result = "";
 
-      if (firstSpaceIndex === -1) {
-        // Only command, no args
-        if (trimmed) {
-          result += `<span class="cmd">${escapeHtml(trimmed)}</span>`;
-        }
-      } else {
-        // Command with args
-        const command = trimmed.substring(0, firstSpaceIndex);
-        const args = trimmed.substring(firstSpaceIndex);
+      // Process each segment
+      for (let i = 0; i < segments.length; i++) {
+        const segment = segments[i];
 
-        result += `<span class="cmd">${escapeHtml(command)}</span>`;
-        result += `<span class="args">${escapeHtml(args)}</span>`;
+        if (!segment) continue;
+
+        // Check if this segment is an operator
+        if (/^\s*(?:\|\||&&|;|\|)\s*$/.test(segment)) {
+          // Operators are rendered as args (white)
+          result += `<span class="args">${escapeHtml(segment)}</span>`;
+          continue;
+        }
+
+        // This is a command segment - highlight first word as command
+        const trimmed = segment.trim();
+        const firstSpaceIndex = trimmed.indexOf(" ");
+
+        if (firstSpaceIndex === -1) {
+          // Only command, no args
+          if (trimmed) {
+            result += `<span class="cmd">${escapeHtml(segment)}</span>`;
+          }
+        } else {
+          // Command with args
+          // Find where the command starts in the original segment (preserve leading spaces)
+          const leadingSpaces = segment.match(/^\s*/)?.[0] || "";
+          const command = trimmed.substring(0, firstSpaceIndex);
+          const args = trimmed.substring(firstSpaceIndex);
+
+          if (leadingSpaces) {
+            result += escapeHtml(leadingSpaces);
+          }
+          result += `<span class="cmd">${escapeHtml(command)}</span>`;
+          result += `<span class="args">${escapeHtml(args)}</span>`;
+        }
       }
 
       if (commentPart) {
