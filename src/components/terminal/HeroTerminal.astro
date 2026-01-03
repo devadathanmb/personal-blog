@@ -21,8 +21,6 @@ const SOCIAL_TOOLTIPS: Record<string, string> = {
 const TERMINAL_MESSAGES = [
   "# You're awesome :)",
   "# Welcome to the void... I mean, my blog!",
-  "# Making bugs since 2002... wait, features!",
-  "# Hey! You found me on the internet!",
   `# ${new Date().getFullYear()} is the year of the Linux Desktop!`,
   "rm -fr / --no-preserve-root # For removing French",
   "# There's no place like 127.0.0.1",
@@ -33,16 +31,25 @@ const TERMINAL_MESSAGES = [
   "npm install happiness # still waiting...",
   "# TODO: figure life out",
   "git checkout -b coping",
-  "sudo systemctl restart motivation.service",
+  "# Making bugs since 2002... wait, features!",
   "cat /dev/null > expectations",
   "make clean && make mistakes",
+  "# Hey! You found me on the internet!",
   "ps aux | grep purpose",
   "chmod 777 # what could go wrong?",
   "exit 1 # try again tomorrow",
   "npm audit # anxiety intensifies",
+  "# GNU's Not Unix (And neither am I)",
   "terraform apply # last words",
   "claude --dangerously-skip-permissions",
   "# It's always DNS",
+  "git push --force # YOLO",
+  "git stash pop # what was this again?",
+  "npm install # pulls half the internet",
+  "# TODO (NEVER DO)",
+  "# DROP TABLE users; -- oops",
+  "git commit -m 'minor' # 10k lines changed",
+  "# Wake up babe! Production just crashed.",
 ];
 ---
 
@@ -322,6 +329,8 @@ const TERMINAL_MESSAGES = [
   }
 
   .copy-btn {
+    width: 24px;
+    height: 24px;
     opacity: 0;
     background: none;
     border: none;
@@ -350,6 +359,12 @@ const TERMINAL_MESSAGES = [
 
   .copy-btn.copied {
     color: var(--color-terminal-green);
+  }
+
+  .copy-btn svg {
+    width: 16px;
+    height: 16px;
+    display: block;
   }
 
   .symlink-path {
@@ -408,10 +423,15 @@ const TERMINAL_MESSAGES = [
   }
 
   :global(.terminal-line.typing-line) {
-    height: 3.25rem;
     overflow: hidden;
   }
 
+  /* Only apply fixed height on small screens where wrapping occurs */
+  @media (max-width: 600px) {
+    :global(.terminal-line.typing-line) {
+      height: 3.25rem;
+    }
+  }
   .typing-container {
     display: inline-block;
     margin-left: 0.25rem;
@@ -614,6 +634,8 @@ const TERMINAL_MESSAGES = [
 </style>
 
 <script>
+  import IconCheck from "@/assets/icons/IconCheck.svg?raw";
+
   function initTypingAnimation() {
     const typedTextElement = document.querySelector(".typed-text");
     if (!typedTextElement) return;
@@ -774,11 +796,7 @@ const TERMINAL_MESSAGES = [
           // Visual feedback
           button.classList.add("copied");
           const originalHTML = button.innerHTML;
-          button.innerHTML = `
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-          `;
+          button.innerHTML = IconCheck;
 
           setTimeout(() => {
             button.classList.remove("copied");
