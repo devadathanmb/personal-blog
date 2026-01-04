@@ -11,7 +11,11 @@ html[data-theme="light"] {
   --muted: rgb(228 228 231); /* Zinc-200: Subtle separation */
   --border: rgb(186 186 190); /* Zinc-350: Better visibility but not harsh */
   --terminal-bg: rgb(255 255 255); /* White: Lighter/Elevated vs Page */
+  --terminal-header: rgb(244 244 245); /* Zinc-100 */
   --terminal-green: rgb(22 101 52); /* Green-700: Contrast safe on white */
+  --terminal-text: rgb(39 39 42); /* Zinc-800 */
+  --terminal-text-muted: rgb(113 113 122); /* Zinc-500 */
+  --terminal-text-secondary: rgb(82 82 91); /* Zinc-600 */
   --cursor-light: rgba(37, 99, 235, 0.12);
   --cursor-light-core: rgba(37, 99, 235, 0.25);
 }
@@ -23,7 +27,11 @@ html[data-theme="dark"] {
   --muted: rgb(39 39 42); /* Zinc-800: Dark separation */
   --border: rgb(63 63 70); /* Zinc-700: Gentle border */
   --terminal-bg: rgb(24 24 27); /* Zinc-900: Lighter/Elevated vs Page */
+  --terminal-header: rgb(39 39 42); /* Zinc-800 */
   --terminal-green: rgb(74 222 128); /* Green-400: Vibrant on dark */
+  --terminal-text: rgb(228 228 231); /* Zinc-200 */
+  --terminal-text-muted: rgb(113 113 122); /* Zinc-500 */
+  --terminal-text-secondary: rgb(161 161 170); /* Zinc-400 */
   --cursor-light: rgba(56, 189, 248, 0.15);
   --cursor-light-core: rgba(56, 189, 248, 0.25);
 }
@@ -37,7 +45,11 @@ html[data-theme="dark"] {
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-terminal-bg: var(--terminal-bg);
+  --color-terminal-header: var(--terminal-header);
   --color-terminal-green: var(--terminal-green);
+  --color-terminal-text: var(--terminal-text);
+  --color-terminal-text-muted: var(--terminal-text-muted);
+  --color-terminal-text-secondary: var(--terminal-text-secondary);
 
   --font-mono:
     "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,

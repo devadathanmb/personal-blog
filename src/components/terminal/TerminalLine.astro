@@ -30,7 +30,7 @@ const classes = className ? `terminal-line ${className}` : "terminal-line";
   }
 
   .at-symbol {
-    color: var(--terminal-at-symbol);
+    color: var(--color-terminal-text);
     margin: 0;
   }
 
@@ -40,34 +40,13 @@ const classes = className ? `terminal-line ${className}` : "terminal-line";
   }
 
   .path {
-    color: var(--terminal-link);
+    color: var(--color-accent);
     margin-right: 0.25rem;
   }
 
   .prompt {
-    color: var(--terminal-link);
-    margin-right: 0.25rem;
-  }
-
-  /* Light mode adjustments */
-  html[data-theme="light"] .username {
     color: var(--color-accent);
-  }
-
-  html[data-theme="light"] .at-symbol {
-    color: var(--terminal-at-symbol);
-  }
-
-  html[data-theme="light"] .hostname {
-    color: var(--color-terminal-green);
-  }
-
-  html[data-theme="light"] .path {
-    color: var(--terminal-link);
-  }
-
-  html[data-theme="light"] .prompt {
-    color: var(--terminal-link);
+    margin-right: 0.25rem;
   }
 
   /* Mobile responsive styles - hide verbose prompt parts, show only $ */

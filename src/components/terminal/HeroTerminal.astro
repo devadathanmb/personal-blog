@@ -182,16 +182,6 @@ const TERMINAL_MESSAGES = [
 
 <style>
   .terminal-wrapper {
-    /* Terminal color variables - dark theme */
-    /* Terminal color variables - dark theme (Zinc Palette) */
-    --terminal-text: #e4e4e7; /* Zinc-200 */
-    --terminal-link: #38bdf8; /* Sky-400 (Global Accent) */
-    --terminal-muted: #71717a; /* Zinc-500 */
-    --terminal-bg: var(--color-terminal-bg); /* Global Variable (Zinc-900) */
-    --terminal-header-bg: #27272a; /* Zinc-800 */
-    --terminal-secondary-text: #a1a1aa; /* Zinc-400 */
-    --terminal-at-symbol: #e4e4e7; /* Zinc-200 */
-
     position: relative;
     max-width: 60rem;
     width: 100%;
@@ -226,7 +216,7 @@ const TERMINAL_MESSAGES = [
 
   .terminal-container {
     position: relative;
-    background-color: var(--terminal-bg);
+    background-color: var(--color-terminal-bg);
     border-radius: 7px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     font-family: inherit;
@@ -234,7 +224,7 @@ const TERMINAL_MESSAGES = [
   }
 
   .terminal-header {
-    background-color: var(--terminal-header-bg);
+    background-color: var(--color-terminal-header);
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     padding: 0.75rem 1rem;
@@ -293,7 +283,7 @@ const TERMINAL_MESSAGES = [
   }
 
   .terminal-title {
-    color: var(--terminal-text);
+    color: var(--color-terminal-text);
     font-size: 0.875rem;
     font-weight: 500;
     white-space: nowrap;
@@ -314,7 +304,7 @@ const TERMINAL_MESSAGES = [
   }
 
   .argument {
-    color: var(--terminal-text);
+    color: var(--color-terminal-text);
     margin-left: 0.25rem;
   }
 
@@ -335,7 +325,7 @@ const TERMINAL_MESSAGES = [
     opacity: 0;
     background: none;
     border: none;
-    color: var(--terminal-muted);
+    color: var(--color-terminal-text-muted);
     cursor: pointer;
     padding: 0.25rem;
     display: inline-flex;
@@ -388,14 +378,14 @@ const TERMINAL_MESSAGES = [
   }
 
   .remote-name {
-    color: var(--terminal-text);
+    color: var(--color-terminal-text);
     font-weight: 400;
     min-width: 5.5rem;
     flex-shrink: 0;
   }
 
   .arrow {
-    color: var(--terminal-secondary-text);
+    color: var(--color-terminal-text-secondary);
     flex-shrink: 0;
     display: inline-block;
     vertical-align: middle;
@@ -449,11 +439,11 @@ const TERMINAL_MESSAGES = [
   }
 
   .typed-text :global(.args) {
-    color: var(--terminal-text);
+    color: var(--color-terminal-text);
   }
 
   .typed-text :global(.comment) {
-    color: var(--terminal-muted);
+    color: var(--color-terminal-text-muted);
   }
 
   .cursor-blink {
@@ -469,91 +459,6 @@ const TERMINAL_MESSAGES = [
     100% {
       opacity: 0;
     }
-  }
-
-  /* Light mode adjustments */
-  html[data-theme="light"] .terminal-wrapper {
-    /* Light theme color overrides */
-    /* Light theme color overrides (Zinc Palette) */
-    --terminal-text: #27272a; /* Zinc-800 */
-    --terminal-link: #2563eb; /* Blue-600 (Global Accent) */
-    --terminal-muted: #71717a; /* Zinc-500 */
-    --terminal-bg: var(--color-terminal-bg); /* Global Variable (White) */
-    --terminal-header-bg: #f4f4f5; /* Zinc-100 */
-    --terminal-secondary-text: #52525b; /* Zinc-600 */
-    --terminal-at-symbol: #27272a; /* Zinc-800 */
-
-    background: var(--color-border);
-  }
-
-  html[data-theme="light"] .terminal-container {
-    background-color: var(--terminal-bg);
-  }
-
-  html[data-theme="light"] .terminal-header {
-    background-color: var(--terminal-header-bg);
-    border-bottom-color: var(--color-border);
-  }
-
-  html[data-theme="light"] .terminal-title {
-    color: var(--terminal-text);
-  }
-
-  html[data-theme="light"] .valid-command {
-    color: var(--color-terminal-green);
-    font-weight: 400;
-  }
-
-  html[data-theme="light"] .argument {
-    color: var(--terminal-text);
-  }
-
-  html[data-theme="light"] .symlink-path {
-    color: var(--color-accent);
-    font-weight: 500;
-  }
-
-  html[data-theme="light"] .symlink-path:hover {
-    color: var(--color-terminal-green);
-    text-decoration: underline;
-  }
-
-  html[data-theme="light"] .remote-name {
-    color: var(--terminal-text);
-  }
-
-  html[data-theme="light"] .arrow {
-    color: var(--terminal-secondary-text);
-  }
-
-  html[data-theme="light"] .copy-btn {
-    color: var(--terminal-muted);
-  }
-
-  html[data-theme="light"] .copy-btn:hover {
-    color: var(--color-terminal-green);
-    background-color: rgba(101, 109, 118, 0.1);
-  }
-
-  html[data-theme="light"] .remote-url {
-    color: var(--color-accent);
-  }
-
-  html[data-theme="light"] .remote-url:hover {
-    color: var(--color-terminal-green);
-    text-decoration: underline;
-  }
-
-  html[data-theme="light"] .typed-text :global(.cmd) {
-    color: var(--color-terminal-green);
-  }
-
-  html[data-theme="light"] .typed-text :global(.args) {
-    color: var(--terminal-text);
-  }
-
-  html[data-theme="light"] .typed-text :global(.comment) {
-    color: var(--terminal-muted);
   }
 
   /* Mobile responsive styles */
