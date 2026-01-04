@@ -116,9 +116,9 @@ const isActive = (path: string) => {
               Tags
             </a>
           </li>
-          {
-            SITE.showArchives && (
-              <li class="col-span-1">
+          <li class="col-span-2 flex items-center justify-center gap-4">
+            {
+              SITE.showArchives && (
                 <LinkButton
                   href="/archives"
                   class:list={[
@@ -133,10 +133,8 @@ const isActive = (path: string) => {
                   <IconArchive class="inline-block" />
                   <span class="sr-only">Archives</span>
                 </LinkButton>
-              </li>
-            )
-          }
-          <li class="col-span-1 flex items-center justify-center">
+              )
+            }
             <LinkButton
               href="/search"
               class:list={[
