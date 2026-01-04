@@ -183,13 +183,14 @@ const TERMINAL_MESSAGES = [
 <style>
   .terminal-wrapper {
     /* Terminal color variables - dark theme */
-    --terminal-text: #e2e9f0;
-    --terminal-link: #58a6ff;
-    --terminal-muted: #8b949e;
-    --terminal-bg: #1c232c;
-    --terminal-header-bg: #252d38;
-    --terminal-secondary-text: #c9d1d9;
-    --terminal-at-symbol: #e2e9f0;
+    /* Terminal color variables - dark theme (Zinc Palette) */
+    --terminal-text: #e4e4e7; /* Zinc-200 */
+    --terminal-link: #38bdf8; /* Sky-400 (Global Accent) */
+    --terminal-muted: #71717a; /* Zinc-500 */
+    --terminal-bg: var(--color-terminal-bg); /* Global Variable (Zinc-900) */
+    --terminal-header-bg: #27272a; /* Zinc-800 */
+    --terminal-secondary-text: #a1a1aa; /* Zinc-400 */
+    --terminal-at-symbol: #e4e4e7; /* Zinc-200 */
 
     position: relative;
     max-width: 60rem;
@@ -473,13 +474,14 @@ const TERMINAL_MESSAGES = [
   /* Light mode adjustments */
   html[data-theme="light"] .terminal-wrapper {
     /* Light theme color overrides */
-    --terminal-text: #24292f;
-    --terminal-link: #0969da;
-    --terminal-muted: #656d76;
-    --terminal-bg: #eaedf2;
-    --terminal-header-bg: #dde1e8;
-    --terminal-secondary-text: #424a53;
-    --terminal-at-symbol: #24292f;
+    /* Light theme color overrides (Zinc Palette) */
+    --terminal-text: #27272a; /* Zinc-800 */
+    --terminal-link: #2563eb; /* Blue-600 (Global Accent) */
+    --terminal-muted: #71717a; /* Zinc-500 */
+    --terminal-bg: var(--color-terminal-bg); /* Global Variable (White) */
+    --terminal-header-bg: #f4f4f5; /* Zinc-100 */
+    --terminal-secondary-text: #52525b; /* Zinc-600 */
+    --terminal-at-symbol: #27272a; /* Zinc-800 */
 
     background: var(--color-border);
   }

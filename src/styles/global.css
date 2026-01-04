@@ -5,23 +5,25 @@
 
 :root,
 html[data-theme="light"] {
-  --background: rgb(246 248 250); /* Cool blue-tinted off-white */
-  --foreground: rgb(36 41 47); /* GitHub dark text */
-  --accent: rgb(37 99 235); /* GitHub blue */
-  --muted: rgb(234 237 242); /* Darker blue-gray for cards */
-  --border: rgb(96 125 165); /* Darker border for visibility */
-  --terminal-green: rgb(0 116 48); /* Vibrant green - max saturation (5.05:1) */
+  --background: rgb(244 244 245); /* Zinc-100: Off-white page */
+  --foreground: rgb(24 24 27); /* Zinc-950: Soft black text */
+  --accent: rgb(37 99 235); /* Blue-600: Readable, strong */
+  --muted: rgb(228 228 231); /* Zinc-200: Subtle separation */
+  --border: rgb(186 186 190); /* Zinc-350: Better visibility but not harsh */
+  --terminal-bg: rgb(255 255 255); /* White: Lighter/Elevated vs Page */
+  --terminal-green: rgb(22 101 52); /* Green-700: Contrast safe on white */
   --cursor-light: rgba(37, 99, 235, 0.12);
   --cursor-light-core: rgba(37, 99, 235, 0.25);
 }
 
 html[data-theme="dark"] {
-  --background: rgb(16 21 27); /* Optimized dark navy for depth */
-  --foreground: rgb(226 233 240); /* Softer white reduces halation */
-  --accent: rgb(56 189 248); /* Vibrant sky blue */
-  --muted: rgb(28 35 44); /* Darker contrast for cards */
-  --border: rgb(100 130 165); /* Lighter for visibility */
-  --terminal-green: rgb(74 222 128); /* Terminal green */
+  --background: rgb(9 9 11); /* Zinc-950: Deep Rich Black */
+  --foreground: rgb(228 228 231); /* Zinc-200: Soft White Text */
+  --accent: rgb(56 189 248); /* Sky-400: Luminous vivid blue */
+  --muted: rgb(39 39 42); /* Zinc-800: Dark separation */
+  --border: rgb(63 63 70); /* Zinc-700: Gentle border */
+  --terminal-bg: rgb(24 24 27); /* Zinc-900: Lighter/Elevated vs Page */
+  --terminal-green: rgb(74 222 128); /* Green-400: Vibrant on dark */
   --cursor-light: rgba(56, 189, 248, 0.15);
   --cursor-light-core: rgba(56, 189, 248, 0.25);
 }
@@ -34,6 +36,7 @@ html[data-theme="dark"] {
   --color-accent: var(--accent);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-terminal-bg: var(--terminal-bg);
   --color-terminal-green: var(--terminal-green);
 
   --font-mono:

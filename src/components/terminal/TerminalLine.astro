@@ -30,7 +30,7 @@ const classes = className ? `terminal-line ${className}` : "terminal-line";
   }
 
   .at-symbol {
-    color: #e6edf3;
+    color: var(--terminal-at-symbol);
     margin: 0;
   }
 
@@ -40,12 +40,12 @@ const classes = className ? `terminal-line ${className}` : "terminal-line";
   }
 
   .path {
-    color: #58a6ff;
+    color: var(--terminal-link);
     margin-right: 0.25rem;
   }
 
   .prompt {
-    color: #58a6ff;
+    color: var(--terminal-link);
     margin-right: 0.25rem;
   }
 
@@ -55,7 +55,7 @@ const classes = className ? `terminal-line ${className}` : "terminal-line";
   }
 
   html[data-theme="light"] .at-symbol {
-    color: #24292f;
+    color: var(--terminal-at-symbol);
   }
 
   html[data-theme="light"] .hostname {
@@ -63,11 +63,11 @@ const classes = className ? `terminal-line ${className}` : "terminal-line";
   }
 
   html[data-theme="light"] .path {
-    color: #0969da;
+    color: var(--terminal-link);
   }
 
   html[data-theme="light"] .prompt {
-    color: #0969da;
+    color: var(--terminal-link);
   }
 
   /* Mobile responsive styles - hide verbose prompt parts, show only $ */
