@@ -135,5 +135,37 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
     .pagefind-ui__result-nested .pagefind-ui__result-link:before {
       font-family: system-ui;
     }
+
+    /* Custom overrides for result message (e.g. "3 results for X") */
+    .pagefind-ui__message {
+      color: var(--foreground) !important;
+      padding-top: 1rem !important;
+      font-weight: 500 !important;
+      font-size: 1rem !important;
+    }
+
+    /* Custom overrides for highlighted text */
+    .pagefind-ui__result-excerpt mark {
+      background-color: color-mix(
+        in srgb,
+        var(--accent),
+        transparent 80%
+      ) !important;
+      color: var(--foreground) !important;
+      font-weight: 600 !important;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+
+    .pagefind-ui__result-excerpt {
+      color: var(--foreground) !important;
+      font-weight: 400 !important;
+      font-size: 1.0625rem !important;
+      line-height: 1.6 !important;
+    }
+
+    .pagefind-ui__result-title {
+      font-size: 1.125rem !important;
+    }
   }
 </style>
