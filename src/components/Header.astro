@@ -59,16 +59,31 @@ const isActive = (path: string) => {
         id="nav-menu"
         class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-2 sm:py-0"
       >
-        <button
-          id="menu-btn"
-          class="focus-outline self-end p-2 sm:hidden"
-          aria-label="Open Menu"
-          aria-expanded="false"
-          aria-controls="menu-items"
-        >
-          <IconX id="close-icon" class="hidden" />
-          <IconMenuDeep id="menu-icon" />
-        </button>
+        <div class="flex w-full items-center justify-end sm:hidden">
+          {
+            SITE.lightAndDarkMode && (
+              <button
+                class="theme-btn focus-outline relative size-10 p-2 sm:size-8 hover:[&>svg]:stroke-accent"
+                title="Toggles light & dark"
+                aria-label="auto"
+                aria-live="polite"
+              >
+                <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+              </button>
+            )
+          }
+          <button
+            id="menu-btn"
+            class="focus-outline p-2 sm:hidden"
+            aria-label="Open Menu"
+            aria-expanded="false"
+            aria-controls="menu-items"
+          >
+            <IconX id="close-icon" class="hidden" />
+            <IconMenuDeep id="menu-icon" />
+          </button>
+        </div>
         <ul
           id="menu-items"
           class:list={[
@@ -103,7 +118,7 @@ const isActive = (path: string) => {
           </li>
           {
             SITE.showArchives && (
-              <li class="col-span-2">
+              <li class="col-span-1">
                 <LinkButton
                   href="/archives"
                   class:list={[
@@ -115,8 +130,8 @@ const isActive = (path: string) => {
                   ariaLabel="archives"
                   title="Archives"
                 >
-                  <IconArchive class="hidden sm:inline-block" />
-                  <span class="sm:sr-only">Archives</span>
+                  <IconArchive class="inline-block" />
+                  <span class="sr-only">Archives</span>
                 </LinkButton>
               </li>
             )
@@ -137,10 +152,9 @@ const isActive = (path: string) => {
           </li>
           {
             SITE.lightAndDarkMode && (
-              <li class="col-span-1 flex items-center justify-center">
+              <li class="col-span-1 hidden items-center justify-center sm:flex">
                 <button
-                  id="theme-btn"
-                  class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
+                  class="theme-btn focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
                   title="Toggles light & dark"
                   aria-label="auto"
                   aria-live="polite"
