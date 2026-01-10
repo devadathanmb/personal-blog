@@ -1,24 +1,22 @@
 # Personal Blog
 
-A fast, minimal personal blog built with [Astro](https://astro.build/). Features markdown blog posts, project showcases, GitHub Discussions-powered comments, and automatic date management via git hooks.
+A fast, minimal personal blog built with [Astro 🚀](https://astro.build/) 
+
+Features markdown blog posts, project showcases, GitHub Discussions-powered comments, and automatic date management via git hooks.
 
 Based on [AstroPaper](https://github.com/satnaing/astro-paper) theme.
 
 ## Screenshots
 
 <!-- Dark Mode -->
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/bec3425b-69fa-4b7b-8012-7010ef0b5e8a" />
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/7cf74d65-812c-4b81-9e1c-68b7e27a965a" />
+<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/26c2df58-9edb-4fea-9174-1912f4d55186" />
+<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/222fdf9f-720e-4082-a942-96aea0894b22" />
+
 
 <!-- Light Mode -->
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/ba20fe50-de35-476f-afd4-e61be623bb68" />
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/cd0aa7c2-6a50-4258-a840-b195b27cfd2d" />
+<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/f1115852-66bf-4aff-8e5c-4b498c583baf" />
+<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/b6918201-c2c1-4d73-a0bd-aa29f73c6064" />
 
-## Features
-
-- Markdown-based blog posts and project pages
-- GitHub Discussions integration for comments (Giscus)
-- Automatic post date management with git hooks
 
 ## Setup
 
