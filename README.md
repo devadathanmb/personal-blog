@@ -52,7 +52,7 @@ Automatically manages blog post dates via [husky](https://typicode.github.io/hus
 
 ### Giscus Comments
 
-Comments powered by GitHub Discussions via [Giscus](https://giscus.app/). Configure in `src/config.ts`.
+Comments powered by GitHub Discussions via [Giscus](https://giscus.app/). Configure in `src/config.ts`
 
 To set up for your repository:
 
