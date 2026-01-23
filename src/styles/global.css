@@ -68,13 +68,13 @@ html[data-theme="dark"] {
     @apply overflow-y-scroll scroll-smooth;
   }
   body {
-    @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent/75 selection:text-background;
+    @apply bg-background text-foreground selection:bg-accent/75 selection:text-background flex min-h-svh flex-col font-mono;
     @apply text-base sm:text-[1.1rem];
     letter-spacing: -0.015em;
   }
   a,
   button {
-    @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
+    @apply outline-accent outline-offset-1 focus-visible:no-underline focus-visible:outline-dashed focus-visible:outline-2;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
@@ -82,7 +82,7 @@ html[data-theme="dark"] {
   }
   section,
   footer {
-    @apply mx-auto max-w-app px-4;
+    @apply max-w-app mx-auto px-4;
   }
 }
 

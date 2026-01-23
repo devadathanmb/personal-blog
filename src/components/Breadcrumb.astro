@@ -23,9 +23,9 @@ if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
 }
 ---
 
-<nav class="mx-auto mt-8 mb-1 w-full max-w-app px-4" aria-label="breadcrumb">
+<nav class="max-w-app mx-auto mb-1 mt-8 w-full px-4" aria-label="breadcrumb">
   <ul
-    class="font-light [&>li]:inline [&>li:not(:last-child)>a]:hover:opacity-100"
+    class="font-light [&>li:not(:last-child)>a]:hover:opacity-100 [&>li]:inline"
   >
     <li>
       <a href="/" class="opacity-80">Home</a>

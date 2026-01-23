@@ -29,9 +29,9 @@ const { Content } = await render(project);
   <main id="main-content">
     <div class="mx-auto max-w-3xl px-4">
       <div class="mb-28">
-        <header class="mt-8 mb-8">
+        <header class="mb-8 mt-8">
           <h1 class="mb-3 text-3xl font-bold tracking-tight">{title}</h1>
-          <p class="text-base leading-relaxed text-foreground/90">
+          <p class="text-foreground/90 text-base leading-relaxed">
             {description}
           </p>
 
@@ -39,7 +39,7 @@ const { Content } = await render(project);
             techStack && techStack.length > 0 && (
               <div class="mt-5 flex flex-wrap gap-2">
                 {techStack.map(tech => (
-                  <span class="rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
+                  <span class="bg-accent/10 text-accent rounded-full px-3 py-1 text-sm font-medium">
                     {tech}
                   </span>
                 ))}
@@ -54,7 +54,7 @@ const { Content } = await render(project);
                   href={repoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-accent/90"
+                  class="bg-accent text-background hover:bg-accent/90 inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors"
                 >
                   <IconGitHub width={16} height={16} />
                   View Source
@@ -67,7 +67,7 @@ const { Content } = await render(project);
                   href={demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 rounded-md border border-accent px-4 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent/10"
+                  class="border-accent text-accent hover:bg-accent/10 inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors"
                 >
                   <IconExternalLink width={16} height={16} />
                   Live Demo
@@ -77,7 +77,7 @@ const { Content } = await render(project);
           </div>
         </header>
 
-        <article class="app-prose max-w-none border-t border-border pt-6">
+        <article class="app-prose border-border max-w-none border-t pt-6">
           <Content />
         </article>
       </div>

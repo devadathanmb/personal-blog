@@ -29,21 +29,21 @@ const isActive = (path: string) => {
   <a
     id="skip-to-content"
     href="#main-content"
-    class="absolute start-16 -top-full z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"
+    class="bg-background text-accent absolute -top-full start-16 z-50 px-3 py-2 backdrop-blur-lg transition-all focus:top-4"
   >
     Skip to content
   </a>
   <div
     id="nav-container"
-    class="mx-auto flex max-w-app flex-col items-center justify-between sm:flex-row"
+    class="max-w-app mx-auto flex flex-col items-center justify-between sm:flex-row"
   >
     <div
       id="top-nav-wrap"
-      class="relative flex w-full items-baseline justify-between bg-background p-4 sm:items-center sm:py-6"
+      class="bg-background relative flex w-full items-baseline justify-between p-4 sm:items-center sm:py-6"
     >
       <a
         href="/"
-        class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
+        class="absolute whitespace-nowrap py-1 text-xl font-semibold leading-8 sm:static sm:my-auto sm:text-2xl sm:leading-none"
       >
         <span
           class="flex items-center gap-0.5 font-mono font-bold tracking-tight"
@@ -63,13 +63,13 @@ const isActive = (path: string) => {
           {
             SITE.lightAndDarkMode && (
               <button
-                class="theme-btn focus-outline relative size-10 p-2 sm:size-8 hover:[&>svg]:stroke-accent"
+                class="theme-btn focus-outline hover:[&>svg]:stroke-accent relative size-10 p-2 sm:size-8"
                 title="Toggles light & dark"
                 aria-label="auto"
                 aria-live="polite"
               >
-                <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                <IconMoon class="-translate-[50%] absolute left-[50%] top-[50%] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                <IconSunHigh class="-translate-[50%] absolute left-[50%] top-[50%] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               </button>
             )
           }
@@ -88,7 +88,7 @@ const isActive = (path: string) => {
           id="menu-items"
           class:list={[
             "mt-4 grid w-44 grid-cols-2 place-content-center gap-2",
-            "[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium [&>li>a]:hover:text-accent sm:[&>li>a]:px-2 sm:[&>li>a]:py-1",
+            "[&>li>a]:hover:text-accent [&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1",
             "hidden",
             "sm:mt-0 sm:flex sm:w-auto sm:gap-x-2 sm:gap-y-0",
           ]}
@@ -152,13 +152,13 @@ const isActive = (path: string) => {
             SITE.lightAndDarkMode && (
               <li class="col-span-1 hidden items-center justify-center sm:flex">
                 <button
-                  class="theme-btn focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
+                  class="theme-btn focus-outline hover:[&>svg]:stroke-accent relative size-12 p-4 sm:size-8"
                   title="Toggles light & dark"
                   aria-label="auto"
                   aria-live="polite"
                 >
-                  <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                  <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                  <IconMoon class="-translate-[50%] absolute left-[50%] top-[50%] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                  <IconSunHigh class="-translate-[50%] absolute left-[50%] top-[50%] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                 </button>
               </li>
             )
