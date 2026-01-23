@@ -10,6 +10,9 @@ on:
       - edited
       - synchronize
       - reopened
+  push:
+    branches:
+      - main
   workflow_call:
 
 jobs:
