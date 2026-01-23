@@ -13,15 +13,15 @@ const { title, description, techStack, repoUrl, demoUrl } = data;
 ---
 
 <li
-  class="my-6 rounded-md border border-border bg-muted p-4 transition-all duration-200 hover:border-accent hover:shadow-md"
+  class="border-border bg-muted hover:border-accent my-6 rounded-md border p-4 transition-all duration-200 hover:shadow-md"
 >
   <a href={`/projects/${id}/`} class="group mb-3 block">
     <h2
-      class="text-xl font-semibold text-foreground transition-colors duration-200 group-hover:text-accent"
+      class="text-foreground group-hover:text-accent text-xl font-semibold transition-colors duration-200"
     >
       {title}
     </h2>
-    <p class="mt-2 text-sm text-foreground opacity-90 group-hover:opacity-100">
+    <p class="text-foreground mt-2 text-sm opacity-90 group-hover:opacity-100">
       {description}
     </p>
   </a>
@@ -30,7 +30,7 @@ const { title, description, techStack, repoUrl, demoUrl } = data;
     techStack && techStack.length > 0 && (
       <div class="mb-4 flex flex-wrap gap-2">
         {techStack.map(tech => (
-          <span class="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
+          <span class="bg-accent/10 text-accent rounded-full px-3 py-1 text-xs font-medium">
             {tech}
           </span>
         ))}
@@ -45,7 +45,7 @@ const { title, description, techStack, repoUrl, demoUrl } = data;
           href={repoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-accent/90"
+          class="bg-accent text-background hover:bg-accent/90 inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors"
         >
           <IconGitHub width={16} height={16} />
           View Source
@@ -58,7 +58,7 @@ const { title, description, techStack, repoUrl, demoUrl } = data;
           href={demoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-md border border-accent px-4 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent/10"
+          class="border-accent text-accent hover:bg-accent/10 inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors"
         >
           <IconExternalLink width={16} height={16} />
           Live Demo
