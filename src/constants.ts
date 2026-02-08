@@ -44,7 +44,7 @@ export const SOCIALS: Social[] = [
   },
   {
     name: "Telegram",
-    href: "https://telegram.me/devOnTelegram",
+    href: "https://telegram.me/dev_on_tgram",
     linkTitle: `${SITE.title} on Telegram`,
     icon: IconTelegram,
   },
