@@ -26,7 +26,7 @@ export const GISCUS = {
   enabled: true,
   repo: "devadathanmb/personal-blog",
   repoId: "R_kgDOMTeYEQ",
-  category: "Announcements",
+  category: "Comments",
   categoryId: "DIC_kwDOMTeYEc4C0Y-6",
   mapping: "pathname",
   reactionsEnabled: true,
