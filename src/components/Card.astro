@@ -16,14 +16,15 @@ const readingTime = calculateReadingTime(body);
 
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },
-  class: "text-lg font-medium decoration-dashed hover:underline tracking-tight",
+  class:
+    "text-lg font-medium tracking-tight decoration-dashed group-hover:underline",
 };
 ---
 
 <li class="my-8">
   <a
     href={getPath(id, filePath)}
-    class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+    class="group inline-block text-lg font-medium text-accent focus-visible:no-underline"
   >
     {
       variant === "h2" ? (
