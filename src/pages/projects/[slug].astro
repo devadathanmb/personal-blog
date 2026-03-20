@@ -5,6 +5,7 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import IconExternalLink from "@/assets/icons/IconExternalLink.svg";
+import BackButton from "@/components/BackButton.astro";
 import { SITE } from "@/config";
 
 export interface Props {
@@ -26,10 +27,11 @@ const { Content } = await render(project);
 
 <Layout title={`${title} | ${SITE.title}`}>
   <Header />
+  <BackButton />
   <main id="main-content">
     <div class="mx-auto max-w-3xl px-4">
       <div class="mb-28">
-        <header class="mt-8 mb-8">
+        <header class:list={[{ "mt-8": SITE.showBackButton }, "mb-8"]}>
           <h1 class="mb-3 text-3xl font-bold tracking-tight">{title}</h1>
           <p class="text-base leading-relaxed text-foreground/90">
             {description}
