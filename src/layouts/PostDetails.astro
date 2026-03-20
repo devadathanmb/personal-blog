@@ -97,32 +97,34 @@ const nextPost =
     ]}
     data-pagefind-body
   >
-    <h1
-      transition:name={slugifyStr(title)}
-      class="inline-block text-2xl font-bold text-accent sm:text-3xl"
-    >
-      {title}
-    </h1>
-    <div class="my-2 flex items-center gap-2">
-      <Datetime
-        {pubDatetime}
-        {modDatetime}
-        {timezone}
-        {readingTime}
-        size="lg"
-      />
-      <span
-        aria-hidden="true"
-        class:list={[
-          "max-sm:hidden",
-          { hidden: !SITE.editPost.enabled || hideEditPost },
-        ]}>|</span
+    <header class:list={[{ "mt-8": SITE.showBackButton }, "mb-8"]}>
+      <h1
+        transition:name={slugifyStr(title)}
+        class="inline-block text-2xl font-bold text-accent sm:text-3xl"
       >
-      <EditPost {hideEditPost} {post} class="max-sm:hidden" />
-    </div>
+        {title}
+      </h1>
+      <div class="mt-2 flex items-center gap-2">
+        <Datetime
+          {pubDatetime}
+          {modDatetime}
+          {timezone}
+          {readingTime}
+          size="lg"
+        />
+        <span
+          aria-hidden="true"
+          class:list={[
+            "max-sm:hidden",
+            { hidden: !SITE.editPost.enabled || hideEditPost },
+          ]}>|</span
+        >
+        <EditPost {hideEditPost} {post} class="max-sm:hidden" />
+      </div>
+    </header>
     <article
       id="article"
-      class="app-prose mx-auto mt-8 max-w-app prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)"
+      class="app-prose mx-auto max-w-app prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)"
     >
       <Content />
     </article>
