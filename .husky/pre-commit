@@ -1,5 +1,41 @@
-# Format and lint staged files
-pnpm run format
+# Format staged files and include formatter output in the commit.
+staged_files=$(mktemp)
+git diff --cached --name-only --diff-filter=ACMR -z > "$staged_files"
+
+stash_name="pre-commit-unstaged-$(date +%s)-$$"
+stashed=0
+
+restore_worktree() {
+  status=$?
+
+  if [ "$stashed" -eq 1 ]; then
+    if ! git stash pop >/dev/null 2>&1; then
+      echo "Failed to restore unstaged changes from the pre-commit stash."
+      echo "Recover them manually with: git stash list && git stash pop"
+      rm -f "$staged_files"
+      exit 1
+    fi
+  fi
+
+  rm -f "$staged_files"
+  exit "$status"
+}
+
+trap 'restore_worktree' EXIT
+
+if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+  git stash push --keep-index --include-untracked -m "$stash_name" >/dev/null
+
+  if git stash list | head -n 1 | grep -Fq "$stash_name"; then
+    stashed=1
+  fi
+fi
+
+if [ -s "$staged_files" ]; then
+  xargs -0 pnpm exec prettier --write --ignore-unknown -- < "$staged_files"
+  git add --pathspec-from-file="$staged_files" --pathspec-file-nul
+fi
+
 pnpm run lint
 
 # Update modDatetime for modified blog posts (only if not draft)
