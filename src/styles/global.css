@@ -28,9 +28,7 @@ html[data-theme="dark"] {
   --border: rgb(63 63 70); /* Zinc-700: Gentle border */
   --terminal-bg: rgb(24 24 27); /* Zinc-900: Lighter/Elevated vs Page */
   --terminal-header: rgb(39 39 42); /* Zinc-800 */
-  --terminal-green: rgb(
-    52 211 153
-  ); /* Emerald-400: Warmer, more vibrant on dark */
+  --terminal-green: rgb(74 222 128); /* Green-400: Vibrant on dark */
   --terminal-text: rgb(228 228 231); /* Zinc-200 */
   --terminal-text-muted: rgb(
     161 161 170
