@@ -11,7 +11,9 @@ Personal blog built with Astro 5, React, Tailwind CSS 4, and TypeScript. Content
 ```bash
 pnpm run dev          # Start dev server at http://localhost:4321
 pnpm run build        # Build for production
+pnpm run format       # Format code
 pnpm run lint         # Lint with ESLint
+pnpm run typecheck    # Run Astro type checks
 ```
 
 ## After Every Change
@@ -19,6 +21,7 @@ pnpm run lint         # Lint with ESLint
 Run these before considering any task done:
 
 ```bash
+pnpm run format       # Format code before verification
 pnpm run lint         # Must pass with zero errors
 pnpm run build        # Runs astro check (TypeScript) then full build
 ```
