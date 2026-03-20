@@ -77,7 +77,7 @@ const projects = await getCollection("projects");
 | `--accent` | Blue-600 | Sky-400 |
 | `--muted` | Zinc-200 | Zinc-800 |
 | `--border` | Zinc-350 | Zinc-700 |
-| `--terminal-green` | Green-700 | Green-400 |
+| `--terminal-green` | Green-700 | Emerald-400 |
 
 Terminal and cursor effect variables (`--terminal-bg`, `--terminal-header`, `--terminal-text*`, `--cursor-light*`) are also defined there — use them for any terminal-style UI.
 

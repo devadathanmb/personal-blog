@@ -131,7 +131,7 @@ const nextPost =
 
     <EditPost class="sm:hidden" {hideEditPost} {post} />
 
-    <ul class="mt-4 mb-8 sm:my-8">
+    <ul class="mt-4 mb-8 flex flex-wrap gap-2 sm:my-8">
       {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
     </ul>
 
