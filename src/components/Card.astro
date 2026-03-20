@@ -21,10 +21,12 @@ const headerProps = {
 };
 ---
 
-<li class="my-8">
+<li
+  class="group my-8 border-l-2 border-transparent pl-3 transition-all duration-200 hover:border-accent/60"
+>
   <a
     href={getPath(id, filePath)}
-    class="group inline-block text-lg font-medium text-accent focus-visible:no-underline"
+    class="inline-block text-lg font-medium text-accent focus-visible:no-underline"
   >
     {
       variant === "h2" ? (
@@ -35,5 +37,5 @@ const headerProps = {
     }
   </a>
   <Datetime {pubDatetime} {modDatetime} {timezone} {readingTime} />
-  <p class="mt-2">{description}</p>
+  <p class="mt-2 text-foreground/80">{description}</p>
 </li>
