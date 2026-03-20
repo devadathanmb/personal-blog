@@ -3,6 +3,8 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import LinkButton from "@/components/LinkButton.astro";
+import TerminalLine from "@/components/terminal/TerminalLine.astro";
+import TerminalOutput from "@/components/terminal/TerminalOutput.astro";
 import { SITE } from "@/config";
 ---
 
@@ -11,15 +13,42 @@ import { SITE } from "@/config";
 
   <main
     id="main-content"
-    class="mx-auto flex max-w-app flex-1 items-center justify-center"
+    class="mx-auto flex max-w-app flex-1 items-center justify-center px-4"
   >
-    <div class="mb-14 flex flex-col items-center justify-center">
-      <h1 class="text-9xl font-bold text-accent">404</h1>
-      <span aria-hidden="true">¯\_(ツ)_/¯</span>
-      <p class="mt-4 text-2xl sm:text-3xl">Page Not Found</p>
+    <div class="mb-14 flex flex-col items-center justify-center gap-6">
+      <h1 class="error-heading text-9xl font-bold text-accent">404</h1>
+
+      <div
+        class="terminal-block w-full max-w-sm overflow-hidden rounded-md border border-border"
+      >
+        <div
+          class="border-b border-border bg-terminal-header px-3 py-1.5 text-xs text-foreground/50"
+        >
+          ~ bash
+        </div>
+        <div class="bg-terminal-bg px-4 py-3 text-sm leading-relaxed">
+          <TerminalLine>
+            <span class="cmd-text">cat</span><span class="arg-text">
+              this-page.html</span
+            >
+          </TerminalLine>
+          <TerminalOutput>
+            <span class="opacity-60"
+              >cat: this-page.html: No such file or directory</span
+            >
+          </TerminalOutput>
+          <TerminalOutput>
+            <span class="text-terminal-text-muted"># ¯\_(ツ)_/¯</span>
+          </TerminalOutput>
+          <TerminalLine>
+            <span class="animate-blink">▋</span>
+          </TerminalLine>
+        </div>
+      </div>
+
       <LinkButton
         href="/"
-        class="my-6 text-lg underline decoration-dashed underline-offset-8"
+        class="text-lg underline decoration-dashed underline-offset-8"
       >
         Go back home
       </LinkButton>
@@ -28,3 +57,29 @@ import { SITE } from "@/config";
 
   <Footer />
 </Layout>
+
+<style>
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .error-heading {
+    animation: fade-in 0.5s ease-out both;
+  }
+
+  .cmd-text {
+    color: var(--color-terminal-green);
+  }
+
+  .arg-text {
+    color: var(--color-terminal-text);
+    margin-left: 0.25rem;
+  }
+</style>
