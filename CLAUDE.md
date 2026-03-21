@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Guidance for Claude Code when working in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
@@ -18,12 +18,12 @@ pnpm run typecheck    # Run Astro type checks
 
 ## After Every Change
 
-Run these before considering any task done:
+Run these before considering any task done. Output is suppressed on success — only errors are shown:
 
 ```bash
-pnpm run format       # Format code before verification
-pnpm run lint         # Must pass with zero errors
-pnpm run build        # Runs astro check (TypeScript) then full build
+out=$(pnpm run format 2>&1) || echo "$out"
+out=$(pnpm run lint   2>&1) || echo "$out"
+out=$(pnpm run build  2>&1) || echo "$out"
 ```
 
 Fix all errors before finishing.
