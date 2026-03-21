@@ -54,7 +54,7 @@ html[data-theme="dark"] {
   --color-terminal-text-secondary: var(--terminal-text-secondary);
 
   --font-mono:
-    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
 }
 
