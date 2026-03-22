@@ -1,6 +1,7 @@
 ---
 author: Devadathan M B
 pubDatetime: 2025-06-22T15:20:35Z
+modDatetime: 2026-03-22T13:30:20Z
 title: Giving My Old USB Printer a New Life with a Raspberry Pi
 featured: true
 draft: false

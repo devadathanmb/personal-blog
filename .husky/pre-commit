@@ -12,8 +12,14 @@ while read _ file; do
   draft=$(echo "$frontmatter" | awk '/^draft: /{print $2}')
   
   if [ "$draft" = "false" ]; then
-    # Update modDatetime
-    sed -i.bak -E "s/^modDatetime:.*$/modDatetime: $(date -u +"%Y-%m-%dT%H:%M:%S")Z/" "$file"
+    # Update or insert modDatetime
+    if echo "$frontmatter" | grep -q "^modDatetime:"; then
+      sed -i.bak -E "s/^modDatetime:.*$/modDatetime: $(date -u +"%Y-%m-%dT%H:%M:%S")Z/" "$file"
+    else
+      sed -i.bak -E "/^pubDatetime:/a\\
+modDatetime: $(date -u +"%Y-%m-%dT%H:%M:%S")Z
+" "$file"
+    fi
     rm "${file}.bak"
     git add "$file"
   fi
