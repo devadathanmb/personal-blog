@@ -61,7 +61,7 @@ the Pi could handle it, just never got around to setting it up.
 
 That Sunday came. I’d been using Linux long enough to know about [CUPS](https://www.cups.org/) — the
 Common UNIX Printing System. It’s a modular printing system developed by Apple that allows a
-computer to act as a print server. It uses the Internet Printing Protocol (IPP) and supports
+computer to act as a print server. It uses the [Internet Printing Protocol (IPP)](https://www.pwg.org/ipp/) and supports
 drivers, filters, and backends for converting print jobs and interfacing with physical printers.
 
 It can make a USB printer available over the network, support job queueing, handle authentication,
@@ -86,7 +86,7 @@ lsusb
 
 You should see something like `Epson` or `Canon` listed. If it’s detected, you’re good.
 
-### 2. Install CUPS
+### 2. Install CUPS and printer drivers
 
 ```bash
 sudo apt update
@@ -99,6 +99,16 @@ Enable and start the service:
 sudo systemctl enable cups
 sudo systemctl start cups
 ```
+
+**For Epson L-series printers (L3110, L3310, etc.):** install the ESC/P-R driver from the apt repository:
+
+```bash
+sudo apt install printer-driver-escpr
+```
+
+> **Important:** Do _not_ download the `.deb` driver from Epson's official website. Those packages are
+> compiled for x86/x86_64 and will not run on the Pi's ARM CPU. The `printer-driver-escpr` package
+> from apt is the ARM-compiled version and is the correct one to use.
 
 ### 3. Add your user to the `lpadmin` group
 
@@ -139,7 +149,15 @@ journalctl -u cups -n 50
 
 ### 5. Configure CUPS to allow network access
 
-By default, CUPS binds to localhost. Let’s open it up.
+By default, CUPS binds to localhost only and has the web interface disabled. Let’s open it up.
+
+The quickest way is with `cupsctl`:
+
+```bash
+sudo cupsctl --remote-admin --remote-any --share-printers
+```
+
+Or manually edit `/etc/cups/cupsd.conf`:
 
 ```bash
 sudo vim /etc/cups/cupsd.conf
@@ -147,23 +165,46 @@ sudo vim /etc/cups/cupsd.conf
 
 #### 5.1 Listen on all interfaces
 
-```bash
-Listen 0.0.0.0:631
-# Listen [::]:631  # Optional IPv6
+Replace `Listen localhost:631` with:
+
+```
+Port 631
 ```
 
 #### 5.2 Allow access from LAN
 
-```bash
+```
 <Location />
   Order allow,deny
-  Allow @local
+  Allow @LOCAL
 </Location>
 
 <Location /admin>
   Order allow,deny
-  Allow @local
+  Allow @LOCAL
 </Location>
+```
+
+#### 5.3 Enable the web interface
+
+```
+WebInterface Yes
+```
+
+#### 5.4 Keep CUPS running persistently
+
+By default, CUPS has `IdleExitTimeout 60` — it exits after 60 seconds of inactivity (socket activation brings it back on demand, but it causes unnecessary latency for a print server). Set it to 0:
+
+```
+IdleExitTimeout 0
+```
+
+#### 5.5 Enable mDNS broadcasting
+
+Make sure this line is present (it enables [AirPrint](https://en.wikipedia.org/wiki/AirPrint)/[Mopria](https://mopria.org/) discovery):
+
+```
+BrowseLocalProtocols dnssd
 ```
 
 ### 6. Restart CUPS
@@ -182,69 +223,120 @@ _You should see the CUPS web UI like this:_
 
 ![CUPS Web UI](@/assets/homelab-printer/cups-web-ui.png)
 
-### 7. Add the printer via web interface
+### 7. Add the printer
+
+**Option A: Web interface**
 
 1. Go to **Administration** → **Add Printer**
 2. Log in with your Pi user creds
-3. Select your printer
-4. Name it
-5. Select a driver (if your printer is not listed, you may have to install the drivers — Don't
-   worry. Just google it and you will find the right packages)
+3. Select your USB printer from the list
+4. Name it, and check **Share This Printer**
+5. Select the driver for your printer model (if your exact model isn't listed, try the closest one in the same series — it usually works)
 6. Finish and verify it shows under **Printers**
 
-### 8. Enable printer sharing
+> Note: Some printers enumerate under a slightly different model name than what's printed on the box. For example, the Epson L3310 shows up as `L3110 Series` — that's expected.
 
-From CUPS UI:
+**Option B: CLI (one-liner)**
 
-- Go to **Printers**
-- Click the printer
-- Admin → **Set As Shared**
-
-Or via CLI:
+First, find the USB device URI and the exact PPD name:
 
 ```bash
-lpoptions -p <printer-name> -o printer-is-shared=true
+sudo lpinfo -v                          # find the usb:// URI for your printer
+sudo lpinfo -m | grep -i <model-name>   # find the right PPD
 ```
 
-## 9. Final Touchups: Avahi (ZeroConf / Bonjour)
+Then add it:
 
-To avoid remembering IP addresses, use [Avahi](https://wiki.archlinux.org/title/Avahi) to broadcast
-the Pi on your LAN using mDNS.
+```bash
+sudo lpadmin -p MyPrinter -E \
+  -v '<uri-from-lpinfo-v>' \
+  -m '<ppd-from-lpinfo-m>' \
+  -D 'My Printer' \
+  -o printer-is-shared=true
+
+sudo lpadmin -d MyPrinter   # set as system default
+```
+
+### 8. Verify it's working
+
+```bash
+lpstat -t   # should show the printer as idle/enabled
+```
+
+Try a test print:
+
+```bash
+echo "Test page from Pi" | lp
+```
+
+## 9. AirPrint, Mopria, and mobile printing
+
+This is the part that makes the whole thing magical.
+
+Once CUPS is sharing the printer and Avahi is running, your phone just finds it. No app, no driver,
+no IP address to memorise.
 
 ### 9.1 Install Avahi
 
 ```bash
-sudo apt install avahi-daemon
+sudo apt install avahi-daemon libnss-mdns
 sudo systemctl enable avahi-daemon
 sudo systemctl start avahi-daemon
 ```
 
-Now your Pi (and printer) should be reachable at:
+[Avahi](https://avahi.org/) implements Apple’s [mDNS/Bonjour](https://developer.apple.com/bonjour/) protocol. It reads CUPS’s shared printer list and broadcasts
+an `_ipp._tcp` service record over multicast — the same mechanism that [AirPrint](https://en.wikipedia.org/wiki/AirPrint) and Android’s [Mopria](https://mopria.org/)
+stack both listen on. One advertisement, two platforms.
+
+You can verify the printer is being advertised:
+
+```bash
+sudo apt install avahi-utils
+avahi-browse -rpt _ipp._tcp | grep -i <your-printer-name>
+```
+
+You should see it listed with a TXT record containing `mopria-certified=1.3` and `URF=...` — meaning
+both Android and iOS will recognise it natively.
+
+Now your Pi (and printer) is also reachable by hostname at:
 
 ```
-http://raspberrypi.local:631
+http://<your-pi-hostname>.local:631
 ```
 
-> Replace `raspberrypi` with your Pi’s hostname if changed.
+### 9.2 Printing from iOS
+
+Open any app → tap the share/print icon. The printer appears as **"Your Printer @ &lt;hostname&gt;"** automatically.
+That’s [AirPrint](https://en.wikipedia.org/wiki/AirPrint) — built into iOS since 2010. No app needed.
+
+### 9.3 Printing from Android
+
+Modern Android (8+) ships with the **[Mopria Print Service](https://mopria.org/)** pre-installed. Open any app → Print → it
+auto-discovers the printer over mDNS. Works out of the box.
+
+If it doesn’t appear, install [Mopria Print Service](https://play.google.com/store/apps/details?id=org.mopria.printplugin)
+from the Play Store and make sure it’s enabled under Settings → Connected Devices → Printing.
 
 ## Some Caveats That You Should Know
 
-- Android support is inconsistent. Some devices detect mDNS printers, some don’t. Blame Android.
+- **mDNS is link-local.** The printer advertisement doesn’t cross routers or VLAN boundaries. Your
+  phone needs to be on the same subnet as the Pi. If you have a guest Wi-Fi network, don’t expect it
+  to work from there.
 
-- If it fails, install the [**NetPrinter app**](https://netprinter.app/) — it works because:
-  - It supports IPP natively (what CUPS exposes)
-  - Lets you manually enter the printer URL:
-    ```
-    http://raspberrypi.local:631/
-    ```
-  - Bypasses Android’s flaky discovery stack entirely
+- **Give your Pi a unique hostname.** If you have more than one Pi on the network and both are named
+  `raspberrypi`, mDNS breaks. Discovery becomes unreliable. Just rename it in `raspi-config` or
+  `/etc/hostname`.
 
-Steps:
+- **Set a static IP (or a DHCP reservation on your router).** The printer will always be discoverable
+  via `<hostname>.local`, but if you reference the Pi by IP anywhere (bookmarks, scripts, etc.), a DHCP
+  change will break it.
 
-1. Install NetPrinter
-2. Tap + to add printer
-3. Enter raspberry pi cups service URL
-4. Save and print
+- **Fallback: manual IPP URL.** If auto-discovery doesn’t work for whatever reason, you can always
+  add the printer manually in your phone’s settings using:
+  ```
+  http://<pi-ip>:631/printers/<printer-name>
+  ```
+  Most mobile print dialogs accept a manual IPP URL.
 
 ## Final Thoughts
 
