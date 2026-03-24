@@ -16,17 +16,13 @@ pnpm run lint         # Lint with ESLint
 pnpm run typecheck    # Run Astro type checks
 ```
 
-## After Every Change
+## Before Committing
 
-Run these before considering any task done. Output is suppressed on success — only errors are shown:
+Run a build to verify the output is valid. Lint and format run automatically via the pre-commit hook.
 
 ```bash
-out=$(pnpm run format 2>&1) || echo "$out"
-out=$(pnpm run lint   2>&1) || echo "$out"
-out=$(pnpm run build  2>&1) || echo "$out"
+out=$(pnpm run build 2>&1) || echo "$out"
 ```
-
-Fix all errors before finishing.
 
 ## Content
 
