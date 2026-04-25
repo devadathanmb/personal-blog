@@ -18,15 +18,15 @@
     }
 
     h2 {
-      @apply font-semibold;
+      @apply text-xl font-bold sm:text-2xl;
     }
 
     h3 {
-      @apply font-medium italic;
+      @apply text-lg font-bold sm:text-xl;
     }
 
     h4 {
-      @apply font-medium;
+      @apply text-base font-semibold sm:text-lg;
     }
 
     p,
