@@ -56,6 +56,10 @@ html[data-theme="dark"] {
   --font-mono:
     "Maple Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
+
+  --tracking-wider: -0.08em;
+  --tracking-tight: -0.08em;
+  --tracking-tighter: -0.08em;
 }
 
 @layer base {
@@ -68,9 +72,8 @@ html[data-theme="dark"] {
     @apply overflow-y-scroll scroll-smooth;
   }
   body {
-    @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent/75 selection:text-background;
+    @apply flex min-h-svh flex-col bg-background font-mono tracking-tighter text-foreground selection:bg-accent/75 selection:text-background;
     @apply text-base sm:text-[1.1rem];
-    letter-spacing: -0.05em;
   }
   a,
   button {
