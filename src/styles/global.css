@@ -20,6 +20,31 @@ html[data-theme="light"] {
   --cursor-light-core: rgba(37, 99, 235, 0.25);
 }
 
+html[data-theme="light"] {
+  background-color: var(--background);
+  background-image: linear-gradient(
+    180deg,
+    rgb(250 250 252) 0%,
+    rgb(244 244 245) 40%,
+    var(--background) 100%
+  );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+html[data-theme="light"] body {
+  background: transparent;
+}
+
+html[data-theme="light"] header,
+html[data-theme="light"] .hero-section,
+html[data-theme="light"] #content-section,
+html[data-theme="light"] main,
+html[data-theme="light"] footer,
+html[data-theme="light"] #top-nav-wrap {
+  background: transparent;
+}
+
 html[data-theme="dark"] {
   --background: rgb(9 9 11); /* Zinc-950: Deep Rich Black */
   --foreground: rgb(228 228 231); /* Zinc-200: Soft White Text */
