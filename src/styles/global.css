@@ -104,9 +104,9 @@ html[data-theme="dark"] #top-nav-wrap {
     "Maple Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
 
-  --tracking-wider: -0.08em;
-  --tracking-tight: -0.08em;
-  --tracking-tighter: -0.08em;
+  --tracking-wider: -0.06em;
+  --tracking-tight: -0.06em;
+  --tracking-tighter: -0.04em;
 }
 
 @layer base {

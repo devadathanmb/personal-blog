@@ -92,12 +92,12 @@ const nextPost =
   <main
     id="main-content"
     class:list={[
-      "mx-auto w-full max-w-app px-4 pb-12",
+      "mx-auto w-full max-w-app px-4 pb-16",
       { "mt-8": !SITE.showBackButton },
     ]}
     data-pagefind-body
   >
-    <header class:list={[{ "mt-8": SITE.showBackButton }, "mb-8"]}>
+    <header class:list={[{ "mt-8": SITE.showBackButton }, "mb-10"]}>
       <h1
         transition:name={slugifyStr(title)}
         class="inline-block text-2xl font-bold text-accent sm:text-3xl"
@@ -133,7 +133,7 @@ const nextPost =
 
     <EditPost class="sm:hidden" {hideEditPost} {post} />
 
-    <ul class="mt-4 mb-8 flex list-none flex-wrap gap-2 sm:my-8">
+    <ul class="mt-6 mb-10 flex list-none flex-wrap gap-2 sm:my-10">
       {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
     </ul>
 
@@ -149,7 +149,7 @@ const nextPost =
     <!-- Previous/Next Post Buttons -->
     <div
       data-pagefind-ignore
-      class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2"
+      class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2"
     >
       {
         prevPost && (
