@@ -7,6 +7,8 @@ featured: true
 draft: false
 tags:
   - homelab
+  - raspberry pi
+  - self-hosted
 description:
   Breathing new life into an old USB-only printer by turning it into a network printer using a
   Raspberry Pi, CUPS, and some Linux trickery.

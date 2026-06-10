@@ -6,7 +6,7 @@ featured: true
 draft: false
 tags:
   - personal blog
-  - internshiip
+  - internship
   - fyle
   - work
 description: That's how I got a job
