@@ -101,18 +101,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 </style>
 
 <script>
-  // WMO weather codes → RI icon (small focused set, readable at pill size)
-  function weatherIcon(code: number): string {
-    if (code === 0)  return 'i-ri-sun-line'           // clear sky
-    if (code <= 2)   return 'i-ri-sun-cloudy-line'    // mainly clear / partly cloudy
-    if (code === 3)  return 'i-ri-cloudy-line'        // overcast
-    if (code <= 48)  return 'i-ri-mist-line'          // fog / rime fog
-    if (code <= 67)  return 'i-ri-drizzle-line'       // drizzle + rain (light through heavy)
-    if (code <= 77)  return 'i-ri-snowy-line'         // snow grains / snowfall
-    if (code <= 82)  return 'i-ri-heavy-showers-line' // rain showers
-    if (code <= 86)  return 'i-ri-snowy-line'         // snow showers
-    return 'i-ri-thunderstorms-line'                  // thunderstorm (95–99)
-  }
+  import { weatherIcon } from '~/utils/weather'
 
   async function fetchWeather(lat: number, lon: number) {
     try {

@@ -10,6 +10,7 @@ import {
 
 import { UI } from './src/config'
 import usesData from './src/data/uses.json'
+import { WEATHER_ICON_CLASSES } from './src/utils/weather'
 
 import type {
   IconNavItem,
@@ -125,15 +126,7 @@ export default defineConfig({
     'i-ri-menu-2-fill',
     'i-ri-menu-3-fill',
 
-    /* LocationTimeWidget — RI weather icons set dynamically via JS */
-    'i-ri-sun-line',
-    'i-ri-sun-cloudy-line',
-    'i-ri-cloudy-line',
-    'i-ri-mist-line',
-    'i-ri-drizzle-line',
-    'i-ri-rainy-line',
-    'i-ri-heavy-showers-line',
-    'i-ri-snowy-line',
-    'i-ri-thunderstorms-line',
+    /* LocationTimeWidget — derived from src/utils/weather.ts */
+    ...WEATHER_ICON_CLASSES,
   ],
 })
