@@ -11,7 +11,7 @@ let commitHash = 'unknown'
 try {
   commitHash =
     import.meta.env.PUBLIC_GIT_SHA ||
-    import.meta.env.VERCEL_GIT_COMMIT_SHA ||
+    import.meta.env.CF_PAGES_COMMIT_SHA ||
     import.meta.env.GIT_COMMIT_HASH
   if (!commitHash) {
     commitHash = execSync('git rev-parse --short HEAD').toString().trim()

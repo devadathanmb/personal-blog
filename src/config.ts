@@ -85,7 +85,6 @@ export const UI: Ui = {
     monorepos: [
       'withastro/astro',
       'withastro/starlight',
-      'lin-stephanie/astro-loaders',
     ],
     mainLogoOverrides: [
       [/starlight/, 'https://starlight.astro.build/favicon.svg'],

@@ -163,7 +163,7 @@ function remarkGenerateOgImage() {
       !checkFileExistsInDir('public/og-images', basename(ogImage))
     ) {
       console.warn(
-        `${chalk.black(getCurrentFormattedTime())} ${chalk.yellow(`[WARN] The '${ogImage}' specified in '${file.path}' was not found.`)}\n  ${chalk.bold('Hint:')} See ${chalk.cyan.underline('https://astro-antfustyle-theme.vercel.app/blog/about-open-graph-images/#configuring-og-images')} for more information on og image.`
+        `${chalk.black(getCurrentFormattedTime())} ${chalk.yellow(`[WARN] The '${ogImage}' specified in '${file.path}' was not found.`)}\n  ${chalk.bold('Hint:')} Ensure the file exists in the ${chalk.cyan('public/og-images/')} directory.`
       )
       return
     }
