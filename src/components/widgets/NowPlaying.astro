@@ -100,7 +100,7 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled
         animation: np-marquee var(--np-duration, 8s) linear infinite;
         flex-shrink: 0;
       }
-      .np-marquee.is-scrolling .np-marquee-text:hover {
+      .np-marquee.is-scrolling:hover .np-marquee-text {
         animation-play-state: paused;
       }
       /* Static: flex item truncates with ellipsis */

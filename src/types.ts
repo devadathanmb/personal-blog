@@ -813,6 +813,28 @@ interface NowPlayingConfig {
   lastfmApiKey: string
 }
 
+interface LocationConfig {
+  /**
+   * Display label shown in the pill (e.g. "Kerala, India").
+   */
+  label: string
+
+  /**
+   * IANA timezone string used for the live clock (e.g. "Asia/Kolkata").
+   */
+  timezone: string
+
+  /**
+   * Latitude for the Open-Meteo weather fetch.
+   */
+  lat: number
+
+  /**
+   * Longitude for the Open-Meteo weather fetch.
+   */
+  lon: number
+}
+
 export interface Features {
   /**
    * Whether to enable slide-in animation on each page
@@ -883,4 +905,12 @@ export interface Features {
    * and `lastfmApiKey` — both are public values, not secrets.
    */
   nowPlaying: FeatureConfig<NowPlayingConfig>
+
+  /**
+   * Whether to enable the location + weather + clock widget on the /now page.
+   *
+   * Set to `false` to hide it. To enable, provide a label, timezone, and coordinates
+   * for the Open-Meteo weather fetch (no API key required).
+   */
+  location: FeatureConfig<LocationConfig>
 }

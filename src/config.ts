@@ -182,4 +182,13 @@ export const FEATURES: Features = {
       lastfmApiKey: '6b3a4890434ad4b6bb7d66f1c298b1a0',
     },
   ],
+  location: [
+    true,
+    {
+      label: 'Kerala, India',
+      timezone: 'Asia/Kolkata',
+      lat: 10.302,
+      lon: 76.335,
+    },
+  ],
 }
