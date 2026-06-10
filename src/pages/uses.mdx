@@ -8,6 +8,7 @@ ogImage: true
 
 import BaseLayout from '~/layouts/BaseLayout.astro'
 import StandardLayout from '~/layouts/StandardLayout.astro'
+import Link from '~/components/base/Link.astro'
 
 <BaseLayout
   title={frontmatter.title}
@@ -162,10 +163,10 @@ Every tool here solved a problem at some point. The ones that remain are the one
 {/* prettier-ignore */}
 <div class="mt-8 mb-4 flex items-center gap-2 op-80 font-medium text-sm">
   <div class="i-ph-github-logo-duotone"></div>
-  <a href="https://github.com/devadathanmb/mac-dots" target="_blank" rel="noopener noreferrer" class="op-transition">Check out my dotfiles repository</a>
+  <Link href="https://github.com/devadathanmb/mac-dots" external enableNewTabWarning>Check out my dotfiles repository</Link>
 </div>
 
-_If you're curious about this concept, [uses.tech](https://uses.tech) has the full story._
+<em>If you're curious about this concept, <Link href="https://uses.tech" external enableNewTabWarning>uses.tech</Link> has the full story.</em>
 
 _Last updated at: June 2026._
 

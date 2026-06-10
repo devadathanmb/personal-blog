@@ -10,6 +10,7 @@ import BaseLayout from '~/layouts/BaseLayout.astro'
 import StandardLayout from '~/layouts/StandardLayout.astro'
 import LocationTimeWidget from '~/components/widgets/LocationTimeWidget.astro'
 import NowPlaying from '~/components/widgets/NowPlaying.astro'
+import Link from '~/components/base/Link.astro'
 
 <BaseLayout
   title={frontmatter.title}
@@ -44,7 +45,7 @@ Lately, I've been reminded that some of the best parts of life happen away from 
 
 ---
 
-_If you're curious about this concept, [nownownow.com](https://nownownow.com) has the full story._
+<em>If you're curious about this concept, <Link href="https://nownownow.com" external enableNewTabWarning>nownownow.com</Link> has the full story.</em>
 
 _Last updated at: June 2026._
 
