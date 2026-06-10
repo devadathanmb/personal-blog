@@ -9,6 +9,7 @@ import {
 } from 'unocss'
 
 import { UI } from './src/config'
+import usesData from './src/data/uses.json'
 
 import type {
   IconNavItem,
@@ -18,6 +19,9 @@ import type {
 } from './src/types'
 
 const { internalNavs, socialLinks } = UI
+
+const usesIcons = usesData.flatMap((s) => s.categories.flatMap((c) => c.items.map((i) => i.icon)))
+const usesBtnClasses = usesData.flatMap((s) => s.categories.flatMap((c) => c.items.map((i) => i.btnClass)))
 const navIcons = internalNavs
   .filter(
     (item) =>
@@ -106,6 +110,10 @@ export default defineConfig({
     ...navIcons,
     ...socialIcons,
 
+    /* UsesSection — derived from uses.json, auto-updates when data changes */
+    ...usesIcons,
+    ...usesBtnClasses,
+
     /* BaseLayout */
     'focus:not-sr-only',
     'focus:fixed',
@@ -116,5 +124,16 @@ export default defineConfig({
     /* Toc */
     'i-ri-menu-2-fill',
     'i-ri-menu-3-fill',
+
+    /* LocationTimeWidget — RI weather icons set dynamically via JS */
+    'i-ri-sun-line',
+    'i-ri-sun-cloudy-line',
+    'i-ri-cloudy-line',
+    'i-ri-mist-line',
+    'i-ri-drizzle-line',
+    'i-ri-rainy-line',
+    'i-ri-heavy-showers-line',
+    'i-ri-snowy-line',
+    'i-ri-thunderstorms-line',
   ],
 })

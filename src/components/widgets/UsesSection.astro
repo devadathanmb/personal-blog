@@ -1,0 +1,46 @@
+---
+interface UsesItem {
+  name: string
+  url: string
+  icon: string
+  btnClass: string
+  title: string
+}
+
+interface UsesCategory {
+  label: string
+  items: UsesItem[]
+}
+
+interface Props {
+  section: {
+    title: string
+    categories: UsesCategory[]
+  }
+}
+
+const { section } = Astro.props
+---
+
+<h2>{section.title}</h2>
+
+<div class="flex flex-col gap-6 mt-6 mb-12">
+  {section.categories.map((category) => (
+    <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+      <div class="w-32 shrink-0 op-80 font-medium">{category.label}</div>
+      <div class="flex flex-wrap gap-2">
+        {category.items.map((item) => (
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={item.btnClass}
+            title={item.title}
+          >
+            <div class={item.icon}></div> {item.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
