@@ -816,7 +816,7 @@ interface NowPlayingConfig {
 export interface Features {
   /**
    * Whether to enable slide-in animation on each page
-   * except the `/highlights`, `/photos`, and `/shorts` pages.
+   * except the `/highlights` and `/photos` pages.
    */
   slideEnterAnim: FeatureConfig<slideEnterAnimConfig>
 
@@ -837,7 +837,7 @@ export interface Features {
    *
    * To disable for a specific post or page, set the `toc` field in the frontmatter to `false`.
    *
-   * Note: The feature is not supported on the `/highlights`, `/photos`, `/shorts`, `/releases`
+   * Note: The feature is not supported on the `/highlights`, `/photos`, `/releases`
    * and `/prs` pages.
    */
   toc: FeatureConfig<TocConfig>

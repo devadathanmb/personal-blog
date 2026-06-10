@@ -6,13 +6,10 @@ import DesktopAside from '~/components/base/DesktopAside.astro'
 import MobileControl from '~/components/base/MobileControl.astro'
 
 import { FEATURES } from '~/config'
-import { getFilteredPosts, sortPostsByField } from '~/utils/data'
 
-import type { CollectionKey } from 'astro:content'
 import type { CardItemData } from '~/components/views/CardItem.astro'
 
 interface Props {
-  collectionType: CollectionKey
   mode: 'masonry' | 'grid'
   gap?: 'number'
   minCardWidth?: number
@@ -21,7 +18,6 @@ interface Props {
 }
 
 const {
-  collectionType,
   mode = 'grid',
   gap = 16,
   minCardWidth,
@@ -41,28 +37,6 @@ const { tag } = FEATURES
 const tagEnabled = Array.isArray(tag) && tag[0] && pageTag
 let tags: string[][] = []
 let haveTags = false
-
-/* /shorts */
-if (collectionType === 'shorts') {
-  const items = await getFilteredPosts(collectionType)
-  const sorted = sortPostsByField(items, 'title')
-  dataForGrid = sorted.map((item) => ({
-    link: item.data.redirect || `/${collectionType}/${item.id}`,
-    text: item.data.title,
-    date: item.data.pubDate,
-    tags: item.data.tags,
-  }))
-
-  if (tagEnabled) {
-    for (const item of sorted) {
-      const tag = item.data.tags
-      if (tag.length === 0) continue
-      tags.push(tag)
-    }
-  }
-
-  haveTags = tagEnabled && tags.length > 0
-}
 
 if (dataForMasonry.length === 0 && dataForGrid.length === 0) isEmpty = true
 ---

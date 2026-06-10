@@ -30,16 +30,10 @@ const photos = defineCollection({
   schema: photoSchema,
 })
 
-const shorts = defineCollection({
-  loader: glob({ base: './src/content/shorts', pattern: '**/[^_]*.{md,mdx}' }),
-  schema: postSchema,
-})
-
 export const collections = {
   pages,
   home,
   blog,
   thoughts,
   photos,
-  shorts,
 }

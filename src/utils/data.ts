@@ -46,7 +46,7 @@ export function getMinutesRead(
  * In production, it filters out draft posts.
  */
 export async function getFilteredPosts(
-  collection: 'blog' | 'shorts' | 'thoughts'
+  collection: 'blog' | 'thoughts'
 ) {
   return await getCollection(collection, ({ data }) => {
     return import.meta.env.PROD ? !data.draft : true
@@ -57,7 +57,7 @@ export async function getFilteredPosts(
  * Sorts an array of posts by their publication date in descending order.
  */
 export function getSortedPosts(
-  posts: CollectionEntryList<'blog' | 'shorts' | 'thoughts'>
+  posts: CollectionEntryList<'blog' | 'thoughts'>
 ) {
   return posts.sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -65,7 +65,7 @@ export function getSortedPosts(
 }
 
 export function sortPostsByField(
-  posts: CollectionEntryList<'blog' | 'shorts' | 'thoughts'>,
+  posts: CollectionEntryList<'blog' | 'thoughts'>,
   field: 'pubDate' | 'lastModDate' | 'title'
 ) {
   return posts.sort((a, b) => {
