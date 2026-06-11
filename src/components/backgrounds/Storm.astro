@@ -1,9 +1,23 @@
 ---
-// Storm background: calm falling rain + dynamic multi-bolt lightning.
-// Performance-first: batched rain draw calls, RAF throttled on mobile,
-// DPR-aware canvas sizing, shadow effects skipped on low-end devices.
+// Storm background: wind-driven rain + dynamic multi-bolt lightning.
+//
+// Performance-first:
+//  - Rain drops are pre-partitioned into opacity buckets, so each frame is a
+//    single pass that both advances positions and batches strokes (4 draw
+//    calls total instead of one per drop).
+//  - Lightning glow is drawn as ONE batched shadow pass per bolt instead of
+//    toggling the expensive canvas shadow once per segment.
+//  - DPR-aware sizing, 30 fps throttle on mobile, and the RAF loop fully stops
+//    when the tab is hidden or when reduced motion is set.
+//
+// The effect is theme-aware: rain renders in both themes (soft grey-blue in
+// light mode), re-reading the theme every frame so it adapts on toggle. The
+// lightning is a night-time effect only — bolts strike, flash and flicker in
+// dark mode, while light mode is a calm daytime drizzle with no bolts.
+//
 // Lightning strikes from randomised horizontal positions at the top of the
-// screen, each bolt with its own intensity tier (major / minor / distant).
+// screen, each bolt with its own intensity tier (major / minor / distant) and
+// a subtle channel flicker for a more natural strobe.
 ---
 
 <bg-storm
@@ -15,13 +29,6 @@
   bg-storm canvas {
     width: 100%;
     height: 100%;
-    /* Smooth fade when toggling themes */
-    transition: opacity 0.6s ease;
-  }
-  /* Completely invisible (and cost-free) in light mode */
-  bg-storm canvas.storm-hidden {
-    opacity: 0;
-    pointer-events: none;
   }
 </style>
 
@@ -29,8 +36,8 @@
   class BgStormElement extends HTMLElement {
     private animId: number | null = null
     private canvas: HTMLCanvasElement | null = null
-    private themeObserver: MutationObserver | null = null
-    private paused = false
+    private onVisibility: (() => void) | null = null
+    private sync: (() => void) | null = null
 
     connectedCallback() {
       this.canvas = document.createElement('canvas')
@@ -38,7 +45,6 @@
       this.canvas.style.height = '100%'
       this.appendChild(this.canvas)
       this.init()
-      this.watchTheme()
     }
 
     disconnectedCallback() {
@@ -46,30 +52,8 @@
         cancelAnimationFrame(this.animId)
         this.animId = null
       }
-      this.themeObserver?.disconnect()
-    }
-
-    private watchTheme() {
-      const update = () => {
-        const isDark = document.documentElement.classList.contains('dark')
-        if (isDark) {
-          this.canvas?.classList.remove('storm-hidden')
-          this.paused = false
-        } else {
-          this.canvas?.classList.add('storm-hidden')
-          this.paused = true
-        }
-      }
-
-      // Apply immediately on load
-      update()
-
-      // React to theme toggles
-      this.themeObserver = new MutationObserver(update)
-      this.themeObserver.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['class'],
-      })
+      if (this.onVisibility)
+        document.removeEventListener('visibilitychange', this.onVisibility)
     }
 
     init() {
@@ -77,11 +61,11 @@
       const ctx = canvas.getContext('2d')!
 
       // ─── Device capability detection ─────────────────────────────────────
-      // On mobile we halve the drop count and skip expensive shadow blurs to
-      // keep the frame budget comfortable at 30 fps.
       const isMobile = window.matchMedia('(max-width: 768px)').matches
+      const reduceMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches
       const DPR = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 2)
-      // Target frame interval: 30 fps on mobile, 60 fps on desktop
       const FRAME_MS = isMobile ? 1000 / 30 : 1000 / 60
       let lastFrameTime = 0
 
@@ -90,10 +74,6 @@
       let W = 0
       let H = 0
 
-      // ─── Resize ──────────────────────────────────────────────────────────
-      // We size the canvas in physical pixels (DPR-aware) but keep CSS size
-      // at 100% so everything looks crisp on hi-DPI screens without the
-      // performance cost of excess pixels on mobile.
       const resize = () => {
         W = window.innerWidth
         H = window.innerHeight
@@ -105,58 +85,51 @@
 
       let resizeTimer: ReturnType<typeof setTimeout> | null = null
       window.addEventListener('resize', () => {
-        // Debounce resize to avoid expensive re-init on every pixel
         if (resizeTimer) clearTimeout(resizeTimer)
         resizeTimer = setTimeout(resize, 120)
       })
 
       // ─── Rain ─────────────────────────────────────────────────────────────
       //
-      // Drops are grouped into 4 opacity buckets so we can batch many strokes
-      // under a single ctx.globalAlpha set instead of changing strokeStyle
-      // per-drop. This dramatically reduces state changes in the GPU pipeline.
-      //
-      // Speed range is reduced (2–5 px/frame) for a calmer, more elegant look.
+      // Drops are stored already partitioned by opacity bucket. Each frame we
+      // walk one bucket at a time, advancing every drop AND adding it to that
+      // bucket's stroke path — so we set globalAlpha just 4 times per frame and
+      // make a single pass over the drops.
 
       interface Drop {
         x: number
         y: number
-        speed: number   // px/frame  (2–5)
-        length: number  // streak px (10–28)
-        bucket: number  // 0–3 opacity tier index
+        speed: number // px/frame (2–5)
+        length: number // streak px (10–28)
       }
 
-      // 4 tiers: very faint → slightly visible (dark mode)
-      const DARK_ALPHAS  = [0.03, 0.055, 0.08, 0.11]
-      const LIGHT_ALPHAS = [0.012, 0.022, 0.032, 0.045]
+      // 4 tiers: very faint → slightly visible. Light-mode rain needs a touch
+      // more alpha to register against a bright page than dark-mode rain does.
+      const DARK_ALPHAS = [0.03, 0.055, 0.08, 0.11]
+      const LIGHT_ALPHAS = [0.04, 0.065, 0.09, 0.12]
+      const BUCKETS = 4
 
       const DROP_COUNT = isMobile ? 100 : 180
-      const drops: Drop[] = []
+      const buckets: Drop[][] = Array.from({ length: BUCKETS }, () => [])
 
-      const spawnDrop = (anyY = false): Drop => ({
-        x: Math.random() * (W + 40) - 20,
-        y: anyY ? Math.random() * H : -(10 + Math.random() * 28),
-        speed: 2 + Math.random() * 3,
-        length: 10 + Math.random() * 18,
-        bucket: Math.floor(Math.random() * 4),
-      })
+      const resetDrop = (d: Drop) => {
+        d.x = Math.random() * (W + 40) - 20
+        d.y = -(10 + Math.random() * 28)
+        d.speed = 2 + Math.random() * 3
+        d.length = 10 + Math.random() * 18
+      }
 
       const initDrops = () => {
-        drops.length = 0
-        for (let i = 0; i < DROP_COUNT; i++) drops.push(spawnDrop(true))
+        for (let b = 0; b < BUCKETS; b++) buckets[b].length = 0
+        for (let i = 0; i < DROP_COUNT; i++) {
+          const d: Drop = { x: 0, y: 0, speed: 0, length: 0 }
+          resetDrop(d)
+          d.y = Math.random() * H // spread across the screen on first frame
+          buckets[(Math.random() * BUCKETS) | 0].push(d)
+        }
       }
 
       // ─── Lightning ────────────────────────────────────────────────────────
-      //
-      // Up to MAX_BOLTS can live simultaneously. Each bolt is independent:
-      // its own position (spread across the full width of the top), its own
-      // intensity tier (major / minor / distant), and its own timing.
-      //
-      // Intensity tiers:
-      //   'major'   — thick, bright, deep, long glow (peak boltAlpha = 1.0)
-      //   'minor'   — medium depth, moderate glow    (peak = 0.65)
-      //   'distant' — thin, short, no glow, dim      (peak = 0.35)
-
       type Intensity = 'major' | 'minor' | 'distant'
 
       interface Seg {
@@ -164,7 +137,6 @@
         y1: number
         x2: number
         y2: number
-        w: number
         branch: boolean
       }
 
@@ -173,38 +145,37 @@
         alpha: number
         phase: 'in' | 'hold' | 'out'
         phaseStart: number
-        intensity: Intensity
-        // Per-intensity tuning
         peakAlpha: number
         boltIn: number
         boltHold: number
         boltOut: number
-        flashMult: number   // scales the full-screen flash strength
-        glowBlur: number    // shadowBlur on main channel (0 = off)
-        startX: number      // for localised flash effect
+        flashMult: number
+        glowBlur: number
+        coreWidth: number
       }
 
       const MAX_BOLTS = 3
       const activeBolts: Bolt[] = []
 
-      // Time until the *next* bolt is spawned (can be while another is active)
-      // Fire first bolt quickly so it's visible on load, then settle into
-      // a realistic inter-strike rhythm (5–12 s between bolts).
+      // Fire the first bolt quickly so it's visible on load, then settle into a
+      // realistic inter-strike rhythm.
       let nextBoltAt = Date.now() + 800 + Math.random() * 700
 
-      // Per-intensity configuration
-      const INTENSITY_CONFIG: Record<Intensity, {
-        peakAlpha: number
-        boltIn: number
-        boltHold: number
-        boltOut: number
-        depth: number
-        initSegLen: number
-        initWidth: number
-        flashMult: number
-        glowBlur: number
-        branchProb: number
-      }> = {
+      const INTENSITY_CONFIG: Record<
+        Intensity,
+        {
+          peakAlpha: number
+          boltIn: number
+          boltHold: number
+          boltOut: number
+          depth: number
+          initSegLen: number
+          initWidth: number
+          flashMult: number
+          glowBlur: number
+          branchProb: number
+        }
+      > = {
         major: {
           peakAlpha: 1.0,
           boltIn: 45,
@@ -213,41 +184,39 @@
           depth: 10,
           initSegLen: 52,
           initWidth: 2.4,
-          flashMult: 1.0,   // strong screen flash
+          flashMult: 1.0,
           glowBlur: 16,
           branchProb: 0.38,
         },
         minor: {
-          peakAlpha: 0.78,  // bumped from 0.65 — clearly visible
+          peakAlpha: 0.78,
           boltIn: 40,
           boltHold: 75,
           boltOut: 450,
           depth: 7,
           initSegLen: 40,
           initWidth: 1.6,
-          flashMult: 0.6,   // noticeable flash
+          flashMult: 0.6,
           glowBlur: isMobile ? 0 : 8,
           branchProb: 0.28,
         },
         distant: {
-          peakAlpha: 0.55,  // bumped from 0.35 — faint but visible
+          peakAlpha: 0.55,
           boltIn: 30,
           boltHold: 45,
           boltOut: 320,
           depth: 6,
           initSegLen: 32,
           initWidth: 1.1,
-          flashMult: 0.35,  // subtle but perceptible screen light
+          flashMult: 0.35,
           glowBlur: 0,
           branchProb: 0.15,
         },
       }
 
-      // Weight: minor is most common (feels like a real storm),
-      // major is dramatic & rare, distant is background atmosphere.
       const pickIntensity = (): Intensity => {
         const r = Math.random()
-        if (r < 0.30) return 'distant'
+        if (r < 0.3) return 'distant'
         if (r < 0.78) return 'minor'
         return 'major'
       }
@@ -259,7 +228,6 @@
         angle: number,
         segLen: number,
         depth: number,
-        w: number,
         branch: boolean,
         branchProb: number,
         out: Seg[]
@@ -270,14 +238,14 @@
         const nx = x + Math.sin(angle) * segLen + jitter
         const ny = y + Math.cos(angle) * segLen
 
-        out.push({ x1: x, y1: y, x2: nx, y2: ny, w, branch })
+        out.push({ x1: x, y1: y, x2: nx, y2: ny, branch })
 
         genBolt(
-          nx, ny,
+          nx,
+          ny,
           angle + (Math.random() - 0.5) * 0.24,
           segLen * 0.87,
           depth - 1,
-          w * 0.87,
           branch,
           branchProb,
           out
@@ -287,11 +255,11 @@
           const dir = Math.random() > 0.5 ? 1 : -1
           const fAngle = angle + dir * (0.38 + Math.random() * 0.5)
           genBolt(
-            nx, ny,
+            nx,
+            ny,
             fAngle,
             segLen * 0.52,
             Math.floor(depth * 0.55),
-            w * 0.42,
             true,
             branchProb * 0.5,
             out
@@ -306,23 +274,30 @@
         const cfg = INTENSITY_CONFIG[intensity]
 
         const segs: Seg[] = []
-        // Bolts can originate from anywhere across the full width of the screen
         const sx = W * 0.05 + Math.random() * W * 0.9
-        genBolt(sx, -8, 0, cfg.initSegLen, cfg.depth, cfg.initWidth, false, cfg.branchProb, segs)
+        genBolt(
+          sx,
+          -8,
+          0,
+          cfg.initSegLen,
+          cfg.depth,
+          false,
+          cfg.branchProb,
+          segs
+        )
 
         activeBolts.push({
           segs,
           alpha: 0,
           phase: 'in',
           phaseStart: performance.now(),
-          intensity,
           peakAlpha: cfg.peakAlpha,
           boltIn: cfg.boltIn,
           boltHold: cfg.boltHold,
           boltOut: cfg.boltOut,
           flashMult: cfg.flashMult,
           glowBlur: cfg.glowBlur,
-          startX: sx,
+          coreWidth: cfg.initWidth,
         })
       }
 
@@ -330,98 +305,95 @@
       const draw = (timestamp: number) => {
         this.animId = requestAnimationFrame(draw)
 
-        // Frame-rate throttle — skip frames that arrive too soon
         const elapsed = timestamp - lastFrameTime
         if (elapsed < FRAME_MS) return
         lastFrameTime = timestamp - (elapsed % FRAME_MS)
-
-        // In light mode the canvas is hidden — no point drawing anything
-        if (this.paused) return
 
         ctx.clearRect(0, 0, W, H)
         const dark = isDark()
         const now = performance.now()
 
-        // ── 1. Spawn new bolts ───────────────────────────────────────────────
-        if (Date.now() >= nextBoltAt) {
-          triggerBolt()
-          // Occasionally queue a close follow-up bolt for a double-flash feel
-          const followUp = Math.random() < 0.28
-          nextBoltAt = Date.now() +
-            (followUp ? 350 + Math.random() * 700 : 5000 + Math.random() * 7000)
-        }
-
-        // ── 2. Advance all active bolt states ────────────────────────────────
-        let combinedFlash = 0 // additive flash from all simultaneous bolts
+        // ── 1. Lightning (dark-mode only) ────────────────────────────────────
+        //
+        // Bolts only strike at night. In light mode we keep a calm daytime
+        // drizzle, so we clear any in-flight bolts and skip the storm logic.
+        let combinedFlash = 0
         let maxLightBoost = 0
 
-        for (let i = activeBolts.length - 1; i >= 0; i--) {
-          const b = activeBolts[i]
-          const bElapsed = now - b.phaseStart
-
-          if (b.phase === 'in') {
-            b.alpha = Math.min(b.peakAlpha, (bElapsed / b.boltIn) * b.peakAlpha)
-            if (bElapsed >= b.boltIn) {
-              b.phase = 'hold'
-              b.phaseStart = now
-            }
-          } else if (b.phase === 'hold') {
-            b.alpha = b.peakAlpha
-            if (bElapsed >= b.boltHold) {
-              b.phase = 'out'
-              b.phaseStart = now
-            }
-          } else {
-            const t = Math.min(1, bElapsed / b.boltOut)
-            b.alpha = b.peakAlpha * (1 - t * t * (3 - 2 * t)) // smoothstep
-            if (b.alpha < 0.002) {
-              activeBolts.splice(i, 1)
-              continue
-            }
+        if (dark) {
+          // Spawn new bolts.
+          if (Date.now() >= nextBoltAt) {
+            triggerBolt()
+            const followUp = Math.random() < 0.28
+            nextBoltAt =
+              Date.now() +
+              (followUp
+                ? 350 + Math.random() * 700
+                : 5000 + Math.random() * 7000)
           }
 
-          // Accumulate flash contribution (capped later)
-          combinedFlash += b.alpha * b.flashMult
-          maxLightBoost = Math.max(maxLightBoost, b.alpha * b.peakAlpha)
+          // Advance all active bolt states.
+          for (let i = activeBolts.length - 1; i >= 0; i--) {
+            const b = activeBolts[i]
+            const bElapsed = now - b.phaseStart
+
+            if (b.phase === 'in') {
+              b.alpha = Math.min(
+                b.peakAlpha,
+                (bElapsed / b.boltIn) * b.peakAlpha
+              )
+              if (bElapsed >= b.boltIn) {
+                b.phase = 'hold'
+                b.phaseStart = now
+              }
+            } else if (b.phase === 'hold') {
+              b.alpha = b.peakAlpha
+              if (bElapsed >= b.boltHold) {
+                b.phase = 'out'
+                b.phaseStart = now
+              }
+            } else {
+              const t = Math.min(1, bElapsed / b.boltOut)
+              b.alpha = b.peakAlpha * (1 - t * t * (3 - 2 * t)) // smoothstep
+              if (b.alpha < 0.002) {
+                activeBolts.splice(i, 1)
+                continue
+              }
+            }
+
+            combinedFlash += b.alpha * b.flashMult
+            maxLightBoost = Math.max(maxLightBoost, b.alpha * b.peakAlpha)
+          }
+
+          combinedFlash = Math.min(combinedFlash, 1)
+        } else if (activeBolts.length) {
+          activeBolts.length = 0
         }
 
-        combinedFlash = Math.min(combinedFlash, 1)
-
-        // ── 3. Rain — batched by opacity bucket ──────────────────────────────
+        // ── 2. Rain — wind-driven, batched by opacity bucket ─────────────────
         //
-        // We group drops by their opacity bucket and stroke all of them in a
-        // single pass per bucket, changing globalAlpha only 4 times total
-        // instead of once per drop. This is the main perf win on mobile.
-
-        const lightBoost = maxLightBoost * 0.10
+        // A slowly varying global wind makes the rain sway and slant naturally
+        // instead of falling in perfectly vertical lines. The same wind value
+        // drives both horizontal drift and the streak lean.
+        const wind =
+          Math.sin(now * 0.00018) * 0.7 + Math.sin(now * 0.00005) * 0.4
+        const lightBoost = maxLightBoost * 0.1
         const alphaTable = dark ? DARK_ALPHAS : LIGHT_ALPHAS
-        const rainColorDark  = '180, 212, 238'
-        const rainColorLight = '60, 80, 110'
-        const rainColor = dark ? rainColorDark : rainColorLight
+        const rainColor = dark ? '180, 212, 238' : '45, 62, 92'
 
-        // Advance drop positions
-        for (const d of drops) {
-          d.y += d.speed
-          if (d.y - d.length > H) {
-            d.x = Math.random() * (W + 40) - 20
-            d.y = -(10 + Math.random() * 28)
-            d.speed = 2 + Math.random() * 3
-            d.length = 10 + Math.random() * 18
-            d.bucket = Math.floor(Math.random() * 4)
-          }
-        }
-
-        // Draw bucket by bucket
         ctx.lineWidth = 1
-        for (let b = 0; b < 4; b++) {
-          const baseAlpha = alphaTable[b]
-          const alpha = Math.min(0.85, baseAlpha + lightBoost)
-          ctx.globalAlpha = alpha
-          ctx.strokeStyle = `rgb(${rainColor})`
+        ctx.strokeStyle = `rgb(${rainColor})`
+        for (let b = 0; b < BUCKETS; b++) {
+          ctx.globalAlpha = Math.min(0.85, alphaTable[b] + lightBoost)
           ctx.beginPath()
-          for (const d of drops) {
-            if (d.bucket !== b) continue
-            const lean = d.speed * 0.12
+          const bucket = buckets[b]
+          for (const d of bucket) {
+            // Advance position (gravity + wind drift).
+            d.y += d.speed
+            d.x += wind * 0.6
+            if (d.y - d.length > H) resetDrop(d)
+            // Streak leans with the wind for a gusty feel.
+            const lean = wind * d.length * 0.35
             ctx.moveTo(d.x, d.y)
             ctx.lineTo(d.x + lean, d.y + d.length)
           }
@@ -429,46 +401,89 @@
         }
         ctx.globalAlpha = 1
 
-        // ── 4. Lightning: flash overlay + bolt segments ──────────────────────
-        if (activeBolts.length > 0 || combinedFlash > 0) {
-          // Subtle full-screen flash
+        // ── 3. Lightning: flash overlay + bolt segments ──────────────────────
+        // Reached only in dark mode (bolts never spawn in light), so the flash
+        // is always the night-time strength.
+        if (activeBolts.length > 0) {
           if (combinedFlash > 0.05) {
-            const flashAlpha = combinedFlash * combinedFlash * (dark ? 0.055 : 0.028)
+            const flashAlpha = combinedFlash * combinedFlash * 0.055
             ctx.fillStyle = `rgba(200, 220, 255, ${flashAlpha})`
             ctx.fillRect(0, 0, W, H)
           }
 
-          // Draw each bolt
+          ctx.lineCap = 'round'
           for (const bolt of activeBolts) {
             if (bolt.alpha < 0.01) continue
-            const canGlow = bolt.glowBlur > 0
 
-            for (const seg of bolt.segs) {
-              const segAlpha = bolt.alpha * (seg.branch ? 0.40 : 0.88)
-              if (segAlpha < 0.01) continue
+            // Subtle channel flicker while the bolt is bright (real strikes
+            // strobe rapidly); the fade-out stays smooth.
+            const flicker =
+              bolt.phase === 'out' ? 1 : 0.78 + Math.random() * 0.22
+            const a = bolt.alpha * flicker
 
+            // 4a. Glow — a single batched shadow pass over the main channel.
+            if (bolt.glowBlur > 0) {
+              ctx.shadowBlur = bolt.glowBlur * bolt.alpha
+              ctx.shadowColor = 'rgba(140, 190, 255, 0.6)'
+              ctx.lineWidth = bolt.coreWidth * bolt.alpha
+              ctx.strokeStyle = `rgba(200, 230, 255, ${a * 0.5})`
               ctx.beginPath()
-              ctx.moveTo(seg.x1, seg.y1)
-              ctx.lineTo(seg.x2, seg.y2)
-              ctx.lineWidth = seg.w * (seg.branch ? bolt.alpha * 0.6 : bolt.alpha)
-              ctx.strokeStyle = seg.branch
-                ? `rgba(165, 200, 255, ${segAlpha})`
-                : `rgba(220, 240, 255, ${segAlpha})`
-
-              if (!seg.branch && canGlow) {
-                ctx.shadowBlur = bolt.glowBlur * bolt.alpha
-                ctx.shadowColor = 'rgba(140, 190, 255, 0.6)'
+              for (const s of bolt.segs) {
+                if (s.branch) continue
+                ctx.moveTo(s.x1, s.y1)
+                ctx.lineTo(s.x2, s.y2)
               }
-
               ctx.stroke()
-              if (!seg.branch && canGlow) ctx.shadowBlur = 0
+              ctx.shadowBlur = 0
             }
+
+            // 4b. Crisp main channel (one batched stroke, no shadow).
+            ctx.lineWidth = Math.max(0.6, bolt.coreWidth * bolt.alpha)
+            ctx.strokeStyle = `rgba(220, 240, 255, ${a * 0.88})`
+            ctx.beginPath()
+            for (const s of bolt.segs) {
+              if (s.branch) continue
+              ctx.moveTo(s.x1, s.y1)
+              ctx.lineTo(s.x2, s.y2)
+            }
+            ctx.stroke()
+
+            // 4c. Branches (dimmer, thinner, one batched stroke).
+            ctx.lineWidth = Math.max(0.4, bolt.coreWidth * 0.45 * bolt.alpha)
+            ctx.strokeStyle = `rgba(165, 200, 255, ${a * 0.4})`
+            ctx.beginPath()
+            for (const s of bolt.segs) {
+              if (!s.branch) continue
+              ctx.moveTo(s.x1, s.y1)
+              ctx.lineTo(s.x2, s.y2)
+            }
+            ctx.stroke()
           }
+          ctx.lineCap = 'butt'
         }
       }
 
+      // ─── Lifecycle ───────────────────────────────────────────────────────
+      // Run whenever the tab is visible and the user hasn't asked for reduced
+      // motion. The draw loop itself adapts to the theme each frame (rain in
+      // both modes, lightning only in dark).
+      this.sync = () => {
+        const shouldRun = !document.hidden && !reduceMotion
+        if (shouldRun && this.animId === null) {
+          lastFrameTime = 0
+          this.animId = requestAnimationFrame(draw)
+        } else if (!shouldRun && this.animId !== null) {
+          cancelAnimationFrame(this.animId)
+          this.animId = null
+          ctx.clearRect(0, 0, W, H)
+        }
+      }
+
+      this.onVisibility = () => this.sync?.()
+      document.addEventListener('visibilitychange', this.onVisibility)
+
       resize()
-      this.animId = requestAnimationFrame(draw)
+      this.sync()
     }
   }
 

@@ -1,5 +1,16 @@
 ---
-// Creative "Ocean" background: Animated 3D geometric waves simulating a rolling sea
+// Creative "Ocean" background: animated layered swells projected in faux-3D.
+//
+// Performance notes:
+//  - The projection grid is allocated ONCE (on resize) and then mutated in
+//    place every frame. The previous version allocated ~1,250 point objects
+//    *per frame*, thrashing the garbage collector; now we allocate nothing in
+//    the hot loop.
+//  - Almost everything is static: screenX, perspective, the per-row gradients,
+//    and alpha don't depend on time — only the wave height (screenY) and crest
+//    colour change frame to frame. The static parts are precomputed at resize.
+//  - DPR-aware sizing, a 30 fps throttle on mobile, and the loop fully stops
+//    when the tab is hidden or the user prefers reduced motion.
 ---
 
 <bg-ocean
@@ -18,6 +29,8 @@
   class BgOceanElement extends HTMLElement {
     private animId: number | null = null
     private canvas: HTMLCanvasElement | null = null
+    private onResize: (() => void) | null = null
+    private onVisibility: (() => void) | null = null
 
     connectedCallback() {
       this.canvas = document.createElement('canvas')
@@ -32,6 +45,9 @@
         cancelAnimationFrame(this.animId)
         this.animId = null
       }
+      if (this.onResize) window.removeEventListener('resize', this.onResize)
+      if (this.onVisibility)
+        document.removeEventListener('visibilitychange', this.onVisibility)
     }
 
     init() {
@@ -40,122 +56,204 @@
 
       const isDark = () => document.documentElement.classList.contains('dark')
 
-      let W = window.innerWidth
-      let H = window.innerHeight
+      // ─── Device capability detection ─────────────────────────────────────
+      const isMobile = window.matchMedia('(max-width: 768px)').matches
+      const reduceMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches
+      const DPR = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 2)
+      // Slow rolling swells read fine at 30 fps; halve the work on mobile.
+      const FRAME_MS = isMobile ? 1000 / 30 : 1000 / 60
+      let lastFrameTime = 0
+
+      // Coarser grid on mobile = far fewer points & polygons to fill.
+      const spacingX = isMobile ? 64 : 40
+      const spacingZ = 30
+      const ROWS = isMobile ? 16 : 25 // depth of the ocean horizon
+
+      let W = 0
+      let H = 0
+
+      // ─── Precomputed projection grid ─────────────────────────────────────
+      //
+      // A point's screen X, perspective and alpha never change once the
+      // viewport size is fixed — only its vertical wave displacement does. So
+      // we bake the static parts here and only touch `sy` each frame.
+
+      interface Pt {
+        sx: number // static screen X
+        baseY: number // static screen Y before wave displacement
+        persp: number
+        // Precomputed wave phase offsets (the per-point constant parts).
+        phaseA: number
+        phaseB: number
+        phaseC: number
+        sy: number // mutable: screen Y after wave displacement (this frame)
+      }
+
+      let grid: Pt[][] = []
+      let rowAlpha: number[] = [] // static per-row crest alpha
+      let rowFill: CanvasGradient[] = [] // static per-row fill gradient (dark)
+      let rowFillLight: CanvasGradient[] = []
+
+      const buildGrid = () => {
+        grid = []
+        rowAlpha = []
+        rowFill = []
+        rowFillLight = []
+
+        const cols = Math.floor(W / spacingX) + 20
+        const baseLine = H * 0.8 // horizon: bottom 20% of the screen
+
+        for (let z = 0; z < ROWS; z++) {
+          const perspective = 350 / (350 + z * spacingZ)
+          const depthFade = 1 - (z / ROWS) * 0.8
+          const rowAlphaVal = perspective * depthFade
+          const row: Pt[] = []
+
+          for (let x = -10; x < cols + 10; x++) {
+            const worldX = x * spacingX
+            const sx = W / 2 + (worldX - (cols * spacingX) / 2) * perspective
+            const baseY = baseLine + z * spacingZ * 0.5 * perspective
+
+            row.push({
+              sx,
+              baseY,
+              persp: perspective,
+              phaseA: worldX * 0.01,
+              phaseB: z * 0.2,
+              phaseC: worldX * 0.02 - z * 0.15,
+              sy: baseY,
+            })
+          }
+
+          grid.push(row)
+          rowAlpha.push(rowAlphaVal)
+
+          // Cache one fill gradient per row for each theme. Geometry and the
+          // dominant hue are static, so this is built once per resize instead
+          // of ROWS times per frame.
+          const avgHue = 190 + (z / ROWS) * 30
+          const mkGrad = (alphaScale: number) => {
+            const a = rowAlphaVal * alphaScale
+            const g = ctx.createLinearGradient(0, baseLine, 0, H)
+            g.addColorStop(0, `hsla(${avgHue}, 60%, 40%, ${a})`)
+            g.addColorStop(1, `hsla(${avgHue + 20}, 70%, 10%, 0)`)
+            return g
+          }
+          rowFill.push(mkGrad(0.15 * 0.4)) // dark base alpha 0.15 * fill 0.4
+          rowFillLight.push(mkGrad(0.1 * 0.2)) // light base 0.1 * fill 0.2
+        }
+      }
 
       const resize = () => {
         W = window.innerWidth
         H = window.innerHeight
-        canvas.width = W
-        canvas.height = H
+        canvas.width = Math.round(W * DPR)
+        canvas.height = Math.round(H * DPR)
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0)
+        buildGrid()
       }
-      resize()
-      window.addEventListener('resize', resize)
+
+      let resizeTimer: ReturnType<typeof setTimeout> | null = null
+      this.onResize = () => {
+        if (resizeTimer) clearTimeout(resizeTimer)
+        resizeTimer = setTimeout(resize, 120)
+      }
+      window.addEventListener('resize', this.onResize)
+
+      // ─── Wave field ──────────────────────────────────────────────────────
+      //
+      // A sum of swells travelling in different directions and speeds gives an
+      // organic, non-repeating sea. Amplitudes are intentionally modest so the
+      // background stays subtle behind content.
+      const waveAt = (p: Pt, t: number): number =>
+        Math.sin(p.phaseA + t * 1.2) * 25 + // primary rolling swell
+        Math.cos(p.phaseB - t * 1.8) * 20 + // cross-chop toward viewer
+        Math.sin(p.phaseC + t * 1.5) * 15 + // diagonal detail
+        Math.sin(p.phaseA * 0.5 + t * 0.55) * 12 // slow long-period groundswell
 
       let time = 0
 
-      const draw = () => {
+      const drawFrame = () => {
         ctx.clearRect(0, 0, W, H)
-        time += 0.005
         const dark = isDark()
+        const fills = dark ? rowFill : rowFillLight
 
-        const spacingX = 40
-        const spacingZ = 30
-        const cols = Math.floor(W / spacingX) + 20
-        const rows = 25 // depth of the ocean horizon
-
-        const points: {
-          screenX: number
-          screenY: number
-          hue: number
-          alpha: number
-          perspective: number
-        }[][] = []
-
-        // 1. Generate the 3D points
-        for (let z = 0; z < rows; z++) {
-          const rowPoints = []
-          for (let x = -10; x < cols + 10; x++) {
-            const worldX = x * spacingX
-
-            // Complex wave interference to make it look organic
-            // Rolling ocean swells
-            const wave1 = Math.sin(worldX * 0.01 + time * 1.2) * 25
-            // Cross-chop moving towards viewer
-            const wave2 = Math.cos(z * 0.2 - time * 1.8) * 20
-            // Secondary diagonal details
-            const wave3 = Math.sin(worldX * 0.02 - z * 0.15 + time * 1.5) * 15
-
-            const yOffset = wave1 + wave2 + wave3
-
-            // 3D Projection (camera looking out over the water)
-            const perspective = 350 / (350 + z * spacingZ)
-
-            const screenX =
-              W / 2 + (worldX - (cols * spacingX) / 2) * perspective
-
-            // Horizon line placement - pushed down to bottom 20% of screen
-            const baseY = H * 0.8
-            const screenY =
-              baseY + z * spacingZ * 0.5 * perspective - yOffset * perspective
-
-            // Dynamic oceanic colors - less saturated
-            const hue = 190 + (z / rows) * 30 + (yOffset / 50) * 20
-
-            // Opacity drastically reduced for subtlety
-            const baseAlpha = dark ? 0.15 : 0.1
-            const alpha = baseAlpha * perspective * (1 - (z / rows) * 0.8)
-
-            rowPoints.push({ screenX, screenY, hue, alpha, perspective })
+        // 1. Update only the wave-dependent field in place (no allocation).
+        for (const row of grid) {
+          for (const p of row) {
+            p.sy = p.baseY - waveAt(p, time) * p.persp
           }
-          points.push(rowPoints)
         }
 
-        // 2. Draw the solid overlapping waves (Back to Front)
-        for (let z = rows - 1; z >= 0; z--) {
-          const row = points[z]
+        // 2. Draw solid overlapping waves, back to front.
+        for (let z = ROWS - 1; z >= 0; z--) {
+          const row = grid[z]
+          const persp = row[0].persp
 
+          // Filled water volume.
           ctx.beginPath()
-          ctx.moveTo(row[0].screenX, row[0].screenY)
-
-          for (let x = 1; x < row.length; x++) {
-            // Smoothly connect the points
-            ctx.lineTo(row[x].screenX, row[x].screenY)
-          }
-
-          // Complete the polygon so we can fill the water volume
-          ctx.lineTo(row[row.length - 1].screenX, H + 100)
-          ctx.lineTo(row[0].screenX, H + 100)
+          ctx.moveTo(row[0].sx, row[0].sy)
+          for (let i = 1; i < row.length; i++) ctx.lineTo(row[i].sx, row[i].sy)
+          ctx.lineTo(row[row.length - 1].sx, H + 100)
+          ctx.lineTo(row[0].sx, H + 100)
           ctx.closePath()
-
-          const avgHue = row[Math.floor(row.length / 2)].hue
-          const baseAlpha = row[0].alpha
-
-          // Very faint gradient fill
-          const fillAlpha = dark ? baseAlpha * 0.4 : baseAlpha * 0.2
-          const fillGrad = ctx.createLinearGradient(0, H * 0.8, 0, H)
-          fillGrad.addColorStop(0, `hsla(${avgHue}, 60%, 40%, ${fillAlpha})`)
-          fillGrad.addColorStop(1, `hsla(${avgHue + 20}, 70%, 10%, 0)`)
-
-          ctx.fillStyle = fillGrad
+          ctx.fillStyle = fills[z]
           ctx.fill()
 
-          // Stroke the crest of the wave
+          // Crest stroke.
           ctx.beginPath()
-          ctx.moveTo(row[0].screenX, row[0].screenY)
-          for (let x = 1; x < row.length; x++) {
-            ctx.lineTo(row[x].screenX, row[x].screenY)
-          }
-          ctx.lineWidth = 1 * row[0].perspective
-          const strokeAlpha = dark ? baseAlpha : baseAlpha * 0.8
+          ctx.moveTo(row[0].sx, row[0].sy)
+          for (let i = 1; i < row.length; i++) ctx.lineTo(row[i].sx, row[i].sy)
+          ctx.lineWidth = persp
+          // Crest hue shifts subtly with the wave height of the row's midpoint.
+          const mid = row[(row.length / 2) | 0]
+          const midWave = (mid.baseY - mid.sy) / mid.persp
+          const avgHue = 190 + (z / ROWS) * 30 + (midWave / 50) * 20
+          const strokeAlpha = rowAlpha[z] * (dark ? 0.15 : 0.08)
           ctx.strokeStyle = `hsla(${avgHue}, 60%, 50%, ${strokeAlpha})`
           ctx.stroke()
         }
-
-        this.animId = requestAnimationFrame(draw)
       }
 
-      draw()
+      const draw = (timestamp: number) => {
+        this.animId = requestAnimationFrame(draw)
+
+        // Throttle to the target frame rate.
+        const elapsed = timestamp - lastFrameTime
+        if (elapsed < FRAME_MS) return
+        lastFrameTime = timestamp - (elapsed % FRAME_MS)
+
+        // Don't burn cycles while the tab is in the background.
+        if (document.hidden) return
+
+        time += 0.005
+        drawFrame()
+      }
+
+      resize()
+
+      if (reduceMotion) {
+        // Honour the user's preference: render a single static frame, no loop.
+        drawFrame()
+        return
+      }
+
+      // Stop/restart the RAF loop around tab visibility to save battery.
+      this.onVisibility = () => {
+        if (document.hidden) {
+          if (this.animId !== null) {
+            cancelAnimationFrame(this.animId)
+            this.animId = null
+          }
+        } else if (this.animId === null) {
+          this.animId = requestAnimationFrame(draw)
+        }
+      }
+      document.addEventListener('visibilitychange', this.onVisibility)
+
+      this.animId = requestAnimationFrame(draw)
     }
   }
 
