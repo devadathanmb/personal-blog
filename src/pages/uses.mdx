@@ -10,6 +10,7 @@ import BaseLayout from '~/layouts/BaseLayout.astro'
 import StandardLayout from '~/layouts/StandardLayout.astro'
 import Link from '~/components/base/Link.astro'
 import UsesSection from '~/components/widgets/UsesSection.astro'
+import LastUpdated from '~/components/widgets/LastUpdated.astro'
 import usesData from '~/data/uses.json'
 
 <BaseLayout
@@ -19,6 +20,9 @@ import usesData from '~/data/uses.json'
   ogImage={frontmatter.ogImage}
 >
   <StandardLayout title={frontmatter.title} subtitle={frontmatter.subtitle}>
+    <div slot="head" class="-mt-5 mb-6 ml-1 slide-enter animate-delay-200!">
+      <LastUpdated date="2026-06-01" />
+    </div>
     <div slot="article">
 
 This is the hardware, software, and setup I've come to rely on over years of work, curiosity, and tinkering.
@@ -46,7 +50,6 @@ Every tool here solved a problem at some point. The ones that remain are the one
 
 <em>If you're curious about this concept, <Link href="https://uses.tech" external enableNewTabWarning>uses.tech</Link> has the full story.</em>
 
-_Last updated at: June 2026._
 
     </div>
 
