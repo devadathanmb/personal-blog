@@ -1,0 +1,42 @@
+---
+import Link from '~/components/base/Link.astro'
+import { withBasePath } from '~/utils/path'
+import type { SeriesNavData } from '~/utils/data'
+
+interface Props {
+  seriesNav: SeriesNavData
+}
+
+const { seriesNav } = Astro.props
+const { seriesName, position, total, prevPost, nextPost } = seriesNav
+---
+
+<div class="not-prose flex flex-col items-end gap-1 text-right text-sm">
+  <span class="op-25 text-xs mb-0.5">
+    {seriesName} · {position}/{total}
+  </span>
+  {
+    prevPost ? (
+      <Link
+        href={withBasePath(`/blog/${prevPost.id}`)}
+        class="op-50! hover:op-100! transition-opacity no-underline! block"
+      >
+        ← {prevPost.data.title}
+      </Link>
+    ) : (
+      <span class="op-20">← first in series</span>
+    )
+  }
+  {
+    nextPost ? (
+      <Link
+        href={withBasePath(`/blog/${nextPost.id}`)}
+        class="op-50! hover:op-100! transition-opacity no-underline! block"
+      >
+        {nextPost.data.title} →
+      </Link>
+    ) : (
+      <span class="op-20">last in series →</span>
+    )
+  }
+</div>

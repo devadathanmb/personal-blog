@@ -9,6 +9,7 @@ import DesktopAside from '~/components/base/DesktopAside.astro'
 import MobileControl from '~/components/base/MobileControl.astro'
 import PostCover from '~/components/base/PostCover.astro'
 import ShareLink from '~/components/widgets/ShareLink.astro'
+import SeriesNav from '~/components/widgets/SeriesNav.astro'
 import Giscus from '~/components/widgets/Giscus.astro'
 import ImageViewer from '~/components/widgets/ImageViewer.astro'
 
@@ -16,14 +17,16 @@ import { getMinutesRead } from '~/utils/data'
 import { FEATURES } from '~/config'
 
 import type { CollectionEntry } from 'astro:content'
+import type { SeriesNavData } from '~/utils/data'
 
 interface Props {
   post: CollectionEntry<'blog' | 'thoughts'>
+  seriesNav?: SeriesNavData | null
   isCommentable?: boolean
   pageToc?: boolean
 }
 
-const { post, isCommentable = false, pageToc = true } = Astro.props
+const { post, seriesNav = null, isCommentable = false, pageToc = true } = Astro.props
 const { toc, share, giscus, search } = FEATURES
 
 const { data: frontmatter } = post
@@ -88,6 +91,11 @@ frontmatter to <code>false</code> or remove it to publish the post.`
   <Fragment slot="share">
     {shareEnabled && <ShareLink config={share[1]} />}
   </Fragment>
+  {seriesNav && (
+    <Fragment slot="series-nav">
+      <SeriesNav {seriesNav} />
+    </Fragment>
+  )}
   {
     giscusEnabled && (
       <div slot="giscus" class="prose mx-auto mt-8">

@@ -75,13 +75,18 @@ if (hasCustomCursor) style['--external-link-cursor'] = cursorType
     <main id="main" class="px-7 py-10">
       <!-- Content -->
       <slot />
-      <!-- Share -->
+      <!-- Share / Series Nav -->
       {
         Astro.url.pathname !== withBasePath('/') && (
           <footer class="slide-enter animate-delay-1000! prose mx-auto mt-8 print:hidden">
-            <slot name="share" />
-            <br />
-            <BackLink />
+            <div class="flex justify-between items-start gap-8">
+              <div>
+                <slot name="share" />
+                <br />
+                <BackLink />
+              </div>
+              <slot name="series-nav" />
+            </div>
           </footer>
         )
       }

@@ -153,6 +153,18 @@ export const postSchema = ({ image }: SchemaContext) =>
       .describe(
         'Marks the post as a draft. If `true`, it is only visible in development and excluded from production builds.'
       ),
+    series: z
+      .string()
+      .default('')
+      .describe(
+        'Display name override for the series this post belongs to. If empty, the name is auto-derived from the parent directory. Only relevant for posts nested 3+ path segments deep (e.g. `2025/postgres/1.md`).'
+      ),
+    order: z
+      .number()
+      .optional()
+      .describe(
+        'Explicit sort position within a series. Defaults to pubDate ascending (oldest = part 1). Use this when pubDate order does not match the intended reading order.'
+      ),
   })
 
 /* Projects */

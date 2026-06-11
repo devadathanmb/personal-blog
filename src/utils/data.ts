@@ -45,9 +45,9 @@ export function getMinutesRead(
  * Retrieves filtered posts from the specified content collection.
  * In production, it filters out draft posts.
  */
-export async function getFilteredPosts(
-  collection: 'blog' | 'thoughts'
-) {
+export async function getFilteredPosts<K extends 'blog' | 'thoughts'>(
+  collection: K
+): Promise<CollectionEntry<K>[]> {
   return await getCollection(collection, ({ data }) => {
     return import.meta.env.PROD ? !data.draft : true
   })
@@ -83,6 +83,66 @@ export function sortPostsByField(
 
     return 0
   })
+}
+
+export interface SeriesNavData {
+  seriesName: string
+  position: number
+  total: number
+  prevPost: CollectionEntry<'blog'> | null
+  nextPost: CollectionEntry<'blog'> | null
+}
+
+/**
+ * Humanizes a slug like "intro-to-go" → "Intro to Go".
+ */
+function humanizeSlug(slug: string): string {
+  return slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+/**
+ * Returns series navigation data for a blog post, or null if the post is not
+ * part of a series. A post is considered part of a series when its id contains
+ * 3+ path segments (e.g. "2025/postgres/1").
+ */
+export function getSeriesNavigation(
+  currentPost: CollectionEntry<'blog'>,
+  allPosts: CollectionEntry<'blog'>[]
+): SeriesNavData | null {
+  const segments = currentPost.id.split('/')
+  if (segments.length < 3) return null
+
+  const seriesKey = segments.slice(0, -1).join('/')
+  const seriesDir = segments[segments.length - 2]
+
+  const seriesName =
+    (currentPost.data.series && currentPost.data.series.trim()) ||
+    humanizeSlug(seriesDir)
+
+  const seriesPosts = allPosts
+    .filter(
+      (p) =>
+        p.id.startsWith(seriesKey + '/') &&
+        p.id.split('/').length === segments.length
+    )
+    .sort((a, b) => {
+      const aOrder = a.data.order ?? Infinity
+      const bOrder = b.data.order ?? Infinity
+      if (aOrder !== bOrder) return aOrder - bOrder
+      return a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+    })
+
+  const position = seriesPosts.findIndex((p) => p.id === currentPost.id)
+  if (position === -1) return null
+
+  return {
+    seriesName,
+    position: position + 1,
+    total: seriesPosts.length,
+    prevPost: position > 0 ? seriesPosts[position - 1] : null,
+    nextPost:
+      position < seriesPosts.length - 1 ? seriesPosts[position + 1] : null,
+  }
 }
 
 /**
