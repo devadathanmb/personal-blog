@@ -1,0 +1,153 @@
+import { getCollection } from 'astro:content'
+import { SITE } from '../config'
+
+import type { CollectionEntry, CollectionKey } from 'astro:content'
+
+type CollectionEntryList<K extends CollectionKey = CollectionKey> =
+  CollectionEntry<K>[]
+
+/**
+ * Ensures that a value is a positive integer.
+ */
+function ensurePositiveInteger(value: number, name: string) {
+  if (Number.isInteger(value) && value > 0) return value
+  throw new Error(
+    `'${name}' must be a positive integer. Please check 'src/config.ts' for the correct configuration.`
+  )
+}
+
+/**
+ * Parses a tuple of boolean and number.
+ */
+export function parseTuple(
+  tuple: boolean | [boolean, number] | undefined,
+  name: string
+) {
+  if (!tuple || !Array.isArray(tuple) || !tuple[0]) return undefined
+  return ensurePositiveInteger(tuple[1], name)
+}
+
+/**
+ * Retrieves the minutes read for a post.
+ */
+export function getMinutesRead(
+  minutesRead: number | boolean,
+  computedMinutesRead: number
+) {
+  return minutesRead === false
+    ? 0
+    : typeof minutesRead === 'number' && minutesRead > 0
+      ? minutesRead
+      : computedMinutesRead
+}
+
+/**
+ * Retrieves filtered posts from the specified content collection.
+ * In production, it filters out draft posts.
+ */
+export async function getFilteredPosts(
+  collection: 'blog' | 'shorts' | 'thoughts'
+) {
+  return await getCollection(collection, ({ data }) => {
+    return import.meta.env.PROD ? !data.draft : true
+  })
+}
+
+/**
+ * Sorts an array of posts by their publication date in descending order.
+ */
+export function getSortedPosts(
+  posts: CollectionEntryList<'blog' | 'shorts' | 'thoughts'>
+) {
+  return posts.sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  )
+}
+
+export function sortPostsByField(
+  posts: CollectionEntryList<'blog' | 'shorts' | 'thoughts'>,
+  field: 'pubDate' | 'lastModDate' | 'title'
+) {
+  return posts.sort((a, b) => {
+    if (field === 'title') {
+      return a.data.title.localeCompare(b.data.title, SITE.lang, {
+        sensitivity: 'base',
+      })
+    }
+
+    if (field === 'pubDate' || field === 'lastModDate') {
+      const aTime = (a.data[field] as Date).getTime()
+      const bTime = (b.data[field] as Date).getTime()
+      return bTime - aTime
+    }
+
+    return 0
+  })
+}
+
+/**
+ * Build tag relations from input shapes.
+ */
+export function buildTagRelations(
+  input: string[][] | string[] | Record<string, string[]>
+): { unique: string[]; relations: Record<string, string[]> } {
+  // use Map+Set to store de-duplicated relations
+  const relMap = new Map<string, Set<string>>()
+
+  // ensure a key exists in relMap and return its Set
+  const ensure = (k: string): Set<string> => {
+    let set = relMap.get(k)
+    if (!set) {
+      set = new Set<string>()
+      relMap.set(k, set)
+    }
+    return set
+  }
+
+  // type guard: check if an array is string[][]
+  const isString2DArray = (arr: unknown[]): arr is string[][] =>
+    arr.length > 0 && Array.isArray(arr[0])
+
+  if (Array.isArray(input)) {
+    if (isString2DArray(input)) {
+      // string[][]: each is a post's tags
+      for (const group of input) {
+        const clean = Array.from(
+          new Set(group.map((t) => t.trim()).filter(Boolean))
+        )
+
+        for (const a of clean) {
+          const setA = ensure(a)
+          for (const b of clean) {
+            if (a !== b) setA.add(b)
+          }
+        }
+      }
+    } else {
+      // string[] unique only
+      for (const t of input) {
+        ensure(String(t))
+      }
+    }
+  } else {
+    // mapping provided: each key is a tag, value is its related tags
+    for (const [k, v] of Object.entries(input)) {
+      const set = ensure(k)
+      for (const t of v) {
+        if (t && t !== k) set.add(t)
+      }
+    }
+  }
+
+  // collect all unique tags and sort them alphabetically
+  const unique = Array.from(relMap.keys()).sort((a, b) => a.localeCompare(b))
+
+  // convert Map<string, Set<string>> into Record<string, string[]>
+  const relations: Record<string, string[]> = {}
+  for (const key of unique) {
+    const set = relMap.get(key)
+    relations[key] = set ? Array.from(set) : []
+  }
+
+  return { unique, relations }
+}

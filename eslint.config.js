@@ -1,18 +1,54 @@
-import eslintPluginAstro from "eslint-plugin-astro";
-import globals from "globals";
-import tseslint from "typescript-eslint";
+import { defineConfig } from 'eslint/config'
+import globals from 'globals'
+import js from '@eslint/js'
+import ts from 'typescript-eslint'
+import astro from 'eslint-plugin-astro'
+import prettier from 'eslint-config-prettier/flat'
 
-export default [
-  ...tseslint.configs.recommended,
-  ...eslintPluginAstro.configs.recommended,
+export default defineConfig(
   {
+    // https://eslint.org/docs/latest/use/configure/configuration-files#globally-ignoring-files-with-ignores
+    ignores: ['dist/', '.astro/', '.local/'],
+  },
+  {
+    // https://eslint.org/docs/latest/use/configure/language-options
     languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       globals: {
         ...globals.browser,
         ...globals.node,
       },
     },
   },
-  { rules: { "no-console": "error" } },
-  { ignores: ["dist/**", ".astro", "public/pagefind/**"] },
-];
+  js.configs.recommended,
+  ts.configs.recommended,
+  ts.configs.stylistic,
+  astro.configs.recommended,
+  astro.configs['jsx-a11y-recommended'],
+  prettier,
+  {
+    rules: {
+      // https://typescript-eslint.io/rules/no-unused-vars/
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
+      // https://eslint.org/docs/latest/rules/no-unused-expressions
+      '@typescript-eslint/no-unused-expressions': [
+        'error',
+        { allowTernary: true },
+      ],
+      // https://ota-meshi.github.io/eslint-plugin-astro/rules/jsx-a11y/label-has-associated-control/
+      'astro/jsx-a11y/label-has-associated-control': 'off',
+    },
+  }
+)

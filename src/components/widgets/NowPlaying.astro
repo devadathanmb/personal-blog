@@ -1,0 +1,200 @@
+---
+import { FEATURES } from '~/config'
+
+const { nowPlaying } = FEATURES
+const enabled = Array.isArray(nowPlaying) && nowPlaying[0]
+const { lastfmUsername = '', lastfmApiKey = '' } = enabled
+  ? nowPlaying[1]
+  : {}
+---
+
+{
+  enabled && lastfmUsername && lastfmApiKey && (
+    <div
+      class="now-playing-widget inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a] border border-gray-200 dark:border-[#333] transition-colors duration-200 h-fit"
+      data-username={lastfmUsername}
+      data-apikey={lastfmApiKey}
+    >
+      <div id="np-icon" class="relative w-7 h-7 shrink-0">
+        <div
+          id="np-fallback"
+          class="w-full h-full flex items-center justify-center"
+        >
+          <div class="i-ri-music-2-line op-50 text-xs" />
+        </div>
+        <div
+          id="np-bars"
+          class="w-full h-full flex items-center justify-center gap-0.5 text-emerald-500 dark:text-emerald-400"
+          aria-hidden="true"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="flex flex-col justify-center max-w-[200px] sm:max-w-[250px]">
+        <div id="np-track-wrapper" class="np-marquee flex overflow-hidden">
+          <a
+            id="np-track"
+            href={`https://www.last.fm/user/${lastfmUsername}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="np-marquee-text whitespace-nowrap font-medium text-xs leading-tight text-gray-800 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+          >
+            Loading...
+          </a>
+        </div>
+        <div id="np-artist-time-wrapper" class="np-marquee flex overflow-hidden">
+          <div
+            id="np-artist-time"
+            class="np-marquee-text whitespace-nowrap text-[11px] op-70 leading-tight"
+          >
+            Last.fm
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .np-marquee-text,
+      .np-marquee-text:hover {
+        border-bottom: none !important;
+      }
+
+      /* Equalizer bars: hidden by default, shown when playing */
+      #np-bars {
+        display: none;
+      }
+      #np-bars > span {
+        width: 2.5px;
+        background-color: currentColor;
+        border-radius: 1px;
+        animation: np-eq 1.3s ease-in-out infinite;
+      }
+      #np-bars > span:nth-child(1) { animation-delay: -0.2s; }
+      #np-bars > span:nth-child(2) { animation-delay: -0.5s; }
+      #np-bars > span:nth-child(3) { animation-delay: -0.9s; }
+      #np-icon.is-playing #np-bars {
+        display: flex;
+      }
+      #np-icon.is-playing #np-fallback {
+        display: none;
+      }
+      @keyframes np-eq {
+        0%,
+        100% { height: 30%; }
+        50%  { height: 70%; }
+      }
+
+      @keyframes np-marquee {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(var(--np-shift)); }
+      }
+      /* Fade edges only when text is scrolling */
+      .np-marquee.is-scrolling {
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 85%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0%, black 10%, black 85%, transparent 100%);
+      }
+      /* Animate only when scrolling — disable truncation */
+      .np-marquee.is-scrolling .np-marquee-text {
+        animation: np-marquee var(--np-duration, 8s) linear infinite;
+        flex-shrink: 0;
+      }
+      .np-marquee.is-scrolling .np-marquee-text:hover {
+        animation-play-state: paused;
+      }
+      /* Static: flex item truncates with ellipsis */
+      .np-marquee:not(.is-scrolling) .np-marquee-text {
+        min-width: 0;
+        flex-shrink: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+
+    <script>
+      import {
+        fetchRecentTrack,
+        getRelativeTime,
+      } from '~/utils/lastfm'
+
+      function setupMarquee(wrapper: HTMLElement, text: string, href?: string) {
+        const textEl = wrapper.firstElementChild as HTMLElement | null
+        if (!textEl) return
+
+        // Reset any previous marquee state
+        wrapper.querySelectorAll('.np-dup').forEach(el => el.remove())
+        wrapper.classList.remove('is-scrolling')
+        wrapper.style.removeProperty('--np-shift')
+        wrapper.style.removeProperty('--np-duration')
+
+        textEl.textContent = text
+        if (href) textEl.setAttribute('href', href)
+        textEl.setAttribute('title', text)
+
+        // Double rAF: let browser commit layout before measuring
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          const containerW = wrapper.offsetWidth
+          const textW = textEl.scrollWidth
+          if (textW > containerW) {
+            const GAP = 48
+            const SPEED = 40
+            const dup = textEl.cloneNode(true) as HTMLElement
+            dup.classList.add('np-dup')
+            dup.setAttribute('aria-hidden', 'true')
+            dup.style.paddingLeft = `${GAP}px`
+            wrapper.appendChild(dup)
+            const shift = textW + GAP
+            wrapper.style.setProperty('--np-shift', `-${shift}px`)
+            wrapper.style.setProperty('--np-duration', `${shift / SPEED}s`)
+            wrapper.classList.add('is-scrolling')
+          }
+        }))
+      }
+
+      async function updateNowPlaying() {
+        const widget = document.querySelector('.now-playing-widget') as HTMLElement
+        if (!widget) return
+
+        const username = widget.dataset.username
+        const apiKey = widget.dataset.apikey
+
+        if (!username || !apiKey) return
+
+        const track = await fetchRecentTrack(username, apiKey)
+        if (!track) return
+
+        const isPlaying = track['@attr']?.nowplaying === 'true'
+
+        const trackWrapper = document.getElementById('np-track-wrapper') as HTMLElement | null
+        const artistTimeWrapper = document.getElementById('np-artist-time-wrapper') as HTMLElement | null
+        const iconEl = document.getElementById('np-icon')
+
+        if (trackWrapper) {
+          setupMarquee(trackWrapper, track.name, track.url)
+        }
+
+        if (artistTimeWrapper) {
+          let subtitle = track.artist['#text']
+          if (isPlaying) {
+            subtitle += ' • Now playing'
+          } else if (track.date?.uts) {
+            subtitle += ` • ${getRelativeTime(parseInt(track.date.uts))}`
+          }
+          setupMarquee(artistTimeWrapper, subtitle)
+        }
+
+        iconEl?.classList.toggle('is-playing', isPlaying)
+      }
+
+      let intervalId: ReturnType<typeof setInterval> | undefined
+
+      document.addEventListener('astro:page-load', () => {
+        updateNowPlaying()
+        if (intervalId) clearInterval(intervalId)
+        intervalId = setInterval(updateNowPlaying, 30000) // Check every 30s
+      })
+    </script>
+  )
+}
+

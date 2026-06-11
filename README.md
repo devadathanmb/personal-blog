@@ -1,93 +1,111 @@
-# Personal Blog
+# Astro AntfuStyle Theme
 
-A fast, minimal personal blog built with [Astro](https://astro.build/). Features markdown blog posts, project showcases, GitHub Discussions-powered comments, and automatic date management via git hooks.
+[![ci][ci-badge]][ci-link]
+[![version][version-badge]][version-link]
+[![live demo][demo-badge]][demo-link]
+[![chat][chat-badge]][chat-link]
 
-Based on [AstroPaper](https://github.com/satnaing/astro-paper) theme.
+![cover image](https://raw.githubusercontent.com/lin-stephanie/assets/refs/heads/main/astro-antfustyle-theme/cover_2x.png)
 
-## Screenshots
-
-<!-- Dark Mode -->
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/bec3425b-69fa-4b7b-8012-7010ef0b5e8a" />
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/7cf74d65-812c-4b81-9e1c-68b7e27a965a" />
-
-<!-- Light Mode -->
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/ba20fe50-de35-476f-afd4-e61be623bb68" />
-<img width="5088" height="3366" alt="image" src="https://github.com/user-attachments/assets/cd0aa7c2-6a50-4258-a840-b195b27cfd2d" />
+AntfuStyle is a flexible and feature-rich [Astro 5](https://astro.build/) theme for developers and creators, inspired by the minimalist style of [antfu.me](https://antfu.me/). I like this design and have recreated and expanded its functionality.
 
 ## Features
 
-- Markdown-based blog posts and project pages
-- GitHub Discussions integration for comments (Giscus)
-- Automatic post date management with git hooks
+**Optimized Infrastructure**
 
-## Setup
+- Zero UI Framework
+- SEO-Friendly
+- Auto-Generated RSS Feed
+- Dynamic OG Image Generation
+- Subpath Deployment Support
+- Optimized and Responsive Images
+- VS Code Snippets for Fast Coding
+- Well-Structured Project
+- High Lighthouse Performance
 
-### Without Docker
+**Content Management**
 
-```bash
-git clone https://github.com/devadathanmb/personal-blog.git
-cd personal-blog
-pnpm install  # Automatically sets up git hooks via husky
-pnpm run dev
-```
+- Markdown & MDX Support
+- Math Equations Rendering
+- Callouts (Alerts/Admonitions)
+- Code Syntax Highlighting & Annotations
+- Ready-To-Use Remark Directives
+- Customizable Layouts, Views, and Navigation
+- Configurable Animated Backgrounds ([Preview](#preview))
+- Showcase Your GitHub Releases and PRs
+- Highlight Your Creative Work or Curated Posts
+- Share Your Short Notes or Quick Thoughts
+- Create Your Personal Gallery
 
-Visit `http://localhost:4321`
+**User Experience**
 
-### With Docker
+- Responsive Layout
+- Full-Platform TOC Support
+- Flexible Tag Filtering
+- Light & Dark Modes Toggle
+- Smooth View Transitions
+- Loading Progress Indicator
+- Search Functionality
+- Image Zoom Preview
+- Social Media Sharing
+- Integrated Giscus Comments
+- Accessibility Enhancements
+- Keyboard-Friendly
 
-```bash
-git clone https://github.com/devadathanmb/personal-blog.git
-cd personal-blog
-docker-compose up -d
-```
+> [More features](https://github.com/users/lin-stephanie/projects/4) are continuously being added! 🚀
 
-Visit `http://localhost:4321`
+## Docs
 
-## Configuration
+The [live demo][demo-link] serves as self-documentation, detailing how to configure and use the theme, along with other relevant knowledge expansion. Explore [posts](https://astro-antfustyle-theme.vercel.app/blog/) on the demo site or view [Markdown files](https://github.com/lin-stephanie/astro-antfustyle-theme/tree/main/src/content/blog) in the repository. Quick Navigation:
 
-### Git Hooks
+- [Getting Started](https://astro-antfustyle-theme.vercel.app/blog/getting-started/)
+- [Project Structure](https://astro-antfustyle-theme.vercel.app/blog/project-structure/)
+- [Configuration](https://astro-antfustyle-theme.vercel.app/blog/basic-configuration/)
+- [Authoring Content](https://astro-antfustyle-theme.vercel.app/blog/getting-started/#authoring-content)
+- [Sync Updates](https://astro-antfustyle-theme.vercel.app/blog/sync-updates/)
+- [Explore More](https://astro-antfustyle-theme.vercel.app/blog/getting-started/#next-steps)
 
-Automatically manages blog post dates via [husky](https://typicode.github.io/husky/):
+If you're eager to deploy your own version right away:
 
-- New posts: Adds `pubDatetime` on commit
-- Modified posts: Updates `modDatetime` (skips drafts)
+[![Deploy with Netlify](https://raw.githubusercontent.com/lin-stephanie/assets/refs/heads/main/astro-antfustyle-theme/deploy_netlify.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/lin-stephanie/astro-antfustyle-theme) [![Deploy with Vercel](https://raw.githubusercontent.com/lin-stephanie/assets/refs/heads/main/astro-antfustyle-theme/deploy_vercel.svg)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flin-stephanie%2Fastro-antfustyle-theme&project-name=astro-antfustyle-theme)
 
-### Giscus Comments
+## Preview
 
-Comments powered by GitHub Discussions via [Giscus](https://giscus.app/). Configure in `src/config.ts`.
+![plum](https://raw.githubusercontent.com/lin-stephanie/assets/refs/heads/main/astro-antfustyle-theme/blog_2x.png)
 
-To set up for your repository:
+![rose](https://raw.githubusercontent.com/lin-stephanie/assets/refs/heads/main/astro-antfustyle-theme/post_2x.png)
 
-1. Enable GitHub Discussions in repository settings
-2. Generate config at [giscus.app](https://giscus.app/)
-3. Update `data-repo-id` and `data-category-id` in `src/config.ts`
+![dot](https://raw.githubusercontent.com/lin-stephanie/assets/refs/heads/main/astro-antfustyle-theme/projects_2x.png)
 
-## Project Structure
-
-```
-src/
-├── content/
-│   ├── blog/       # Blog posts
-│   └── projects/   # Project pages
-├── components/     # UI components
-├── layouts/        # Page layouts
-└── styles/         # Global styles
-```
-
-## Commands
-
-| Command            | Description              |
-| ------------------ | ------------------------ |
-| `pnpm run dev`     | Start development server |
-| `pnpm run build`   | Build for production     |
-| `pnpm run preview` | Preview production build |
-| `pnpm run lint`    | Lint code                |
-| `pnpm run format`  | Format code              |
-
-## License
-
-MIT
+![particle](https://raw.githubusercontent.com/lin-stephanie/assets/refs/heads/main/astro-antfustyle-theme/streams_2x.png)
 
 ## Credits
 
-Based on [AstroPaper](https://github.com/satnaing/astro-paper) by [Sat Naing](https://satnaing.dev)
+Thanks to the following projects for inspiration and references:
+
+- [antfu/antfu.me](https://github.com/antfu/antfu.me)
+- [satnaing/astro-paper](https://github.com/satnaing/astro-paper)
+- [chrismwilliams/astro-theme-cactus](https://github.com/chrismwilliams/astro-theme-cactus)
+- [saicaca/fuwari](https://github.com/saicaca/fuwari)
+
+## Contribution
+
+If you see any errors or room for improvement, feel free to open an [issue](https://github.com/lin-stephanie/astro-antfustyle-theme/issues) or [pull request](https://github.com/lin-stephanie/astro-antfustyle-theme/pulls). Thank you in advance for contributing! ❤️
+
+## License
+
+[MIT](https://github.com/lin-stephanie/astro-antfustyle-theme/blob/main/LICENSE) © 2024-PRESENT [Stephanie Lin](https://github.com/lin-stephanie)
+
+<!-- Badges -->
+
+[ci-badge]: https://img.shields.io/github/actions/workflow/status/lin-stephanie/astro-antfustyle-theme/ci.yml?label=CI&style=flat&colorA=080f12&colorB=f87171
+[ci-link]: https://github.com/lin-stephanie/astro-antfustyle-theme/actions/workflows/ci.yml
+
+[version-badge]: https://img.shields.io/github/v/release/lin-stephanie/astro-antfustyle-theme?label=Release&style=flat&colorA=080f12&colorB=f87171
+[version-link]: https://github.com/lin-stephanie/astro-antfustyle-theme/releases
+
+[demo-badge]: https://img.shields.io/badge/Live%20Demo-080f12?style=flat&colorA=080f12&colorB=f87171&logo=vercel&logoSize=10
+[demo-link]:https://astro-antfustyle-theme.vercel.app/
+
+[chat-badge]: https://img.shields.io/badge/Discussions-080f12?style=flat&colorA=080f12&colorB=f87171&logo=github
+[chat-link]: https://github.com/lin-stephanie/astro-antfustyle-theme/discussions

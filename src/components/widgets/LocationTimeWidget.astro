@@ -1,0 +1,51 @@
+---
+interface Props {
+  location?: string
+  timezone?: string
+}
+
+const { location = 'Bengaluru, India', timezone = 'Asia/Kolkata' } = Astro.props
+---
+
+<div
+  class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a] border border-gray-200 dark:border-[#333] text-sm font-medium w-fit transition-colors duration-200"
+>
+  <div class="i-ri-map-pin-line op-70"></div>
+  <span class="op-80">{location}</span>
+  <span
+    class="font-mono text-emerald-600 dark:text-emerald-400 ml-1 live-time-widget tracking-tight"
+    data-timezone={timezone}
+  >
+    --:--:-- --
+  </span>
+</div>
+
+<script>
+  function updateLiveTime() {
+    const timeElements = document.querySelectorAll('.live-time-widget')
+
+    if (timeElements.length === 0) return
+
+    timeElements.forEach((el) => {
+      const timezone = el.getAttribute('data-timezone') || 'UTC'
+      const now = new Date()
+      const timeString = now.toLocaleTimeString('en-US', {
+        timeZone: timezone,
+        hour12: true,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      })
+      el.textContent = timeString
+    })
+  }
+
+  // Ensure it runs correctly with Astro's view transitions
+  let intervalId: ReturnType<typeof setInterval> | undefined
+
+  document.addEventListener('astro:page-load', () => {
+    updateLiveTime()
+    if (intervalId) clearInterval(intervalId)
+    intervalId = setInterval(updateLiveTime, 1000)
+  })
+</script>

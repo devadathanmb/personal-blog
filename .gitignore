@@ -23,6 +23,8 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# pagefind
+# eslint cache
+.eslintcache
 
-public/pagefind
+# local archive
+.local

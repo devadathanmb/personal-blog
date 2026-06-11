@@ -1,71 +1,55 @@
-import { defineConfig, envField } from "astro/config";
-import { execSync } from "child_process";
-import tailwindcss from "@tailwindcss/vite";
-import sitemap from "@astrojs/sitemap";
-import react from "@astrojs/react";
-import remarkToc from "remark-toc";
-import remarkCollapse from "remark-collapse";
-import {
-  transformerNotationDiff,
-  transformerNotationHighlight,
-  transformerNotationWordHighlight,
-} from "@shikijs/transformers";
-import { transformerFileName } from "./src/utils/transformers/fileName";
-import { SITE } from "./src/config";
+import { defineConfig } from 'astro/config'
+import sitemap from '@astrojs/sitemap'
+import robotsTxt from 'astro-robots-txt'
+import unocss from 'unocss/astro'
+import astroExpressiveCode from 'astro-expressive-code'
+import mdx from '@astrojs/mdx'
 
-// https://astro.build/config
+import { remarkPlugins, rehypePlugins } from './plugins'
+import { SITE } from './src/config'
+
+// https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
   site: SITE.website,
+  base: SITE.base,
+  build: {
+    inlineStylesheets: 'never',
+  },
   integrations: [
-    react(),
-    sitemap({
-      filter: page => SITE.showArchives || !page.endsWith("/archives"),
-    }),
+    sitemap(),
+    robotsTxt(),
+    unocss({ injectReset: true }),
+    astroExpressiveCode(),
+    mdx(),
   ],
   markdown: {
-    remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
-    shikiConfig: {
-      // For more themes, visit https://shiki.style/themes
-      themes: { light: "github-light-default", dark: "github-dark-default" },
-      defaultColor: false,
-      wrap: false,
-      transformers: [
-        transformerFileName({ style: "v2", hideDot: false }),
-        transformerNotationHighlight(),
-        transformerNotationWordHighlight(),
-        transformerNotationDiff({ matchAlgorithm: "v3" }),
-      ],
-    },
-  },
-  vite: {
-    // eslint-disable-next-line
-    // @ts-ignore
-    // This will be fixed in Astro 6 with Vite 7 support
-    // See: https://github.com/withastro/astro/issues/14030
-    plugins: [tailwindcss()],
-    optimizeDeps: {
-      exclude: ["@resvg/resvg-js"],
-    },
-    define: {
-      "import.meta.env.GIT_COMMIT_HASH": JSON.stringify(
-        execSync("git rev-parse --short HEAD").toString().trim()
-      ),
-    },
+    syntaxHighlight: false,
+    remarkPlugins,
+    rehypePlugins,
   },
   image: {
+    domains: SITE.imageDomains,
+    // https://docs.astro.build/en/guides/images/#responsive-image-behavior
+    // Used for all local (except `/public`) and authorized remote images using `![]()` syntax; not configurable per-image
+    // Used for all `<Image />` and `<Picture />` components unless overridden with `layout` prop
+    layout: 'constrained',
     responsiveStyles: true,
-    layout: "constrained",
   },
-  env: {
-    schema: {
-      PUBLIC_GOOGLE_SITE_VERIFICATION: envField.string({
-        access: "public",
-        context: "client",
-        optional: true,
-      }),
+  vite: {
+    server: {
+      headers: {
+        // Enable CORS for dev: allow Giscus iframe to load local styles
+        'Access-Control-Allow-Origin': '*',
+      },
     },
+    build: { chunkSizeWarningLimit: 1200 },
   },
+  // https://docs.astro.build/en/reference/experimental-flags/
   experimental: {
+    contentIntellisense: true,
     preserveScriptOrder: true,
+    headingIdCompat: true,
+    chromeDevtoolsWorkspace: true,
+    failOnPrerenderConflict: true,
   },
-});
+})

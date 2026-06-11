@@ -1,0 +1,23 @@
+---
+import Plum from '~/components/backgrounds/Plum.astro'
+import Dot from '~/components/backgrounds/Dot.astro'
+import Rose from '~/components/backgrounds/Rose.astro'
+import Particle from '~/components/backgrounds/Particle.astro'
+import Nebula from '~/components/backgrounds/Nebula.astro'
+import Ocean from '~/components/backgrounds/Ocean.astro'
+import Storm from '~/components/backgrounds/Storm.astro'
+
+interface Props {
+  type: string
+}
+
+const { type } = Astro.props
+---
+
+{type === 'plum' && <Plum />}
+{type === 'dot' && <Dot />}
+{type === 'rose' && <Rose />}
+{type === 'particle' && <Particle />}
+{type === 'nebula' && <Nebula />}
+{type === 'ocean' && <Ocean />}
+{type === 'storm' && <Storm />}

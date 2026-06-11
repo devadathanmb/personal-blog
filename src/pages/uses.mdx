@@ -1,0 +1,175 @@
+---
+title: Uses
+subtitle: The environment I've slowly assembled over the years.
+description: Hardware, software, services, and tools Devadathan uses daily.
+bgType: storm
+ogImage: true
+---
+
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import StandardLayout from '~/layouts/StandardLayout.astro'
+
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  bgType={frontmatter.bgType}
+  ogImage={frontmatter.ogImage}
+>
+  <StandardLayout title={frontmatter.title} subtitle={frontmatter.subtitle}>
+    <div slot="article">
+
+This is the hardware, software, and setup I've come to rely on over years of work, curiosity, and tinkering.
+
+Every tool here solved a problem at some point. The ones that remain are the ones I still trust when things matter.
+
+## Workstation
+
+<div class="flex flex-col gap-6 mt-6 mb-12">
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Hardware</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://www.apple.com/macbook-pro/" target="_blank" rel="noopener noreferrer" class="btn-slate" title="24 GB RAM, 512 GB SSD"><div class="i-ph-laptop-duotone"></div> MacBook Pro M4 Pro</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">OS</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://www.apple.com/macos/" target="_blank" rel="noopener noreferrer" class="btn-slate" title="macOS Sequoia"><div class="i-simple-icons-apple"></div> macOS</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Theme</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://github.com/primer/github-vscode-theme" target="_blank" rel="noopener noreferrer" class="btn-zinc" title="Unified across all my tools"><div class="i-ph-palette-duotone"></div> GitHub Dark</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Fonts</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://www.jetbrains.com/lp/mono/" target="_blank" rel="noopener noreferrer" class="btn-slate" title="My typography of choice"><div class="i-simple-icons-jetbrains"></div> JetBrains Mono</a>
+      <a href="https://github.com/subframe7536/maple-font" target="_blank" rel="noopener noreferrer" class="btn-slate" title="Clean and legible"><div class="i-ph-text-t-duotone"></div> Maple Mono</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Editor</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://zed.dev/" target="_blank" rel="noopener noreferrer" class="btn-emerald" title="Fast and snappy, my primary editor"><div class="i-simple-icons-zedindustries"></div> Zed</a>
+      <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer" class="btn-blue" title="Fallback for specific extensions"><div class="i-mdi-microsoft-visual-studio-code"></div> VS Code</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Shell</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://fishshell.com/" target="_blank" rel="noopener noreferrer" class="btn-sky" title="My interactive shell of choice"><div class="i-simple-icons-fishshell"></div> Fish</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Terminal</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://ghostty.org/" target="_blank" rel="noopener noreferrer" class="btn-purple" title="My main terminal, extremely fast"><div class="i-simple-icons-ghostty"></div> Ghostty</a>
+      <a href="https://iterm2.com/" target="_blank" rel="noopener noreferrer" class="btn-slate" title="Solid backup terminal"><div class="i-simple-icons-iterm2"></div> iTerm2</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Multiplexer</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://github.com/tmux/tmux" target="_blank" rel="noopener noreferrer" class="btn-amber" title="Essential for managing sessions"><div class="i-simple-icons-tmux"></div> tmux</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">CLI Utilities</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://github.com/ajeetdsouza/zoxide" target="_blank" rel="noopener noreferrer" class="btn-rose" title="Smarter cd command"><div class="i-ph-folder-simple-duotone"></div> zoxide</a>
+      <a href="https://github.com/junegunn/fzf" target="_blank" rel="noopener noreferrer" class="btn-orange" title="Fuzzy finder for everything"><div class="i-ph-magnifying-glass-duotone"></div> fzf</a>
+      <a href="https://github.com/atuinsh/atuin" target="_blank" rel="noopener noreferrer" class="btn-cyan" title="Magical shell history"><div class="i-ph-clock-counter-clockwise-duotone"></div> atuin</a>
+      <a href="https://github.com/eza-community/eza" target="_blank" rel="noopener noreferrer" class="btn-teal" title="Modern replacement for ls"><div class="i-ph-list-bullets-duotone"></div> eza</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Desktop Apps</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://arc.net/" target="_blank" rel="noopener noreferrer" class="btn-sky" title="Browser of choice"><div class="i-simple-icons-arc"></div> Arc</a>
+      <a href="https://www.raycast.com/" target="_blank" rel="noopener noreferrer" class="btn-slate" title="Keyboard-driven productivity launcher"><div class="i-simple-icons-raycast"></div> Raycast</a>
+      <a href="https://snapzy.app/" target="_blank" rel="noopener noreferrer" class="btn-orange" title="Screenshot and screen recording"><div class="i-ph-camera-duotone"></div> Snapzy</a>
+    </div>
+  </div>
+</div>
+
+## AI Stack
+
+<div class="flex flex-col gap-6 mt-6 mb-12">
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Dictation</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://superwhisper.com/" target="_blank" rel="noopener noreferrer" class="btn-pink" title="Voice-to-text for everything"><div class="i-ph-microphone-duotone"></div> Superwhisper</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Agent</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://github.com/earendil-works/pi-coding-agent" target="_blank" rel="noopener noreferrer" class="btn-cyan" title="Minimalist terminal-based harness"><div class="i-ph-robot-duotone"></div> Pi Coding Agent</a>
+      <a href="https://opencode.ai" target="_blank" rel="noopener noreferrer" class="btn-violet" title="Open-source AI coding agent for the terminal"><div class="i-ph-terminal-window-duotone"></div> Opencode</a>
+    </div>
+  </div>
+</div>
+
+## Homelab
+
+<div class="flex flex-col gap-6 mt-6 mb-12">
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Hardware</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer" class="btn-rose" title="Low power, runs all my services"><div class="i-simple-icons-raspberrypi"></div> Raspberry Pi 5 (8GB)</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Distro</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://www.debian.org/" target="_blank" rel="noopener noreferrer" class="btn-red" title="Solid, headless server OS"><div class="i-simple-icons-debian"></div> Debian 13 (trixie)</a>
+    </div>
+  </div>
+  {/* prettier-ignore */}
+  <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
+    <div class="w-32 shrink-0 op-80 font-medium">Self-hosted</div>
+    <div class="flex flex-wrap gap-2">
+      <a href="https://adguard.com/en/adguard-home/overview.html" target="_blank" rel="noopener noreferrer" class="btn-green" title="Network-wide ad blocker"><div class="i-simple-icons-adguard"></div> AdGuard Home</a>
+      <a href="https://jellyfin.org/" target="_blank" rel="noopener noreferrer" class="btn-purple" title="Media system"><div class="i-simple-icons-jellyfin"></div> Jellyfin</a>
+      <a href="https://freshrss.org/" target="_blank" rel="noopener noreferrer" class="btn-orange" title="RSS aggregator"><div class="i-ph-rss-duotone"></div> FreshRSS</a>
+      <a href="https://miniflux.app/" target="_blank" rel="noopener noreferrer" class="btn-slate" title="Minimalist RSS reader"><div class="i-ph-article-duotone"></div> Miniflux</a>
+      <a href="https://www.portainer.io/" target="_blank" rel="noopener noreferrer" class="btn-blue" title="Container management"><div class="i-simple-icons-portainer"></div> Portainer</a>
+      <a href="https://www.qbittorrent.org/" target="_blank" rel="noopener noreferrer" class="btn-sky" title="Torrent client"><div class="i-simple-icons-qbittorrent"></div> qBittorrent</a>
+      <a href="https://github.com/Stirling-Tools/Stirling-PDF" target="_blank" rel="noopener noreferrer" class="btn-amber" title="PDF manipulation"><div class="i-ph-file-pdf-duotone"></div> Stirling-PDF</a>
+    </div>
+  </div>
+</div>
+
+---
+
+{/* prettier-ignore */}
+<div class="mt-8 mb-4 flex items-center gap-2 op-80 font-medium text-sm">
+  <div class="i-ph-github-logo-duotone"></div>
+  <a href="https://github.com/devadathanmb/mac-dots" target="_blank" rel="noopener noreferrer" class="op-transition">Check out my dotfiles repository</a>
+</div>
+
+_If you're curious about this concept, [uses.tech](https://uses.tech) has the full story._
+
+_Last updated at: June 2026._
+
+    </div>
+
+  </StandardLayout>
+</BaseLayout>

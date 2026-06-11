@@ -1,14 +1,15 @@
-# Ignore everything
-/*
+# exclude formatting
+pnpm-lock.yaml
+*.md
 
-# Except these files & folders
-!/src
-!/public
-!/.github
-!tsconfig.json
-!astro.config.ts
-!.prettierrc.mjs
-!package.json
-!.prettierrc
-!eslint.config.js
-!README.md
+# avoid error due to incorrect processing
+SearchSwitch.astro
+GroupItem.astro
+GithubItem.astro
+
+# avoid HTML mismatches
+releases.mdx
+prs.mdx
+
+# avoid whitespace affecting style
+Link.astro

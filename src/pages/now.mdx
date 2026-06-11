@@ -1,0 +1,54 @@
+---
+title: Now
+subtitle: The projects, ideas, and rabbit holes I'm currently spending time on.
+description: What Devadathan is currently working on, reading, and thinking about.
+bgType: storm
+ogImage: true
+---
+
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import StandardLayout from '~/layouts/StandardLayout.astro'
+import LocationTimeWidget from '~/components/widgets/LocationTimeWidget.astro'
+import NowPlaying from '~/components/widgets/NowPlaying.astro'
+
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  bgType={frontmatter.bgType}
+  ogImage={frontmatter.ogImage}
+>
+  <StandardLayout title={frontmatter.title} subtitle={frontmatter.subtitle}>
+    <div slot="head" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-8 mb-4 slide-enter animate-delay-200!">
+      <LocationTimeWidget location="Kerala, India" timezone="Asia/Kolkata" />
+      <NowPlaying />
+    </div>
+    <div slot="article">
+
+This page is a snapshot in time. The funny thing about "now" is how quickly it becomes "then".
+
+## Work
+
+Still building backend systems and spending most of my time thinking about reliability, software design, and the realities of running systems in production.
+
+## Curiosity
+
+AI has become part of my everyday workflow. I'm less interested in predictions about the future and more interested in understanding how it changes the craft of software engineering today. Beyond the hype, I'm curious about what becomes easier, what becomes harder, and what remains fundamentally unchanged.
+
+I keep finding myself drawn back to distributed systems, open source software, and engineering culture. The deeper I go, the more I'm fascinated by the trade-offs, constraints, and decisions that shape the software we use every day.
+
+Alongside that, I'm continuing to invest in my homelab and self-hosted setup. More than anything, it represents ownership, freedom, and the ability to understand the tools I depend on.
+
+## Life
+
+Lately, I've been reminded that some of the best parts of life happen away from a keyboard. I'm trying to make more room for meaningful friendships, long conversations, shared experiences, and the people who make the world feel a little less lonely.
+
+---
+
+_If you're curious about this concept, [nownownow.com](https://nownownow.com) has the full story._
+
+_Last updated at: June 2026._
+
+    </div>
+
+  </StandardLayout>
+</BaseLayout>

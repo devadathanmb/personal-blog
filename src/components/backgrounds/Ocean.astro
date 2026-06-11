@@ -1,0 +1,163 @@
+---
+// Creative "Ocean" background: Animated 3D geometric waves simulating a rolling sea
+---
+
+<bg-ocean
+  class="z--1 fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden"
+>
+</bg-ocean>
+
+<style>
+  bg-ocean canvas {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  class BgOceanElement extends HTMLElement {
+    private animId: number | null = null
+    private canvas: HTMLCanvasElement | null = null
+
+    connectedCallback() {
+      this.canvas = document.createElement('canvas')
+      this.canvas.style.width = '100%'
+      this.canvas.style.height = '100%'
+      this.appendChild(this.canvas)
+      this.init()
+    }
+
+    disconnectedCallback() {
+      if (this.animId !== null) {
+        cancelAnimationFrame(this.animId)
+        this.animId = null
+      }
+    }
+
+    init() {
+      const canvas = this.canvas!
+      const ctx = canvas.getContext('2d')!
+
+      const isDark = () => document.documentElement.classList.contains('dark')
+
+      let W = window.innerWidth
+      let H = window.innerHeight
+
+      const resize = () => {
+        W = window.innerWidth
+        H = window.innerHeight
+        canvas.width = W
+        canvas.height = H
+      }
+      resize()
+      window.addEventListener('resize', resize)
+
+      let time = 0
+
+      const draw = () => {
+        ctx.clearRect(0, 0, W, H)
+        time += 0.005
+        const dark = isDark()
+
+        const spacingX = 40
+        const spacingZ = 30
+        const cols = Math.floor(W / spacingX) + 20
+        const rows = 25 // depth of the ocean horizon
+
+        const points: {
+          screenX: number
+          screenY: number
+          hue: number
+          alpha: number
+          perspective: number
+        }[][] = []
+
+        // 1. Generate the 3D points
+        for (let z = 0; z < rows; z++) {
+          const rowPoints = []
+          for (let x = -10; x < cols + 10; x++) {
+            const worldX = x * spacingX
+
+            // Complex wave interference to make it look organic
+            // Rolling ocean swells
+            const wave1 = Math.sin(worldX * 0.01 + time * 1.2) * 25
+            // Cross-chop moving towards viewer
+            const wave2 = Math.cos(z * 0.2 - time * 1.8) * 20
+            // Secondary diagonal details
+            const wave3 = Math.sin(worldX * 0.02 - z * 0.15 + time * 1.5) * 15
+
+            const yOffset = wave1 + wave2 + wave3
+
+            // 3D Projection (camera looking out over the water)
+            const perspective = 350 / (350 + z * spacingZ)
+
+            const screenX =
+              W / 2 + (worldX - (cols * spacingX) / 2) * perspective
+
+            // Horizon line placement - pushed down to bottom 20% of screen
+            const baseY = H * 0.8
+            const screenY =
+              baseY + z * spacingZ * 0.5 * perspective - yOffset * perspective
+
+            // Dynamic oceanic colors - less saturated
+            const hue = 190 + (z / rows) * 30 + (yOffset / 50) * 20
+
+            // Opacity drastically reduced for subtlety
+            const baseAlpha = dark ? 0.15 : 0.1
+            const alpha = baseAlpha * perspective * (1 - (z / rows) * 0.8)
+
+            rowPoints.push({ screenX, screenY, hue, alpha, perspective })
+          }
+          points.push(rowPoints)
+        }
+
+        // 2. Draw the solid overlapping waves (Back to Front)
+        for (let z = rows - 1; z >= 0; z--) {
+          const row = points[z]
+
+          ctx.beginPath()
+          ctx.moveTo(row[0].screenX, row[0].screenY)
+
+          for (let x = 1; x < row.length; x++) {
+            // Smoothly connect the points
+            ctx.lineTo(row[x].screenX, row[x].screenY)
+          }
+
+          // Complete the polygon so we can fill the water volume
+          ctx.lineTo(row[row.length - 1].screenX, H + 100)
+          ctx.lineTo(row[0].screenX, H + 100)
+          ctx.closePath()
+
+          const avgHue = row[Math.floor(row.length / 2)].hue
+          const baseAlpha = row[0].alpha
+
+          // Very faint gradient fill
+          const fillAlpha = dark ? baseAlpha * 0.4 : baseAlpha * 0.2
+          const fillGrad = ctx.createLinearGradient(0, H * 0.8, 0, H)
+          fillGrad.addColorStop(0, `hsla(${avgHue}, 60%, 40%, ${fillAlpha})`)
+          fillGrad.addColorStop(1, `hsla(${avgHue + 20}, 70%, 10%, 0)`)
+
+          ctx.fillStyle = fillGrad
+          ctx.fill()
+
+          // Stroke the crest of the wave
+          ctx.beginPath()
+          ctx.moveTo(row[0].screenX, row[0].screenY)
+          for (let x = 1; x < row.length; x++) {
+            ctx.lineTo(row[x].screenX, row[x].screenY)
+          }
+          ctx.lineWidth = 1 * row[0].perspective
+          const strokeAlpha = dark ? baseAlpha : baseAlpha * 0.8
+          ctx.strokeStyle = `hsla(${avgHue}, 60%, 50%, ${strokeAlpha})`
+          ctx.stroke()
+        }
+
+        this.animId = requestAnimationFrame(draw)
+      }
+
+      draw()
+    }
+  }
+
+  customElements.define('bg-ocean', BgOceanElement)
+</script>

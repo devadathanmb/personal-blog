@@ -1,0 +1,26 @@
+---
+title: Thoughts
+subtitle: Some ideas are too small for a blog post, yet too interesting to forget.
+description: Short notes and opinions from Devadathan — engineering, ideas, and things worth writing down.
+bgType: storm
+ogImage: true
+---
+
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import StandardLayout from '~/layouts/StandardLayout.astro'
+import ListView from '~/components/views/ListView.astro'
+
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  bgType={frontmatter.bgType}
+  ogImage={frontmatter.ogImage}
+>
+  <StandardLayout
+    class="prose"
+    title={frontmatter.title}
+    subtitle={frontmatter.subtitle}
+  >
+    <ListView collectionType="thoughts" />
+  </StandardLayout>
+</BaseLayout>
