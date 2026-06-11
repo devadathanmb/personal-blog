@@ -1,11 +1,16 @@
 ---
 import Link from '~/components/base/Link.astro'
-import { ensureTrailingSlash } from '~/utils/path'
+import { ensureTrailingSlash, withBasePath } from '~/utils/path'
 
-const pathSegments = ensureTrailingSlash(Astro.url.pathname)
-  .split('/')
-  .slice(0, -2)
-const href = pathSegments.length > 1 ? pathSegments.join('/') + '/' : '/'
+const currentPath = ensureTrailingSlash(Astro.url.pathname)
+const postCollectionRoot = [
+  withBasePath('/blog/'),
+  withBasePath('/thoughts/'),
+].find((root) => currentPath.startsWith(root) && currentPath !== root)
+const pathSegments = currentPath.split('/').slice(0, -2)
+const href =
+  postCollectionRoot ??
+  (pathSegments.length > 1 ? pathSegments.join('/') + '/' : withBasePath('/'))
 ---
 
 <span class="font-mono op-50">&gt; </span>
