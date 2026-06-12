@@ -19,9 +19,16 @@ export async function fetchRecentTrack(
   if (!username || !apiKey) return null
 
   try {
-    const res = await fetch(
-      `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${username}&api_key=${apiKey}&format=json&limit=1`
-    )
+    const url = new URL('https://ws.audioscrobbler.com/2.0/')
+    url.search = new URLSearchParams({
+      method: 'user.getrecenttracks',
+      user: username,
+      api_key: apiKey,
+      format: 'json',
+      limit: '1',
+    }).toString()
+
+    const res = await fetch(url)
 
     if (!res.ok) {
       console.error('Failed to fetch Last.fm data:', res.statusText)
