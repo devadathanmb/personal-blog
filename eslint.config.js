@@ -47,6 +47,13 @@ export default defineConfig(
         'error',
         { allowTernary: true },
       ],
+      // Enforce `import type` / `export type` for type-only imports and exports
+      // Prevents accidentally leaking type-only symbols as runtime values
+      // https://typescript-eslint.io/rules/consistent-type-imports/
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+      ],
       // https://ota-meshi.github.io/eslint-plugin-astro/rules/jsx-a11y/label-has-associated-control/
       'astro/jsx-a11y/label-has-associated-control': 'off',
     },

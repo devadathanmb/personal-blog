@@ -78,8 +78,8 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*": [
-      "eslint"
+    "*.{js,ts,mjs,cjs,astro}": [
+      "eslint --fix --cache"
     ]
   },
   "pnpm": {
