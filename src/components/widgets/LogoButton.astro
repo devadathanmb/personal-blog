@@ -68,28 +68,35 @@ import { SITE } from '~/config'
    *   7. Erase back     (2.5s) — stroke tip retreats from end back to start
    *   8. Pause          (2s)   — blank, before next cycle
    */
+  let cancelLogoLoop: (() => void) | undefined
+
   function initLogo() {
+    cancelLogoLoop?.()
+
     const stroke = document.querySelector<SVGPathElement>('.logo-path')
     const fill = document.querySelector<SVGPathElement>('.logo-fill')
     if (!stroke || !fill) return
 
-    type AnimatedLogoPath = SVGPathElement & {
-      _cancelLoop?: () => void
-    }
-    const animatedStroke = stroke as AnimatedLogoPath
+    const strokePath = stroke
+    const fillPath = fill
+    const logoSvg = strokePath.closest<SVGSVGElement>('svg')
+    if (!logoSvg) return
+    const svg = logoSvg
 
-    // Cancel any loop from a previous page navigation
-    animatedStroke._cancelLoop?.()
+    let activeAnimation: Animation | undefined
     let alive = true
-    animatedStroke._cancelLoop = () => {
+    cancelLogoLoop = () => {
       alive = false
+      activeAnimation?.cancel()
+      activeAnimation = undefined
+      cancelLogoLoop = undefined
     }
 
-    const L = Math.ceil(stroke.getTotalLength()) + 20
+    const L = Math.ceil(strokePath.getTotalLength()) + 20
 
     // Start both layers invisible
-    stroke.style.strokeDasharray = `0 ${L}`
-    fill.style.opacity = '0'
+    strokePath.style.strokeDasharray = `0 ${L}`
+    fillPath.style.opacity = '0'
 
     const EASE = 'cubic-bezier(0.37, 0, 0.63, 1)'
     const EASE_FILL = 'cubic-bezier(0.25, 0, 0.75, 1)' // slightly snappier for the fade
@@ -97,36 +104,64 @@ import { SITE } from '~/config'
     const sleep = (ms: number) =>
       new Promise<void>((resolve) => setTimeout(resolve, ms))
 
+    async function playAnimation(
+      target: Element,
+      keyframes: Keyframe[],
+      options: KeyframeAnimationOptions
+    ) {
+      activeAnimation = target.animate(keyframes, options)
+
+      try {
+        await activeAnimation.finished
+      } catch {
+        // Cancelling during Astro client-side navigation rejects `finished`.
+      } finally {
+        activeAnimation = undefined
+      }
+    }
+
     async function runLoop() {
       await sleep(600) // brief pause before the first draw
 
-      const svg = stroke.closest<SVGSVGElement>('svg')
-
       while (alive) {
         // ── 1. Draw on: stroke tip advances left → right ───────────────────
-        await stroke.animate(
+        await playAnimation(
+          strokePath,
           [{ strokeDasharray: `0 ${L}` }, { strokeDasharray: `${L} 0` }],
           { duration: 3000, easing: EASE, fill: 'forwards' }
-        ).finished
+        )
         if (!alive) break
 
         // ── 2. Fill fades in ───────────────────────────────────────────────
-        await fill.animate([{ opacity: '0' }, { opacity: '1' }], {
+        await playAnimation(fillPath, [{ opacity: '0' }, { opacity: '1' }], {
           duration: 700,
           easing: EASE_FILL,
           fill: 'forwards',
-        }).finished
+        })
         if (!alive) break
 
         // ── 3. Brightness rises slowly after fill lands ────────────────────
         const isDark = document.documentElement.classList.contains('dark')
         const brightnessSteps = isDark
-          ? ['brightness(1)', 'brightness(1.1)', 'brightness(1.25)', 'brightness(1.4)', 'brightness(1.6)']
-          : ['brightness(1)', 'brightness(0.875)', 'brightness(0.75)', 'brightness(0.625)', 'brightness(0.5)']
-        await svg?.animate(
+          ? [
+              'brightness(1)',
+              'brightness(1.1)',
+              'brightness(1.25)',
+              'brightness(1.4)',
+              'brightness(1.6)',
+            ]
+          : [
+              'brightness(1)',
+              'brightness(0.875)',
+              'brightness(0.75)',
+              'brightness(0.625)',
+              'brightness(0.5)',
+            ]
+        await playAnimation(
+          svg,
           brightnessSteps.map((filter) => ({ filter })),
           { duration: 2000, easing: 'linear', fill: 'forwards' }
-        ).finished
+        )
         if (!alive) break
 
         // ── 4. Hold: fully drawn, filled, and at peak brightness ───────────
@@ -134,25 +169,27 @@ import { SITE } from '~/config'
         if (!alive) break
 
         // ── 5. Return to normal ────────────────────────────────────────────
-        await svg?.animate(
+        await playAnimation(
+          svg,
           [{ filter: brightnessSteps.at(-1)! }, { filter: 'brightness(1)' }],
           { duration: 400, easing: EASE_FILL, fill: 'forwards' }
-        ).finished
+        )
         if (!alive) break
 
         // ── 6. Fill fades out ──────────────────────────────────────────────
-        await fill.animate([{ opacity: '1' }, { opacity: '0' }], {
+        await playAnimation(fillPath, [{ opacity: '1' }, { opacity: '0' }], {
           duration: 600,
           easing: EASE_FILL,
           fill: 'forwards',
-        }).finished
+        })
         if (!alive) break
 
         // ── 7. Erase in reverse: stroke tip retreats right → left ──────────
-        await stroke.animate(
+        await playAnimation(
+          strokePath,
           [{ strokeDasharray: `${L} 0` }, { strokeDasharray: `0 ${L}` }],
           { duration: 2500, easing: EASE, fill: 'forwards' }
-        ).finished
+        )
         if (!alive) break
 
         // ── 8. Pause blank ─────────────────────────────────────────────────
@@ -163,8 +200,8 @@ import { SITE } from '~/config'
     runLoop()
   }
 
-  // Run on first load and after every Astro client-side navigation
   initLogo()
+  document.addEventListener('astro:before-swap', () => cancelLogoLoop?.())
   document.addEventListener('astro:page-load', initLogo)
 </script>
 
