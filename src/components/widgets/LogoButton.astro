@@ -58,11 +58,15 @@ import { SITE } from '~/config'
    * caused the "dots" artifact. WAAPI receives literal numbers and interpolates
    * them correctly on the compositor thread.
    *
-   * Animation cycle (~10.5s):
-   *   1. Draw on    (3s)  — stroke tip advances along the glyph outline
-   *   2. Hold       (2.5s) — fully drawn, still
-   *   3. Erase back (2.5s) — stroke tip retreats from end back to start
-   *   4. Pause      (2.5s) — blank, before next cycle
+   * Animation cycle (~13s):
+   *   1. Draw on        (3s)   — stroke tip advances along the glyph outline
+   *   2. Fill fades in  (0.7s) — filled layer opacifies over the stroke
+   *   3. Brightness up  (2s)   — logo slowly brightens through stepped keyframes
+   *   4. Hold           (2s)   — fully drawn, filled, at peak brightness
+   *   5. Return to base (0.4s) — brightness snaps back to normal
+   *   6. Fill fades out (0.6s) — filled layer disappears
+   *   7. Erase back     (2.5s) — stroke tip retreats from end back to start
+   *   8. Pause          (2s)   — blank, before next cycle
    */
   function initLogo() {
     const stroke = document.querySelector<SVGPathElement>('.logo-path')
@@ -96,31 +100,32 @@ import { SITE } from '~/config'
     async function runLoop() {
       await sleep(600) // brief pause before the first draw
 
-      // Grab the SVG element once for the brightness animation
-      const svg = stroke!.closest<SVGSVGElement>('svg')
+      const svg = stroke.closest<SVGSVGElement>('svg')
 
       while (alive) {
         // ── 1. Draw on: stroke tip advances left → right ───────────────────
-        await stroke!.animate(
+        await stroke.animate(
           [{ strokeDasharray: `0 ${L}` }, { strokeDasharray: `${L} 0` }],
           { duration: 3000, easing: EASE, fill: 'forwards' }
         ).finished
         if (!alive) break
 
-        // ── 2. Fill fades in to full opacity ───────────────────────────────
-        await fill!.animate([{ opacity: '0' }, { opacity: '1' }], {
+        // ── 2. Fill fades in ───────────────────────────────────────────────
+        await fill.animate([{ opacity: '0' }, { opacity: '1' }], {
           duration: 700,
           easing: EASE_FILL,
           fill: 'forwards',
         }).finished
         if (!alive) break
 
-        // ── 3. Logo pops once the fill has landed (brighten in dark mode, darken in light mode)
+        // ── 3. Brightness rises slowly after fill lands ────────────────────
         const isDark = document.documentElement.classList.contains('dark')
-        const peakBrightness = isDark ? 'brightness(1.6)' : 'brightness(0.5)'
+        const brightnessSteps = isDark
+          ? ['brightness(1)', 'brightness(1.1)', 'brightness(1.25)', 'brightness(1.4)', 'brightness(1.6)']
+          : ['brightness(1)', 'brightness(0.875)', 'brightness(0.75)', 'brightness(0.625)', 'brightness(0.5)']
         await svg?.animate(
-          [{ filter: 'brightness(1)' }, { filter: peakBrightness }],
-          { duration: 500, easing: EASE_FILL, fill: 'forwards' }
+          brightnessSteps.map((filter) => ({ filter })),
+          { duration: 2000, easing: 'linear', fill: 'forwards' }
         ).finished
         if (!alive) break
 
@@ -130,13 +135,13 @@ import { SITE } from '~/config'
 
         // ── 5. Return to normal ────────────────────────────────────────────
         await svg?.animate(
-          [{ filter: peakBrightness }, { filter: 'brightness(1)' }],
+          [{ filter: brightnessSteps.at(-1)! }, { filter: 'brightness(1)' }],
           { duration: 400, easing: EASE_FILL, fill: 'forwards' }
         ).finished
         if (!alive) break
 
         // ── 6. Fill fades out ──────────────────────────────────────────────
-        await fill!.animate([{ opacity: '1' }, { opacity: '0' }], {
+        await fill.animate([{ opacity: '1' }, { opacity: '0' }], {
           duration: 600,
           easing: EASE_FILL,
           fill: 'forwards',
@@ -144,7 +149,7 @@ import { SITE } from '~/config'
         if (!alive) break
 
         // ── 7. Erase in reverse: stroke tip retreats right → left ──────────
-        await stroke!.animate(
+        await stroke.animate(
           [{ strokeDasharray: `${L} 0` }, { strokeDasharray: `0 ${L}` }],
           { duration: 2500, easing: EASE, fill: 'forwards' }
         ).finished
