@@ -2,15 +2,7 @@
 
 My personal blog — engineering notes, tools I use, things I think about.
 
-Built with [Astro](https://astro.build) and deployed on Cloudflare Workers.
-
-## Stack
-
-- **Framework:** Astro 5 (static output)
-- **Styling:** UnoCSS
-- **Search:** Pagefind
-- **Comments:** Giscus
-- **Fonts:** Inter + DM Mono
+Built with [Astro](https://astro.build) and deployed on Cloudflare Pages.
 
 ## Running locally
 
@@ -30,7 +22,7 @@ pnpm preview
 
 This blog is built on top of [astro-antfustyle-theme](https://github.com/lin-stephanie/astro-antfustyle-theme) by [Stephanie Lin](https://github.com/lin-stephanie), which itself draws design inspiration from [antfu.me](https://antfu.me) by [Anthony Fu](https://github.com/antfu).
 
-The previous version of this blog was built on [AstroPaper](https://github.com/satnaing/astro-paper) by [Sat Naing](https://github.com/satnaing).
+The previous version of this blog can be found on the [main branch](https://github.com/devadathanmb/personal-blog/tree/main).
 
 ## License
 
