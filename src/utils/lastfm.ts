@@ -1,9 +1,9 @@
 export interface LastFmTrack {
-  name: string
-  url: string
-  artist: { '#text': string }
+  'name': string
+  'url': string
+  'artist': { '#text': string }
   '@attr'?: { nowplaying: 'true' | 'false' }
-  date?: { uts: string; '#text': string }
+  'date'?: { 'uts': string; '#text': string }
 }
 
 interface LastFmResponse {

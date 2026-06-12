@@ -63,7 +63,6 @@ export function getSortedPosts(
   )
 }
 
-
 export interface SeriesNavData {
   seriesName: string
   position: number

@@ -3,9 +3,7 @@ import { FEATURES } from '~/config'
 
 const { nowPlaying } = FEATURES
 const enabled = Array.isArray(nowPlaying) && nowPlaying[0]
-const { lastfmUsername = '', lastfmApiKey = '' } = enabled
-  ? nowPlaying[1]
-  : {}
+const { lastfmUsername = '', lastfmApiKey = '' } = enabled ? nowPlaying[1] : {}
 ---
 
 {
@@ -27,11 +25,11 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled
           class="w-full h-full flex items-center justify-center gap-0.5 text-emerald-500 dark:text-emerald-400"
           aria-hidden="true"
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <span />
+          <span />
+          <span />
         </div>
-        <div id="np-notes" aria-hidden="true"></div>
+        <div id="np-notes" aria-hidden="true" />
       </div>
       <div class="flex flex-col justify-center max-w-[200px] sm:max-w-[250px]">
         <div id="np-track-wrapper" class="np-marquee flex overflow-hidden">
@@ -45,7 +43,10 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled
             Loading...
           </a>
         </div>
-        <div id="np-artist-time-wrapper" class="np-marquee flex overflow-hidden">
+        <div
+          id="np-artist-time-wrapper"
+          class="np-marquee flex overflow-hidden"
+        >
           <div
             id="np-artist-time"
             class="np-marquee-text whitespace-nowrap text-[11px] op-70 leading-tight"
@@ -55,232 +56,261 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled
         </div>
       </div>
     </div>
-
-    <style>
-      .np-marquee-text,
-      .np-marquee-text:hover {
-        border-bottom: none !important;
-      }
-
-      /* Equalizer bars: hidden by default, shown when playing */
-      #np-bars {
-        display: none;
-      }
-      #np-bars > span {
-        width: 2.5px;
-        background-color: currentColor;
-        border-radius: 1px;
-        animation: np-eq 1.3s ease-in-out infinite;
-      }
-      #np-bars > span:nth-child(1) { animation-delay: -0.2s; }
-      #np-bars > span:nth-child(2) { animation-delay: -0.5s; }
-      #np-bars > span:nth-child(3) { animation-delay: -0.9s; }
-      #np-icon.is-playing #np-bars {
-        display: flex;
-      }
-      #np-icon.is-playing #np-fallback {
-        display: none;
-      }
-      @keyframes np-eq {
-        0%,
-        100% { height: 30%; }
-        50%  { height: 70%; }
-      }
-
-      @keyframes np-marquee {
-        0%   { transform: translateX(0); }
-        100% { transform: translateX(var(--np-shift)); }
-      }
-      /* Fade edges only when text is scrolling */
-      .np-marquee.is-scrolling {
-        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 85%, transparent 100%);
-        mask-image: linear-gradient(to right, transparent 0%, black 10%, black 85%, transparent 100%);
-      }
-      /* Animate only when scrolling — disable truncation */
-      .np-marquee.is-scrolling .np-marquee-text {
-        animation: np-marquee var(--np-duration, 8s) linear infinite;
-        flex-shrink: 0;
-      }
-      .np-marquee.is-scrolling:hover .np-marquee-text {
-        animation-play-state: paused;
-      }
-      /* Static: flex item truncates with ellipsis */
-      .np-marquee:not(.is-scrolling) .np-marquee-text {
-        min-width: 0;
-        flex-shrink: 1;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    </style>
-
-    <style is:global>
-      /* Floating notes, spawned by the emitter in the script below.
-         Global on purpose: the spans are created at runtime, so they never
-         receive Astro's scope attribute and scoped styles can't match them. */
-
-      /* Spawn band ~2.5x the icon width so notes spread instead of stacking */
-      #np-notes {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: -75%;
-        right: -75%;
-        pointer-events: none;
-      }
-      #np-notes > span {
-        position: absolute;
-        bottom: 65%;
-        opacity: 0;
-        color: rgba(16, 185, 129, 0.55); /* emerald-500, muted to match the bars */
-        /* linear keeps the rise at constant speed — easing makes the stream
-           pulse (fast launch, slow hover) instead of flowing */
-        animation: np-float var(--np-dur, 5s) linear forwards;
-      }
-      @keyframes np-float {
-        0% {
-          transform: translate(0, 0) rotate(0deg) scale(0.7);
-          opacity: 0;
-        }
-        15% {
-          opacity: 0.7;
-        }
-        70% {
-          opacity: 0.5;
-        }
-        100% {
-          transform: translate(var(--np-drift, 0), -44px) rotate(var(--np-rot, -12deg)) scale(1);
-          opacity: 0;
-        }
-      }
-    </style>
-
-    <script>
-      import {
-        fetchRecentTrack,
-        getRelativeTime,
-      } from '~/utils/lastfm'
-
-      function setupMarquee(wrapper: HTMLElement, text: string, href?: string) {
-        const textEl = wrapper.firstElementChild as HTMLElement | null
-        if (!textEl) return
-
-        // Reset any previous marquee state
-        wrapper.querySelectorAll('.np-dup').forEach(el => el.remove())
-        wrapper.classList.remove('is-scrolling')
-        wrapper.style.removeProperty('--np-shift')
-        wrapper.style.removeProperty('--np-duration')
-
-        textEl.textContent = text
-        if (href) textEl.setAttribute('href', href)
-        textEl.setAttribute('title', text)
-
-        // Double rAF: let browser commit layout before measuring
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          const containerW = wrapper.offsetWidth
-          const textW = textEl.scrollWidth
-          if (textW > containerW) {
-            const GAP = 48
-            const SPEED = 40
-            const dup = textEl.cloneNode(true) as HTMLElement
-            dup.classList.add('np-dup')
-            dup.setAttribute('aria-hidden', 'true')
-            dup.style.paddingLeft = `${GAP}px`
-            wrapper.appendChild(dup)
-            const shift = textW + GAP
-            wrapper.style.setProperty('--np-shift', `-${shift}px`)
-            wrapper.style.setProperty('--np-duration', `${shift / SPEED}s`)
-            wrapper.classList.add('is-scrolling')
-          }
-        }))
-      }
-
-      // --- Floating notes emitter ---
-      const NOTE_ICONS = ['i-ri-music-2-fill', 'i-ri-music-fill']
-      let noteTimer: ReturnType<typeof setTimeout> | undefined
-
-      const rand = (min: number, max: number) => min + Math.random() * (max - min)
-
-      function spawnNote() {
-        const container = document.getElementById('np-notes')
-        if (!container) return
-        // Tab hidden: CSS animations pause but timers keep firing,
-        // so notes would pile up unfinished — skip instead
-        if (document.hidden) return
-
-        const note = document.createElement('span')
-        note.className = NOTE_ICONS[Math.floor(Math.random() * NOTE_ICONS.length)]
-        note.style.left = `${rand(15, 75)}%`
-        note.style.fontSize = `${rand(7, 10)}px`
-        note.style.setProperty('--np-drift', `${rand(-12, 12)}px`)
-        note.style.setProperty('--np-rot', `${rand(-22, 22)}deg`)
-        note.style.setProperty('--np-dur', `${rand(4, 6.5)}s`)
-        note.addEventListener('animationend', () => note.remove())
-        container.appendChild(note)
-      }
-
-      function startNotes() {
-        if (noteTimer) return
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-        const tick = () => {
-          spawnNote()
-          // Jittered interval so emission never settles into a beat
-          noteTimer = setTimeout(tick, rand(700, 1400))
-        }
-        tick()
-      }
-
-      function stopNotes() {
-        if (noteTimer) clearTimeout(noteTimer)
-        noteTimer = undefined
-      }
-
-      async function updateNowPlaying() {
-        const widget = document.querySelector('.now-playing-widget') as HTMLElement
-        if (!widget) return
-
-        const username = widget.dataset.username
-        const apiKey = widget.dataset.apikey
-
-        if (!username || !apiKey) return
-
-        const track = await fetchRecentTrack(username, apiKey)
-        if (!track) return
-
-        const isPlaying = track['@attr']?.nowplaying === 'true'
-
-        const trackWrapper = document.getElementById('np-track-wrapper') as HTMLElement | null
-        const artistTimeWrapper = document.getElementById('np-artist-time-wrapper') as HTMLElement | null
-        const iconEl = document.getElementById('np-icon')
-
-        if (trackWrapper) {
-          setupMarquee(trackWrapper, track.name, track.url)
-        }
-
-        if (artistTimeWrapper) {
-          let subtitle = track.artist['#text']
-          if (isPlaying) {
-            subtitle += ' • Now playing'
-          } else if (track.date?.uts) {
-            subtitle += ` • ${getRelativeTime(parseInt(track.date.uts))}`
-          }
-          setupMarquee(artistTimeWrapper, subtitle)
-        }
-
-        iconEl?.classList.toggle('is-playing', isPlaying)
-
-        if (isPlaying) startNotes()
-        else stopNotes()
-      }
-
-      let intervalId: ReturnType<typeof setInterval> | undefined
-
-      document.addEventListener('astro:page-load', () => {
-        stopNotes()
-        updateNowPlaying()
-        if (intervalId) clearInterval(intervalId)
-        intervalId = setInterval(updateNowPlaying, 30000) // Check every 30s
-      })
-    </script>
   )
 }
 
+<style>
+  .np-marquee-text,
+  .np-marquee-text:hover {
+    border-bottom: none !important;
+  }
+
+  /* Equalizer bars: hidden by default, shown when playing */
+  #np-bars {
+    display: none;
+  }
+  #np-bars > span {
+    width: 2.5px;
+    background-color: currentColor;
+    border-radius: 1px;
+    animation: np-eq 1.3s ease-in-out infinite;
+  }
+  #np-bars > span:nth-child(1) {
+    animation-delay: -0.2s;
+  }
+  #np-bars > span:nth-child(2) {
+    animation-delay: -0.5s;
+  }
+  #np-bars > span:nth-child(3) {
+    animation-delay: -0.9s;
+  }
+  #np-icon.is-playing #np-bars {
+    display: flex;
+  }
+  #np-icon.is-playing #np-fallback {
+    display: none;
+  }
+  @keyframes np-eq {
+    0%,
+    100% {
+      height: 30%;
+    }
+    50% {
+      height: 70%;
+    }
+  }
+
+  @keyframes np-marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(var(--np-shift));
+    }
+  }
+  /* Fade edges only when text is scrolling */
+  .np-marquee.is-scrolling {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 85%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 85%,
+      transparent 100%
+    );
+  }
+  /* Animate only when scrolling — disable truncation */
+  .np-marquee.is-scrolling .np-marquee-text {
+    animation: np-marquee var(--np-duration, 8s) linear infinite;
+    flex-shrink: 0;
+  }
+  .np-marquee.is-scrolling:hover .np-marquee-text {
+    animation-play-state: paused;
+  }
+  /* Static: flex item truncates with ellipsis */
+  .np-marquee:not(.is-scrolling) .np-marquee-text {
+    min-width: 0;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+
+<style is:global>
+  /* Floating notes, spawned by the emitter in the script below.
+         Global on purpose: the spans are created at runtime, so they never
+         receive Astro's scope attribute and scoped styles can't match them. */
+
+  /* Spawn band ~2.5x the icon width so notes spread instead of stacking */
+  #np-notes {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -75%;
+    right: -75%;
+    pointer-events: none;
+  }
+  #np-notes > span {
+    position: absolute;
+    bottom: 65%;
+    opacity: 0;
+    color: rgba(16, 185, 129, 0.55); /* emerald-500, muted to match the bars */
+    /* linear keeps the rise at constant speed — easing makes the stream
+           pulse (fast launch, slow hover) instead of flowing */
+    animation: np-float var(--np-dur, 5s) linear forwards;
+  }
+  @keyframes np-float {
+    0% {
+      transform: translate(0, 0) rotate(0deg) scale(0.7);
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.7;
+    }
+    70% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: translate(var(--np-drift, 0), -44px)
+        rotate(var(--np-rot, -12deg)) scale(1);
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  import { fetchRecentTrack, getRelativeTime } from '~/utils/lastfm'
+
+  function setupMarquee(wrapper: HTMLElement, text: string, href?: string) {
+    const textEl = wrapper.firstElementChild as HTMLElement | null
+    if (!textEl) return
+
+    // Reset any previous marquee state
+    wrapper.querySelectorAll('.np-dup').forEach((el) => el.remove())
+    wrapper.classList.remove('is-scrolling')
+    wrapper.style.removeProperty('--np-shift')
+    wrapper.style.removeProperty('--np-duration')
+
+    textEl.textContent = text
+    if (href) textEl.setAttribute('href', href)
+    textEl.setAttribute('title', text)
+
+    // Double rAF: let browser commit layout before measuring
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        const containerW = wrapper.offsetWidth
+        const textW = textEl.scrollWidth
+        if (textW > containerW) {
+          const GAP = 48
+          const SPEED = 40
+          const dup = textEl.cloneNode(true) as HTMLElement
+          dup.classList.add('np-dup')
+          dup.setAttribute('aria-hidden', 'true')
+          dup.style.paddingLeft = `${GAP}px`
+          wrapper.appendChild(dup)
+          const shift = textW + GAP
+          wrapper.style.setProperty('--np-shift', `-${shift}px`)
+          wrapper.style.setProperty('--np-duration', `${shift / SPEED}s`)
+          wrapper.classList.add('is-scrolling')
+        }
+      })
+    )
+  }
+
+  // --- Floating notes emitter ---
+  const NOTE_ICONS = ['i-ri-music-2-fill', 'i-ri-music-fill']
+  let noteTimer: ReturnType<typeof setTimeout> | undefined
+
+  const rand = (min: number, max: number) => min + Math.random() * (max - min)
+
+  function spawnNote() {
+    const container = document.getElementById('np-notes')
+    if (!container) return
+    // Tab hidden: CSS animations pause but timers keep firing,
+    // so notes would pile up unfinished — skip instead
+    if (document.hidden) return
+
+    const note = document.createElement('span')
+    note.className = NOTE_ICONS[Math.floor(Math.random() * NOTE_ICONS.length)]
+    note.style.left = `${rand(15, 75)}%`
+    note.style.fontSize = `${rand(7, 10)}px`
+    note.style.setProperty('--np-drift', `${rand(-12, 12)}px`)
+    note.style.setProperty('--np-rot', `${rand(-22, 22)}deg`)
+    note.style.setProperty('--np-dur', `${rand(4, 6.5)}s`)
+    note.addEventListener('animationend', () => note.remove())
+    container.appendChild(note)
+  }
+
+  function startNotes() {
+    if (noteTimer) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const tick = () => {
+      spawnNote()
+      // Jittered interval so emission never settles into a beat
+      noteTimer = setTimeout(tick, rand(700, 1400))
+    }
+    tick()
+  }
+
+  function stopNotes() {
+    if (noteTimer) clearTimeout(noteTimer)
+    noteTimer = undefined
+  }
+
+  async function updateNowPlaying() {
+    const widget = document.querySelector('.now-playing-widget') as HTMLElement
+    if (!widget) return
+
+    const username = widget.dataset.username
+    const apiKey = widget.dataset.apikey
+
+    if (!username || !apiKey) return
+
+    const track = await fetchRecentTrack(username, apiKey)
+    if (!track) return
+
+    const isPlaying = track['@attr']?.nowplaying === 'true'
+
+    const trackWrapper = document.getElementById(
+      'np-track-wrapper'
+    ) as HTMLElement | null
+    const artistTimeWrapper = document.getElementById(
+      'np-artist-time-wrapper'
+    ) as HTMLElement | null
+    const iconEl = document.getElementById('np-icon')
+
+    if (trackWrapper) {
+      setupMarquee(trackWrapper, track.name, track.url)
+    }
+
+    if (artistTimeWrapper) {
+      let subtitle = track.artist['#text']
+      if (isPlaying) {
+        subtitle += ' • Now playing'
+      } else if (track.date?.uts) {
+        subtitle += ` • ${getRelativeTime(parseInt(track.date.uts))}`
+      }
+      setupMarquee(artistTimeWrapper, subtitle)
+    }
+
+    iconEl?.classList.toggle('is-playing', isPlaying)
+
+    if (isPlaying) startNotes()
+    else stopNotes()
+  }
+
+  let intervalId: ReturnType<typeof setInterval> | undefined
+
+  document.addEventListener('astro:page-load', () => {
+    stopNotes()
+    updateNowPlaying()
+    if (intervalId) clearInterval(intervalId)
+    intervalId = setInterval(updateNowPlaying, 30000) // Check every 30s
+  })
+</script>

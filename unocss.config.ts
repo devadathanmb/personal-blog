@@ -21,8 +21,12 @@ import type {
 
 const { internalNavs, socialLinks } = UI
 
-const usesIcons = usesData.flatMap((s) => s.categories.flatMap((c) => c.items.map((i) => i.icon)))
-const usesBtnClasses = usesData.flatMap((s) => s.categories.flatMap((c) => c.items.map((i) => i.btnClass)))
+const usesIcons = usesData.flatMap((s) =>
+  s.categories.flatMap((c) => c.items.map((i) => i.icon))
+)
+const usesBtnClasses = usesData.flatMap((s) =>
+  s.categories.flatMap((c) => c.items.map((i) => i.btnClass))
+)
 const navIcons = internalNavs
   .filter(
     (item) =>

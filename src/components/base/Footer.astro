@@ -33,7 +33,7 @@ const githubRepo = 'https://github.com/devadathanmb/personal-blog'
         <span class="lt-sm:hidden">&nbsp;|&nbsp;</span>
         <span class="flex items-center gap-1">
           Built with
-          <div class="i-ri-heart-fill heart-icon" aria-hidden="true" />
+          <div class="i-ri-heart-fill heart-icon" aria-hidden="true"></div>
           using
           <a
             href="https://astro.build"
@@ -42,7 +42,8 @@ const githubRepo = 'https://github.com/devadathanmb/personal-blog'
             class="astro-link inline-flex items-center gap-1"
             title="Built with Astro"
           >
-            <div class="i-simple-icons-astro astro-icon" aria-hidden="true" />
+            <div class="i-simple-icons-astro astro-icon" aria-hidden="true">
+            </div>
           </a>
         </span>
       </div>
@@ -123,12 +124,24 @@ const githubRepo = 'https://github.com/devadathanmb/personal-blog'
   }
 
   @keyframes heartbeat {
-    0%   { transform: scale(1); }
-    8%   { transform: scale(1.14); }   /* lub — stronger first beat */
-    16%  { transform: scale(0.97); }   /* dip between beats */
-    24%  { transform: scale(1.08); }   /* dub — softer second beat */
-    35%  { transform: scale(1); }      /* settle */
-    100% { transform: scale(1); }      /* long rest before next cycle */
+    0% {
+      transform: scale(1);
+    }
+    8% {
+      transform: scale(1.14);
+    } /* lub — stronger first beat */
+    16% {
+      transform: scale(0.97);
+    } /* dip between beats */
+    24% {
+      transform: scale(1.08);
+    } /* dub — softer second beat */
+    35% {
+      transform: scale(1);
+    } /* settle */
+    100% {
+      transform: scale(1);
+    } /* long rest before next cycle */
   }
 
   /* ── Zap icon ── */
@@ -138,7 +151,9 @@ const githubRepo = 'https://github.com/devadathanmb/personal-blog'
   }
 
   @keyframes zap-strike {
-    0%, 70%, 100% {
+    0%,
+    70%,
+    100% {
       transform: scale(1);
       color: #fbbf24;
       filter: drop-shadow(0 0 0px transparent);
@@ -184,17 +199,42 @@ const githubRepo = 'https://github.com/devadathanmb/personal-blog'
 
   @keyframes rocket-launch {
     /* shake phase — rocket revving up */
-    0%   { transform: translateX(0)    translateY(0)    rotate(0deg)  scale(1);    }
-    8%   { transform: translateX(-2px) translateY(1px)  rotate(-5deg) scale(1);    }
-    16%  { transform: translateX(2px)  translateY(1px)  rotate(5deg)  scale(1);    }
-    24%  { transform: translateX(-2px) translateY(0)    rotate(-4deg) scale(1);    }
-    32%  { transform: translateX(2px)  translateY(1px)  rotate(4deg)  scale(1);    }
-    40%  { transform: translateX(-1px) translateY(0)    rotate(-3deg) scale(1.02); }
-    48%  { transform: translateX(1px)  translateY(0)    rotate(2deg)  scale(1.03); }
+    0% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+    8% {
+      transform: translateX(-2px) translateY(1px) rotate(-5deg) scale(1);
+    }
+    16% {
+      transform: translateX(2px) translateY(1px) rotate(5deg) scale(1);
+    }
+    24% {
+      transform: translateX(-2px) translateY(0) rotate(-4deg) scale(1);
+    }
+    32% {
+      transform: translateX(2px) translateY(1px) rotate(4deg) scale(1);
+    }
+    40% {
+      transform: translateX(-1px) translateY(0) rotate(-3deg) scale(1.02);
+    }
+    48% {
+      transform: translateX(1px) translateY(0) rotate(2deg) scale(1.03);
+    }
     /* launch phase — lift off */
-    58%  { transform: translateX(0)    translateY(-2px) rotate(0deg)  scale(1.07); }
-    72%  { transform: translateX(0)    translateY(-5px) rotate(0deg)  scale(1.13); filter: drop-shadow(0 2px 4px #ff5d0166); }
-    85%  { transform: translateX(0)    translateY(-8px) rotate(0deg)  scale(1.18); filter: drop-shadow(0 3px 7px #ff5d0199); }
-    100% { transform: translateX(0)    translateY(-5px) rotate(0deg)  scale(1.13); filter: drop-shadow(0 2px 6px #ff5d0177); }
+    58% {
+      transform: translateX(0) translateY(-2px) rotate(0deg) scale(1.07);
+    }
+    72% {
+      transform: translateX(0) translateY(-5px) rotate(0deg) scale(1.13);
+      filter: drop-shadow(0 2px 4px #ff5d0166);
+    }
+    85% {
+      transform: translateX(0) translateY(-8px) rotate(0deg) scale(1.18);
+      filter: drop-shadow(0 3px 7px #ff5d0199);
+    }
+    100% {
+      transform: translateX(0) translateY(-5px) rotate(0deg) scale(1.13);
+      filter: drop-shadow(0 2px 6px #ff5d0177);
+    }
   }
 </style>

@@ -20,9 +20,10 @@ const {
 } = Astro.props
 
 const showWeather = lat !== undefined && lon !== undefined
-const mapsUrl = lat !== undefined && lon !== undefined
-  ? `https://www.google.com/maps?q=${lat},${lon}`
-  : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`
+const mapsUrl =
+  lat !== undefined && lon !== undefined
+    ? `https://www.google.com/maps?q=${lat},${lon}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`
 const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 ---
 
@@ -34,30 +35,32 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
     href={mapsUrl}
     target="_blank"
     rel="noopener noreferrer"
-    class="lw-link lw-location-link text-xs"
-  >{location}</a>
+    class="lw-link lw-location-link text-xs">{location}</a
+  >
 
-  {showWeather && (
-    <>
-      <span class="op-20 select-none text-[10px] mx-0.5">|</span>
-      <!-- group on the anchor: only the temp span responds to hover, not the icon -->
-      <a
-        href={weatherUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="lw-link group inline-flex items-center gap-1"
-      >
-        <span
-          class="lw-weather-icon shrink-0"
-          data-lat={lat}
-          data-lon={lon}
-        ></span>
-        <span class="lw-weather-temp font-mono text-xs tabular-nums lw-loading">
-          --°
-        </span>
-      </a>
-    </>
-  )}
+  {
+    showWeather && (
+      <>
+        <span class="op-20 select-none text-[10px] mx-0.5">|</span>
+        {/* group on the anchor: only the temp span responds to hover, not the icon */}
+        <a
+          href={weatherUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="lw-link group inline-flex items-center gap-1"
+        >
+          <span
+            class="lw-weather-icon shrink-0"
+            data-lat={lat}
+            data-lon={lon}
+          />
+          <span class="lw-weather-temp font-mono text-xs tabular-nums lw-loading">
+            --°
+          </span>
+        </a>
+      </>
+    )
+  }
 
   <span class="op-20 select-none text-[10px] mx-0.5">|</span>
 
@@ -78,18 +81,34 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
   }
 
   /* Force neutral color on location — prose global `a { color }` beats Tailwind utilities */
-  .lw-location-link       { color: #e5e7eb !important; }  /* gray-200 */
-  .lw-location-link:hover { color: #34d399 !important; }  /* emerald-400 */
+  .lw-location-link {
+    color: #e5e7eb !important;
+  } /* gray-200 */
+  .lw-location-link:hover {
+    color: #34d399 !important;
+  } /* emerald-400 */
 
-  :root:not(.dark) .lw-location-link       { color: #1f2937 !important; }  /* gray-800 */
-  :root:not(.dark) .lw-location-link:hover { color: #059669 !important; }  /* emerald-600 */
+  :root:not(.dark) .lw-location-link {
+    color: #1f2937 !important;
+  } /* gray-800 */
+  :root:not(.dark) .lw-location-link:hover {
+    color: #059669 !important;
+  } /* emerald-600 */
 
   /* Weather temp: neutral at rest, emerald on hover.
      Handled in CSS (not Tailwind group-hover) so !important beats the prose anchor specificity. */
-  .lw-weather-temp                    { color: #e5e7eb; }           /* gray-200 */
-  :root:not(.dark) .lw-weather-temp   { color: #1f2937; }           /* gray-800 */
-  .group:hover .lw-weather-temp                  { color: #34d399 !important; }  /* emerald-400 */
-  :root:not(.dark) .group:hover .lw-weather-temp { color: #059669 !important; }  /* emerald-600 */
+  .lw-weather-temp {
+    color: #e5e7eb;
+  } /* gray-200 */
+  :root:not(.dark) .lw-weather-temp {
+    color: #1f2937;
+  } /* gray-800 */
+  .group:hover .lw-weather-temp {
+    color: #34d399 !important;
+  } /* emerald-400 */
+  :root:not(.dark) .group:hover .lw-weather-temp {
+    color: #059669 !important;
+  } /* emerald-600 */
 
   .lw-weather-icon-sized {
     width: 1.75rem !important;
@@ -97,8 +116,13 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
   }
 
   @keyframes lw-pulse {
-    0%, 100% { opacity: 0.35; }
-    50%       { opacity: 0.75; }
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 0.75;
+    }
   }
   .lw-loading {
     animation: lw-pulse 1.4s ease-in-out infinite;
@@ -131,39 +155,43 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
   }
 
   function updateLiveTime() {
-    document.querySelectorAll<HTMLElement>('.live-time-widget').forEach((el) => {
-      const timezone = el.getAttribute('data-timezone') || 'UTC'
-      el.textContent = new Date().toLocaleTimeString('en-US', {
-        timeZone: timezone,
-        hour12: true,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
+    document
+      .querySelectorAll<HTMLElement>('.live-time-widget')
+      .forEach((el) => {
+        const timezone = el.getAttribute('data-timezone') || 'UTC'
+        el.textContent = new Date().toLocaleTimeString('en-US', {
+          timeZone: timezone,
+          hour12: true,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        })
       })
-    })
   }
 
   async function initWeather() {
-    document.querySelectorAll<HTMLElement>('.lw-weather-icon').forEach(async (iconEl) => {
-      const lat = parseFloat(iconEl.dataset.lat ?? '')
-      const lon = parseFloat(iconEl.dataset.lon ?? '')
-      if (isNaN(lat) || isNaN(lon)) return
+    document
+      .querySelectorAll<HTMLElement>('.lw-weather-icon')
+      .forEach(async (iconEl) => {
+        const lat = parseFloat(iconEl.dataset.lat ?? '')
+        const lon = parseFloat(iconEl.dataset.lon ?? '')
+        if (isNaN(lat) || isNaN(lon)) return
 
-      const weather = await fetchWeather(lat, lon)
-      const tempEl = iconEl.nextElementSibling as HTMLElement | null
+        const weather = await fetchWeather(lat, lon)
+        const tempEl = iconEl.nextElementSibling as HTMLElement | null
 
-      if (!weather) {
-        tempEl?.classList.remove('lw-loading')
-        return
-      }
+        if (!weather) {
+          tempEl?.classList.remove('lw-loading')
+          return
+        }
 
-      iconEl.className = `${weather.icon} shrink-0 lw-weather-icon-sized`
+        iconEl.className = `${weather.icon} shrink-0 lw-weather-icon-sized`
 
-      if (tempEl?.classList.contains('lw-weather-temp')) {
-        tempEl.textContent = `${weather.temp}°`
-        tempEl.classList.remove('lw-loading')
-      }
-    })
+        if (tempEl?.classList.contains('lw-weather-temp')) {
+          tempEl.textContent = `${weather.temp}°`
+          tempEl.classList.remove('lw-loading')
+        }
+      })
   }
 
   let intervalId: ReturnType<typeof setInterval> | undefined

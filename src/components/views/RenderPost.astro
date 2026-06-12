@@ -26,7 +26,12 @@ interface Props {
   pageToc?: boolean
 }
 
-const { post, seriesNav = null, isCommentable = false, pageToc = true } = Astro.props
+const {
+  post,
+  seriesNav = null,
+  isCommentable = false,
+  pageToc = true,
+} = Astro.props
 const { toc, share, giscus, search } = FEATURES
 
 const { data: frontmatter } = post
@@ -91,11 +96,13 @@ frontmatter to <code>false</code> or remove it to publish the post.`
   <Fragment slot="share">
     {shareEnabled && <ShareLink config={share[1]} />}
   </Fragment>
-  {seriesNav && (
-    <Fragment slot="series-nav">
-      <SeriesNav {seriesNav} />
-    </Fragment>
-  )}
+  {
+    seriesNav && (
+      <Fragment slot="series-nav">
+        <SeriesNav {seriesNav} />
+      </Fragment>
+    )
+  }
   {
     giscusEnabled && (
       <div slot="giscus" class="prose mx-auto mt-8">

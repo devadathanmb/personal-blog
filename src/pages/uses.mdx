@@ -23,13 +23,14 @@ import usesData from '~/data/uses.json'
     <div slot="head" class="-mt-5 mb-6 ml-1 slide-enter animate-delay-200!">
       <LastUpdated date="2026-06-01" />
     </div>
-    <div slot="article">
+    <Fragment slot="article">
 
 This is the hardware, software, and setup I've come to rely on over years of work, curiosity, and tinkering.
 
 Every tool here solved a problem at some point. The ones that remain are the ones I still trust when things matter.
 
 {usesData.map((section) => (
+
   <UsesSection section={section} />
 ))}
 
@@ -48,10 +49,15 @@ Every tool here solved a problem at some point. The ones that remain are the one
   </Link>
 </div>
 
-<em>If you're curious about this concept, <Link href="https://uses.tech" external enableNewTabWarning>uses.tech</Link> has the full story.</em>
+<em>
+  If you're curious about this concept,{' '}
+  <Link href="https://uses.tech" external enableNewTabWarning>
+    uses.tech
+  </Link>{' '}
+  has the full story.
+</em>
 
-
-    </div>
+    </Fragment>
 
   </StandardLayout>
 </BaseLayout>

@@ -82,10 +82,7 @@ export const UI: Ui = {
     showGroupItemColorOnHover: true,
   },
   githubView: {
-    monorepos: [
-      'withastro/astro',
-      'withastro/starlight',
-    ],
+    monorepos: ['withastro/astro', 'withastro/starlight'],
     mainLogoOverrides: [
       [/starlight/, 'https://starlight.astro.build/favicon.svg'],
     ],

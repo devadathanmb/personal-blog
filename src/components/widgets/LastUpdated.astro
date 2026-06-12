@@ -17,7 +17,8 @@ const {
 
 const then = new Date(date)
 const days = Math.floor((Date.now() - then.getTime()) / 86_400_000)
-const status = days <= freshDays ? 'fresh' : days <= staleDays ? 'aging' : 'stale'
+const status =
+  days <= freshDays ? 'fresh' : days <= staleDays ? 'aging' : 'stale'
 
 const exactDate = then.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -33,7 +34,7 @@ const exactDate = then.toLocaleDateString('en-US', {
 >
   <span class="relative inline-flex flex-none lu-dot-wrap" aria-hidden="true">
     {pulse && <span class="lu-ping absolute inset-0 rounded-full" />}
-    <span class="lu-dot relative rounded-full" />
+    <span class="lu-dot relative rounded-full"></span>
   </span>
   <span class="lu-label font-normal">{label}</span>
   <span class="lu-rel font-mono font-medium" style="letter-spacing:0.03em;">
@@ -43,13 +44,25 @@ const exactDate = then.toLocaleDateString('en-US', {
 
 <style>
   /* ── Per-status color vars ────────────────────────────────── */
-  .lu-fresh { --lu-color: #059669; }
-  .lu-aging  { --lu-color: #d97706; }
-  .lu-stale  { --lu-color: #dc2626; }
+  .lu-fresh {
+    --lu-color: #059669;
+  }
+  .lu-aging {
+    --lu-color: #d97706;
+  }
+  .lu-stale {
+    --lu-color: #dc2626;
+  }
 
-  :root.dark .lu-fresh { --lu-color: #34d399; }
-  :root.dark .lu-aging  { --lu-color: #fbbf24; }
-  :root.dark .lu-stale  { --lu-color: #f87171; }
+  :root.dark .lu-fresh {
+    --lu-color: #34d399;
+  }
+  :root.dark .lu-aging {
+    --lu-color: #fbbf24;
+  }
+  :root.dark .lu-stale {
+    --lu-color: #f87171;
+  }
 
   /* ── Container — rule annotation, no box ─────────────────── */
   .lu-widget {
@@ -60,11 +73,21 @@ const exactDate = then.toLocaleDateString('en-US', {
   }
 
   /* ── Dot ──────────────────────────────────────────────────── */
-  .lu-dot-wrap { width: 6px; height: 6px; }
-  .lu-dot      { width: 6px; height: 6px; background: var(--lu-color); }
+  .lu-dot-wrap {
+    width: 6px;
+    height: 6px;
+  }
+  .lu-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--lu-color);
+  }
 
   /* ── Label ────────────────────────────────────────────────── */
-  .lu-label { color: var(--fg-light, #777); font-size: 0.75rem; }
+  .lu-label {
+    color: var(--fg-light, #777);
+    font-size: 0.75rem;
+  }
 
   /* ── Relative time ────────────────────────────────────────── */
   .lu-rel {
@@ -74,8 +97,15 @@ const exactDate = then.toLocaleDateString('en-US', {
 
   /* ── Ping animation ───────────────────────────────────────── */
   @keyframes lu-status-ping {
-    0%        { transform: scale(1);   opacity: 0.65; }
-    70%, 100% { transform: scale(2.6); opacity: 0;    }
+    0% {
+      transform: scale(1);
+      opacity: 0.65;
+    }
+    70%,
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
   }
 
   .lu-ping {
@@ -110,7 +140,8 @@ const exactDate = then.toLocaleDateString('en-US', {
       const date = el.dataset.date
       if (!date) return
       const rel = el.querySelector<HTMLElement>('.lu-rel')
-      if (rel) rel.textContent = relativeTime(new Date(date).getTime(), Date.now())
+      if (rel)
+        rel.textContent = relativeTime(new Date(date).getTime(), Date.now())
     })
   }
 

@@ -134,7 +134,9 @@ const webPageData = {
     <>
       <meta property="article:author" content={SITE.author} />
       <meta property="article:published_time" content={pubDate} />
-      {lastModDate && <meta property="article:modified_time" content={lastModDate} />}
+      {lastModDate && (
+        <meta property="article:modified_time" content={lastModDate} />
+      )}
     </>
   )
 }

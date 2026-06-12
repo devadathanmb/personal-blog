@@ -27,7 +27,7 @@ import Link from '~/components/base/Link.astro'
       <LocationTimeWidget />
       <NowPlaying />
     </div>
-    <div slot="article">
+    <Fragment slot="article">
 
 This page is a snapshot in time. The funny thing about "now" is how quickly it becomes "then".
 
@@ -49,10 +49,15 @@ Lately, I've been reminded that some of the best parts of life happen away from 
 
 ---
 
-<em>If you're curious about this concept, <Link href="https://nownownow.com" external enableNewTabWarning>nownownow.com</Link> has the full story.</em>
+<em>
+  If you're curious about this concept,{' '}
+  <Link href="https://nownownow.com" external enableNewTabWarning>
+    nownownow.com
+  </Link>{' '}
+  has the full story.
+</em>
 
-
-    </div>
+    </Fragment>
 
   </StandardLayout>
 </BaseLayout>
