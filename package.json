@@ -10,7 +10,7 @@
     "dev": "astro dev",
     "check": "astro check",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "pnpm run build && wrangler dev",
     "format": "prettier . --check --ignore-unknown",
     "format:write": "prettier . --write --ignore-unknown --cache",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0 --cache",
@@ -18,7 +18,9 @@
     "toolbar:on": "astro preferences enable devToolbar",
     "toolbar:off": "astro preferences disable devToolbar",
     "prepare": "simple-git-hooks",
-    "postbuild": "pagefind --site dist --exclude-selectors \"pre\" --include-characters \"<>\" && del-cli \"dist/pagefind/*ui*\""
+    "postbuild": "pagefind --site dist --exclude-selectors \"pre\" --include-characters \"<>\" && del-cli \"dist/pagefind/*ui*\"",
+    "deploy": "pnpm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "devDependencies": {
     "@ascorbic/feed-loader": "^2.0.1",
@@ -72,7 +74,8 @@
     "typescript-eslint": "^8.46.0",
     "unist-util-visit": "^5.1.0",
     "unocss": "66.5.3",
-    "viewerjs": "^1.11.7"
+    "viewerjs": "^1.11.7",
+    "wrangler": "^4.100.0"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec lint-staged && pnpm run format && pnpm run check"
@@ -91,5 +94,8 @@
   },
   "engines": {
     "node": "18.20.8 || ^20.9.0 || ^22.0.0 || ^24.0.0"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "12"
   }
 }
