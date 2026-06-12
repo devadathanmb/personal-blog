@@ -66,12 +66,13 @@ const blogPostingData = {
 // https://jsonld.com/web-page/
 const webPageData = {
   '@context': 'https://schema.org',
-  '@type': 'webPage',
+  '@type': 'WebPage',
   'name': `${title || SITE.title}`,
   ...(description && { description: description }),
-  'publisher': {
-    '@type': 'ProfilePage',
-    'name': `${SITE.author}'s Personal Website`,
+  'author': {
+    '@type': 'Person',
+    'name': SITE.author,
+    'url': SITE.website,
   },
 }
 ---
@@ -87,6 +88,7 @@ const webPageData = {
 <meta name="title" content={pageTitle} />
 <meta name="description" content={pageDescription} />
 <meta name="author" content={SITE.author} />
+<meta name="robots" content="index, follow" />
 
 <!-- Color -->
 <meta name="color-scheme" content="" />
@@ -132,7 +134,7 @@ const webPageData = {
     <>
       <meta property="article:author" content={SITE.author} />
       <meta property="article:published_time" content={pubDate} />
-      <meta property="article:modified_time" content={lastModDate} />
+      {lastModDate && <meta property="article:modified_time" content={lastModDate} />}
     </>
   )
 }
@@ -174,7 +176,7 @@ const webPageData = {
 <link
   rel="alternate"
   type="application/rss+xml"
-  title={withBasePath('/rss.xml')}
+  title={`${SITE.title} Feed`}
   href="/rss.xml"
 />
 

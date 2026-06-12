@@ -16,7 +16,9 @@ export default defineConfig({
     inlineStylesheets: 'never',
   },
   integrations: [
-    sitemap(),
+    sitemap({
+      filter: (page) => !page.includes('/404'),
+    }),
     robotsTxt(),
     unocss({ injectReset: true }),
     astroExpressiveCode(),
