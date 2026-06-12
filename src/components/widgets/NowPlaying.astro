@@ -31,6 +31,7 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled
           <span></span>
           <span></span>
         </div>
+        <div id="np-notes" aria-hidden="true"></div>
       </div>
       <div class="flex flex-col justify-center max-w-[200px] sm:max-w-[250px]">
         <div id="np-track-wrapper" class="np-marquee flex overflow-hidden">
@@ -112,6 +113,47 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled
       }
     </style>
 
+    <style is:global>
+      /* Floating notes, spawned by the emitter in the script below.
+         Global on purpose: the spans are created at runtime, so they never
+         receive Astro's scope attribute and scoped styles can't match them. */
+
+      /* Spawn band ~2.5x the icon width so notes spread instead of stacking */
+      #np-notes {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -75%;
+        right: -75%;
+        pointer-events: none;
+      }
+      #np-notes > span {
+        position: absolute;
+        bottom: 65%;
+        opacity: 0;
+        color: rgba(16, 185, 129, 0.55); /* emerald-500, muted to match the bars */
+        /* linear keeps the rise at constant speed — easing makes the stream
+           pulse (fast launch, slow hover) instead of flowing */
+        animation: np-float var(--np-dur, 5s) linear forwards;
+      }
+      @keyframes np-float {
+        0% {
+          transform: translate(0, 0) rotate(0deg) scale(0.7);
+          opacity: 0;
+        }
+        15% {
+          opacity: 0.7;
+        }
+        70% {
+          opacity: 0.5;
+        }
+        100% {
+          transform: translate(var(--np-drift, 0), -44px) rotate(var(--np-rot, -12deg)) scale(1);
+          opacity: 0;
+        }
+      }
+    </style>
+
     <script>
       import {
         fetchRecentTrack,
@@ -152,6 +194,46 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled
         }))
       }
 
+      // --- Floating notes emitter ---
+      const NOTE_ICONS = ['i-ri-music-2-fill', 'i-ri-music-fill']
+      let noteTimer: ReturnType<typeof setTimeout> | undefined
+
+      const rand = (min: number, max: number) => min + Math.random() * (max - min)
+
+      function spawnNote() {
+        const container = document.getElementById('np-notes')
+        if (!container) return
+        // Tab hidden: CSS animations pause but timers keep firing,
+        // so notes would pile up unfinished — skip instead
+        if (document.hidden) return
+
+        const note = document.createElement('span')
+        note.className = NOTE_ICONS[Math.floor(Math.random() * NOTE_ICONS.length)]
+        note.style.left = `${rand(15, 75)}%`
+        note.style.fontSize = `${rand(7, 10)}px`
+        note.style.setProperty('--np-drift', `${rand(-12, 12)}px`)
+        note.style.setProperty('--np-rot', `${rand(-22, 22)}deg`)
+        note.style.setProperty('--np-dur', `${rand(4, 6.5)}s`)
+        note.addEventListener('animationend', () => note.remove())
+        container.appendChild(note)
+      }
+
+      function startNotes() {
+        if (noteTimer) return
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+        const tick = () => {
+          spawnNote()
+          // Jittered interval so emission never settles into a beat
+          noteTimer = setTimeout(tick, rand(700, 1400))
+        }
+        tick()
+      }
+
+      function stopNotes() {
+        if (noteTimer) clearTimeout(noteTimer)
+        noteTimer = undefined
+      }
+
       async function updateNowPlaying() {
         const widget = document.querySelector('.now-playing-widget') as HTMLElement
         if (!widget) return
@@ -185,11 +267,15 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled
         }
 
         iconEl?.classList.toggle('is-playing', isPlaying)
+
+        if (isPlaying) startNotes()
+        else stopNotes()
       }
 
       let intervalId: ReturnType<typeof setInterval> | undefined
 
       document.addEventListener('astro:page-load', () => {
+        stopNotes()
         updateNowPlaying()
         if (intervalId) clearInterval(intervalId)
         intervalId = setInterval(updateNowPlaying, 30000) // Check every 30s
