@@ -29,7 +29,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 <div
   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a] border border-gray-200 dark:border-[#333] text-sm font-medium w-fit transition-colors duration-200"
 >
-  <div class="i-ri-map-pin-line op-60 shrink-0 text-sm"></div>
+  <div class="i-line-md-map-marker-alt-filled-loop shrink-0 text-sm"></div>
   <a
     href={mapsUrl}
     target="_blank"
@@ -48,7 +48,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
         class="lw-link group inline-flex items-center gap-1"
       >
         <span
-          class="lw-weather-icon op-70 shrink-0"
+          class="lw-weather-icon shrink-0"
           data-lat={lat}
           data-lon={lon}
         ></span>
@@ -61,7 +61,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 
   <span class="op-20 select-none text-[10px] mx-0.5">|</span>
 
-  <div class="i-lucide-watch op-60 shrink-0 text-sm"></div>
+  <div class="i-line-md-watch-twotone-loop shrink-0 text-sm"></div>
   <span
     class="font-mono text-emerald-600 dark:text-emerald-400 text-xs live-time-widget tracking-tight tabular-nums"
     data-timezone={timezone}
@@ -91,6 +91,11 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
   .group:hover .lw-weather-temp                  { color: #34d399 !important; }  /* emerald-400 */
   :root:not(.dark) .group:hover .lw-weather-temp { color: #059669 !important; }  /* emerald-600 */
 
+  .lw-weather-icon-sized {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+  }
+
   @keyframes lw-pulse {
     0%, 100% { opacity: 0.35; }
     50%       { opacity: 0.75; }
@@ -109,7 +114,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
       url.search = new URLSearchParams({
         latitude: String(lat),
         longitude: String(lon),
-        current: 'temperature_2m,weather_code',
+        current: 'temperature_2m,weather_code,is_day',
         timezone: 'auto',
       }).toString()
 
@@ -118,7 +123,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
       const data = await res.json()
       return {
         temp: Math.round(data.current.temperature_2m),
-        icon: weatherIcon(data.current.weather_code),
+        icon: weatherIcon(data.current.weather_code, data.current.is_day === 1),
       }
     } catch {
       return null
@@ -152,7 +157,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
         return
       }
 
-      iconEl.className = `${weather.icon} op-70 shrink-0 text-sm`
+      iconEl.className = `${weather.icon} shrink-0 lw-weather-icon-sized`
 
       if (tempEl?.classList.contains('lw-weather-temp')) {
         tempEl.textContent = `${weather.temp}°`

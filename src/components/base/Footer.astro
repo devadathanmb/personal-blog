@@ -51,7 +51,10 @@ const githubRepo = 'https://github.com/devadathanmb/personal-blog'
       {
         commitHash !== 'unknown' && (
           <div class="mt-2 sm:mt-0 flex items-center gap-1">
-            <span>⚡️ Deployed commit:</span>
+            <span>
+              <span class="i-mage-zap-fill deployed-zap" aria-hidden="true" />
+              Deployed commit:
+            </span>
             <a
               class="shine-hash font-mono decoration-dashed hover:decoration-solid underline underline-offset-2"
               href={`${githubRepo}/commit/${commitHash}`}
@@ -138,6 +141,11 @@ const githubRepo = 'https://github.com/devadathanmb/personal-blog'
     56% {
       transform: scale(1);
     }
+  }
+
+  /* ── Zap icon ── */
+  .deployed-zap {
+    color: #fbbf24; /* amber-400 — matches the ⚡️ emoji yellow */
   }
 
   /* ── Astro icon & text ── */
