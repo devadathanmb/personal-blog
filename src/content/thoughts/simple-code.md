@@ -8,13 +8,20 @@ tags:
 description: Most software problems do not need a larger abstraction. They need fewer moving parts.
 ---
 
-I keep coming back to the same boring conclusion: simple code wins.
+Most software problems don't need another abstraction.
 
-Not clever code. Not a perfectly generalized abstraction that explains the universe. Code that
-someone can open six months later and understand without a meeting.
+They need fewer moving parts.
 
-This does not mean avoiding design. It means letting the design stay close to the problem. When the
-shape of the problem changes, the code can change with it. When the abstraction comes too early, the
-problem has to negotiate with the abstraction first.
+I've lost count of how many times I've seen a simple problem become harder because the solution was designed for three future requirements that never arrived.
 
-That is usually where the trouble starts.
+The tricky part is that complexity often feels like progress. More layers, more abstractions, more flexibility. Everything looks cleaner until somebody has to debug it six months later.
+
+That's not an argument against design.
+
+It's an argument for letting abstractions earn their place.
+
+The best code I've worked with wasn't simple because it lacked sophistication. It was simple because somebody had the discipline to solve the problem they had instead of the one they imagined might exist someday.
+
+Simple code doesn't always win.
+
+It just wins far more often than people expect.

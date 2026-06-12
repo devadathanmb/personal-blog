@@ -7,14 +7,28 @@ tags:
 description: Following local patterns is useful. Copying them without understanding why is how mistakes become tradition.
 ---
 
-Conventions are useful because they reduce decision fatigue. A codebase where everything is a fresh
-creative act is exhausting to work in.
+One of the easiest ways for cargo culting to appear in a codebase is surprisingly simple.
 
-But convention is not the same thing as cargo culting. The useful part is understanding the pressure
-that created a pattern: the constraint, the tradeoff, the bug it avoided, or the team habit it made
-cheaper.
+A piece of code gets written. It passes review. It gets merged.
 
-When that context disappears, the pattern can keep spreading even after it stops helping. That is how
-bad decisions become tradition.
+A few weeks later, somebody needs to solve a similar problem. They find that code, copy it, modify it slightly, and move on.
 
-The move is not to reject convention. The move is to keep asking what the convention is buying.
+Then somebody copies that version.
+
+And then somebody copies theirs.
+
+At some point, nobody is asking why the pattern exists anymore. The fact that it already exists becomes reason enough to keep using it.
+
+That's where convention quietly turns into cargo culting.
+
+The problem isn't copying code. We all do it. The problem is when the codebase itself becomes the standard.
+
+A good convention should have a reason behind it. A trade-off. A constraint. A lesson learned the hard way.
+
+If nobody remembers that reason, the pattern might survive long after the problem it solved has disappeared.
+
+This is why I think good code reviews matter. Not because they catch every bug, but because they create opportunities to ask "why?". A healthy codebase needs people who occasionally challenge existing patterns instead of assuming they're correct simply because they already exist.
+
+Convention is useful.
+
+The trick is making sure it stays convention and doesn't slowly become tradition.

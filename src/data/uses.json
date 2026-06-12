@@ -288,7 +288,7 @@
         ]
       },
       {
-        "label": "Agent",
+        "label": "Harness",
         "items": [
           {
             "name": "Pi Coding Agent",
