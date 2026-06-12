@@ -1,5 +1,4 @@
 import { getCollection } from 'astro:content'
-import { SITE } from '../config'
 
 import type { CollectionEntry, CollectionKey } from 'astro:content'
 
@@ -64,26 +63,6 @@ export function getSortedPosts(
   )
 }
 
-export function sortPostsByField(
-  posts: CollectionEntryList<'blog' | 'thoughts'>,
-  field: 'pubDate' | 'lastModDate' | 'title'
-) {
-  return posts.sort((a, b) => {
-    if (field === 'title') {
-      return a.data.title.localeCompare(b.data.title, SITE.lang, {
-        sensitivity: 'base',
-      })
-    }
-
-    if (field === 'pubDate' || field === 'lastModDate') {
-      const aTime = (a.data[field] as Date).getTime()
-      const bTime = (b.data[field] as Date).getTime()
-      return bTime - aTime
-    }
-
-    return 0
-  })
-}
 
 export interface SeriesNavData {
   seriesName: string

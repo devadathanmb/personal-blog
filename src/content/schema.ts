@@ -189,16 +189,6 @@ export const projectSchema = z.object({
   category: z.string().describe('**Required**. Category of the project.'),
 })
 
-/* Photos */
-export const photoSchema = z.object({
-  id: z
-    .string()
-    .describe(
-      '**Required**. File (name/path) of the image in the `src/content/photos/` directory or a remote image URL.'
-    ),
-  desc: z.string().default('').describe('Optional description for the image.'),
-})
-
 /* Stremas */
 export const streamSchema = z.object({
   id: z.string().describe('**Required**. Sets the stream title.'),

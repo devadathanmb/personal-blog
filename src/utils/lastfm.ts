@@ -2,12 +2,11 @@ export interface LastFmTrack {
   name: string
   url: string
   artist: { '#text': string }
-  image: { size: string; '#text': string }[]
   '@attr'?: { nowplaying: 'true' | 'false' }
   date?: { uts: string; '#text': string }
 }
 
-export interface LastFmResponse {
+interface LastFmResponse {
   recenttracks?: {
     track?: LastFmTrack[]
   }
@@ -39,17 +38,6 @@ export async function fetchRecentTrack(
   }
 
   return null
-}
-
-export function getLargestImageUrl(track: LastFmTrack): string {
-  if (!track.image || track.image.length === 0) return ''
-  const xlImage = track.image.find((i) => i.size === 'extralarge')
-  const largeImage = track.image.find((i) => i.size === 'large')
-  return (
-    (xlImage && xlImage['#text']) ||
-    (largeImage && largeImage['#text']) ||
-    track.image[track.image.length - 1]['#text']
-  )
 }
 
 export function getRelativeTime(uts: number): string {

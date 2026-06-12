@@ -4,7 +4,7 @@ import Tag from '~/components/tags/Tag.astro'
 import { buildTagRelations } from '~/utils/data'
 import { FEATURES } from '~/config'
 
-export interface Props {
+interface Props {
   tags: string[][] | string[] | Record<string, string[]>
   style?: string
 }

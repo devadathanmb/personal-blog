@@ -62,6 +62,17 @@ export const remarkPlugins: RemarkPlugins = [
     : []),
 ]
 
+function elHasImage(el: Parameters<CreateProperties>[0]): boolean {
+  let found = false
+  visit(el, 'element', (childNode) => {
+    if (childNode.tagName === 'img') {
+      found = true
+      return false
+    }
+  })
+  return found
+}
+
 export const rehypePlugins: RehypePlugins = [
   // https://docs.astro.build/en/guides/markdown-content/#heading-ids-and-plugins
   [rehypeHeadingIds, { headingIdCompat: true }],
@@ -82,34 +93,13 @@ export const rehypePlugins: RehypePlugins = [
       content: (el: Parameters<CreateProperties>[0]) => {
         if (!UI.externalLink.newTab || !UI.externalLink.showNewTabIcon)
           return null
-
-        let hasImage = false
-        visit(el, 'element', (childNode) => {
-          if (childNode.tagName === 'img') {
-            hasImage = true
-            return false
-          }
-        })
-        if (hasImage) return null
-
-        return {
-          type: 'text',
-          value: '',
-        }
+        if (elHasImage(el)) return null
+        return { type: 'text', value: '' }
       },
       contentProperties: (el: Parameters<CreateProperties>[0]) => {
         if (!UI.externalLink.newTab || !UI.externalLink.showNewTabIcon)
           return null
-
-        let hasImage = false
-        visit(el, 'element', (childNode) => {
-          if (childNode.tagName === 'img') {
-            hasImage = true
-            return false
-          }
-        })
-        if (hasImage) return null
-
+        if (elHasImage(el)) return null
         return {
           'u-i-carbon-arrow-up-right': true,
           'className': ['new-tab-icon'],
