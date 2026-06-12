@@ -8,13 +8,17 @@ import mdx from '@astrojs/mdx'
 import { remarkPlugins, rehypePlugins } from './plugins'
 import { SITE } from './src/config'
 
+import cloudflare from "@astrojs/cloudflare";
+
 // https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
   site: SITE.website,
   base: SITE.base,
+
   build: {
     inlineStylesheets: 'never',
   },
+
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/404'),
@@ -24,11 +28,13 @@ export default defineConfig({
     astroExpressiveCode(),
     mdx(),
   ],
+
   markdown: {
     syntaxHighlight: false,
     remarkPlugins,
     rehypePlugins,
   },
+
   image: {
     domains: SITE.imageDomains,
     // https://docs.astro.build/en/guides/images/#responsive-image-behavior
@@ -37,6 +43,7 @@ export default defineConfig({
     layout: 'constrained',
     responsiveStyles: true,
   },
+
   vite: {
     server: {
       headers: {
@@ -46,6 +53,7 @@ export default defineConfig({
     },
     build: { chunkSizeWarningLimit: 1200 },
   },
+
   // https://docs.astro.build/en/reference/experimental-flags/
   experimental: {
     contentIntellisense: true,
@@ -54,4 +62,6 @@ export default defineConfig({
     chromeDevtoolsWorkspace: true,
     failOnPrerenderConflict: true,
   },
+
+  adapter: cloudflare()
 })
