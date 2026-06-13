@@ -19,31 +19,31 @@
     "toolbar:off": "astro preferences disable devToolbar",
     "prepare": "simple-git-hooks",
     "postbuild": "pagefind --site dist --exclude-selectors \"pre\" --include-characters \"<>\" && del-cli \"dist/pagefind/*ui*\"",
-    "deploy": "pnpm run build && wrangler deploy",
+    "deploy": "pnpm run build && wrangler deploy --assets=./dist",
     "cf-typegen": "wrangler types"
   },
   "devDependencies": {
     "@ascorbic/feed-loader": "^2.0.1",
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/markdown-remark": "^6.3.8",
-    "@astrojs/mdx": "^4.3.7",
-    "@astrojs/rss": "^4.0.12",
-    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/markdown-remark": "^7.2.0",
+    "@astrojs/mdx": "^6.0.3",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.3",
     "@eslint/js": "^9.37.0",
-    "@expressive-code/plugin-collapsible-sections": "^0.41.7",
-    "@expressive-code/plugin-line-numbers": "^0.41.7",
+    "@expressive-code/plugin-collapsible-sections": "^0.43.1",
+    "@expressive-code/plugin-line-numbers": "^0.43.1",
     "@iconify/json": "^2.2.464",
     "@types/node": "^24.7.2",
     "@types/nprogress": "^0.2.3",
     "@types/p5": "^1.7.7",
-    "@typescript-eslint/parser": "^8.46.0",
+    "@typescript-eslint/parser": "^8.61.0",
     "@unocss/reset": "66.5.3",
-    "astro": "^5.14.4",
-    "astro-expressive-code": "^0.41.7",
+    "astro": "^6.4.6",
+    "astro-expressive-code": "^0.43.1",
     "astro-robots-txt": "^1.0.0",
     "chalk": "^5.6.2",
     "del-cli": "^6.0.0",
-    "eslint": "^9.37.0",
+    "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.3.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -71,7 +71,7 @@
     "sharp": "^0.34.5",
     "simple-git-hooks": "^2.13.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.0",
+    "typescript-eslint": "^8.61.0",
     "unist-util-visit": "^5.1.0",
     "unocss": "66.5.3",
     "viewerjs": "^1.11.7",
@@ -90,12 +90,23 @@
       "esbuild",
       "sharp",
       "simple-git-hooks"
-    ]
+    ],
+    "overrides": {
+      "minimatch": ">=3.1.4",
+      "rollup": ">=4.59.0",
+      "flatted": ">=3.4.2",
+      "picomatch": ">=4.0.4",
+      "defu": ">=6.1.5",
+      "undici": ">=7.24.0",
+      "fast-uri": ">=3.1.2",
+      "fast-xml-builder": ">=1.1.7",
+      "mdast-util-to-hast": ">=13.2.1",
+      "yaml": ">=2.8.3",
+      "postcss": ">=8.5.10",
+      "ws": ">=8.20.1"
+    }
   },
   "engines": {
-    "node": "18.20.8 || ^20.9.0 || ^22.0.0 || ^24.0.0"
-  },
-  "dependencies": {
-    "@astrojs/cloudflare": "12"
+    "node": ">=22.12.0"
   }
 }
