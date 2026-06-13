@@ -8,7 +8,7 @@ import mdx from '@astrojs/mdx'
 import { remarkPlugins, rehypePlugins } from './plugins'
 import { SITE } from './src/config'
 
-import cloudflare from "@astrojs/cloudflare";
+import cloudflare from '@astrojs/cloudflare'
 
 // https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
@@ -63,5 +63,5 @@ export default defineConfig({
     failOnPrerenderConflict: true,
   },
 
-  adapter: cloudflare()
+  adapter: cloudflare(),
 })
