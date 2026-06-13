@@ -169,8 +169,8 @@ export const FEATURES: Features = {
     {
       label: 'Kerala, India',
       timezone: 'Asia/Kolkata',
-      lat: 10.302,
-      lon: 76.335,
+      lat: 10.306808,
+      lon: 76.334108,
     },
   ],
 }

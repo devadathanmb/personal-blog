@@ -20,10 +20,7 @@ const {
 } = Astro.props
 
 const showWeather = lat !== undefined && lon !== undefined
-const mapsUrl =
-  lat !== undefined && lon !== undefined
-    ? `https://www.google.com/maps?q=${lat},${lon}`
-    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`
+const mapsUrl = 'https://maps.app.goo.gl/2rykg2HR5Mb4gmzF9'
 const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 ---
 
