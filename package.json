@@ -19,7 +19,7 @@
     "toolbar:off": "astro preferences disable devToolbar",
     "prepare": "simple-git-hooks",
     "postbuild": "pagefind --site dist --exclude-selectors \"pre\" --include-characters \"<>\" && del-cli \"dist/pagefind/*ui*\"",
-    "deploy": "pnpm run build && wrangler deploy",
+    "deploy": "pnpm run build && wrangler deploy --assets=./dist",
     "cf-typegen": "wrangler types"
   },
   "devDependencies": {
@@ -105,9 +105,6 @@
       "postcss": ">=8.5.10",
       "ws": ">=8.20.1"
     }
-  },
-  "dependencies": {
-    "@astrojs/cloudflare": "^13"
   },
   "engines": {
     "node": ">=22.12.0"
