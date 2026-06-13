@@ -5,11 +5,11 @@ export const SITE: Site = {
   base: '/',
   title: 'Devadathan M B',
   description:
-    "Devadathan's corner of the internet — engineering, tools, and things worth writing down.",
+    "Devadathan's corner of the internet. Engineering, curiosity, and things worth remembering.",
   author: 'Devadathan M B',
   lang: 'en',
   ogLocale: 'en_US',
-  imageDomains: ['cdn.bsky.app', 'images.unsplash.com'],
+  imageDomains: [],
 }
 
 export const UI: Ui = {
