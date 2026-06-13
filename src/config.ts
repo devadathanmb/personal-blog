@@ -72,7 +72,6 @@ export const UI: Ui = {
     ],
     mergeOnMobile: true,
   },
-  tabbedLayoutTabs: false,
   postView: {
     postMetaStyle: 'minimal',
     useCoverAltAsCaption: true,

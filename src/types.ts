@@ -373,22 +373,6 @@ export interface NavBarLayout {
   mergeOnMobile: boolean
 }
 
-interface Tab {
-  /**
-   * Sets the navigation path associated with the tab, which must start with `/`.
-   *
-   * @example
-   * '/blog'、'/blog/'
-   */
-  path: Path
-
-  /**
-   * Sets the content displayed on hover for accessibility.
-   */
-  title: string
-}
-export type Tabs = [Tab, Tab, ...Tab[]]
-
 interface PostView {
   /**
    * Controls the display style of post metadata (creation date, read time, modified date):
@@ -495,16 +479,6 @@ export interface Ui {
    * Used in `src/components/nav/NavBar.astro`.
    */
   navBarLayout: NavBarLayout
-
-  /**
-   * Enables and configures for tabs within a tabbed layout.
-   *
-   * If your website does not use the `TabbedLayout`, you can set it to `false`.
-   * Otherwise, required before using this layout.
-   *
-   * Used in `src/layouts/TabbedLayout.astro`.
-   */
-  tabbedLayoutTabs: false | Tabs
 
   /**
    * Configures the post UIs.
