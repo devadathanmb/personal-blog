@@ -253,6 +253,34 @@
             "icon": "i-ph-windows-logo-duotone",
             "btnClass": "btn-indigo",
             "title": "MacOS window management sucks. This makes it livable."
+          },
+          {
+            "name": "Stats",
+            "url": "https://mac-stats.com/",
+            "icon": "i-ph-activity-duotone",
+            "btnClass": "btn-cyan",
+            "title": "Open-source iStat Menus alternative. Works flawlessly."
+          },
+          {
+            "name": "Ice",
+            "url": "https://github.com/jordanbaird/Ice",
+            "icon": "i-ph-snowflake-duotone",
+            "btnClass": "btn-sky",
+            "title": "Open-source Bartender alternative. Keeps the menu bar tidy on a notch Mac."
+          },
+          {
+            "name": "MPV",
+            "url": "https://mpv.io/",
+            "icon": "i-simple-icons-mpv",
+            "btnClass": "btn-rose",
+            "title": "Open-source media player. Minimal and keyboard-driven."
+          },
+          {
+            "name": "Calibre",
+            "url": "https://calibre-ebook.com/",
+            "icon": "i-ph-books-duotone",
+            "btnClass": "btn-amber",
+            "title": "Open-source e-book manager and reader."
           }
         ]
       }
