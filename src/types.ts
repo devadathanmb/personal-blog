@@ -456,9 +456,9 @@ export interface Ui {
   postView: PostView
 
   /**
-   * Configures the `/projects` UIs.
+   * Configures the grouped timeline view (year buckets in the blog index).
    *
-   * Used in `src/components/views/GroupItem.astro` and `src/components/base/Categorizer.astro`.
+   * Used in `src/components/base/Categorizer.astro`.
    */
   groupView: GroupView
 
@@ -664,8 +664,8 @@ interface SearchConfig {
   /**
    * Specify which content collections rendered by `RenderPost.astro` are indexed.
    *
-   * - By default, only `blog` and `changelog` are indexed, as their dynamic routes
-   * (`/blog/[...slug]` and `/changelog/[slug]`) use `RenderPost.astro`.
+   * - By default, only `blog` and `thoughts` are indexed, as their dynamic routes
+   * (`/blog/[...slug]` and `/thoughts/[...slug]`) use `RenderPost.astro`.
    * - If needed, see https://pagefind.app/ for adjusting the search implementation.
    */
   includes: string[]
@@ -765,8 +765,7 @@ interface LocationConfig {
 
 export interface Features {
   /**
-   * Whether to enable slide-in animation on each page
-   * except the `/highlights` and `/photos` pages.
+   * Whether to enable slide-in animation on page transitions.
    */
   slideEnterAnim: FeatureConfig<slideEnterAnimConfig>
 
@@ -786,9 +785,6 @@ export interface Features {
    * Whether to enable TOC feature.
    *
    * To disable for a specific post or page, set the `toc` field in the frontmatter to `false`.
-   *
-   * Note: The feature is not supported on the `/highlights`, `/photos`, `/releases`
-   * and `/prs` pages.
    */
   toc: FeatureConfig<TocConfig>
 
@@ -821,7 +817,8 @@ export interface Features {
   /**
    * Whether to enable tag feature.
    *
-   * To disable for a specific page, set the `tag` field in the frontmatter to `false`.
+   * To disable for a specific list page, omit `pageTag={true}` (or pass `pageTag={false}`)
+   * on the `<ListView>` component in that page.
    */
   tag: FeatureConfig<TagConfig>
 

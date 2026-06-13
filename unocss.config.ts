@@ -123,7 +123,7 @@ export default defineConfig({
     ...usesIcons,
     ...usesBtnClasses,
 
-    /* BaseLayout */
+    /* BaseLayout, TagSidebar, TocSidebar — skip-link and panel toggles */
     'focus:not-sr-only',
     'focus:fixed',
     'focus:start-1',

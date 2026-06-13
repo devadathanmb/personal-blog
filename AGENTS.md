@@ -29,9 +29,9 @@ Pre-commit hook: `lint-staged` (ESLint fix) + `prettier` + `astro check`. CI run
 
 - `src/config.ts` — SITE, UI, FEATURES (primary config)
 - `src/content/blog/YYYY/` — blog posts; `src/content/thoughts/` — short-form
-- `src/content/schema.ts` — postSchema, pageSchema (zod)
+- `src/schema.ts` — postSchema, pageSchema (zod)
 - `src/pages/` — MDX pages (index, blog/index, thoughts, uses, now, 404, rss.xml)
-- `src/layouts/` — BaseLayout, StandardLayout, TabbedLayout
+- `src/layouts/` — BaseLayout, StandardLayout
 - `src/utils/` — data.ts, datetime.ts, lastfm.ts, path.ts, toc.ts, weather.ts
 - `plugins/index.ts` — remark + rehype pipeline
 - `src/data/uses.json` — powers /uses page + UnoCSS safelist
