@@ -5,6 +5,7 @@ import unocss from 'unocss/astro'
 import astroExpressiveCode from 'astro-expressive-code'
 import mdx from '@astrojs/mdx'
 import { unified } from '@astrojs/markdown-remark'
+import cloudflare from '@astrojs/cloudflare'
 
 import { remarkPlugins, rehypePlugins } from './plugins'
 import { SITE } from './src/config'
@@ -57,4 +58,6 @@ export default defineConfig({
     contentIntellisense: true,
     chromeDevtoolsWorkspace: true,
   },
+
+  adapter: cloudflare(),
 })

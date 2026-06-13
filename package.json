@@ -106,6 +106,9 @@
       "ws": ">=8.20.1"
     }
   },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13"
+  },
   "engines": {
     "node": ">=22.12.0"
   }
