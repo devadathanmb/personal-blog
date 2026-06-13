@@ -78,7 +78,6 @@ export const UI: Ui = {
   },
   groupView: {
     maxGroupColumns: 3,
-    showGroupItemColorOnHover: true,
   },
   externalLink: {
     newTab: true,
