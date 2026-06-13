@@ -80,18 +80,6 @@ export const UI: Ui = {
     maxGroupColumns: 3,
     showGroupItemColorOnHover: true,
   },
-  githubView: {
-    monorepos: ['withastro/astro', 'withastro/starlight'],
-    mainLogoOverrides: [
-      [/starlight/, 'https://starlight.astro.build/favicon.svg'],
-    ],
-    subLogoMatches: [
-      [/theme/, 'i-unjs-theme-colors'],
-      [/github/, 'https://github.githubassets.com/favicons/favicon.svg'],
-      [/tweet/, 'i-logos-twitter'],
-      [/bluesky/, 'i-logos-bluesky'],
-    ],
-  },
   externalLink: {
     newTab: true,
     cursorType: '',

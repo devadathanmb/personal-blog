@@ -406,31 +406,6 @@ interface GroupView {
   showGroupItemColorOnHover: boolean
 }
 
-export interface GitHubView {
-  /**
-   * Defines monorepo repositories using `<owner>/<repo>` format.
-   *
-   * For monorepos, the tag name is used as the primary text for `/releases` page.
-   */
-  monorepos: RepoWithOwner[]
-
-  /**
-   * Configures main logos for repositories or packages (for monorepos).
-   *
-   * Matching supports regex or `<owner>/<repo>` format, prioritized by order,
-   * and defaults to the owner's avatar if no custom logo is specified.
-   */
-  mainLogoOverrides: [RepoWithOwner | RegExp, Url | Icon][]
-
-  /**
-   * Configures auxiliary logos for repositories or packages (for monorepos).
-   *
-   * Matching supports regex or `<owner>/<repo>` format, prioritized by order,
-   * with no logo displayed for unmatched cases.
-   */
-  subLogoMatches: [RepoWithOwner | RegExp, Url | Icon][]
-}
-
 interface ExternalLink {
   /**
    * Controls whether external links are opened in a new tab.
@@ -493,13 +468,6 @@ export interface Ui {
    * Used in `src/components/views/GroupItem.astro` and `src/components/base/Categorizer.astro`.
    */
   groupView: GroupView
-
-  /**
-   * Configures the `/releases` and `/prs` UIs.
-   *
-   * Used in `src/components/views/GithubView.astro`.
-   */
-  githubView: GitHubView
 
   /**
    * Configures external links' behavior and appearance.
