@@ -20,25 +20,44 @@ interface Props {
 }
 
 const { section } = Astro.props
+
+const getColor = (btnClass: string) => btnClass.replace('btn-', '')
+const id = section.title
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '')
 ---
 
-<h2>{section.title}</h2>
+<h2 {id}>
+  <a class="header-anchor" href={`#${id}`}>#</a>
+  {section.title}
+</h2>
 
-<div class="flex flex-col gap-6 mt-6 mb-12">
+<div class="flex flex-col mb-10">
   {
     section.categories.map((category) => (
-      <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 items-start sm:items-center">
-        <div class="w-32 shrink-0 op-80 font-medium">{category.label}</div>
-        <div class="flex flex-wrap gap-2">
+      <div class="mt-6 first:mt-3">
+        <div class="text-sm tracking-wider uppercase font-mono op-45 mb-3">
+          {category.label}
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           {category.items.map((item) => (
             <a
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              class={item.btnClass}
-              title={item.title}
+              class={`card-${getColor(item.btnClass)}`}
             >
-              <div class={item.icon} /> {item.name}
+              <div class={`${item.icon} text-2xl mt-1 shrink-0 op-60`} />
+              <div class="flex flex-col min-w-0">
+                <span class="text-sm font-medium leading-snug">
+                  {item.name}
+                </span>
+                <span class="text-xs op-50 leading-snug mt-1">
+                  {item.title}
+                </span>
+              </div>
             </a>
           ))}
         </div>

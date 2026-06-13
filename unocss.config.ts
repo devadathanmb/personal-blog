@@ -24,8 +24,10 @@ const { internalNavs, socialLinks } = UI
 const usesIcons = usesData.flatMap((s) =>
   s.categories.flatMap((c) => c.items.map((i) => i.icon))
 )
-const usesBtnClasses = usesData.flatMap((s) =>
-  s.categories.flatMap((c) => c.items.map((i) => i.btnClass))
+const usesCardClasses = usesData.flatMap((s) =>
+  s.categories.flatMap((c) =>
+    c.items.map((i) => `card-${i.btnClass.replace('btn-', '')}`)
+  )
 )
 const navIcons = internalNavs
   .filter(
@@ -79,9 +81,9 @@ export default defineConfig({
         `shadow-[${x}px_${y}px_${blur}px_${spread}px_rgba(0,0,0,0.2)] dark:shadow-[${x}px_${y}px_${blur}px_${spread}px_rgba(255,255,255,0.25)]`,
     ],
     [
-      /^btn-(\w+)$/,
+      /^card-(\w+)$/,
       ([_, color]) =>
-        `px-2.5 py-1 border border-[#8884]! rounded op-50 transition-all duration-200 ease-out no-underline! hover:(op-100 text-${color} bg-${color}/10)`,
+        `flex items-start gap-3 px-4 py-3.5 border border-[#8882]! rounded-xl no-underline! transition-all duration-200 ease-out hover:(border-${color}/25! bg-${color}/10)`,
     ],
   ],
 
@@ -121,7 +123,7 @@ export default defineConfig({
 
     /* UsesSection — derived from uses.json, auto-updates when data changes */
     ...usesIcons,
-    ...usesBtnClasses,
+    ...usesCardClasses,
 
     /* BaseLayout, TagSidebar, TocSidebar — skip-link and panel toggles */
     'focus:not-sr-only',
