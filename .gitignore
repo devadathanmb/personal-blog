@@ -29,6 +29,9 @@ pnpm-debug.log*
 # local archive
 .local
 
+# playwright artifacts
+.playwright-mcp/
+
 # wrangler files
 .wrangler
 .dev.vars*
