@@ -1325,6 +1325,9 @@ packages:
   '@unocss/core@66.5.3':
     resolution: {integrity: sha512-sGGBgtIfH3Ch7syIzJvA86iIVhSjfGThHBSDA0kFgGTBiYv2VBaUq0UpDfeMpda3LSg59LfEL5Fqa9kUqju5xQ==}
 
+  '@unocss/core@66.7.2':
+    resolution: {integrity: sha512-NNnhm9IVPEZ34drwztREP+mq1rio0L4Tp0u247qBKxJJWYec1+I+FTRsw7EvtukZKvr56YAxFA1qbBV+LjyV+Q==}
+
   '@unocss/extractor-arbitrary-variants@66.5.3':
     resolution: {integrity: sha512-QBJCCBFfNOyVlXeDh0h1K2ZvreS5UAbPg+EUPngIIT9hVHIeKatXfCpeMYYt5ZmFZbqX3Zf4MKdguxbGZU9xHQ==}
 
@@ -4244,7 +4247,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.7
-      '@babel/parser': 7.27.7
+      '@babel/parser': 7.29.7
       '@babel/template': 7.29.7
       '@babel/types': 7.29.7
       debug: 4.4.3
@@ -5110,6 +5113,8 @@ snapshots:
 
   '@unocss/core@66.5.3': {}
 
+  '@unocss/core@66.7.2': {}
+
   '@unocss/extractor-arbitrary-variants@66.5.3':
     dependencies:
       '@unocss/core': 66.5.3
@@ -5188,7 +5193,7 @@ snapshots:
 
   '@unocss/rule-utils@66.5.3':
     dependencies:
-      '@unocss/core': 66.5.3
+      '@unocss/core': 66.7.2
       magic-string: 0.30.21
 
   '@unocss/transformer-attributify-jsx@66.5.3':

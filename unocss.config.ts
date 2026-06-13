@@ -43,9 +43,13 @@ const socialIcons = socialLinks
   .map((item) => (item as IconSocialItem | ResponsiveSocialItem).icon)
 
 export default defineConfig({
-  // Astro 5 no longer pipes `src/content/**/*.{md,mdx}` through Vite
+  // Pre-scan all source files at startup so __uno.css is populated before the first page request
+  // (avoids the initial FOUC where utility classes arrive late via HMR)
   content: {
-    filesystem: ['./src/{content,pages}/**/*.{md,mdx}'],
+    filesystem: [
+      './src/**/*.{astro,ts,tsx}',
+      './src/{content,pages}/**/*.{md,mdx}',
+    ],
   },
 
   // will be deep-merged to the default theme

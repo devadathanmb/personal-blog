@@ -4,7 +4,18 @@
 .github-item-prose h3,
 .github-item-prose h4,
 .github-item-prose h5 {
-  --uno: 'text-1em lt-sm:text-sm';
+  font-size: 1em;
+}
+
+@media (width < 640px) {
+  .github-item-prose h1,
+  .github-item-prose h2,
+  .github-item-prose h3,
+  .github-item-prose h4,
+  .github-item-prose h5 {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
 }
 
 .github-item-prose > :first-child {
@@ -19,12 +30,11 @@
   font-size: 0.875em;
 }
 
-.github-item-prose li {
-  --uno: 'lt-sm:text-sm';
-}
-
-summary::-webkit-details-marker {
-  display: none;
+@media (width < 640px) {
+  .github-item-prose li {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
 }
 
 /* /highlights */
@@ -35,15 +45,29 @@ summary::-webkit-details-marker {
 
 .card-masonry > *:first-child {
   border-radius: 0.5rem;
+}
 
-  --uno: 'hover:(shadow-custom_0_3_20_-5)';
+.card-masonry > *:first-child:hover {
+  box-shadow: 0px 3px 20px -5px rgba(0, 0, 0, 0.2);
+}
+
+html.dark .card-masonry > *:first-child:hover {
+  box-shadow: 0px 3px 20px -5px rgba(255, 255, 255, 0.25);
 }
 
 /* /shorts */
 .card-grid > *:first-child {
   border-radius: 0.75rem;
+}
 
-  --uno: 'hover:(shadow-custom_0_0_15_-3 scale-103 transition-transform)';
+.card-grid > *:first-child:hover {
+  transform: scale(1.03);
+  transition: transform 300ms ease-in-out;
+  box-shadow: 0px 0px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+html.dark .card-grid > *:first-child:hover {
+  box-shadow: 0px 0px 15px -3px rgba(255, 255, 255, 0.25);
 }
 
 /* /photos */
