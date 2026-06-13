@@ -373,22 +373,6 @@ export interface NavBarLayout {
   mergeOnMobile: boolean
 }
 
-interface Tab {
-  /**
-   * Sets the navigation path associated with the tab, which must start with `/`.
-   *
-   * @example
-   * '/blog'、'/blog/'
-   */
-  path: Path
-
-  /**
-   * Sets the content displayed on hover for accessibility.
-   */
-  title: string
-}
-export type Tabs = [Tab, Tab, ...Tab[]]
-
 interface PostView {
   /**
    * Controls the display style of post metadata (creation date, read time, modified date):
@@ -413,38 +397,6 @@ interface GroupView {
    * Sets the maximum number of columns displayed in the group view.
    */
   maxGroupColumns: 2 | 3
-
-  /**
-   * Determines whether group item icons display in color when hovered over.
-   *
-   * If `true`, the icon for the group item will display in its original colors on hover.
-   */
-  showGroupItemColorOnHover: boolean
-}
-
-export interface GitHubView {
-  /**
-   * Defines monorepo repositories using `<owner>/<repo>` format.
-   *
-   * For monorepos, the tag name is used as the primary text for `/releases` page.
-   */
-  monorepos: RepoWithOwner[]
-
-  /**
-   * Configures main logos for repositories or packages (for monorepos).
-   *
-   * Matching supports regex or `<owner>/<repo>` format, prioritized by order,
-   * and defaults to the owner's avatar if no custom logo is specified.
-   */
-  mainLogoOverrides: [RepoWithOwner | RegExp, Url | Icon][]
-
-  /**
-   * Configures auxiliary logos for repositories or packages (for monorepos).
-   *
-   * Matching supports regex or `<owner>/<repo>` format, prioritized by order,
-   * with no logo displayed for unmatched cases.
-   */
-  subLogoMatches: [RepoWithOwner | RegExp, Url | Icon][]
 }
 
 interface ExternalLink {
@@ -497,16 +449,6 @@ export interface Ui {
   navBarLayout: NavBarLayout
 
   /**
-   * Enables and configures for tabs within a tabbed layout.
-   *
-   * If your website does not use the `TabbedLayout`, you can set it to `false`.
-   * Otherwise, required before using this layout.
-   *
-   * Used in `src/layouts/TabbedLayout.astro`.
-   */
-  tabbedLayoutTabs: false | Tabs
-
-  /**
    * Configures the post UIs.
    *
    * Used in `src/components/base/PostMeta.astro`and `src/components/base/PostCover.astro`.
@@ -514,18 +456,11 @@ export interface Ui {
   postView: PostView
 
   /**
-   * Configures the `/projects` UIs.
+   * Configures the grouped timeline view (year buckets in the blog index).
    *
-   * Used in `src/components/views/GroupItem.astro` and `src/components/base/Categorizer.astro`.
+   * Used in `src/components/base/Categorizer.astro`.
    */
   groupView: GroupView
-
-  /**
-   * Configures the `/releases` and `/prs` UIs.
-   *
-   * Used in `src/components/views/GithubView.astro`.
-   */
-  githubView: GitHubView
 
   /**
    * Configures external links' behavior and appearance.
@@ -729,8 +664,8 @@ interface SearchConfig {
   /**
    * Specify which content collections rendered by `RenderPost.astro` are indexed.
    *
-   * - By default, only `blog` and `changelog` are indexed, as their dynamic routes
-   * (`/blog/[...slug]` and `/changelog/[slug]`) use `RenderPost.astro`.
+   * - By default, only `blog` and `thoughts` are indexed, as their dynamic routes
+   * (`/blog/[...slug]` and `/thoughts/[...slug]`) use `RenderPost.astro`.
    * - If needed, see https://pagefind.app/ for adjusting the search implementation.
    */
   includes: string[]
@@ -830,8 +765,7 @@ interface LocationConfig {
 
 export interface Features {
   /**
-   * Whether to enable slide-in animation on each page
-   * except the `/highlights` and `/photos` pages.
+   * Whether to enable slide-in animation on page transitions.
    */
   slideEnterAnim: FeatureConfig<slideEnterAnimConfig>
 
@@ -851,9 +785,6 @@ export interface Features {
    * Whether to enable TOC feature.
    *
    * To disable for a specific post or page, set the `toc` field in the frontmatter to `false`.
-   *
-   * Note: The feature is not supported on the `/highlights`, `/photos`, `/releases`
-   * and `/prs` pages.
    */
   toc: FeatureConfig<TocConfig>
 
@@ -886,7 +817,8 @@ export interface Features {
   /**
    * Whether to enable tag feature.
    *
-   * To disable for a specific page, set the `tag` field in the frontmatter to `false`.
+   * To disable for a specific list page, omit `pageTag={true}` (or pass `pageTag={false}`)
+   * on the `<ListView>` component in that page.
    */
   tag: FeatureConfig<TagConfig>
 

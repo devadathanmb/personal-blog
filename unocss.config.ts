@@ -123,7 +123,7 @@ export default defineConfig({
     ...usesIcons,
     ...usesBtnClasses,
 
-    /* BaseLayout */
+    /* BaseLayout, TagSidebar, TocSidebar — skip-link and panel toggles */
     'focus:not-sr-only',
     'focus:fixed',
     'focus:start-1',
@@ -132,7 +132,6 @@ export default defineConfig({
 
     /* Toc */
     'i-ri-menu-2-fill',
-    'i-ri-menu-3-fill',
 
     /* NowPlaying — floating note icons are constructed in JS at runtime */
     'i-ri-music-2-fill',
