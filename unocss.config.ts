@@ -132,7 +132,6 @@ export default defineConfig({
 
     /* Toc */
     'i-ri-menu-2-fill',
-    'i-ri-menu-3-fill',
 
     /* NowPlaying — floating note icons are constructed in JS at runtime */
     'i-ri-music-2-fill',
