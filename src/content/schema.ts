@@ -50,18 +50,18 @@ export const postSchema = ({ image }: SchemaContext) =>
       .transform((value) => value.trim()),
     subtitle: z
       .string()
-      .default('')
       .describe(
         'Provides a post subtitle. If provided, it will be displayed below the title. If not needed, leave the field as an empty string or delete it.'
       )
-      .transform((value) => value.trim()),
+      .transform((value) => value.trim())
+      .default(''),
     description: z
       .string()
-      .default('')
       .describe(
         'Provides a brief description, used in meta tags for SEO and sharing purposes. If not needed, leave the field as an empty string or delete it, and the `SITE.description` will be used directly.'
       )
-      .transform((value) => value.trim()),
+      .transform((value) => value.trim())
+      .default(''),
     tags: z
       .array(z.string())
       .default([])
