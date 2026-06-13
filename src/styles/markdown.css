@@ -384,6 +384,13 @@ html.dark .rds-badge {
 }
 
 /* rehype-external-links */
+/* Prevent the icon from orphaning onto its own line — rehype-external-links
+   always wraps content in a <span>, creating an inline-block break point
+   between the link text and the icon. */
+a:has(.new-tab-icon) {
+  white-space: nowrap;
+}
+
 .new-tab-icon {
   margin-left: 0.1rem;
   margin-bottom: 0.3rem;
