@@ -45,8 +45,8 @@ export default defineConfig({
   vite: {
     server: {
       headers: {
-        // Enable CORS for dev: allow Giscus iframe to load local styles
-        'Access-Control-Allow-Origin': '*',
+        // Allow Giscus iframe to load local styles in dev
+        'Access-Control-Allow-Origin': 'https://giscus.app',
       },
     },
     build: { chunkSizeWarningLimit: 1200 },
