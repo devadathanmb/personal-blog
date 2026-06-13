@@ -59,5 +59,5 @@ export default defineConfig({
     chromeDevtoolsWorkspace: true,
   },
 
-  adapter: cloudflare(),
+  adapter: cloudflare({ prerenderEnvironment: 'node' }),
 })
