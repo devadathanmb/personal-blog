@@ -4,11 +4,10 @@ import robotsTxt from 'astro-robots-txt'
 import unocss from 'unocss/astro'
 import astroExpressiveCode from 'astro-expressive-code'
 import mdx from '@astrojs/mdx'
+import { unified } from '@astrojs/markdown-remark'
 
 import { remarkPlugins, rehypePlugins } from './plugins'
 import { SITE } from './src/config'
-
-import cloudflare from '@astrojs/cloudflare'
 
 // https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
@@ -31,8 +30,7 @@ export default defineConfig({
 
   markdown: {
     syntaxHighlight: false,
-    remarkPlugins,
-    rehypePlugins,
+    processor: unified({ remarkPlugins, rehypePlugins }),
   },
 
   image: {
@@ -57,11 +55,6 @@ export default defineConfig({
   // https://docs.astro.build/en/reference/experimental-flags/
   experimental: {
     contentIntellisense: true,
-    preserveScriptOrder: true,
-    headingIdCompat: true,
     chromeDevtoolsWorkspace: true,
-    failOnPrerenderConflict: true,
   },
-
-  adapter: cloudflare(),
 })
