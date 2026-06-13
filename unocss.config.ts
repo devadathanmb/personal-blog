@@ -83,7 +83,7 @@ export default defineConfig({
     [
       /^card-(\w+)$/,
       ([_, color]) =>
-        `flex items-start gap-3 px-4 py-3.5 border border-[#8882]! rounded-xl no-underline! transition-all duration-200 ease-out hover:(border-${color}/25! bg-${color}/10)`,
+        `flex items-start gap-3 px-4 py-3.5 border border-[#8884]! rounded-xl no-underline! transition-all duration-200 ease-out hover:(border-${color}/35! bg-${color}/10)`,
     ],
   ],
 
