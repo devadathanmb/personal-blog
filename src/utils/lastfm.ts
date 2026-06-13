@@ -1,4 +1,4 @@
-export interface LastFmTrack {
+interface LastFmTrack {
   'name': string
   'url': string
   'artist': { '#text': string }
