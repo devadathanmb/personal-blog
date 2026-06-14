@@ -39,7 +39,7 @@
           {
             "name": "OnePlus Buds 3 Pro",
             "url": "https://www.oneplus.com/global/oneplus-buds-3-pro",
-            "icon": "i-ph-headphones-duotone",
+            "icon": "i-cbi:apple-airpods-pro",
             "btnClass": "btn-red",
             "title": "Earphones. A surprisingly effective coping mechanism."
           }
@@ -175,14 +175,14 @@
           {
             "name": "fzf",
             "url": "https://github.com/junegunn/fzf",
-            "icon": "i-ph-magnifying-glass-duotone",
+            "icon": "i-codicon:search-fuzzy",
             "btnClass": "btn-orange",
             "title": "Fuzzy finder for everything. I literally have everything piped to this, no joke."
           },
           {
             "name": "atuin",
             "url": "https://github.com/atuinsh/atuin",
-            "icon": "i-ph-clock-counter-clockwise-duotone",
+            "icon": "i-f7:tortoise-fill",
             "btnClass": "btn-cyan",
             "title": "Magical shell history."
           },
@@ -295,7 +295,7 @@
           {
             "name": "Superwhisper",
             "url": "https://superwhisper.com/",
-            "icon": "i-ph-microphone-duotone",
+            "icon": "i-mingcute:voice-fill",
             "btnClass": "btn-pink",
             "title": "Voice-to-text for everything."
           }
@@ -307,7 +307,7 @@
           {
             "name": "Pi Coding Agent",
             "url": "https://github.com/earendil-works/pi-coding-agent",
-            "icon": "i-ph-robot-duotone",
+            "icon": "i-tabler:math-pi",
             "btnClass": "btn-cyan",
             "title": "Minimalist terminal-based harness."
           },
@@ -345,7 +345,7 @@
           {
             "name": "Seal",
             "url": "https://github.com/JunkFood02/Seal",
-            "icon": "i-ph-download-simple-duotone",
+            "icon": "i-fluent-emoji-flat:seal",
             "btnClass": "btn-teal",
             "title": "Video and audio downloader based on yt-dlp."
           }
@@ -376,14 +376,14 @@
           {
             "name": "LocalSend",
             "url": "https://github.com/localsend/localsend",
-            "icon": "i-ph-share-network-duotone",
+            "icon": "i-simple-icons:localsend",
             "btnClass": "btn-cyan",
             "title": "Open-source AirDrop alternative."
           },
           {
             "name": "LibreTorrent",
             "url": "https://github.com/proninyaroslav/libretorrent",
-            "icon": "i-ph-arrow-circle-down-duotone",
+            "icon": "i-arcticons:libretorrent",
             "btnClass": "btn-green",
             "title": "Free and open-source torrent client."
           },
@@ -407,7 +407,7 @@
           {
             "name": "uBlock Origin",
             "url": "https://ublockorigin.com",
-            "icon": "i-ph-shield-duotone",
+            "icon": "i-simple-icons:ublockorigin",
             "btnClass": "btn-red",
             "title": "The only ad blocker you need."
           },
