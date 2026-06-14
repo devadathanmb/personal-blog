@@ -728,6 +728,13 @@ interface TagConfig {
   filterMode: 'AND' | 'OR'
 }
 
+interface GitHubConfig {
+  /**
+   * GitHub username whose public push events power the widget.
+   */
+  username: string
+}
+
 interface NowPlayingConfig {
   /**
    * Last.fm username whose recent tracks power the widget.
@@ -838,4 +845,12 @@ export interface Features {
    * for the Open-Meteo weather fetch (no API key required).
    */
   location: FeatureConfig<LocationConfig>
+
+  /**
+   * Whether to enable the GitHub "last pushed" widget on the /now page.
+   *
+   * Set to `false` to hide it. To enable, provide your GitHub username.
+   * Uses the unauthenticated public events API — no token required.
+   */
+  github: FeatureConfig<GitHubConfig>
 }

@@ -26,6 +26,7 @@ export function getYear(a: Date | string | number) {
 
 /**
  * Retrieves the current time formatted as a string in 'HH:MM:SS' format.
+ * Used by plugins/remark-generate-og-image.ts
  */
 export function getCurrentFormattedTime() {
   const now = new Date()
@@ -34,4 +35,18 @@ export function getCurrentFormattedTime() {
   const seconds = now.getSeconds().toString().padStart(2, '0')
 
   return `${hours}:${minutes}:${seconds}`
+}
+
+/**
+ * Returns a human-readable relative time string from a Unix timestamp (seconds).
+ */
+export function getRelativeTime(uts: number): string {
+  const diffSeconds = Math.floor(Date.now() / 1000 - uts)
+  if (diffSeconds < 60) return `${diffSeconds}s ago`
+  const diffMinutes = Math.floor(diffSeconds / 60)
+  if (diffMinutes < 60) return `${diffMinutes}m ago`
+  const diffHours = Math.floor(diffMinutes / 60)
+  if (diffHours < 24) return `${diffHours}h ago`
+  const diffDays = Math.floor(diffHours / 24)
+  return `${diffDays}d ago`
 }

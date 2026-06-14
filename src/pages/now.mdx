@@ -10,6 +10,7 @@ import BaseLayout from '~/layouts/BaseLayout.astro'
 import StandardLayout from '~/layouts/StandardLayout.astro'
 import LocationTimeWidget from '~/components/widgets/LocationTimeWidget.astro'
 import NowPlaying from '~/components/widgets/NowPlaying.astro'
+import GitHubWidget from '~/components/widgets/GitHubWidget.astro'
 import LastUpdated from '~/components/widgets/LastUpdated.astro'
 import Link from '~/components/base/Link.astro'
 
@@ -23,9 +24,12 @@ import Link from '~/components/base/Link.astro'
     <div slot="head" class="-mt-5 mb-6 ml-1 slide-enter animate-delay-200!">
       <LastUpdated date="2026-06-01" />
     </div>
-    <div slot="head" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4 slide-enter animate-delay-300!">
-      <LocationTimeWidget />
-      <NowPlaying />
+    <div slot="head" class="flex flex-col items-start gap-3 mb-4 slide-enter animate-delay-300!">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <LocationTimeWidget />
+        <NowPlaying />
+      </div>
+      <GitHubWidget />
     </div>
     <Fragment slot="article">
 

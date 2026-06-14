@@ -173,4 +173,10 @@ export const FEATURES: Features = {
       lon: 76.334108,
     },
   ],
+  github: [
+    true,
+    {
+      username: 'devadathanmb',
+    },
+  ],
 }

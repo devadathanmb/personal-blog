@@ -1,0 +1,134 @@
+---
+import { FEATURES } from '~/config'
+
+const { github } = FEATURES
+const enabled = Array.isArray(github) && github[0]
+const { username = '' } = enabled ? github[1] : {}
+---
+
+{
+  enabled && username && (
+    <div
+      class="github-widget inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a] border border-gray-200 dark:border-[#333] transition-colors duration-200 h-fit w-fit"
+      data-username={username}
+    >
+      <div class="i-line-md:github-loop shrink-0 text-lg" />
+      <a
+        href={`https://github.com/${username}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="gh-link flex flex-col justify-center max-w-[260px]"
+      >
+        <span
+          id="gh-message"
+          class="text-xs font-medium leading-tight gh-text gh-loading truncate"
+        >
+          Loading...
+        </span>
+        <span
+          id="gh-meta"
+          class="text-[11px] op-70 leading-tight gh-loading truncate"
+        >
+          GitHub
+        </span>
+      </a>
+    </div>
+  )
+}
+
+<style>
+  .gh-link,
+  .gh-link:hover {
+    border-bottom: none !important;
+  }
+
+  .gh-text {
+    color: #1f2937;
+  }
+  :root.dark .gh-text {
+    color: #e5e7eb;
+  }
+  .gh-link:hover .gh-text {
+    color: #059669 !important;
+  }
+  :root.dark .gh-link:hover .gh-text {
+    color: #34d399 !important;
+  }
+
+  @keyframes gh-pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 0.75;
+    }
+  }
+  .gh-loading {
+    animation: gh-pulse 1.4s ease-in-out infinite;
+  }
+</style>
+
+<script>
+  import { getRelativeTime } from '~/utils/datetime'
+
+  interface GitHubEvent {
+    type: string
+    created_at: string
+    repo: { name: string }
+    payload: {
+      commits?: { message: string }[]
+    }
+  }
+
+  async function fetchLastPush(
+    username: string
+  ): Promise<{ message: string; repo: string; time: string } | null> {
+    try {
+      const res = await fetch(
+        `https://api.github.com/users/${username}/events/public?per_page=30`,
+        { headers: { Accept: 'application/vnd.github+json' } }
+      )
+      if (!res.ok) return null
+      const events: GitHubEvent[] = await res.json()
+      const push = events.find((e) => e.type === 'PushEvent')
+      if (!push) return null
+
+      const uts = Math.floor(new Date(push.created_at).getTime() / 1000)
+      // commits are ordered oldest-first in the payload; last one is most recent
+      const commits = push.payload.commits ?? []
+      const lastCommit = commits[commits.length - 1]
+      const message = lastCommit?.message.split('\n')[0] ?? 'pushed'
+      const repo = push.repo.name.split('/')[1] ?? push.repo.name
+
+      return { message, repo, time: getRelativeTime(uts) }
+    } catch {
+      return null
+    }
+  }
+
+  async function initGitHubWidget() {
+    const widget = document.querySelector<HTMLElement>('.github-widget')
+    if (!widget) return
+    const username = widget.dataset.username
+    if (!username) return
+
+    const messageEl = widget.querySelector<HTMLElement>('#gh-message')
+    const metaEl = widget.querySelector<HTMLElement>('#gh-meta')
+
+    const result = await fetchLastPush(username)
+
+    if (messageEl) {
+      messageEl.textContent = result?.message ?? 'github.com'
+      messageEl.classList.remove('gh-loading')
+    }
+    if (metaEl) {
+      metaEl.textContent = result ? `${result.repo} • ${result.time}` : username
+      metaEl.classList.remove('gh-loading')
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initGitHubWidget()
+  })
+</script>
