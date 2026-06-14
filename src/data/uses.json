@@ -309,14 +309,54 @@
             "url": "https://github.com/earendil-works/pi-coding-agent",
             "icon": "i-tabler:math-pi",
             "btnClass": "btn-cyan",
-            "title": "Minimalist terminal-based harness."
+            "title": "Minimalist, highly customizable open-source terminal-based harness. Trying to see if the hype checks out."
           },
           {
             "name": "Opencode",
             "url": "https://opencode.ai",
             "icon": "i-ph-terminal-window-duotone",
             "btnClass": "btn-violet",
-            "title": "Open-source AI coding agent for the terminal."
+            "title": "Feature-rich, opinionated open-source coding agent for the terminal."
+          },
+          {
+            "name": "Claude Code",
+            "url": "https://claude.com/product/claude-code",
+            "icon": "i-simple-icons:claude",
+            "btnClass": "btn-orange",
+            "title": "Anthropic's terminal-based coding agent. Because they will ban you if you use anything else."
+          }
+        ]
+      },
+      {
+        "label": "MCP Servers",
+        "items": [
+          {
+            "name": "Exa",
+            "url": "https://exa.ai",
+            "icon": "i-tabler:world-search",
+            "btnClass": "btn-amber",
+            "title": "Web search designed for AI agents."
+          },
+          {
+            "name": "Context7",
+            "url": "https://context7.com",
+            "icon": "i-tabler:book-2",
+            "btnClass": "btn-emerald",
+            "title": "Up-to-date library docs, on demand."
+          },
+          {
+            "name": "DeepWiki",
+            "url": "https://deepwiki.com",
+            "icon": "i-tabler:bookmarks",
+            "btnClass": "btn-sky",
+            "title": "Ask any public repo how it works."
+          },
+          {
+            "name": "Grep.app",
+            "url": "https://grep.app",
+            "icon": "i-tabler:regex",
+            "btnClass": "btn-zinc",
+            "title": "Regex search across a million public repos."
           }
         ]
       }
@@ -519,6 +559,25 @@
             "icon": "i-ph-file-pdf-duotone",
             "btnClass": "btn-amber",
             "title": "PDF manipulation."
+          }
+        ]
+      },
+      {
+        "label": "Infrastructure",
+        "items": [
+          {
+            "name": "Tailscale",
+            "url": "https://tailscale.com",
+            "icon": "i-simple-icons:tailscale",
+            "btnClass": "btn-teal",
+            "title": "Mesh VPN that just works."
+          },
+          {
+            "name": "Ansible",
+            "url": "https://www.ansible.com",
+            "icon": "i-simple-icons:ansible",
+            "btnClass": "btn-indigo",
+            "title": "Agentless config management. Playbooks do the work."
           }
         ]
       }
