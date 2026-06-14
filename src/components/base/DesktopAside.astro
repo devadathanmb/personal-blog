@@ -16,6 +16,7 @@ interface Props {
   tagStyle?: string
   tocButtonText?: string
   tagButtonText?: string
+  tagFilterMode?: string
 }
 
 const {
@@ -27,6 +28,7 @@ const {
   tocStyle,
   tocButtonText,
   tagButtonText,
+  tagFilterMode,
 } = Astro.props
 
 const { toc } = FEATURES
@@ -103,7 +105,7 @@ if (tocPosition === 'right' && tagPosition === 'right') asidePosition = 'right'
       <Toc isArticle={false}>
         <TocSidebar anchors={anchors} style={tocStyle} />
       </Toc>
-      <TagFilter>
+      <TagFilter filterMode={tagFilterMode}>
         <TagSidebar
           tags={tags}
           style={tagStyle ? `display: none; ${tagStyle}` : 'display: none;'}
@@ -180,7 +182,7 @@ if (tocPosition === 'right' && tagPosition === 'right') asidePosition = 'right'
               <span u-i-ri-price-tag-3-line aria-hidden="true" />
             )}
           </button>
-          <TagFilter>
+          <TagFilter filterMode={tagFilterMode}>
             <TagSidebar tags={tags} style={tagStyle} />
           </TagFilter>
         </aside>

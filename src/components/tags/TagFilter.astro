@@ -3,13 +3,15 @@ import { FEATURES } from '~/config'
 
 interface Props {
   itemSelector?: string
+  filterMode?: string
 }
 
-const { itemSelector = '[data-tags]' } = Astro.props
+const { itemSelector = '[data-tags]', filterMode: filterModeOverride } =
+  Astro.props
 
 const { tag } = FEATURES
 if (!tag || (Array.isArray(tag) && !tag[0])) return
-const { filterMode } = tag[1]
+const filterMode = filterModeOverride ?? tag[1].filterMode
 ---
 
 <tag-filter data-filter-mode={filterMode} data-item-selector={itemSelector}>

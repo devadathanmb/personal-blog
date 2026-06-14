@@ -15,6 +15,7 @@ interface Props {
   style?: string
   tocStyle?: string
   tagStyle?: string
+  tagFilterMode?: string
 }
 
 const {
@@ -24,6 +25,7 @@ const {
   style,
   tagStyle,
   tocStyle,
+  tagFilterMode,
 } = Astro.props
 
 const stacked = (anchors.length > 0 || headings.length > 0) && tags.length > 0
@@ -48,7 +50,7 @@ const stacked = (anchors.length > 0 || headings.length > 0) && tags.length > 0
       {tags.length > 0 && (
         <>
           <TagButton stacked={stacked} />
-          <TagFilter>
+          <TagFilter filterMode={tagFilterMode}>
             <TagPanel tags={tags} style={tagStyle} />
           </TagFilter>
         </>

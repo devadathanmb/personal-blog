@@ -8,10 +8,14 @@ ogImage: true
 
 import BaseLayout from '~/layouts/BaseLayout.astro'
 import StandardLayout from '~/layouts/StandardLayout.astro'
+import DesktopAside from '~/components/base/DesktopAside.astro'
+import MobileControl from '~/components/base/MobileControl.astro'
 import Link from '~/components/base/Link.astro'
 import UsesSection from '~/components/widgets/UsesSection.astro'
 import LastUpdated from '~/components/widgets/LastUpdated.astro'
 import usesData from '~/data/uses.json'
+
+export const usesTags = usesData.map((s) => [s.title])
 
 <BaseLayout
   title={frontmatter.title}
@@ -24,6 +28,9 @@ import usesData from '~/data/uses.json'
       <LastUpdated date="2026-06-14" />
     </div>
     <Fragment slot="article">
+
+<DesktopAside tags={usesTags} tagFilterMode="OR" />
+<MobileControl tags={usesTags} tagFilterMode="OR" />
 
 This is the hardware, software, and setup I've come to rely on over years of work, curiosity, and tinkering.
 
