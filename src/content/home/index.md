@@ -42,4 +42,19 @@ Thanks for stopping by. I hope this place feels less like a portfolio and more l
         <span i-ri-mail-line></span> Email</a>
     </span>
   </div>
+
+  <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+    <span class="op-75">Webring</span>
+    <span class="flex items-center gap-2">
+      <a href="https://xn--sr8hvo.ws/previous" title="Previous · IndieWeb Webring" class="flex items-center border-none! op-75 transition-all duration-300 hover:-translate-y-0.5 hover:op-100">
+        <span i-material-symbols-keyboard-double-arrow-left></span>
+      </a>
+      <a href="https://xn--sr8hvo.ws" title="IndieWeb Webring" class="flex items-center gap-1 border-none! op-75 transition-all duration-300 hover:-translate-y-0.5 hover:op-100">
+        <span i-icon-park-solid-globe></span> IndieWeb
+      </a>
+      <a href="https://xn--sr8hvo.ws/next" title="Next · IndieWeb Webring" class="flex items-center border-none! op-75 transition-all duration-300 hover:-translate-y-0.5 hover:op-100">
+        <span i-material-symbols-keyboard-double-arrow-right></span>
+      </a>
+    </span>
+  </div>
 </div>
