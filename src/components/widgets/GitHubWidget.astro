@@ -77,13 +77,17 @@ const { username = '' } = enabled ? github[1] : {}
     created_at: string
     repo: { name: string }
     payload: {
+      head: string
       commits?: { message: string }[]
     }
   }
 
-  async function fetchLastPush(
-    username: string
-  ): Promise<{ message: string; repo: string; time: string } | null> {
+  async function fetchLastPush(username: string): Promise<{
+    message: string
+    repo: string
+    time: string
+    commitUrl: string
+  } | null> {
     try {
       const res = await fetch(
         `https://api.github.com/users/${username}/events/public?per_page=30`,
@@ -100,8 +104,9 @@ const { username = '' } = enabled ? github[1] : {}
       const lastCommit = commits[commits.length - 1]
       const message = lastCommit?.message.split('\n')[0] ?? 'pushed'
       const repo = push.repo.name.split('/')[1] ?? push.repo.name
+      const commitUrl = `https://github.com/${push.repo.name}/commit/${push.payload.head}`
 
-      return { message, repo, time: getRelativeTime(uts) }
+      return { message, repo, time: getRelativeTime(uts), commitUrl }
     } catch {
       return null
     }
@@ -113,11 +118,13 @@ const { username = '' } = enabled ? github[1] : {}
     const username = widget.dataset.username
     if (!username) return
 
+    const linkEl = widget.querySelector<HTMLAnchorElement>('a')
     const messageEl = widget.querySelector<HTMLElement>('#gh-message')
     const metaEl = widget.querySelector<HTMLElement>('#gh-meta')
 
     const result = await fetchLastPush(username)
 
+    if (linkEl && result) linkEl.href = result.commitUrl
     if (messageEl) {
       messageEl.textContent = result?.message ?? 'github.com'
       messageEl.classList.remove('gh-loading')
