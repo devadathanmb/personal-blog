@@ -24,7 +24,7 @@ const githubRepo = 'https://github.com/devadathanmb/personal-blog'
 ---
 
 <footer class="slide-enter animate-delay-1600! px-7 mt-auto mb-8">
-  <div class="prose mx-auto op-50">
+  <div class="prose mx-auto op-50 footer-inner">
     <div
       class="flex flex-col sm:flex-row sm:justify-between items-center text-sm whitespace-nowrap"
     >
@@ -71,6 +71,11 @@ const githubRepo = 'https://github.com/devadathanmb/personal-blog'
 </footer>
 
 <style>
+  .footer-inner {
+    border-top: 1px solid rgba(125, 125, 125, 0.6);
+    padding-top: 1.5rem;
+  }
+
   /* ── Shine animation on commit hash ── */
   @keyframes shine {
     from {
