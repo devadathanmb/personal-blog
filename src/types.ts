@@ -728,6 +728,19 @@ interface TagConfig {
   filterMode: 'AND' | 'OR'
 }
 
+interface TraktConfig {
+  /**
+   * Trakt username whose watch history powers the widget.
+   */
+  username: string
+
+  /**
+   * Trakt API client ID. Public value — safe to ship in client-side config.
+   * Get one at https://trakt.tv/oauth/applications
+   */
+  clientId: string
+}
+
 interface GitHubConfig {
   /**
    * GitHub username whose public push events power the widget.
@@ -853,4 +866,12 @@ export interface Features {
    * Uses the unauthenticated public events API — no token required.
    */
   github: FeatureConfig<GitHubConfig>
+
+  /**
+   * Whether to enable the Trakt "currently watching" widget on the /now page.
+   *
+   * Set to `false` to hide it. To enable, provide your Trakt username and
+   * a client ID from https://trakt.tv/oauth/applications (public value, not a secret).
+   */
+  trakt: FeatureConfig<TraktConfig>
 }

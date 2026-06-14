@@ -1,0 +1,116 @@
+---
+import { FEATURES } from '~/config'
+
+const { trakt } = FEATURES
+const enabled = Array.isArray(trakt) && trakt[0]
+const { username = '', clientId = '' } = enabled ? trakt[1] : {}
+---
+
+{
+  enabled && username && clientId && (
+    <div
+      class="trakt-widget inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a] border border-gray-200 dark:border-[#333] transition-colors duration-200 h-fit w-fit"
+      data-username={username}
+      data-clientid={clientId}
+    >
+      <div class="i-mdi:television-classic shrink-0 text-xl" />
+      <a
+        href={`https://trakt.tv/users/${username}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="trakt-link flex flex-col justify-center max-w-[200px] sm:max-w-[250px]"
+      >
+        <span
+          id="trakt-title"
+          class="text-xs font-medium leading-tight trakt-text trakt-loading truncate"
+        >
+          Loading...
+        </span>
+        <span
+          id="trakt-meta"
+          class="text-[11px] op-70 leading-tight trakt-loading truncate"
+        >
+          Trakt
+        </span>
+      </a>
+    </div>
+  )
+}
+
+<style>
+  .trakt-link,
+  .trakt-link:hover {
+    border-bottom: none !important;
+  }
+
+  .trakt-text {
+    color: #1f2937;
+  }
+  :root.dark .trakt-text {
+    color: #e5e7eb;
+  }
+  .trakt-link:hover .trakt-text {
+    color: #059669 !important;
+  }
+  :root.dark .trakt-link:hover .trakt-text {
+    color: #34d399 !important;
+  }
+
+  @keyframes trakt-pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 0.75;
+    }
+  }
+  .trakt-loading {
+    animation: trakt-pulse 1.4s ease-in-out infinite;
+  }
+</style>
+
+<script>
+  import { fetchWatching } from '~/utils/trakt'
+  import { getRelativeTime } from '~/utils/datetime'
+
+  async function initTraktWidget() {
+    const widget = document.querySelector<HTMLElement>('.trakt-widget')
+    if (!widget) return
+
+    const username = widget.dataset.username
+    const clientId = widget.dataset.clientid
+    if (!username || !clientId) return
+
+    const linkEl = widget.querySelector<HTMLAnchorElement>('a')
+    const titleEl = widget.querySelector<HTMLElement>('#trakt-title')
+    const metaEl = widget.querySelector<HTMLElement>('#trakt-meta')
+
+    const result = await fetchWatching(username, clientId)
+
+    if (linkEl && result) linkEl.href = result.url
+    if (titleEl) {
+      titleEl.textContent = result?.title ?? 'trakt.tv'
+      titleEl.classList.remove('trakt-loading')
+    }
+    if (metaEl) {
+      if (result) {
+        const time = result.isWatching
+          ? 'Watching now'
+          : result.watchedAt
+            ? getRelativeTime(result.watchedAt)
+            : ''
+        metaEl.textContent = result.subtitle
+          ? `${result.subtitle} • ${time}`
+          : time
+      } else {
+        metaEl.textContent = username
+      }
+      metaEl.classList.remove('trakt-loading')
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initTraktWidget()
+  })
+</script>
