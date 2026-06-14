@@ -1,0 +1,28 @@
+---
+import { SITE, UI } from '~/config'
+
+const hcardEmail = UI.socialLinks
+  .find((s) => s.link.startsWith('mailto:'))
+  ?.link.replace('mailto:', '')
+const hcardProfiles = UI.socialLinks.filter(
+  (s) => !s.link.startsWith('mailto:')
+)
+---
+
+<div class="h-card hidden" aria-hidden="true">
+  <a class="p-name u-url" href={SITE.website}>{SITE.title}</a>
+  {
+    hcardEmail && (
+      <a class="u-email" href={`mailto:${hcardEmail}`}>
+        {hcardEmail}
+      </a>
+    )
+  }
+  {
+    hcardProfiles.map((s) => (
+      <a class="u-url" href={s.link} rel="me">
+        {s.title}
+      </a>
+    ))
+  }
+</div>
