@@ -1,0 +1,49 @@
+---
+title: Colophon
+subtitle: How this site is put together.
+description: Credits, tools, and the decisions behind devadathanmb.in.
+bgType: storm
+ogImage: true
+---
+
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import StandardLayout from '~/layouts/StandardLayout.astro'
+import LastUpdated from '~/components/widgets/LastUpdated.astro'
+import Link from '~/components/base/Link.astro'
+
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  bgType={frontmatter.bgType}
+  ogImage={frontmatter.ogImage}
+>
+  <StandardLayout title={frontmatter.title} subtitle={frontmatter.subtitle}>
+    <div slot="head" class="-mt-5 mb-6 slide-enter animate-delay-200!">
+      <LastUpdated date="2026-06-14" />
+    </div>
+    <Fragment slot="article">
+
+This site is built on top of <Link href="https://github.com/lin-stephanie/astro-antfustyle-theme" external>astro-antfustyle-theme</Link> by <Link href="https://github.com/lin-stephanie" external>Stephanie Lin</Link>, which draws design inspiration from <Link href="https://antfu.me" external>antfu.me</Link> by <Link href="https://github.com/antfu" external>Anthony Fu</Link>. The layout, typography, and overall feel come from that foundation. Credit where it's due.
+
+Beyond that, this site exists because other people shared theirs first. Personal websites, open source projects, tools built and left available for anyone. I'm genuinely grateful for all of it.
+
+What I've tried to do here is give something back.
+
+## The /now page
+
+The part I've spent the most time on. It pulls live data from a few places: <Link href="https://www.last.fm/api" external>Last.fm</Link> for whatever I'm listening to, <Link href="https://open-meteo.com" external>Open-Meteo</Link> for the weather in Kerala, the <Link href="https://docs.github.com/en/rest/activity/events" external>GitHub public events API</Link> for my last commit, and <Link href="https://trakt.tv" external>Trakt</Link> for whatever I'm watching, scrobbled automatically from Jellyfin.
+
+None of it needs a backend. Everything is fetched client-side. No tokens stored anywhere except the config.
+
+The goal was a page that actually reflects the moment, not a snapshot I remember to update once a quarter.
+
+## Everything else
+
+Comments are <Link href="https://giscus.app" external>Giscus</Link>, backed by GitHub Discussions. Search is <Link href="https://pagefind.app" external>Pagefind</Link>, which runs at build time and ships a static index. The site is deployed to <Link href="https://workers.cloudflare.com" external>Cloudflare Workers</Link> at the edge, with no server to manage.
+
+The source is on <Link href="https://github.com/devadathanmb/personal-blog" external>GitHub</Link>.
+
+    </Fragment>
+
+  </StandardLayout>
+</BaseLayout>
