@@ -9,6 +9,7 @@ import chalk from 'chalk'
 
 import { getCurrentFormattedTime } from '../src/utils/datetime'
 import { ogImageMarkup } from './og-template/markup'
+import backgroundBase64 from './og-template/base64'
 import { FEATURES } from '../src/config'
 
 import type { SatoriOptions } from 'satori'
@@ -150,27 +151,20 @@ function remarkGenerateOgImage() {
       return
 
     // check if it has been assigned & actually exists
-    if (
-      ogImage &&
-      ogImage !== true &&
-      checkFileExistsInDir('public/og-images', basename(ogImage))
-    )
-      return
-
-    if (
-      ogImage &&
-      ogImage !== true &&
-      !checkFileExistsInDir('public/og-images', basename(ogImage))
-    ) {
+    if (ogImage && ogImage !== true) {
+      if (checkFileExistsInDir('public/og-images', basename(ogImage))) return
       console.warn(
         `${chalk.black(getCurrentFormattedTime())} ${chalk.yellow(`[WARN] The '${ogImage}' specified in '${file.path}' was not found.`)}\n  ${chalk.bold('Hint:')} Ensure the file exists in the ${chalk.cyan('public/og-images/')} directory.`
       )
       return
     }
 
-    // get bgType
+    // get bgType — fall back if the resolved type has no static background image
     const pageBgType = file.data.astro.frontmatter.bgType
-    const bgType = pageBgType || fallbackBgType
+    const bgType =
+      pageBgType && backgroundBase64[pageBgType as BgType]
+        ? (pageBgType as BgType)
+        : fallbackBgType
 
     // generate og images
     await generateOgImage(
