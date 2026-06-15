@@ -19,7 +19,7 @@ const { username = '', clientId = '' } = enabled ? trakt[1] : {}
         href={`https://trakt.tv/users/${username}`}
         target="_blank"
         rel="noopener noreferrer"
-        class="trakt-link flex flex-col justify-center max-w-[200px] sm:max-w-[250px]"
+        class="pill-widget-link flex flex-col justify-center max-w-[200px] sm:max-w-[250px]"
       >
         <span
           id="trakt-title"
@@ -37,20 +37,6 @@ const { username = '', clientId = '' } = enabled ? trakt[1] : {}
     </PillWidget>
   )
 }
-
-<style>
-  .trakt-link,
-  .trakt-link:hover {
-    border-bottom: none !important;
-    color: inherit;
-  }
-  .trakt-link:hover :global(.pill-primary) {
-    color: #059669 !important;
-  }
-  :root.dark .trakt-link:hover :global(.pill-primary) {
-    color: #34d399 !important;
-  }
-</style>
 
 <script>
   import { fetchWatching } from '~/utils/trakt'

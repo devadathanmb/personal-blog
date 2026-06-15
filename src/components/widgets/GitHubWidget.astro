@@ -15,7 +15,7 @@ const { username = '' } = enabled ? github[1] : {}
         href={`https://github.com/${username}`}
         target="_blank"
         rel="noopener noreferrer"
-        class="gh-link flex flex-col justify-center max-w-[260px]"
+        class="pill-widget-link flex flex-col justify-center max-w-[260px]"
       >
         <span
           id="gh-message"
@@ -33,20 +33,6 @@ const { username = '' } = enabled ? github[1] : {}
     </PillWidget>
   )
 }
-
-<style>
-  .gh-link,
-  .gh-link:hover {
-    border-bottom: none !important;
-    color: inherit;
-  }
-  .gh-link:hover :global(.pill-primary) {
-    color: #059669 !important;
-  }
-  :root.dark .gh-link:hover :global(.pill-primary) {
-    color: #34d399 !important;
-  }
-</style>
 
 <script>
   import { getRelativeTime } from '~/utils/datetime'

@@ -45,4 +45,17 @@ const { class: extraClass, ...attrs } = Astro.props
   .pill-secondary {
     opacity: 0.8;
   }
+
+  /* Shared link style for data widgets (GitHub, Trakt, etc.) */
+  .pill-widget-link,
+  .pill-widget-link:hover {
+    border-bottom: none !important;
+    color: inherit;
+  }
+  .pill-widget-link:hover .pill-primary {
+    color: #059669 !important;
+  }
+  :root.dark .pill-widget-link:hover .pill-primary {
+    color: #34d399 !important;
+  }
 </style>
