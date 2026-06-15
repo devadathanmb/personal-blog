@@ -1,4 +1,5 @@
 ---
+import PillWidget from './PillWidget.astro'
 import { FEATURES } from '~/config'
 
 const { github } = FEATURES
@@ -8,11 +9,8 @@ const { username = '' } = enabled ? github[1] : {}
 
 {
   enabled && username && (
-    <div
-      class="github-widget inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a] border border-gray-200 dark:border-[#333] transition-colors duration-200 h-fit w-fit"
-      data-username={username}
-    >
-      <div class="i-line-md:github-loop shrink-0 text-lg" />
+    <PillWidget class="github-widget" data-username={username}>
+      <div slot="icon" class="i-line-md:github-loop shrink-0 text-lg" />
       <a
         href={`https://github.com/${username}`}
         target="_blank"
@@ -21,18 +19,18 @@ const { username = '' } = enabled ? github[1] : {}
       >
         <span
           id="gh-message"
-          class="text-xs font-medium leading-tight gh-text gh-loading truncate"
+          class="pill-primary text-xs font-medium leading-tight pill-loading truncate"
         >
           Loading...
         </span>
         <span
           id="gh-meta"
-          class="text-[11px] op-70 leading-tight gh-loading truncate"
+          class="pill-secondary text-[11px] leading-tight pill-loading truncate"
         >
           GitHub
         </span>
       </a>
-    </div>
+    </PillWidget>
   )
 }
 
@@ -40,32 +38,13 @@ const { username = '' } = enabled ? github[1] : {}
   .gh-link,
   .gh-link:hover {
     border-bottom: none !important;
+    color: inherit;
   }
-
-  .gh-text {
-    color: #1f2937;
-  }
-  :root.dark .gh-text {
-    color: #e5e7eb;
-  }
-  .gh-link:hover .gh-text {
+  .gh-link:hover :global(.pill-primary) {
     color: #059669 !important;
   }
-  :root.dark .gh-link:hover .gh-text {
+  :root.dark .gh-link:hover :global(.pill-primary) {
     color: #34d399 !important;
-  }
-
-  @keyframes gh-pulse {
-    0%,
-    100% {
-      opacity: 0.35;
-    }
-    50% {
-      opacity: 0.75;
-    }
-  }
-  .gh-loading {
-    animation: gh-pulse 1.4s ease-in-out infinite;
   }
 </style>
 
@@ -99,7 +78,6 @@ const { username = '' } = enabled ? github[1] : {}
       if (!push) return null
 
       const uts = Math.floor(new Date(push.created_at).getTime() / 1000)
-      // commits are ordered oldest-first in the payload; last one is most recent
       const commits = push.payload.commits ?? []
       const lastCommit = commits[commits.length - 1]
       const message = lastCommit?.message.split('\n')[0] ?? 'pushed'
@@ -127,11 +105,11 @@ const { username = '' } = enabled ? github[1] : {}
     if (linkEl && result) linkEl.href = result.commitUrl
     if (messageEl) {
       messageEl.textContent = result?.message ?? 'github.com'
-      messageEl.classList.remove('gh-loading')
+      messageEl.classList.remove('pill-loading')
     }
     if (metaEl) {
       metaEl.textContent = result ? `${result.repo} • ${result.time}` : username
-      metaEl.classList.remove('gh-loading')
+      metaEl.classList.remove('pill-loading')
     }
   }
 

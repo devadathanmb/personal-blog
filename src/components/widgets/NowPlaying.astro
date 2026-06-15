@@ -1,4 +1,5 @@
 ---
+import PillWidget from './PillWidget.astro'
 import { FEATURES } from '~/config'
 
 const { nowPlaying } = FEATURES
@@ -8,12 +9,12 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled ? nowPlaying[1] : {}
 
 {
   enabled && lastfmUsername && lastfmApiKey && (
-    <div
-      class="now-playing-widget inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a] border border-gray-200 dark:border-[#333] transition-colors duration-200 h-fit"
+    <PillWidget
+      class="now-playing-widget"
       data-username={lastfmUsername}
       data-apikey={lastfmApiKey}
     >
-      <div id="np-icon" class="relative w-7 h-7 shrink-0">
+      <div slot="icon" id="np-icon" class="relative w-7 h-7 shrink-0">
         <div
           id="np-fallback"
           class="w-full h-full flex items-center justify-center"
@@ -31,6 +32,7 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled ? nowPlaying[1] : {}
         </div>
         <div id="np-notes" aria-hidden="true" />
       </div>
+
       <div class="flex flex-col justify-center max-w-[200px] sm:max-w-[250px]">
         <div id="np-track-wrapper" class="np-marquee flex overflow-hidden">
           <a
@@ -38,7 +40,7 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled ? nowPlaying[1] : {}
             href={`https://www.last.fm/user/${lastfmUsername}`}
             target="_blank"
             rel="noopener noreferrer"
-            class="np-marquee-text whitespace-nowrap font-medium text-xs leading-tight text-gray-800 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+            class="np-marquee-text pill-primary whitespace-nowrap font-medium text-xs leading-tight hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors pill-loading"
           >
             Loading...
           </a>
@@ -49,13 +51,13 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled ? nowPlaying[1] : {}
         >
           <div
             id="np-artist-time"
-            class="np-marquee-text whitespace-nowrap text-[11px] op-70 leading-tight"
+            class="np-marquee-text pill-secondary whitespace-nowrap text-[11px] leading-tight pill-loading"
           >
             Last.fm
           </div>
         </div>
       </div>
-    </div>
+    </PillWidget>
   )
 }
 
@@ -144,8 +146,8 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled ? nowPlaying[1] : {}
 
 <style is:global>
   /* Floating notes, spawned by the emitter in the script below.
-         Global on purpose: the spans are created at runtime, so they never
-         receive Astro's scope attribute and scoped styles can't match them. */
+     Global on purpose: the spans are created at runtime, so they never
+     receive Astro's scope attribute and scoped styles can't match them. */
 
   /* Spawn band ~2.5x the icon width so notes spread instead of stacking */
   #np-notes {
@@ -162,7 +164,7 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled ? nowPlaying[1] : {}
     opacity: 0;
     color: rgba(16, 185, 129, 0.55); /* emerald-500, muted to match the bars */
     /* linear keeps the rise at constant speed — easing makes the stream
-           pulse (fast launch, slow hover) instead of flowing */
+       pulse (fast launch, slow hover) instead of flowing */
     animation: np-float var(--np-dur, 5s) linear forwards;
   }
   @keyframes np-float {
@@ -273,6 +275,11 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled ? nowPlaying[1] : {}
     if (!username || !apiKey) return
 
     const track = await fetchRecentTrack(username, apiKey)
+
+    // Stop loading animation once the first fetch completes (success or failure)
+    document.getElementById('np-track')?.classList.remove('pill-loading')
+    document.getElementById('np-artist-time')?.classList.remove('pill-loading')
+
     if (!track) return
 
     const isPlaying = track['@attr']?.nowplaying === 'true'

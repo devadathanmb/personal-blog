@@ -1,0 +1,48 @@
+---
+interface Props {
+  class?: string
+  [key: string]: unknown
+}
+const { class: extraClass, ...attrs } = Astro.props
+---
+
+<div
+  class:list={[
+    'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full h-fit w-fit',
+    'bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a]',
+    'border border-gray-200 dark:border-[#333] transition-colors duration-200',
+    extraClass,
+  ]}
+  {...attrs}
+>
+  <slot name="icon" />
+  <slot />
+</div>
+
+<style is:global>
+  @keyframes pill-pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 0.75;
+    }
+  }
+  .pill-loading {
+    animation: pill-pulse 1.4s ease-in-out infinite;
+  }
+
+  /* Primary text: bright, matches page text */
+  .pill-primary {
+    color: #1f2937;
+  }
+  :root.dark .pill-primary {
+    color: #e5e7eb;
+  }
+
+  /* Secondary text: 80% opacity of inherited text color */
+  .pill-secondary {
+    opacity: 0.8;
+  }
+</style>
