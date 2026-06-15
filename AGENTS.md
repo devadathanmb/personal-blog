@@ -1,6 +1,6 @@
 # Personal Blog
 
-Devadathan's personal blog at devadathanmb.in — built with Astro 6, shipped as a **fully static site** (`output` defaults to `static`; no SSR adapter) and deployed to Cloudflare Pages. Current dev branch is `v2`; `main` is the previous (production) version.
+Devadathan's personal blog at devadathanmb.in — built with Astro 6, shipped as a **fully static site** (`output` defaults to `static`; no SSR adapter) and deployed to Cloudflare Workers (static assets). Current dev branch is `v2`; `main` is the previous (production) version.
 
 ## Commands
 
@@ -14,7 +14,7 @@ Devadathan's personal blog at devadathanmb.in — built with Astro 6, shipped as
 | `pnpm format:write` | Prettier with cache                    |
 | `pnpm deploy`       | Build + `wrangler deploy` (`dist/`)    |
 
-Pre-commit hook: `lint-staged` (ESLint fix) + full `prettier` + `astro check`. CI (`.github/workflows/ci.yml`) runs check + lint + build across Linux/macOS/Windows on push/PR to `main` only. Node ≥ 22.12, pnpm 10.
+Pre-commit hook: `lint-staged` (ESLint fix) + full `prettier` + `astro check`. CI runs check + lint + build on push/PR to `main` only. Node ≥ 22.12, pnpm 10.
 
 ## Stack
 

@@ -2,7 +2,7 @@
 
 My personal blog — engineering notes, tools I use, things I think about.
 
-Built with [Astro](https://astro.build) and deployed on Cloudflare Pages.
+Built with [Astro](https://astro.build) and deployed as a static site on Cloudflare Workers.
 
 ## Running locally
 
