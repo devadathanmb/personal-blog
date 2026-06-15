@@ -1,6 +1,6 @@
 # Personal Blog
 
-Devadathan's personal blog at devadathanmb.in — built with Astro 5, deployed to Cloudflare Workers via SSR adapter. Current dev branch is `v2`; `main` is production.
+Devadathan's personal blog at devadathanmb.in — built with Astro 6, shipped as a **fully static site** (`output` defaults to `static`; no SSR adapter) and deployed to Cloudflare Pages. Current dev branch is `v2`; `main` is the previous (production) version.
 
 ## Commands
 
@@ -12,28 +12,32 @@ Devadathan's personal blog at devadathanmb.in — built with Astro 5, deployed t
 | `pnpm check`        | `astro check` (TypeScript)             |
 | `pnpm lint`         | ESLint (0 warnings allowed)            |
 | `pnpm format:write` | Prettier with cache                    |
+| `pnpm deploy`       | Build + `wrangler deploy` (`dist/`)    |
 
-Pre-commit hook: `lint-staged` (ESLint fix) + `prettier` + `astro check`. CI runs check + lint + build on push/PR to `main`.
+Pre-commit hook: `lint-staged` (ESLint fix) + full `prettier` + `astro check`. CI (`.github/workflows/ci.yml`) runs check + lint + build across Linux/macOS/Windows on push/PR to `main` only. Node ≥ 22.12, pnpm 10.
 
 ## Stack
 
-- Astro 5, MDX, `@astrojs/cloudflare` SSR adapter
-- UnoCSS (Wind3 + Attributify + Icons + WebFonts) — no Tailwind
-- Expressive Code for syntax highlighting (themes: vitesse-dark / vitesse-light)
+- Astro 6 + MDX — static output (no adapter). `wrangler deploy` serves `dist/` as static assets (`wrangler.jsonc`, `not_found_handling: 404-page`)
+- UnoCSS (Wind3 + Attributify `u-` prefix + Icons + WebFonts: Inter / DM Mono / Roboto Condensed) — no Tailwind
+- Expressive Code for syntax highlighting (config in `ec.config.mjs`; themes vitesse-dark / vitesse-light, toggled by `:root.dark`)
 - Pagefind for client-side search (runs post-build, strips `pre` elements, includes `<>` chars)
 - Giscus (GitHub Discussions) for comments
-- Last.fm API for now-playing widget; Trakt API for watching widget; Open-Meteo for weather (no key needed)
-- Satori + Sharp for OG image generation at build time
+- Last.fm API for now-playing widget; Trakt API for watching widget; Open-Meteo for weather (no key needed) — all fetched client-side
+- Satori + Sharp generate OG images at build time (`plugins/remark-generate-og-image.ts` + `plugins/og-template/`)
 
 ## Key Directories
 
-- `src/config.ts` — SITE, UI, FEATURES (primary config)
-- `src/content/blog/YYYY/` — blog posts; `src/content/thoughts/` — short-form; `src/content/home/` — home page content
-- `src/schema.ts` — postSchema, pageSchema (zod)
-- `src/pages/` — MDX pages (index, blog/index, thoughts, uses, now, colophon, 404, rss.xml)
+- `src/config.ts` — SITE, UI, FEATURES (primary config); `src/types.ts` — the `Site`/`Ui`/`Features` types it implements
+- `src/content.config.ts` — content collections (`blog`, `thoughts`, `home`, plus a schema-only `pages` collection that exists solely so `astro check` validates MDX page frontmatter)
+- `src/content/blog/YYYY/` — blog posts; `src/content/thoughts/` — short-form; `src/content/home/` — home page content (`_`-prefixed files are ignored by the loader)
+- `src/schema.ts` — `postSchema`, `pageSchema` (zod); each field carries a `.describe()` doc string — read it before adding frontmatter
+- `src/pages/` — MDX pages (index, blog/index, thoughts, uses, now, colophon, 404, rss.xml) + dynamic `blog/[...slug]` and `thoughts/[...slug]`
 - `src/layouts/` — `BaseLayout` (root HTML shell), `PageLayout` (aside + panel composition), `StandardLayout` (title/subtitle wrapper for content pages)
+- `src/components/` — grouped by role: `base/`, `nav/`, `tags/`, `toc/`, `views/` (list/post renderers), `widgets/` (now-playing, GitHub, Trakt, weather, share, etc.), `backgrounds/` (the `bgType` options)
 - `src/utils/` — `data.ts`, `datetime.ts`, `fs.ts` (build-time file checks), `lastfm.ts`, `misc.ts` (DOM/scroll utilities), `path.ts`, `toc.ts`, `trakt.ts`, `weather.ts`
-- `plugins/index.ts` — remark + rehype pipeline
+- `src/styles/` — `main.css`, `prose.css`, `markdown.css`
+- `plugins/` — `index.ts` (remark + rehype pipeline), `remark-reading-time.ts`, `remark-generate-og-image.ts`, `og-template/`
 - `src/data/uses.json` — powers /uses page + UnoCSS safelist
 
 ## Post Frontmatter (required + notable)
@@ -64,7 +68,7 @@ toc: [true, { minHeadingLevel: 2, maxHeadingLevel: 5, displayPosition: 'right', 
 
 - Dynamically constructed class strings (icons, uses.json items) must be added to the `safelist` in `unocss.config.ts` — UnoCSS won't detect them at build time
 - Icons follow `i-<collection>-<icon>` or `i-<collection>:<icon>` format from `@iconify/json`
-- Content files (`src/content/**`) are not piped through Vite in Astro 5 — listed explicitly in `unocss.config.ts` `content.filesystem`
+- Content files (`src/content/**`) are not piped through Vite in Astro 6 — listed explicitly in `unocss.config.ts` `content.filesystem`
 - Custom breakpoint: `lgp` at `1128px` (in addition to standard Wind3 breakpoints)
 
 ## Markdown Pipeline
