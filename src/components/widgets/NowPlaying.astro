@@ -187,7 +187,8 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled ? nowPlaying[1] : {}
 </style>
 
 <script>
-  import { fetchRecentTrack, getRelativeTime } from '~/utils/lastfm'
+  import { fetchRecentTrack } from '~/utils/lastfm'
+  import { getRelativeTime } from '~/utils/datetime'
 
   function setupMarquee(wrapper: HTMLElement, text: string, href?: string) {
     const textEl = wrapper.firstElementChild as HTMLElement | null

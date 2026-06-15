@@ -46,5 +46,3 @@ export async function fetchRecentTrack(
 
   return null
 }
-
-export { getRelativeTime } from '~/utils/datetime'
