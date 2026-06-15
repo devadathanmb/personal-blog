@@ -57,6 +57,9 @@ jobs:
       - name: 🔎 Check code lint
         run: pnpm lint
 
+      - name: 🎨 Check formatting
+        run: pnpm format
+
       - name: 🚀 Build the project
         run: pnpm build
 
