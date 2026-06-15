@@ -1,0 +1,39 @@
+---
+import Divider from '~/components/base/Divider.astro'
+import SearchSwitch from '~/components/widgets/SearchSwitch.astro'
+import ThemeSwitch from '~/components/widgets/ThemeSwitch.astro'
+import RssLink from '~/components/widgets/RssLink.astro'
+import NavItem from '~/components/nav/NavItem.astro'
+
+import { UI } from '~/config'
+
+interface Props {
+  items: string[]
+  mergeOnMobile: boolean
+}
+
+const { items, mergeOnMobile } = Astro.props
+const { internalNavs, socialLinks } = UI
+---
+
+{
+  items.map((key) =>
+    key === 'hr' ? (
+      <Divider class={mergeOnMobile ? 'lt-md:hidden' : undefined} />
+    ) : key === 'searchButton' ? (
+      <SearchSwitch />
+    ) : key === 'themeButton' ? (
+      <ThemeSwitch />
+    ) : key === 'rssLink' ? (
+      <RssLink class={mergeOnMobile ? 'lt-md:hidden' : undefined} />
+    ) : key === 'internalNavs' ? (
+      internalNavs.map((item) => (
+        <NavItem type="internal" {item} {mergeOnMobile} />
+      ))
+    ) : (
+      socialLinks.map((item) => (
+        <NavItem type="social" {item} {mergeOnMobile} />
+      ))
+    )
+  )
+}

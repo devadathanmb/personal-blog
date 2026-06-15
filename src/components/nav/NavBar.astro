@@ -1,9 +1,7 @@
 ---
 import LogoButton from '~/components/widgets/LogoButton.astro'
-import Divider from '~/components/base/Divider.astro'
-import SearchSwitch from '~/components/widgets/SearchSwitch.astro'
-import ThemeSwitch from '~/components/widgets/ThemeSwitch.astro'
 import RssLink from '~/components/widgets/RssLink.astro'
+import NavItems from '~/components/nav/NavItems.astro'
 import NavItem from '~/components/nav/NavItem.astro'
 import NavSwitch from '~/components/nav/NavSwitch.astro'
 
@@ -35,25 +33,7 @@ for (const item of new Set(left)) {
         <div
           class={`grid grid-flow-col items-center gap-4.8 print:op-0 ${mergeOnMobile ? '' : 'lt-md:(gap-3)'}`}
         >
-          {left.map((key) =>
-            key === 'hr' ? (
-              <Divider class={mergeOnMobile ? 'lt-md:hidden' : undefined} />
-            ) : key === 'searchButton' ? (
-              <SearchSwitch />
-            ) : key === 'themeButton' ? (
-              <ThemeSwitch />
-            ) : key === 'rssLink' ? (
-              <RssLink class={mergeOnMobile ? 'lt-md:hidden' : undefined} />
-            ) : key === 'internalNavs' ? (
-              internalNavs.map((item) => (
-                <NavItem type="internal" {item} {mergeOnMobile} />
-              ))
-            ) : (
-              socialLinks.map((item) => (
-                <NavItem type="social" {item} {mergeOnMobile} />
-              ))
-            )
-          )}
+          <NavItems items={left} {mergeOnMobile} />
         </div>
       )
     }
@@ -64,25 +44,7 @@ for (const item of new Set(left)) {
               ${!right.includes('themeButton') && !right.includes('searchButton') && 'lt-md:hidden'}
               ${mergeOnMobile ? '' : 'lt-md:(gap-3)'}`}
         >
-          {right.map((key) =>
-            key === 'hr' ? (
-              <Divider class={mergeOnMobile ? 'lt-md:hidden' : undefined} />
-            ) : key === 'searchButton' ? (
-              <SearchSwitch />
-            ) : key === 'themeButton' ? (
-              <ThemeSwitch />
-            ) : key === 'rssLink' ? (
-              <RssLink class={mergeOnMobile ? 'lt-md:hidden' : undefined} />
-            ) : key === 'internalNavs' ? (
-              internalNavs.map((item) => (
-                <NavItem type="internal" {item} {mergeOnMobile} />
-              ))
-            ) : (
-              socialLinks.map((item) => (
-                <NavItem type="social" {item} {mergeOnMobile} />
-              ))
-            )
-          )}
+          <NavItems items={right} {mergeOnMobile} />
         </div>
       )
     }
