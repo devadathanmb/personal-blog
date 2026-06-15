@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+
+  // Astro entry points: config files, plugins, and all pages
+  "entry": [
+    "astro.config.ts",
+    "unocss.config.ts",
+    "ec.config.mjs",
+    "plugins/**/*.ts",
+    "src/content.config.ts",
+    "src/pages/**/*.{astro,mdx}"
+  ],
+
+  // public/ files are static assets served by URL — never imported
+  "ignorePatterns": ["public/**"],
+
+  // These packages are consumed outside of TypeScript imports:
+  //   @iconify/json         — loaded internally by UnoCSS preset-icons
+  //   @typescript-eslint/parser / eslint-plugin-jsx-a11y — referenced in ESLint config
+  "ignoreDependencies": [
+    "@iconify/json",
+    "@typescript-eslint/parser",
+    "eslint-plugin-jsx-a11y"
+  ],
+
+  // Don't flag type/interface exports consumed only within the same file (e.g. RepoWithOwner in types.ts)
+  "ignoreExportsUsedInFile": true,
+
+  // usesTags is declared with `export const` (required by MDX) and used within
+  // the same template — fallow can't trace MDX template consumption
+  "ignoreExports": [{ "file": "src/pages/uses.mdx", "exports": ["usesTags"] }],
+
+  "duplicates": {
+    // Report pairs (2 instances) so TocPanel/TocSidebar duplication stays visible
+    "minOccurrences": 2
+  },
+
+  "rules": {}
+}
