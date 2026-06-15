@@ -1,3 +1,5 @@
+/* Imported after prose.css in BaseLayout.astro. Rules here intentionally
+   override matching selectors in prose.css — import order is load-bearing. */
 @import 'viewerjs/dist/viewer.css';
 @import 'rehype-callouts/theme/vitepress';
 @import url('https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css');

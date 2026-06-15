@@ -1,3 +1,5 @@
+/* Base prose styles. markdown.css is imported after this file in BaseLayout.astro
+   and intentionally overrides several selectors below. Import order is load-bearing. */
 .prose {
   max-width: 65ch;
   font-size: 1rem;
@@ -151,9 +153,7 @@
   color: var(--fg-deep);
   font-size: 0.875em;
 }
-.prose a code {
-  color: #111827;
-}
+/* .prose a code color is overridden to `inherit` in markdown.css */
 .prose pre {
   overflow-x: auto;
   font-size: 0.875em;
@@ -316,6 +316,4 @@
 .prose b {
   color: var(--fg-deep);
 }
-.prose em {
-  color: inherit;
-}
+/* .prose em color/font overridden in markdown.css */
