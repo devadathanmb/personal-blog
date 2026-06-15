@@ -4,8 +4,7 @@
   "exclude": ["dist", "node_modules", ".local"],
   "compilerOptions": {
     "paths": {
-      "~/*": ["./src/*"],
-      "@/*": ["./src/*"]
+      "~/*": ["./src/*"]
     }
   }
 }
