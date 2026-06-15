@@ -108,6 +108,20 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
             <span class="stat-label">Artists</span>
           </div>
         </div>
+
+        {/* Top albums — cover art */}
+        <div class="mt-8">
+          <div class="stat-label">Top albums</div>
+          <div id="stat-top-albums" class="cover-grid">
+            {Array.from({ length: 5 }).map(() => (
+              <div class="cover-card">
+                <div class="cover-img stat-pulse" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Top artists + Top tracks */}
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-7 mt-8">
           <div>
             <div class="stat-label">Top artists</div>
@@ -116,9 +130,16 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
             </div>
           </div>
           <div>
-            <div class="stat-label">Top albums</div>
-            <div id="stat-top-albums" class="stat-list">
-              <div class="stat-row stat-pulse">Loading…</div>
+            <div class="stat-label">Top tracks</div>
+            <div id="stat-top-tracks" class="track-list">
+              {Array.from({ length: 5 }).map(() => (
+                <div class="track-row">
+                  <div class="track-thumb stat-pulse" />
+                  <div class="track-meta">
+                    <span class="track-name stat-pulse">Loading…</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -210,33 +231,41 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
             via GitHub
           </Link>
         </p>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 stat-grid">
-          <div class="flex flex-col">
-            <span
-              id="stat-repos"
-              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-            >
-              —
-            </span>
-            <span class="stat-label">Public repos</span>
-          </div>
-          <div class="flex flex-col">
-            <span
-              id="stat-followers"
-              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-            >
-              —
-            </span>
-            <span class="stat-label">Followers</span>
-          </div>
-          <div class="flex flex-col">
-            <span
-              id="stat-gh-since"
-              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-            >
-              —
-            </span>
-            <span class="stat-label">On GitHub since</span>
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 stat-grid">
+          <div
+            id="stat-gh-avatar"
+            class="gh-avatar stat-pulse"
+            role="img"
+            aria-label="GitHub profile photo"
+          />
+          <div class="grid grid-cols-3 gap-x-6 gap-y-6 flex-1 w-full">
+            <div class="flex flex-col">
+              <span
+                id="stat-repos"
+                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+              >
+                —
+              </span>
+              <span class="stat-label">Public repos</span>
+            </div>
+            <div class="flex flex-col">
+              <span
+                id="stat-followers"
+                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+              >
+                —
+              </span>
+              <span class="stat-label">Followers</span>
+            </div>
+            <div class="flex flex-col">
+              <span
+                id="stat-gh-since"
+                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+              >
+                —
+              </span>
+              <span class="stat-label">On GitHub since</span>
+            </div>
           </div>
         </div>
       </section>
@@ -244,14 +273,18 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
   }
 </div>
 
-<style>
-  /* Spacing between the build-time number grid and the markdown intro. */
-  .stat-grid {
+{
+  /* Styles are global but scoped under #stats-board so they also apply to
+    list/cover markup injected client-side via innerHTML (which does not
+    carry Astro's scoped-style attribute). */
+}
+<style is:global>
+  #stats-board .stat-grid {
     margin-top: 1.25rem;
   }
 
   /* Section label — mirrors the uppercase mono label used on /uses. */
-  .stat-label {
+  #stats-board .stat-label {
     margin-top: 0.4rem;
     font-size: 0.7rem;
     letter-spacing: 0.05em;
@@ -260,19 +293,19 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     opacity: 0.45;
   }
 
-  /* Ranked lists (top artists / albums) — plain divs to avoid prose list rules. */
-  .stat-list {
+  /* Ranked text list (top artists). */
+  #stats-board .stat-list {
     margin-top: 0.85rem;
     counter-reset: stat;
   }
-  .stat-row {
+  #stats-board .stat-row {
     display: flex;
     align-items: baseline;
     gap: 0.7rem;
     padding: 0.32rem 0;
     font-size: 0.9rem;
   }
-  .stat-row::before {
+  #stats-board .stat-row::before {
     counter-increment: stat;
     content: counter(stat);
     flex-shrink: 0;
@@ -281,21 +314,20 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     font-size: 0.78rem;
     opacity: 0.35;
   }
-  /* Loading row has no rank marker. */
-  .stat-row.stat-pulse::before {
+  #stats-board .stat-row.stat-pulse::before {
     content: none;
   }
-  .stat-name {
+  #stats-board .stat-name {
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .stat-name .stat-sub {
+  #stats-board .stat-name .stat-sub {
     font-weight: 400;
     opacity: 0.5;
   }
-  .stat-count {
+  #stats-board .stat-count {
     margin-left: auto;
     flex-shrink: 0;
     font-size: 0.78rem;
@@ -303,10 +335,128 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     opacity: 0.5;
   }
 
-  .stat-pulse {
-    animation: stat-pulse 1.4s ease-in-out infinite;
+  /* Album cover grid. */
+  #stats-board .cover-grid {
+    margin-top: 0.85rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
   }
-  @keyframes stat-pulse {
+  #stats-board .cover-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none !important;
+  }
+  #stats-board .cover-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    border-radius: 0.4rem;
+    border: 1px solid rgba(125, 125, 125, 0.18);
+    background: rgba(125, 125, 125, 0.08);
+  }
+  #stats-board .cover-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    opacity: 0.4;
+  }
+  #stats-board .cover-name {
+    font-size: 0.76rem;
+    font-weight: 500;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #stats-board .cover-sub {
+    font-size: 0.7rem;
+    opacity: 0.5;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #stats-board .cover-card:hover .cover-img {
+    opacity: 0.85;
+  }
+
+  /* Top tracks list with thumbnails. */
+  #stats-board .track-list {
+    margin-top: 0.85rem;
+    display: flex;
+    flex-direction: column;
+  }
+  #stats-board .track-row {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.3rem 0;
+    font-size: 0.9rem;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none !important;
+  }
+  #stats-board .track-thumb {
+    width: 2.2rem;
+    height: 2.2rem;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 0.3rem;
+    border: 1px solid rgba(125, 125, 125, 0.18);
+    background: rgba(125, 125, 125, 0.08);
+  }
+  #stats-board .track-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    opacity: 0.4;
+  }
+  #stats-board .track-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  #stats-board .track-name {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #stats-board .track-sub {
+    font-size: 0.78rem;
+    opacity: 0.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #stats-board .track-row:hover .track-name {
+    opacity: 0.7;
+  }
+
+  /* GitHub avatar. */
+  #stats-board .gh-avatar {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(125, 125, 125, 0.12);
+    border: 1px solid rgba(125, 125, 125, 0.2);
+  }
+
+  #stats-board .stat-pulse {
+    animation: stats-pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes stats-pulse {
     0%,
     100% {
       opacity: 0.3;
@@ -315,14 +465,28 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
       opacity: 0.55;
     }
   }
+
+  @media (min-width: 640px) {
+    #stats-board .cover-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .stat-pulse {
+    #stats-board .stat-pulse {
       animation: none;
     }
   }
 </style>
 
 <script>
+  // Last.fm deprecated artist/track images; they return this placeholder hash.
+  const PLACEHOLDER = '2a96cbd8b46e442fc41c2b86b821562f'
+
+  interface LfmImage {
+    'size': string
+    '#text': string
+  }
+
   const fmt = (n: number) => n.toLocaleString('en-US')
 
   const esc = (s: string) =>
@@ -331,6 +495,21 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
       (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] ?? c
     )
 
+  // Pick the best real (non-placeholder) image URL from a Last.fm image array.
+  function pickImage(
+    images: LfmImage[] | undefined,
+    preferred: string
+  ): string {
+    if (!Array.isArray(images)) return ''
+    const bySize: Record<string, string> = {}
+    for (const im of images) bySize[im.size] = im['#text']
+    for (const size of [preferred, 'extralarge', 'large', 'medium', 'small']) {
+      const url = bySize[size]
+      if (url && !url.includes(PLACEHOLDER)) return url
+    }
+    return ''
+  }
+
   function setNum(id: string, value: string | null) {
     const el = document.getElementById(id)
     if (!el) return
@@ -338,11 +517,8 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     el.classList.remove('stat-pulse')
   }
 
-  function renderList(
-    id: string,
-    items: { name: string; sub?: string; count: number }[]
-  ) {
-    const el = document.getElementById(id)
+  function renderArtists(items: { name: string; count: number }[]) {
+    const el = document.getElementById('stat-top-artists')
     if (!el) return
     if (!items.length) {
       el.innerHTML = '<div class="stat-row">—</div>'
@@ -351,10 +527,72 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     el.innerHTML = items
       .map(
         (it) =>
-          `<div class="stat-row"><span class="stat-name">${esc(it.name)}${
-            it.sub ? ` <span class="stat-sub">· ${esc(it.sub)}</span>` : ''
-          }</span><span class="stat-count">${fmt(it.count)}</span></div>`
+          `<div class="stat-row"><span class="stat-name">${esc(
+            it.name
+          )}</span><span class="stat-count">${fmt(it.count)}</span></div>`
       )
+      .join('')
+  }
+
+  function renderAlbums(
+    items: { name: string; artist: string; url: string; image: LfmImage[] }[]
+  ) {
+    const el = document.getElementById('stat-top-albums')
+    if (!el) return
+    if (!items.length) {
+      el.innerHTML = '<div class="stat-row">—</div>'
+      return
+    }
+    el.innerHTML = items
+      .map((it) => {
+        const img = pickImage(it.image, 'extralarge')
+        const art = img
+          ? `<img class="cover-img" src="${esc(
+              img
+            )}" alt="" loading="lazy" width="300" height="300" />`
+          : `<div class="cover-img cover-fallback">♪</div>`
+        return `<a class="cover-card" href="${esc(
+          it.url || '#'
+        )}" target="_blank" rel="noopener noreferrer" title="${esc(
+          it.name
+        )} · ${esc(it.artist)}">${art}<span class="cover-name">${esc(
+          it.name
+        )}</span><span class="cover-sub">${esc(it.artist)}</span></a>`
+      })
+      .join('')
+  }
+
+  function renderTracks(
+    items: {
+      name: string
+      artist: string
+      url: string
+      image: LfmImage[]
+      count: number
+    }[]
+  ) {
+    const el = document.getElementById('stat-top-tracks')
+    if (!el) return
+    if (!items.length) {
+      el.innerHTML = '<div class="track-row">—</div>'
+      return
+    }
+    el.innerHTML = items
+      .map((it) => {
+        const img = pickImage(it.image, 'large')
+        const thumb = img
+          ? `<img class="track-thumb" src="${esc(
+              img
+            )}" alt="" loading="lazy" width="80" height="80" />`
+          : `<div class="track-thumb track-fallback">♪</div>`
+        return `<a class="track-row" href="${esc(
+          it.url || '#'
+        )}" target="_blank" rel="noopener noreferrer">${thumb}<span class="track-meta"><span class="track-name">${esc(
+          it.name
+        )}</span><span class="track-sub">${esc(
+          it.artist
+        )}</span></span><span class="stat-count">${fmt(it.count)}</span></a>`
+      })
       .join('')
   }
 
@@ -381,23 +619,16 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
       setNum('stat-artists-count', null)
     }
 
+    const top = (method: string) =>
+      call({ method, user, period: 'overall', limit: '5' })
+
     try {
-      const [artists, albums] = await Promise.all([
-        call({
-          method: 'user.gettopartists',
-          user,
-          period: 'overall',
-          limit: '5',
-        }),
-        call({
-          method: 'user.gettopalbums',
-          user,
-          period: 'overall',
-          limit: '5',
-        }),
+      const [artists, albums, tracks] = await Promise.all([
+        top('user.gettopartists'),
+        top('user.gettopalbums'),
+        top('user.gettoptracks'),
       ])
-      renderList(
-        'stat-top-artists',
+      renderArtists(
         (artists?.topartists?.artist ?? []).map(
           (a: { name: string; playcount: string }) => ({
             name: a.name,
@@ -405,23 +636,43 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
           })
         )
       )
-      renderList(
-        'stat-top-albums',
+      renderAlbums(
         (albums?.topalbums?.album ?? []).map(
           (a: {
             name: string
+            url: string
             playcount: string
             artist?: { name: string }
+            image: LfmImage[]
           }) => ({
             name: a.name,
-            sub: a.artist?.name,
-            count: Number(a.playcount),
+            artist: a.artist?.name ?? '',
+            url: a.url,
+            image: a.image,
+          })
+        )
+      )
+      renderTracks(
+        (tracks?.toptracks?.track ?? []).map(
+          (t: {
+            name: string
+            url: string
+            playcount: string
+            artist?: { name: string }
+            image: LfmImage[]
+          }) => ({
+            name: t.name,
+            artist: t.artist?.name ?? '',
+            url: t.url,
+            image: t.image,
+            count: Number(t.playcount),
           })
         )
       )
     } catch {
-      renderList('stat-top-artists', [])
-      renderList('stat-top-albums', [])
+      renderArtists([])
+      renderAlbums([])
+      renderTracks([])
     }
   }
 
@@ -450,6 +701,7 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
   }
 
   async function loadGitHub(user: string) {
+    const avatar = document.getElementById('stat-gh-avatar')
     try {
       const res = await fetch(`https://api.github.com/users/${user}`, {
         headers: { Accept: 'application/vnd.github+json' },
@@ -462,10 +714,15 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
         'stat-gh-since',
         d?.created_at ? String(new Date(d.created_at).getFullYear()) : null
       )
+      if (avatar && d?.avatar_url) {
+        avatar.style.backgroundImage = `url("${d.avatar_url}")`
+      }
     } catch {
       ;['stat-repos', 'stat-followers', 'stat-gh-since'].forEach((id) =>
         setNum(id, null)
       )
+    } finally {
+      avatar?.classList.remove('stat-pulse')
     }
   }
 
