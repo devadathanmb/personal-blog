@@ -26,7 +26,7 @@ const fmt = (n: number) => n.toLocaleString('en-US')
 const writingTiles = [
   { label: 'Posts', value: fmt(blogPosts.length) },
   { label: 'Thoughts', value: fmt(thoughts.length) },
-  { label: 'Words written', value: fmt(totalWords) },
+  { label: 'Words', value: fmt(totalWords) },
   { label: 'Topics', value: fmt(uniqueTags.size) },
 ]
 
@@ -36,11 +36,6 @@ const { nowPlaying, trakt, github } = FEATURES
 const lastfm = Array.isArray(nowPlaying) && nowPlaying[0] ? nowPlaying[1] : null
 const traktCfg = Array.isArray(trakt) && trakt[0] ? trakt[1] : null
 const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
-
-// Shared class strings (static so UnoCSS can detect them)
-const grid = 'grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-5 mt-4 not-prose'
-const num = 'text-2xl sm:text-3xl font-semibold tabular-nums leading-none'
-const lbl = 'text-xs op-60 tracking-wide mt-1.5'
 ---
 
 <div
@@ -52,17 +47,20 @@ const lbl = 'text-xs op-60 tracking-wide mt-1.5'
   data-gh-user={githubCfg?.username}
 >
   {/* Writing — rendered at build time */}
-  <section>
-    <h2>Writing</h2>
-    <p class="op-80">
-      Everything I've published here, since {sinceYear}.
-    </p>
-    <div class={grid}>
+  <section class="stat-section">
+    <h2 id="writing">
+      <a class="header-anchor" href="#writing">#</a>
+      Writing
+    </h2>
+    <p>Everything I've published here, since {sinceYear}.</p>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 stat-grid">
       {
         writingTiles.map((t) => (
           <div class="flex flex-col">
-            <span class={num}>{t.value}</span>
-            <span class={lbl}>{t.label}</span>
+            <span class="text-2xl font-semibold tabular-nums leading-none">
+              {t.value}
+            </span>
+            <span class="stat-label">{t.label}</span>
           </div>
         ))
       }
@@ -72,45 +70,56 @@ const lbl = 'text-xs op-60 tracking-wide mt-1.5'
   {/* Music — fetched client-side from Last.fm */}
   {
     lastfm && (
-      <section>
-        <h2>
-          Music{' '}
+      <section class="stat-section">
+        <h2 id="music">
+          <a class="header-anchor" href="#music">
+            #
+          </a>
+          Music
+        </h2>
+        <p>
+          What I've been listening to, all time.{' '}
           <Link
             href={`https://www.last.fm/user/${lastfm.lastfmUsername}`}
             external
             enableNewTabWarning
-            class="text-sm font-normal op-60 border-b-none!"
+            class="op-60"
           >
             via Last.fm
           </Link>
-        </h2>
-        <p class="op-80">What I've been listening to, all time.</p>
-        <div class={grid}>
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 stat-grid">
           <div class="flex flex-col">
-            <span id="stat-scrobbles" class={`${num} stat-pulse`}>
-              …
+            <span
+              id="stat-scrobbles"
+              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+            >
+              —
             </span>
-            <span class={lbl}>Scrobbles</span>
+            <span class="stat-label">Scrobbles</span>
           </div>
           <div class="flex flex-col">
-            <span id="stat-artists-count" class={`${num} stat-pulse`}>
-              …
+            <span
+              id="stat-artists-count"
+              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+            >
+              —
             </span>
-            <span class={lbl}>Artists</span>
+            <span class="stat-label">Artists</span>
           </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 mt-6 not-prose">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-7 mt-8">
           <div>
-            <h3 class="text-sm op-60 font-medium m-0">Top artists</h3>
-            <ol id="stat-top-artists" class="stat-list">
-              <li class="stat-pulse">Loading…</li>
-            </ol>
+            <div class="stat-label">Top artists</div>
+            <div id="stat-top-artists" class="stat-list">
+              <div class="stat-row stat-pulse">Loading…</div>
+            </div>
           </div>
           <div>
-            <h3 class="text-sm op-60 font-medium m-0">Top albums</h3>
-            <ol id="stat-top-albums" class="stat-list">
-              <li class="stat-pulse">Loading…</li>
-            </ol>
+            <div class="stat-label">Top albums</div>
+            <div id="stat-top-albums" class="stat-list">
+              <div class="stat-row stat-pulse">Loading…</div>
+            </div>
           </div>
         </div>
       </section>
@@ -120,43 +129,60 @@ const lbl = 'text-xs op-60 tracking-wide mt-1.5'
   {/* Watching — fetched client-side from Trakt */}
   {
     traktCfg && (
-      <section>
-        <h2>
-          Watching{' '}
+      <section class="stat-section">
+        <h2 id="watching">
+          <a class="header-anchor" href="#watching">
+            #
+          </a>
+          Watching
+        </h2>
+        <p>
+          Films and shows I've tracked over the years.{' '}
           <Link
             href={`https://trakt.tv/users/${traktCfg.username}`}
             external
             enableNewTabWarning
-            class="text-sm font-normal op-60 border-b-none!"
+            class="op-60"
           >
             via Trakt
           </Link>
-        </h2>
-        <p class="op-80">Films and shows I've tracked over the years.</p>
-        <div class={grid}>
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 stat-grid">
           <div class="flex flex-col">
-            <span id="stat-movies" class={`${num} stat-pulse`}>
-              …
+            <span
+              id="stat-movies"
+              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+            >
+              —
             </span>
-            <span class={lbl}>Movies</span>
+            <span class="stat-label">Movies</span>
           </div>
           <div class="flex flex-col">
-            <span id="stat-shows" class={`${num} stat-pulse`}>
-              …
+            <span
+              id="stat-shows"
+              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+            >
+              —
             </span>
-            <span class={lbl}>Shows</span>
+            <span class="stat-label">Shows</span>
           </div>
           <div class="flex flex-col">
-            <span id="stat-episodes" class={`${num} stat-pulse`}>
-              …
+            <span
+              id="stat-episodes"
+              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+            >
+              —
             </span>
-            <span class={lbl}>Episodes</span>
+            <span class="stat-label">Episodes</span>
           </div>
           <div class="flex flex-col">
-            <span id="stat-days" class={`${num} stat-pulse`}>
-              …
+            <span
+              id="stat-days"
+              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+            >
+              —
             </span>
-            <span class={lbl}>Days watched</span>
+            <span class="stat-label">Days watched</span>
           </div>
         </div>
       </section>
@@ -166,37 +192,51 @@ const lbl = 'text-xs op-60 tracking-wide mt-1.5'
   {/* Code — fetched client-side from GitHub */}
   {
     githubCfg && (
-      <section>
-        <h2>
-          Code{' '}
+      <section class="stat-section">
+        <h2 id="code">
+          <a class="header-anchor" href="#code">
+            #
+          </a>
+          Code
+        </h2>
+        <p>
+          Public footprint over on GitHub.{' '}
           <Link
             href={`https://github.com/${githubCfg.username}`}
             external
             enableNewTabWarning
-            class="text-sm font-normal op-60 border-b-none!"
+            class="op-60"
           >
             via GitHub
           </Link>
-        </h2>
-        <p class="op-80">Public footprint over on GitHub.</p>
-        <div class={grid}>
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 stat-grid">
           <div class="flex flex-col">
-            <span id="stat-repos" class={`${num} stat-pulse`}>
-              …
+            <span
+              id="stat-repos"
+              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+            >
+              —
             </span>
-            <span class={lbl}>Public repos</span>
+            <span class="stat-label">Public repos</span>
           </div>
           <div class="flex flex-col">
-            <span id="stat-followers" class={`${num} stat-pulse`}>
-              …
+            <span
+              id="stat-followers"
+              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+            >
+              —
             </span>
-            <span class={lbl}>Followers</span>
+            <span class="stat-label">Followers</span>
           </div>
           <div class="flex flex-col">
-            <span id="stat-gh-since" class={`${num} stat-pulse`}>
-              …
+            <span
+              id="stat-gh-since"
+              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+            >
+              —
             </span>
-            <span class={lbl}>On GitHub since</span>
+            <span class="stat-label">On GitHub since</span>
           </div>
         </div>
       </section>
@@ -205,44 +245,64 @@ const lbl = 'text-xs op-60 tracking-wide mt-1.5'
 </div>
 
 <style>
-  #stats-board section + section {
-    margin-top: 2.5rem;
+  /* Spacing between the build-time number grid and the markdown intro. */
+  .stat-grid {
+    margin-top: 1.25rem;
   }
+
+  /* Section label — mirrors the uppercase mono label used on /uses. */
+  .stat-label {
+    margin-top: 0.4rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: 'DM Mono', 'Input Mono', 'Fira Code', monospace;
+    opacity: 0.45;
+  }
+
+  /* Ranked lists (top artists / albums) — plain divs to avoid prose list rules. */
   .stat-list {
-    list-style: none;
-    margin: 0.75rem 0 0;
-    padding: 0;
+    margin-top: 0.85rem;
     counter-reset: stat;
   }
-  .stat-list li {
+  .stat-row {
     display: flex;
     align-items: baseline;
-    gap: 0.6rem;
-    padding: 0.3rem 0;
+    gap: 0.7rem;
+    padding: 0.32rem 0;
     font-size: 0.9rem;
   }
-  .stat-list li::before {
+  .stat-row::before {
     counter-increment: stat;
     content: counter(stat);
     flex-shrink: 0;
-    width: 1.2rem;
+    width: 1.1rem;
     font-variant-numeric: tabular-nums;
-    opacity: 0.4;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
+    opacity: 0.35;
   }
-  .stat-list .stat-name {
+  /* Loading row has no rank marker. */
+  .stat-row.stat-pulse::before {
+    content: none;
+  }
+  .stat-name {
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .stat-list .stat-count {
-    margin-left: auto;
-    opacity: 0.55;
-    font-size: 0.8rem;
-    font-variant-numeric: tabular-nums;
-    flex-shrink: 0;
+  .stat-name .stat-sub {
+    font-weight: 400;
+    opacity: 0.5;
   }
+  .stat-count {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.5;
+  }
+
   .stat-pulse {
     animation: stat-pulse 1.4s ease-in-out infinite;
   }
@@ -252,7 +312,7 @@ const lbl = 'text-xs op-60 tracking-wide mt-1.5'
       opacity: 0.3;
     }
     50% {
-      opacity: 0.6;
+      opacity: 0.55;
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -265,11 +325,37 @@ const lbl = 'text-xs op-60 tracking-wide mt-1.5'
 <script>
   const fmt = (n: number) => n.toLocaleString('en-US')
 
+  const esc = (s: string) =>
+    s.replace(
+      /[&<>"]/g,
+      (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] ?? c
+    )
+
   function setNum(id: string, value: string | null) {
     const el = document.getElementById(id)
     if (!el) return
     el.textContent = value ?? '—'
     el.classList.remove('stat-pulse')
+  }
+
+  function renderList(
+    id: string,
+    items: { name: string; sub?: string; count: number }[]
+  ) {
+    const el = document.getElementById(id)
+    if (!el) return
+    if (!items.length) {
+      el.innerHTML = '<div class="stat-row">—</div>'
+      return
+    }
+    el.innerHTML = items
+      .map(
+        (it) =>
+          `<div class="stat-row"><span class="stat-name">${esc(it.name)}${
+            it.sub ? ` <span class="stat-sub">· ${esc(it.sub)}</span>` : ''
+          }</span><span class="stat-count">${fmt(it.count)}</span></div>`
+      )
+      .join('')
   }
 
   async function loadLastfm(user: string, key: string) {
@@ -293,26 +379,6 @@ const lbl = 'text-xs op-60 tracking-wide mt-1.5'
     } catch {
       setNum('stat-scrobbles', null)
       setNum('stat-artists-count', null)
-    }
-
-    const renderList = (
-      id: string,
-      items: { name: string; sub?: string; count: number }[]
-    ) => {
-      const el = document.getElementById(id)
-      if (!el) return
-      if (!items.length) {
-        el.innerHTML = '<li>—</li>'
-        return
-      }
-      el.innerHTML = items
-        .map(
-          (it) =>
-            `<li><span class="stat-name">${it.name}${
-              it.sub ? ` <span style="opacity:.5">· ${it.sub}</span>` : ''
-            }</span><span class="stat-count">${fmt(it.count)}</span></li>`
-        )
-        .join('')
     }
 
     try {
