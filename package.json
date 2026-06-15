@@ -19,7 +19,7 @@
     "toolbar:off": "astro preferences disable devToolbar",
     "prepare": "simple-git-hooks",
     "postbuild": "pagefind --site dist --exclude-selectors \"pre\" --include-characters \"<>\" && del-cli \"dist/pagefind/*ui*\"",
-    "deploy": "pnpm run build && wrangler deploy --assets=./dist",
+    "deploy": "pnpm run build && wrangler deploy",
     "cf-typegen": "wrangler types"
   },
   "devDependencies": {
