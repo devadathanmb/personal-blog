@@ -71,6 +71,10 @@ export default defineConfig({
   // combine multiple rules as utility classes
   shortcuts: [
     [
+      'mobile-panel',
+      'hidden! z-200 fixed top-10% left-50% translate-x--50% overflow-y-auto flex flex-col w-90% max-h-80vh py-4 px-6 rounded-lg bg-[var(--c-bg)] shadow-custom_0_0_10_0 text-[var(--c-text)]',
+    ],
+    [
       /^(\w+)-transition(?:-(\d+))?$/,
       (match) =>
         `transition-${match[1] === 'op' ? 'opacity' : match[1]} duration-${match[2] ? match[2] : '300'} ease-in-out`,
