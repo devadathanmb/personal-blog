@@ -24,7 +24,6 @@ const { stacked = false } = Astro.props
   document.addEventListener('astro:page-load', () => {
     /* Open tag panel when user click on button */
     const handleBtnClickToOpen = () => {
-      console.debug('[tag] open panel')
       toggleFadeEffect('backdrop', true, 'hidden')
       toggleFadeEffect('tag-panel', true, 'hidden!')
     }

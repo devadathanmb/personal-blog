@@ -147,12 +147,6 @@ const filterMode = filterModeOverride ?? tag[1].filterMode
       )
       if (this.#isSameSet(this.#selected, next)) return
 
-      console.debug('[tag-filter] sync from other instance', {
-        id: this.#instanceId,
-        sourceId: payload.sourceId,
-        selected: payload.selected,
-      })
-
       this.#suppressBroadcast = true
       this.#selected = next
       this.#renderStates(true)
@@ -228,11 +222,6 @@ const filterMode = filterModeOverride ?? tag[1].filterMode
 
       if (this.#isSameSet(this.#selected, next)) return
 
-      console.debug('[tag-filter] restore from storage', {
-        id: this.#instanceId,
-        selected: Array.from(next),
-      })
-
       this.#suppressBroadcast = true
       this.#selected = next
       this.#renderStates()
@@ -294,13 +283,6 @@ const filterMode = filterModeOverride ?? tag[1].filterMode
       const sel = [...this.#selected]
 
       for (const i of this.#items) i.classList.add('hidden')
-
-      console.debug('[tag-filter] applyFilter', {
-        id: this.#instanceId,
-        seq,
-        mode: this.#mode,
-        selected: sel,
-      })
 
       requestAnimationFrame(() => {
         if (seq !== this.#filterSeq) return
