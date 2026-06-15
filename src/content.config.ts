@@ -3,6 +3,8 @@ import { defineCollection } from 'astro:content'
 
 import { pageSchema, postSchema } from '~/schema'
 
+// Schema-only collection — never queried at runtime via getCollection/getEntry.
+// Exists solely so astro check validates MDX page frontmatter against pageSchema.
 const pages = defineCollection({
   loader: glob({ base: './src/pages', pattern: '**/*.mdx' }),
   schema: pageSchema,
