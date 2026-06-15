@@ -22,17 +22,17 @@ Pre-commit hook: `lint-staged` (ESLint fix) + `prettier` + `astro check`. CI run
 - Expressive Code for syntax highlighting (themes: vitesse-dark / vitesse-light)
 - Pagefind for client-side search (runs post-build, strips `pre` elements, includes `<>` chars)
 - Giscus (GitHub Discussions) for comments
-- Last.fm API for now-playing widget; Open-Meteo for weather (no key needed)
+- Last.fm API for now-playing widget; Trakt API for watching widget; Open-Meteo for weather (no key needed)
 - Satori + Sharp for OG image generation at build time
 
 ## Key Directories
 
 - `src/config.ts` — SITE, UI, FEATURES (primary config)
-- `src/content/blog/YYYY/` — blog posts; `src/content/thoughts/` — short-form
+- `src/content/blog/YYYY/` — blog posts; `src/content/thoughts/` — short-form; `src/content/home/` — home page content
 - `src/schema.ts` — postSchema, pageSchema (zod)
-- `src/pages/` — MDX pages (index, blog/index, thoughts, uses, now, 404, rss.xml)
-- `src/layouts/` — BaseLayout, StandardLayout
-- `src/utils/` — data.ts, datetime.ts, lastfm.ts, path.ts, toc.ts, weather.ts
+- `src/pages/` — MDX pages (index, blog/index, thoughts, uses, now, colophon, 404, rss.xml)
+- `src/layouts/` — `BaseLayout` (root HTML shell), `PageLayout` (aside + panel composition), `StandardLayout` (title/subtitle wrapper for content pages)
+- `src/utils/` — `data.ts`, `datetime.ts`, `fs.ts` (build-time file checks), `lastfm.ts`, `misc.ts` (DOM/scroll utilities), `path.ts`, `toc.ts`, `trakt.ts`, `weather.ts`
 - `plugins/index.ts` — remark + rehype pipeline
 - `src/data/uses.json` — powers /uses page + UnoCSS safelist
 
@@ -84,6 +84,16 @@ Minimal aesthetic — match the existing page. No decorative additions (animatio
 - Prose tone is intentional — do not rewrite for SEO optimization
 - Post images live in `src/assets/<post-slug>/` (co-located, processed by Astro image pipeline)
 
-## Path Alias
+## Path Aliases
 
-`~/` resolves to `src/` (`tsconfig.json`).
+Both `~/` and `@/` resolve to `src/` (`tsconfig.json`). Prefer `~/` — `@/` exists for legacy compatibility only.
+
+## Dead Code / Duplication (Fallow)
+
+Fallow is configured (`.fallowrc.json`) for dead-code and duplication analysis. Run manually after heavy refactors:
+
+```sh
+npx fallow
+```
+
+Docs: https://fallow.tools/llms.txt
