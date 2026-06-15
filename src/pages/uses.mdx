@@ -6,8 +6,7 @@ bgType: storm
 ogImage: true
 ---
 
-import BaseLayout from '~/layouts/BaseLayout.astro'
-import StandardLayout from '~/layouts/StandardLayout.astro'
+import PageLayout from '~/layouts/PageLayout.astro'
 import DesktopAside from '~/components/base/DesktopAside.astro'
 import MobileControl from '~/components/base/MobileControl.astro'
 import Link from '~/components/base/Link.astro'
@@ -17,13 +16,13 @@ import usesData from '~/data/uses.json'
 
 export const usesTags = usesData.map((s) => [s.title])
 
-<BaseLayout
+<PageLayout
   title={frontmatter.title}
+  subtitle={frontmatter.subtitle}
   description={frontmatter.description}
   bgType={frontmatter.bgType}
   ogImage={frontmatter.ogImage}
 >
-  <StandardLayout title={frontmatter.title} subtitle={frontmatter.subtitle}>
     <div slot="head" class="-mt-5 mb-6 ml-1 slide-enter animate-delay-200!">
       <LastUpdated date="2026-06-14" />
     </div>
@@ -66,5 +65,4 @@ Every tool here solved a problem at some point. The ones that remain are the one
 
     </Fragment>
 
-  </StandardLayout>
-</BaseLayout>
+</PageLayout>

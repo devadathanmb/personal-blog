@@ -1,0 +1,31 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import StandardLayout from '~/layouts/StandardLayout.astro'
+import type { BgType } from '~/types'
+
+interface Props {
+  title: string
+  subtitle?: string
+  description?: string
+  bgType?: BgType | false
+  ogImage?: string | boolean
+  class?: string
+}
+
+const {
+  title,
+  subtitle,
+  description,
+  bgType,
+  ogImage,
+  class: className,
+} = Astro.props
+---
+
+<BaseLayout {title} {description} {bgType} {ogImage}>
+  <StandardLayout {title} {subtitle} class={className}>
+    <slot name="head" slot="head" />
+    <slot name="article" slot="article" />
+    <slot />
+  </StandardLayout>
+</BaseLayout>

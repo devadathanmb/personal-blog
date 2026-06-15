@@ -6,18 +6,17 @@ bgType: storm
 ogImage: true
 ---
 
-import BaseLayout from '~/layouts/BaseLayout.astro'
-import StandardLayout from '~/layouts/StandardLayout.astro'
+import PageLayout from '~/layouts/PageLayout.astro'
 import LastUpdated from '~/components/widgets/LastUpdated.astro'
 import Link from '~/components/base/Link.astro'
 
-<BaseLayout
+<PageLayout
   title={frontmatter.title}
+  subtitle={frontmatter.subtitle}
   description={frontmatter.description}
   bgType={frontmatter.bgType}
   ogImage={frontmatter.ogImage}
 >
-  <StandardLayout title={frontmatter.title} subtitle={frontmatter.subtitle}>
     <div slot="head" class="-mt-5 mb-6 ml-1 slide-enter animate-delay-200!">
       <LastUpdated date="2026-06-14" />
     </div>
@@ -45,5 +44,4 @@ The source is on <Link href="https://github.com/devadathanmb/personal-blog" exte
 
     </Fragment>
 
-  </StandardLayout>
-</BaseLayout>
+</PageLayout>

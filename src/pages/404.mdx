@@ -6,17 +6,15 @@ bgType: false
 ogImage: false
 ---
 
-import BaseLayout from '~/layouts/BaseLayout.astro'
-import StandardLayout from '~/layouts/StandardLayout.astro'
+import PageLayout from '~/layouts/PageLayout.astro'
 
-<BaseLayout
+<PageLayout
   title={frontmatter.title}
+  subtitle={frontmatter.subtitle}
   description={frontmatter.description}
   bgType={frontmatter.bgType}
   ogImage={frontmatter.ogImage}
 >
-  <StandardLayout title={frontmatter.title} subtitle={frontmatter.subtitle}>
-    <p slot="article">Some things are worth preserving.</p>
-    <p slot="article">This page wasn't one of them.</p>
-  </StandardLayout>
-</BaseLayout>
+  <p slot="article">Some things are worth preserving.</p>
+  <p slot="article">This page wasn't one of them.</p>
+</PageLayout>
