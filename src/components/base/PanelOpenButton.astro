@@ -1,0 +1,39 @@
+---
+interface Props {
+  buttonId: string
+  panelId: string
+  bottom: string
+  label: string
+}
+
+const { buttonId, panelId, bottom, label } = Astro.props
+---
+
+<button
+  id={buttonId}
+  data-panel-id={panelId}
+  style={{ bottom }}
+  class="z-50 fixed right-5 w-10 h-10 rounded-full
+    op-0 bg-#8883 dark:bg-#8886 pointer-events-none op-transition
+    lt-lgp:(op-50 pointer-events-auto)
+    hover:op-100 print:hidden"
+  title={label}
+>
+  <slot />
+</button>
+
+<script>
+  import { toggleFadeEffect } from '~/utils/misc'
+
+  document.addEventListener('astro:page-load', () => {
+    document
+      .querySelectorAll<HTMLButtonElement>('[data-panel-id]')
+      .forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const panelId = btn.dataset.panelId!
+          toggleFadeEffect('backdrop', true, 'hidden')
+          toggleFadeEffect(panelId, true, 'hidden!')
+        })
+      })
+  })
+</script>
