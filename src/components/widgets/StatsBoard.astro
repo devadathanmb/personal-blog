@@ -268,6 +268,26 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
             </div>
           </div>
         </div>
+
+        {/* Contribution heatmap — fetched from a public no-auth proxy */}
+        <div class="mt-8">
+          <div class="hm-head">
+            <span class="stat-label">Contributions</span>
+            <span id="stat-contrib-total" class="hm-total" />
+          </div>
+          <div id="stat-heatmap" class="heatmap-scroll">
+            <div class="hm-loading stat-pulse">Loading contribution graph…</div>
+          </div>
+          <div class="hm-legend" aria-hidden="true">
+            <span>Less</span>
+            <span class="hm-cell" />
+            <span class="hm-cell l1" />
+            <span class="hm-cell l2" />
+            <span class="hm-cell l3" />
+            <span class="hm-cell l4" />
+            <span>More</span>
+          </div>
+        </div>
       </section>
     )
   }
@@ -458,6 +478,72 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     background-position: center;
     background-color: rgba(125, 125, 125, 0.12);
     border: 1px solid rgba(125, 125, 125, 0.2);
+  }
+
+  /* GitHub contribution heatmap. Monochrome shades of the text color so it
+     adapts to light/dark automatically (color-mix). */
+  #stats-board .hm-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  #stats-board .hm-total {
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    font-family: 'DM Mono', 'Input Mono', 'Fira Code', monospace;
+    opacity: 0.45;
+  }
+  #stats-board .heatmap-scroll {
+    margin-top: 0.85rem;
+    min-height: 95px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  #stats-board .heatmap {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(7, 11px);
+    grid-auto-columns: 11px;
+    gap: 3px;
+    width: max-content;
+  }
+  #stats-board .hm-cell {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--c-text) 8%, transparent);
+  }
+  #stats-board .hm-cell.empty {
+    background: transparent;
+  }
+  #stats-board .hm-cell.l1 {
+    background: color-mix(in srgb, var(--c-text) 24%, transparent);
+  }
+  #stats-board .hm-cell.l2 {
+    background: color-mix(in srgb, var(--c-text) 44%, transparent);
+  }
+  #stats-board .hm-cell.l3 {
+    background: color-mix(in srgb, var(--c-text) 66%, transparent);
+  }
+  #stats-board .hm-cell.l4 {
+    background: color-mix(in srgb, var(--c-text) 90%, transparent);
+  }
+  #stats-board .hm-loading {
+    font-size: 0.85rem;
+    opacity: 0.5;
+  }
+  #stats-board .hm-legend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 0.6rem;
+    font-size: 0.7rem;
+    opacity: 0.5;
+  }
+  #stats-board .hm-legend .hm-cell {
+    width: 10px;
+    height: 10px;
   }
 
   #stats-board .stat-pulse {
@@ -733,6 +819,46 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     }
   }
 
+  async function loadHeatmap(user: string) {
+    const wrap = document.getElementById('stat-heatmap')
+    if (!wrap) return
+    try {
+      const res = await fetch(
+        `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(
+          user
+        )}?y=last`
+      )
+      if (!res.ok) throw new Error('contrib')
+      const data = await res.json()
+      const days: { date: string; count: number; level: number }[] =
+        data?.contributions ?? []
+      if (!days.length) throw new Error('empty')
+
+      // Pad the first column so day 1 lands on its weekday row (0 = Sunday).
+      const offset = new Date(`${days[0].date}T00:00:00`).getDay()
+      let cells = ''
+      for (let i = 0; i < offset; i++)
+        cells += '<div class="hm-cell empty"></div>'
+      for (const d of days) {
+        const level = Math.max(0, Math.min(4, Number(d.level) || 0))
+        const cls = level ? `hm-cell l${level}` : 'hm-cell'
+        const label = `${fmt(d.count)} contribution${
+          d.count === 1 ? '' : 's'
+        } on ${d.date}`
+        cells += `<div class="${cls}" title="${esc(label)}"></div>`
+      }
+      wrap.innerHTML = `<div class="heatmap">${cells}</div>`
+
+      const total =
+        Number(data?.total?.lastYear) ||
+        days.reduce((sum, d) => sum + (Number(d.count) || 0), 0)
+      const totalEl = document.getElementById('stat-contrib-total')
+      if (totalEl) totalEl.textContent = `${fmt(total)} in the last year`
+    } catch {
+      wrap.innerHTML = '<div class="hm-loading">Unavailable</div>'
+    }
+  }
+
   function initStats() {
     const board = document.getElementById('stats-board')
     if (!board) return
@@ -746,7 +872,10 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     if (tkUser && tkKey) loadTrakt(tkUser, tkKey)
 
     const ghUser = board.dataset.ghUser
-    if (ghUser) loadGitHub(ghUser)
+    if (ghUser) {
+      loadGitHub(ghUser)
+      loadHeatmap(ghUser)
+    }
   }
 
   document.addEventListener('astro:page-load', initStats)
