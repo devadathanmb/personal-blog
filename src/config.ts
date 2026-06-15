@@ -38,6 +38,12 @@ export const UI: Ui = {
       displayMode: 'alwaysText',
       text: 'Now',
     },
+    {
+      path: '/stats',
+      title: 'Stats',
+      displayMode: 'alwaysText',
+      text: 'Stats',
+    },
   ],
   socialLinks: [
     {

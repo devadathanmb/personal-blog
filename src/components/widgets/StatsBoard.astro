@@ -1,0 +1,423 @@
+---
+import Link from '~/components/base/Link.astro'
+import { getFilteredPosts } from '~/utils/data'
+import { FEATURES } from '~/config'
+
+// --- Build-time writing stats (from content collections) ---
+const blogPosts = await getFilteredPosts('blog')
+const thoughts = await getFilteredPosts('thoughts')
+const allPosts = [...blogPosts, ...thoughts]
+
+const countWords = (text: string) =>
+  text.trim().split(/\s+/).filter(Boolean).length
+const totalWords = allPosts.reduce(
+  (sum, p) => sum + countWords(p.body ?? ''),
+  0
+)
+
+const uniqueTags = new Set<string>()
+for (const p of allPosts) for (const t of p.data.tags ?? []) uniqueTags.add(t)
+
+const years = allPosts.map((p) => p.data.pubDate.getFullYear())
+const sinceYear = years.length ? Math.min(...years) : new Date().getFullYear()
+
+const fmt = (n: number) => n.toLocaleString('en-US')
+
+const writingTiles = [
+  { label: 'Posts', value: fmt(blogPosts.length) },
+  { label: 'Thoughts', value: fmt(thoughts.length) },
+  { label: 'Words written', value: fmt(totalWords) },
+  { label: 'Topics', value: fmt(uniqueTags.size) },
+]
+
+// --- Data-source config (reused from existing features) ---
+const { nowPlaying, trakt, github } = FEATURES
+
+const lastfm = Array.isArray(nowPlaying) && nowPlaying[0] ? nowPlaying[1] : null
+const traktCfg = Array.isArray(trakt) && trakt[0] ? trakt[1] : null
+const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
+
+// Shared class strings (static so UnoCSS can detect them)
+const grid = 'grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-5 mt-4 not-prose'
+const num = 'text-2xl sm:text-3xl font-semibold tabular-nums leading-none'
+const lbl = 'text-xs op-60 tracking-wide mt-1.5'
+---
+
+<div
+  id="stats-board"
+  data-lastfm-user={lastfm?.lastfmUsername}
+  data-lastfm-key={lastfm?.lastfmApiKey}
+  data-trakt-user={traktCfg?.username}
+  data-trakt-key={traktCfg?.clientId}
+  data-gh-user={githubCfg?.username}
+>
+  {/* Writing — rendered at build time */}
+  <section>
+    <h2>Writing</h2>
+    <p class="op-80">
+      Everything I've published here, since {sinceYear}.
+    </p>
+    <div class={grid}>
+      {
+        writingTiles.map((t) => (
+          <div class="flex flex-col">
+            <span class={num}>{t.value}</span>
+            <span class={lbl}>{t.label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* Music — fetched client-side from Last.fm */}
+  {
+    lastfm && (
+      <section>
+        <h2>
+          Music{' '}
+          <Link
+            href={`https://www.last.fm/user/${lastfm.lastfmUsername}`}
+            external
+            enableNewTabWarning
+            class="text-sm font-normal op-60 border-b-none!"
+          >
+            via Last.fm
+          </Link>
+        </h2>
+        <p class="op-80">What I've been listening to, all time.</p>
+        <div class={grid}>
+          <div class="flex flex-col">
+            <span id="stat-scrobbles" class={`${num} stat-pulse`}>
+              …
+            </span>
+            <span class={lbl}>Scrobbles</span>
+          </div>
+          <div class="flex flex-col">
+            <span id="stat-artists-count" class={`${num} stat-pulse`}>
+              …
+            </span>
+            <span class={lbl}>Artists</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 mt-6 not-prose">
+          <div>
+            <h3 class="text-sm op-60 font-medium m-0">Top artists</h3>
+            <ol id="stat-top-artists" class="stat-list">
+              <li class="stat-pulse">Loading…</li>
+            </ol>
+          </div>
+          <div>
+            <h3 class="text-sm op-60 font-medium m-0">Top albums</h3>
+            <ol id="stat-top-albums" class="stat-list">
+              <li class="stat-pulse">Loading…</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {/* Watching — fetched client-side from Trakt */}
+  {
+    traktCfg && (
+      <section>
+        <h2>
+          Watching{' '}
+          <Link
+            href={`https://trakt.tv/users/${traktCfg.username}`}
+            external
+            enableNewTabWarning
+            class="text-sm font-normal op-60 border-b-none!"
+          >
+            via Trakt
+          </Link>
+        </h2>
+        <p class="op-80">Films and shows I've tracked over the years.</p>
+        <div class={grid}>
+          <div class="flex flex-col">
+            <span id="stat-movies" class={`${num} stat-pulse`}>
+              …
+            </span>
+            <span class={lbl}>Movies</span>
+          </div>
+          <div class="flex flex-col">
+            <span id="stat-shows" class={`${num} stat-pulse`}>
+              …
+            </span>
+            <span class={lbl}>Shows</span>
+          </div>
+          <div class="flex flex-col">
+            <span id="stat-episodes" class={`${num} stat-pulse`}>
+              …
+            </span>
+            <span class={lbl}>Episodes</span>
+          </div>
+          <div class="flex flex-col">
+            <span id="stat-days" class={`${num} stat-pulse`}>
+              …
+            </span>
+            <span class={lbl}>Days watched</span>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {/* Code — fetched client-side from GitHub */}
+  {
+    githubCfg && (
+      <section>
+        <h2>
+          Code{' '}
+          <Link
+            href={`https://github.com/${githubCfg.username}`}
+            external
+            enableNewTabWarning
+            class="text-sm font-normal op-60 border-b-none!"
+          >
+            via GitHub
+          </Link>
+        </h2>
+        <p class="op-80">Public footprint over on GitHub.</p>
+        <div class={grid}>
+          <div class="flex flex-col">
+            <span id="stat-repos" class={`${num} stat-pulse`}>
+              …
+            </span>
+            <span class={lbl}>Public repos</span>
+          </div>
+          <div class="flex flex-col">
+            <span id="stat-followers" class={`${num} stat-pulse`}>
+              …
+            </span>
+            <span class={lbl}>Followers</span>
+          </div>
+          <div class="flex flex-col">
+            <span id="stat-gh-since" class={`${num} stat-pulse`}>
+              …
+            </span>
+            <span class={lbl}>On GitHub since</span>
+          </div>
+        </div>
+      </section>
+    )
+  }
+</div>
+
+<style>
+  #stats-board section + section {
+    margin-top: 2.5rem;
+  }
+  .stat-list {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    counter-reset: stat;
+  }
+  .stat-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 0.3rem 0;
+    font-size: 0.9rem;
+  }
+  .stat-list li::before {
+    counter-increment: stat;
+    content: counter(stat);
+    flex-shrink: 0;
+    width: 1.2rem;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.4;
+    font-size: 0.8rem;
+  }
+  .stat-list .stat-name {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .stat-list .stat-count {
+    margin-left: auto;
+    opacity: 0.55;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .stat-pulse {
+    animation: stat-pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes stat-pulse {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stat-pulse {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const fmt = (n: number) => n.toLocaleString('en-US')
+
+  function setNum(id: string, value: string | null) {
+    const el = document.getElementById(id)
+    if (!el) return
+    el.textContent = value ?? '—'
+    el.classList.remove('stat-pulse')
+  }
+
+  async function loadLastfm(user: string, key: string) {
+    const base = 'https://ws.audioscrobbler.com/2.0/'
+    const call = async (params: Record<string, string>) => {
+      const url = new URL(base)
+      url.search = new URLSearchParams({
+        api_key: key,
+        format: 'json',
+        ...params,
+      }).toString()
+      const res = await fetch(url)
+      if (!res.ok) throw new Error('lastfm')
+      return res.json()
+    }
+
+    try {
+      const info = await call({ method: 'user.getinfo', user })
+      setNum('stat-scrobbles', fmt(Number(info?.user?.playcount ?? 0)))
+      setNum('stat-artists-count', fmt(Number(info?.user?.artist_count ?? 0)))
+    } catch {
+      setNum('stat-scrobbles', null)
+      setNum('stat-artists-count', null)
+    }
+
+    const renderList = (
+      id: string,
+      items: { name: string; sub?: string; count: number }[]
+    ) => {
+      const el = document.getElementById(id)
+      if (!el) return
+      if (!items.length) {
+        el.innerHTML = '<li>—</li>'
+        return
+      }
+      el.innerHTML = items
+        .map(
+          (it) =>
+            `<li><span class="stat-name">${it.name}${
+              it.sub ? ` <span style="opacity:.5">· ${it.sub}</span>` : ''
+            }</span><span class="stat-count">${fmt(it.count)}</span></li>`
+        )
+        .join('')
+    }
+
+    try {
+      const [artists, albums] = await Promise.all([
+        call({
+          method: 'user.gettopartists',
+          user,
+          period: 'overall',
+          limit: '5',
+        }),
+        call({
+          method: 'user.gettopalbums',
+          user,
+          period: 'overall',
+          limit: '5',
+        }),
+      ])
+      renderList(
+        'stat-top-artists',
+        (artists?.topartists?.artist ?? []).map(
+          (a: { name: string; playcount: string }) => ({
+            name: a.name,
+            count: Number(a.playcount),
+          })
+        )
+      )
+      renderList(
+        'stat-top-albums',
+        (albums?.topalbums?.album ?? []).map(
+          (a: {
+            name: string
+            playcount: string
+            artist?: { name: string }
+          }) => ({
+            name: a.name,
+            sub: a.artist?.name,
+            count: Number(a.playcount),
+          })
+        )
+      )
+    } catch {
+      renderList('stat-top-artists', [])
+      renderList('stat-top-albums', [])
+    }
+  }
+
+  async function loadTrakt(user: string, key: string) {
+    try {
+      const res = await fetch(`https://api.trakt.tv/users/${user}/stats`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'trakt-api-version': '2',
+          'trakt-api-key': key,
+        },
+      })
+      if (!res.ok) throw new Error('trakt')
+      const d = await res.json()
+      setNum('stat-movies', fmt(Number(d?.movies?.watched ?? 0)))
+      setNum('stat-shows', fmt(Number(d?.shows?.watched ?? 0)))
+      setNum('stat-episodes', fmt(Number(d?.episodes?.watched ?? 0)))
+      const minutes =
+        Number(d?.movies?.minutes ?? 0) + Number(d?.episodes?.minutes ?? 0)
+      setNum('stat-days', fmt(Math.round(minutes / 1440)))
+    } catch {
+      ;['stat-movies', 'stat-shows', 'stat-episodes', 'stat-days'].forEach(
+        (id) => setNum(id, null)
+      )
+    }
+  }
+
+  async function loadGitHub(user: string) {
+    try {
+      const res = await fetch(`https://api.github.com/users/${user}`, {
+        headers: { Accept: 'application/vnd.github+json' },
+      })
+      if (!res.ok) throw new Error('github')
+      const d = await res.json()
+      setNum('stat-repos', fmt(Number(d?.public_repos ?? 0)))
+      setNum('stat-followers', fmt(Number(d?.followers ?? 0)))
+      setNum(
+        'stat-gh-since',
+        d?.created_at ? String(new Date(d.created_at).getFullYear()) : null
+      )
+    } catch {
+      ;['stat-repos', 'stat-followers', 'stat-gh-since'].forEach((id) =>
+        setNum(id, null)
+      )
+    }
+  }
+
+  function initStats() {
+    const board = document.getElementById('stats-board')
+    if (!board) return
+
+    const lfUser = board.dataset.lastfmUser
+    const lfKey = board.dataset.lastfmKey
+    if (lfUser && lfKey) loadLastfm(lfUser, lfKey)
+
+    const tkUser = board.dataset.traktUser
+    const tkKey = board.dataset.traktKey
+    if (tkUser && tkKey) loadTrakt(tkUser, tkKey)
+
+    const ghUser = board.dataset.ghUser
+    if (ghUser) loadGitHub(ghUser)
+  }
+
+  document.addEventListener('astro:page-load', initStats)
+</script>
