@@ -1,5 +1,5 @@
-import { join, basename, dirname } from 'node:path'
-import { readFileSync, existsSync, writeFileSync } from 'node:fs'
+import { basename, dirname } from 'node:path'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { mkdir } from 'node:fs/promises'
 
 import { decode } from 'html-entities'
@@ -8,6 +8,7 @@ import sharp from 'sharp'
 import chalk from 'chalk'
 
 import { getCurrentFormattedTime } from '../src/utils/datetime'
+import { checkFileExistsInDir } from '../src/utils/fs'
 import { ogImageMarkup } from './og-template/markup'
 import backgroundBase64 from './og-template/base64'
 import { FEATURES } from '../src/config'
@@ -30,17 +31,6 @@ const satoriOptions: SatoriOptions = {
       data: Inter,
     },
   ],
-}
-
-/**
- * Checks if a file exists in a specified directory.
- * This path is relative to the current working directory.
- * (`public/og-images` is equivalent to `./public/og-images` and relative to the cwd)
- */
-export function checkFileExistsInDir(path: string, filename: string) {
-  const fullPath = join(process.cwd(), path, filename)
-
-  return existsSync(fullPath)
 }
 
 /**
