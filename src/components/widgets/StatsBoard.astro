@@ -343,6 +343,32 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     carry Astro's scoped-style attribute). */
 }
 <style is:global>
+  /* Heatmap hover tooltip. Lives on <body> (not under #stats-board) so it can
+     be pinned to the viewport without the heatmap's horizontal scroll clipping
+     it. Inverted bubble — text color on background color — so it reads in both
+     themes. */
+  .hm-tooltip {
+    position: fixed;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, calc(-100% - 7px));
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.35rem;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    font-family: 'DM Mono', 'Input Mono', 'Fira Code', monospace;
+    white-space: nowrap;
+    color: var(--c-bg);
+    background: var(--c-text);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    transition: opacity 0.12s ease;
+  }
+  .hm-tooltip.is-visible {
+    opacity: 1;
+  }
+
   #stats-board .stat-grid {
     margin-top: 1.25rem;
   }
@@ -980,6 +1006,52 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     }
   }
 
+  // Custom hover tooltip for the heatmap — GitHub-style instant, themed bubble
+  // built from each cell's data-label. Replaces the slow native title tooltip.
+  // A single element is reused for every cell and pinned to the viewport.
+  function setupHeatmapTooltip(wrap: HTMLElement) {
+    if (wrap.dataset.tipBound) return
+    wrap.dataset.tipBound = '1'
+
+    let tip = document.getElementById('hm-tooltip')
+    if (!tip) {
+      tip = document.createElement('div')
+      tip.id = 'hm-tooltip'
+      tip.className = 'hm-tooltip'
+      tip.setAttribute('role', 'status')
+      document.body.appendChild(tip)
+    }
+    const tooltip = tip
+
+    const hide = () => tooltip.classList.remove('is-visible')
+
+    const show = (cell: HTMLElement) => {
+      const label = cell.dataset.label
+      if (!label) return
+      tooltip.textContent = label
+      const r = cell.getBoundingClientRect()
+      // Center over the cell, clamped so the bubble never leaves the viewport.
+      const half = tooltip.offsetWidth / 2
+      const x = Math.min(
+        Math.max(r.left + r.width / 2, half + 4),
+        window.innerWidth - half - 4
+      )
+      tooltip.style.left = `${x}px`
+      tooltip.style.top = `${r.top}px`
+      tooltip.classList.add('is-visible')
+    }
+
+    wrap.addEventListener('pointerover', (e) => {
+      const cell = (e.target as HTMLElement).closest<HTMLElement>(
+        '.hm-cell[data-label]'
+      )
+      if (cell) show(cell)
+    })
+    wrap.addEventListener('pointerout', hide)
+    wrap.addEventListener('pointerleave', hide)
+    wrap.addEventListener('scroll', hide, { passive: true })
+  }
+
   async function loadHeatmap(user: string) {
     const wrap = document.getElementById('stat-heatmap')
     if (!wrap) return
@@ -1006,9 +1078,10 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
         const label = `${fmt(d.count)} contribution${
           d.count === 1 ? '' : 's'
         } on ${d.date}`
-        cells += `<div class="${cls}" title="${esc(label)}"></div>`
+        cells += `<div class="${cls}" data-label="${esc(label)}"></div>`
       }
       wrap.innerHTML = `<div class="heatmap">${cells}</div>`
+      setupHeatmapTooltip(wrap)
 
       const total =
         Number(data?.total?.lastYear) ||
