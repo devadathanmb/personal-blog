@@ -1,0 +1,31 @@
+---
+
+---
+
+<div
+  id="reading-progress"
+  class="z-40 fixed top-0 left-0 w-full h-0.5 origin-left bg-[var(--c-text)] opacity-100 dark:opacity-75 print:hidden"
+  style="transform: scaleX(0)"
+  aria-hidden="true"
+>
+</div>
+
+<script>
+  const updateProgress = () => {
+    const bar = document.getElementById('reading-progress')
+    if (!bar) return
+
+    const doc = document.documentElement
+    const scrollable = doc.scrollHeight - doc.clientHeight
+    const progress = scrollable > 0 ? doc.scrollTop / scrollable : 0
+
+    bar.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`
+  }
+
+  // Re-sync on navigation (View Transitions) and initial paint.
+  document.addEventListener('astro:page-load', updateProgress)
+
+  // Track scroll/resize once at module level (mirrors ToTopButton pattern).
+  window.addEventListener('scroll', updateProgress, { passive: true })
+  window.addEventListener('resize', updateProgress, { passive: true })
+</script>

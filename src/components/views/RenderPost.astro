@@ -12,6 +12,7 @@ import ShareLink from '~/components/widgets/ShareLink.astro'
 import SeriesNav from '~/components/widgets/SeriesNav.astro'
 import Giscus from '~/components/widgets/Giscus.astro'
 import ImageViewer from '~/components/widgets/ImageViewer.astro'
+import ReadingProgress from '~/components/widgets/ReadingProgress.astro'
 
 import { getMinutesRead } from '~/utils/data'
 import { FEATURES } from '~/config'
@@ -75,6 +76,7 @@ frontmatter to <code>false</code> or remove it to publish the post.`
 ---
 
 <BaseLayout {title} {description} {ogImage} {pubDate} {lastModDate}>
+  <ReadingProgress />
   <StandardLayout {title} {subtitle} {isSearchable} {searchFilter}>
     <Fragment slot="head">
       <PostMeta {pubDate} {lastModDate} {minutesRead} {tags} />
