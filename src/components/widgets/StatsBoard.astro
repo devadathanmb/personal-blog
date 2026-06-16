@@ -111,7 +111,7 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
 
         {/* Top albums — cover art */}
         <div class="mt-8">
-          <div class="stat-label">Top albums</div>
+          <div class="stat-label stat-heading">Top albums</div>
           <div id="stat-top-albums" class="cover-grid">
             {Array.from({ length: 5 }).map(() => (
               <div class="cover-card">
@@ -124,13 +124,13 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
         {/* Top artists + Top tracks */}
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-7 mt-8">
           <div>
-            <div class="stat-label">Top artists</div>
+            <div class="stat-label stat-heading">Top artists</div>
             <div id="stat-top-artists" class="stat-list">
               <div class="stat-row stat-pulse">Loading…</div>
             </div>
           </div>
           <div>
-            <div class="stat-label">Top tracks</div>
+            <div class="stat-label stat-heading">Top tracks</div>
             <div id="stat-top-tracks" class="track-list">
               {Array.from({ length: 5 }).map(() => (
                 <div class="track-row">
@@ -259,12 +259,55 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
             </div>
             <div class="flex flex-col">
               <span
+                id="stat-stars"
+                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+              >
+                —
+              </span>
+              <span class="stat-label">Stars earned</span>
+            </div>
+            <div class="flex flex-col">
+              <span
+                id="stat-forks"
+                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+              >
+                —
+              </span>
+              <span class="stat-label">Forks</span>
+            </div>
+            <div class="flex flex-col">
+              <span
+                id="stat-gists"
+                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
+              >
+                —
+              </span>
+              <span class="stat-label">Gists</span>
+            </div>
+            <div class="flex flex-col">
+              <span
                 id="stat-gh-since"
                 class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
               >
                 —
               </span>
               <span class="stat-label">On GitHub since</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Most starred repos + language breakdown */}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-7 mt-8">
+          <div>
+            <div class="stat-label stat-heading">Most starred</div>
+            <div id="stat-top-repos" class="stat-list">
+              <div class="stat-row stat-pulse">Loading…</div>
+            </div>
+          </div>
+          <div>
+            <div class="stat-label stat-heading">Languages</div>
+            <div id="stat-languages" class="stat-list">
+              <div class="stat-row stat-pulse">Loading…</div>
             </div>
           </div>
         </div>
@@ -287,6 +330,7 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
             <span class="hm-cell l4" />
             <span>More</span>
           </div>
+          <div id="stat-contrib-alltime" class="hm-alltime" />
         </div>
       </section>
     )
@@ -311,6 +355,13 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     text-transform: uppercase;
     font-family: 'DM Mono', 'Input Mono', 'Fira Code', monospace;
     opacity: 0.45;
+  }
+
+  /* Section headings above each ranked list (Top albums, Most starred, …).
+     Slightly larger than the tile captions that share .stat-label. */
+  #stats-board .stat-heading {
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
   }
 
   /* Ranked text list (top artists). */
@@ -353,6 +404,17 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     font-size: 0.78rem;
     font-variant-numeric: tabular-nums;
     opacity: 0.5;
+  }
+
+  /* Repo rows are links; strip the prose underline and dim on hover like the
+     other linked lists (top albums/tracks). */
+  #stats-board .stat-row.repo-row {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none !important;
+  }
+  #stats-board .repo-row:hover .stat-name {
+    opacity: 0.7;
   }
 
   /* Album cover grid. */
@@ -492,6 +554,18 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     letter-spacing: 0.05em;
     font-family: 'DM Mono', 'Input Mono', 'Fira Code', monospace;
     opacity: 0.45;
+  }
+  /* All-time total + per-year breakdown under the last-year heatmap. */
+  #stats-board .hm-alltime {
+    margin-top: 0.7rem;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+    font-family: 'DM Mono', 'Input Mono', 'Fira Code', monospace;
+    opacity: 0.45;
+  }
+  #stats-board .hm-alltime:empty {
+    display: none;
   }
   #stats-board .heatmap-scroll {
     margin-top: 0.85rem;
@@ -689,6 +763,42 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
       .join('')
   }
 
+  function renderRepos(items: { name: string; stars: number; url: string }[]) {
+    const el = document.getElementById('stat-top-repos')
+    if (!el) return
+    if (!items.length) {
+      el.innerHTML = '<div class="stat-row">—</div>'
+      return
+    }
+    el.innerHTML = items
+      .map(
+        (it) =>
+          `<a class="stat-row repo-row" href="${esc(
+            it.url
+          )}" target="_blank" rel="noopener noreferrer"><span class="stat-name">${esc(
+            it.name
+          )}</span><span class="stat-count">★ ${fmt(it.stars)}</span></a>`
+      )
+      .join('')
+  }
+
+  function renderLanguages(items: { name: string; count: number }[]) {
+    const el = document.getElementById('stat-languages')
+    if (!el) return
+    if (!items.length) {
+      el.innerHTML = '<div class="stat-row">—</div>'
+      return
+    }
+    el.innerHTML = items
+      .map(
+        (it) =>
+          `<div class="stat-row"><span class="stat-name">${esc(
+            it.name
+          )}</span><span class="stat-count">${fmt(it.count)}</span></div>`
+      )
+      .join('')
+  }
+
   async function loadLastfm(user: string, key: string) {
     const base = 'https://ws.audioscrobbler.com/2.0/'
     const call = async (params: Record<string, string>) => {
@@ -803,6 +913,7 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
       const d = await res.json()
       setNum('stat-repos', fmt(Number(d?.public_repos ?? 0)))
       setNum('stat-followers', fmt(Number(d?.followers ?? 0)))
+      setNum('stat-gists', fmt(Number(d?.public_gists ?? 0)))
       setNum(
         'stat-gh-since',
         d?.created_at ? String(new Date(d.created_at).getFullYear()) : null
@@ -811,11 +922,61 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
         avatar.style.backgroundImage = `url("${d.avatar_url}")`
       }
     } catch {
-      ;['stat-repos', 'stat-followers', 'stat-gh-since'].forEach((id) =>
-        setNum(id, null)
+      ;['stat-repos', 'stat-followers', 'stat-gists', 'stat-gh-since'].forEach(
+        (id) => setNum(id, null)
       )
     } finally {
       avatar?.classList.remove('stat-pulse')
+    }
+  }
+
+  async function loadRepos(user: string) {
+    try {
+      const res = await fetch(
+        `https://api.github.com/users/${user}/repos?per_page=100&sort=pushed`,
+        { headers: { Accept: 'application/vnd.github+json' } }
+      )
+      if (!res.ok) throw new Error('repos')
+      const repos: {
+        name: string
+        html_url: string
+        stargazers_count: number
+        forks_count: number
+        language: string | null
+      }[] = await res.json()
+
+      let stars = 0
+      let forks = 0
+      const langs: Record<string, number> = {}
+      for (const r of repos) {
+        stars += Number(r.stargazers_count) || 0
+        forks += Number(r.forks_count) || 0
+        if (r.language) langs[r.language] = (langs[r.language] ?? 0) + 1
+      }
+      setNum('stat-stars', fmt(stars))
+      setNum('stat-forks', fmt(forks))
+
+      renderRepos(
+        [...repos]
+          .sort((a, b) => b.stargazers_count - a.stargazers_count)
+          .slice(0, 5)
+          .map((r) => ({
+            name: r.name,
+            stars: r.stargazers_count,
+            url: r.html_url,
+          }))
+      )
+      renderLanguages(
+        Object.entries(langs)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5)
+          .map(([name, count]) => ({ name, count }))
+      )
+    } catch {
+      setNum('stat-stars', null)
+      setNum('stat-forks', null)
+      renderRepos([])
+      renderLanguages([])
     }
   }
 
@@ -859,6 +1020,35 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     }
   }
 
+  // All-time totals come from the same proxy with ?y=all, whose `total` field
+  // is a per-year map. Kept separate from the heatmap so a failure here never
+  // affects the last-year graph above.
+  async function loadContribTotals(user: string) {
+    const el = document.getElementById('stat-contrib-alltime')
+    if (!el) return
+    try {
+      const res = await fetch(
+        `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(
+          user
+        )}?y=all`
+      )
+      if (!res.ok) throw new Error('alltime')
+      const data = await res.json()
+      const totals: Record<string, number> = data?.total ?? {}
+      const years = Object.keys(totals)
+        .filter((y) => /^\d{4}$/.test(y))
+        .sort()
+      if (!years.length) return
+      const all = years.reduce((sum, y) => sum + (Number(totals[y]) || 0), 0)
+      const breakdown = years
+        .map((y) => `${y} ${fmt(Number(totals[y]) || 0)}`)
+        .join('  ·  ')
+      el.textContent = `${fmt(all)} all time  —  ${breakdown}`
+    } catch {
+      // Leave it empty; the last-year heatmap stays the primary view.
+    }
+  }
+
   function initStats() {
     const board = document.getElementById('stats-board')
     if (!board) return
@@ -874,7 +1064,9 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     const ghUser = board.dataset.ghUser
     if (ghUser) {
       loadGitHub(ghUser)
+      loadRepos(ghUser)
       loadHeatmap(ghUser)
+      loadContribTotals(ghUser)
     }
   }
 
