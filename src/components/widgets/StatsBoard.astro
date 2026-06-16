@@ -30,6 +30,26 @@ const writingTiles = [
   { label: 'Topics', value: fmt(uniqueTags.size) },
 ]
 
+// Placeholder tiles filled in client-side; `id` is the hook the script writes to.
+const musicTiles = [
+  { id: 'stat-scrobbles', label: 'Scrobbles' },
+  { id: 'stat-artists-count', label: 'Artists' },
+]
+const watchingTiles = [
+  { id: 'stat-movies', label: 'Movies' },
+  { id: 'stat-shows', label: 'Shows' },
+  { id: 'stat-episodes', label: 'Episodes' },
+  { id: 'stat-days', label: 'Days watched' },
+]
+const codeTiles = [
+  { id: 'stat-repos', label: 'Public repos' },
+  { id: 'stat-followers', label: 'Followers' },
+  { id: 'stat-stars', label: 'Stars earned' },
+  { id: 'stat-forks', label: 'Forks' },
+  { id: 'stat-gists', label: 'Gists' },
+  { id: 'stat-gh-since', label: 'On GitHub since' },
+]
+
 // --- Data-source config (reused from existing features) ---
 const { nowPlaying, trakt, github } = FEATURES
 
@@ -57,9 +77,7 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
       {
         writingTiles.map((t) => (
           <div class="flex flex-col">
-            <span class="text-2xl font-semibold tabular-nums leading-none">
-              {t.value}
-            </span>
+            <span class="stat-value">{t.value}</span>
             <span class="stat-label">{t.label}</span>
           </div>
         ))
@@ -89,24 +107,14 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
           </Link>
         </p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 stat-grid">
-          <div class="flex flex-col">
-            <span
-              id="stat-scrobbles"
-              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-            >
-              —
-            </span>
-            <span class="stat-label">Scrobbles</span>
-          </div>
-          <div class="flex flex-col">
-            <span
-              id="stat-artists-count"
-              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-            >
-              —
-            </span>
-            <span class="stat-label">Artists</span>
-          </div>
+          {musicTiles.map((t) => (
+            <div class="flex flex-col">
+              <span id={t.id} class="stat-value stat-pulse">
+                —
+              </span>
+              <span class="stat-label">{t.label}</span>
+            </div>
+          ))}
         </div>
 
         {/* Top albums — cover art */}
@@ -169,42 +177,14 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
           </Link>
         </p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 stat-grid">
-          <div class="flex flex-col">
-            <span
-              id="stat-movies"
-              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-            >
-              —
-            </span>
-            <span class="stat-label">Movies</span>
-          </div>
-          <div class="flex flex-col">
-            <span
-              id="stat-shows"
-              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-            >
-              —
-            </span>
-            <span class="stat-label">Shows</span>
-          </div>
-          <div class="flex flex-col">
-            <span
-              id="stat-episodes"
-              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-            >
-              —
-            </span>
-            <span class="stat-label">Episodes</span>
-          </div>
-          <div class="flex flex-col">
-            <span
-              id="stat-days"
-              class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-            >
-              —
-            </span>
-            <span class="stat-label">Days watched</span>
-          </div>
+          {watchingTiles.map((t) => (
+            <div class="flex flex-col">
+              <span id={t.id} class="stat-value stat-pulse">
+                —
+              </span>
+              <span class="stat-label">{t.label}</span>
+            </div>
+          ))}
         </div>
       </section>
     )
@@ -239,60 +219,14 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
             aria-label="GitHub profile photo"
           />
           <div class="grid grid-cols-3 gap-x-6 gap-y-6 flex-1 w-full">
-            <div class="flex flex-col">
-              <span
-                id="stat-repos"
-                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-              >
-                —
-              </span>
-              <span class="stat-label">Public repos</span>
-            </div>
-            <div class="flex flex-col">
-              <span
-                id="stat-followers"
-                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-              >
-                —
-              </span>
-              <span class="stat-label">Followers</span>
-            </div>
-            <div class="flex flex-col">
-              <span
-                id="stat-stars"
-                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-              >
-                —
-              </span>
-              <span class="stat-label">Stars earned</span>
-            </div>
-            <div class="flex flex-col">
-              <span
-                id="stat-forks"
-                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-              >
-                —
-              </span>
-              <span class="stat-label">Forks</span>
-            </div>
-            <div class="flex flex-col">
-              <span
-                id="stat-gists"
-                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-              >
-                —
-              </span>
-              <span class="stat-label">Gists</span>
-            </div>
-            <div class="flex flex-col">
-              <span
-                id="stat-gh-since"
-                class="text-2xl font-semibold tabular-nums leading-none stat-pulse"
-              >
-                —
-              </span>
-              <span class="stat-label">On GitHub since</span>
-            </div>
+            {codeTiles.map((t) => (
+              <div class="flex flex-col">
+                <span id={t.id} class="stat-value stat-pulse">
+                  —
+                </span>
+                <span class="stat-label">{t.label}</span>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -371,6 +305,14 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
 
   #stats-board .stat-grid {
     margin-top: 1.25rem;
+  }
+
+  /* The big number on each tile (replaces a repeated utility-class string). */
+  #stats-board .stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
   }
 
   /* Section label — mirrors the uppercase mono label used on /uses. */
@@ -710,49 +652,49 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
     el.classList.remove('stat-pulse')
   }
 
-  function renderArtists(items: { name: string; count: number }[]) {
-    const el = document.getElementById('stat-top-artists')
+  const clearNums = (ids: string[]) => ids.forEach((id) => setNum(id, null))
+
+  // Render a list of items into #id, or a placeholder row when empty.
+  function renderInto<T>(
+    id: string,
+    items: T[],
+    row: (item: T) => string,
+    empty = '<div class="stat-row">—</div>'
+  ) {
+    const el = document.getElementById(id)
     if (!el) return
-    if (!items.length) {
-      el.innerHTML = '<div class="stat-row">—</div>'
-      return
-    }
-    el.innerHTML = items
-      .map(
-        (it) =>
-          `<div class="stat-row"><span class="stat-name">${esc(
-            it.name
-          )}</span><span class="stat-count">${fmt(it.count)}</span></div>`
-      )
-      .join('')
+    el.innerHTML = items.length ? items.map(row).join('') : empty
+  }
+
+  function renderArtists(items: { name: string; count: number }[]) {
+    renderInto(
+      'stat-top-artists',
+      items,
+      (it) =>
+        `<div class="stat-row"><span class="stat-name">${esc(
+          it.name
+        )}</span><span class="stat-count">${fmt(it.count)}</span></div>`
+    )
   }
 
   function renderAlbums(
     items: { name: string; artist: string; url: string; image: LfmImage[] }[]
   ) {
-    const el = document.getElementById('stat-top-albums')
-    if (!el) return
-    if (!items.length) {
-      el.innerHTML = '<div class="stat-row">—</div>'
-      return
-    }
-    el.innerHTML = items
-      .map((it) => {
-        const img = pickImage(it.image, 'extralarge')
-        const art = img
-          ? `<img class="cover-img" src="${esc(img)}" alt="" loading="lazy" />`
-          : `<span class="cover-fallback">♪</span>`
-        return `<a class="cover-card" href="${esc(
-          it.url || '#'
-        )}" target="_blank" rel="noopener noreferrer" title="${esc(
-          it.name
-        )} · ${esc(
-          it.artist
-        )}"><span class="cover-art">${art}</span><span class="cover-name">${esc(
-          it.name
-        )}</span><span class="cover-sub">${esc(it.artist)}</span></a>`
-      })
-      .join('')
+    renderInto('stat-top-albums', items, (it) => {
+      const img = pickImage(it.image, 'extralarge')
+      const art = img
+        ? `<img class="cover-img" src="${esc(img)}" alt="" loading="lazy" />`
+        : `<span class="cover-fallback">♪</span>`
+      return `<a class="cover-card" href="${esc(
+        it.url || '#'
+      )}" target="_blank" rel="noopener noreferrer" title="${esc(
+        it.name
+      )} · ${esc(
+        it.artist
+      )}"><span class="cover-art">${art}</span><span class="cover-name">${esc(
+        it.name
+      )}</span><span class="cover-sub">${esc(it.artist)}</span></a>`
+    })
   }
 
   function renderTracks(
@@ -764,14 +706,10 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
       count: number
     }[]
   ) {
-    const el = document.getElementById('stat-top-tracks')
-    if (!el) return
-    if (!items.length) {
-      el.innerHTML = '<div class="track-row">—</div>'
-      return
-    }
-    el.innerHTML = items
-      .map((it) => {
+    renderInto(
+      'stat-top-tracks',
+      items,
+      (it) => {
         const img = pickImage(it.image, 'large')
         const thumb = img
           ? `<img class="track-thumb" src="${esc(
@@ -785,44 +723,33 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
         )}</span><span class="track-sub">${esc(
           it.artist
         )}</span></span><span class="stat-count">${fmt(it.count)}</span></a>`
-      })
-      .join('')
+      },
+      '<div class="track-row">—</div>'
+    )
   }
 
   function renderRepos(items: { name: string; stars: number; url: string }[]) {
-    const el = document.getElementById('stat-top-repos')
-    if (!el) return
-    if (!items.length) {
-      el.innerHTML = '<div class="stat-row">—</div>'
-      return
-    }
-    el.innerHTML = items
-      .map(
-        (it) =>
-          `<a class="stat-row repo-row" href="${esc(
-            it.url
-          )}" target="_blank" rel="noopener noreferrer"><span class="stat-name">${esc(
-            it.name
-          )}</span><span class="stat-count">★ ${fmt(it.stars)}</span></a>`
-      )
-      .join('')
+    renderInto(
+      'stat-top-repos',
+      items,
+      (it) =>
+        `<a class="stat-row repo-row" href="${esc(
+          it.url
+        )}" target="_blank" rel="noopener noreferrer"><span class="stat-name">${esc(
+          it.name
+        )}</span><span class="stat-count">★ ${fmt(it.stars)}</span></a>`
+    )
   }
 
   function renderLanguages(items: { name: string; count: number }[]) {
-    const el = document.getElementById('stat-languages')
-    if (!el) return
-    if (!items.length) {
-      el.innerHTML = '<div class="stat-row">—</div>'
-      return
-    }
-    el.innerHTML = items
-      .map(
-        (it) =>
-          `<div class="stat-row"><span class="stat-name">${esc(
-            it.name
-          )}</span><span class="stat-count">${fmt(it.count)}</span></div>`
-      )
-      .join('')
+    renderInto(
+      'stat-languages',
+      items,
+      (it) =>
+        `<div class="stat-row"><span class="stat-name">${esc(
+          it.name
+        )}</span><span class="stat-count">${fmt(it.count)}</span></div>`
+    )
   }
 
   async function loadLastfm(user: string, key: string) {
@@ -923,9 +850,7 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
         Number(d?.movies?.minutes ?? 0) + Number(d?.episodes?.minutes ?? 0)
       setNum('stat-days', fmt(Math.round(minutes / 1440)))
     } catch {
-      ;['stat-movies', 'stat-shows', 'stat-episodes', 'stat-days'].forEach(
-        (id) => setNum(id, null)
-      )
+      clearNums(['stat-movies', 'stat-shows', 'stat-episodes', 'stat-days'])
     }
   }
 
@@ -948,9 +873,7 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
         avatar.style.backgroundImage = `url("${d.avatar_url}")`
       }
     } catch {
-      ;['stat-repos', 'stat-followers', 'stat-gists', 'stat-gh-since'].forEach(
-        (id) => setNum(id, null)
-      )
+      clearNums(['stat-repos', 'stat-followers', 'stat-gists', 'stat-gh-since'])
     } finally {
       avatar?.classList.remove('stat-pulse')
     }
