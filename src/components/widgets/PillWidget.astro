@@ -8,6 +8,7 @@ const { class: extraClass, ...attrs } = Astro.props
 
 <div
   class:list={[
+    'pill',
     'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full h-fit w-fit',
     'bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a]',
     'border border-gray-200 dark:border-[#333] transition-colors duration-200',
@@ -33,29 +34,40 @@ const { class: extraClass, ...attrs } = Astro.props
     animation: pill-pulse 1.4s ease-in-out infinite;
   }
 
-  /* Primary text: bright, matches page text */
-  .pill-primary {
+  /* Primary text: bright, matches page text.
+     Scoped under `.pill` so the component owns these colors no matter which
+     element carries the class. The pills live inside `.prose`, whose global
+     `.prose a` rule (specificity 0,1,1) would otherwise outrank a bare
+     `.pill-primary` (0,1,0) — but only when the text is a link (the now-playing
+     title), which is exactly the inconsistency this guards against. */
+  .pill .pill-primary {
     color: #1f2937;
   }
-  :root.dark .pill-primary {
+  :root.dark .pill .pill-primary {
     color: #e5e7eb;
   }
 
-  /* Secondary text: 80% opacity of inherited text color */
-  .pill-secondary {
+  /* Secondary text: 80% opacity of inherited pill text color */
+  .pill .pill-secondary {
     opacity: 0.8;
   }
 
-  /* Shared link style for data widgets (GitHub, Trakt, etc.) */
+  /* Primary turns emerald on hover, whether the link is the title itself
+     (now-playing) or wraps it (GitHub/Trakt via .pill-widget-link). */
+  a.pill-primary:hover,
+  .pill-widget-link:hover .pill-primary {
+    color: #059669;
+  }
+  :root.dark a.pill-primary:hover,
+  :root.dark .pill-widget-link:hover .pill-primary {
+    color: #34d399;
+  }
+
+  /* Data-widget links inherit the pill's text color and drop the prose
+     underline; their secondary line reads from this inherited color. */
   .pill-widget-link,
   .pill-widget-link:hover {
     border-bottom: none !important;
     color: inherit !important;
-  }
-  .pill-widget-link:hover .pill-primary {
-    color: #059669 !important;
-  }
-  :root.dark .pill-widget-link:hover .pill-primary {
-    color: #34d399 !important;
   }
 </style>
