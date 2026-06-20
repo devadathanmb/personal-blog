@@ -63,11 +63,15 @@ const { class: extraClass, ...attrs } = Astro.props
     color: #34d399;
   }
 
-  /* Data-widget links inherit the pill's text color and drop the prose
-     underline; their secondary line reads from this inherited color. */
-  .pill-widget-link,
-  .pill-widget-link:hover {
+  /* Pills never want the prose underline on any link. */
+  .pill a,
+  .pill a:hover {
     border-bottom: none !important;
+  }
+
+  /* Data-widget links inherit the pill's text color so their secondary line
+     reads from it, not the brighter prose link color. */
+  .pill-widget-link {
     color: inherit !important;
   }
 </style>
