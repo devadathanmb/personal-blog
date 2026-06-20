@@ -50,7 +50,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
             data-lat={lat}
             data-lon={lon}
           />
-          <span class="lw-weather-temp pill-primary font-mono text-xs tabular-nums lw-loading">
+          <span class="lw-weather-temp pill-primary font-mono text-xs tabular-nums pill-loading">
             --°
           </span>
         </a>
@@ -76,19 +76,6 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
   .lw-weather-icon-sized {
     width: 1.75rem !important;
     height: 1.75rem !important;
-  }
-
-  @keyframes lw-pulse {
-    0%,
-    100% {
-      opacity: 0.35;
-    }
-    50% {
-      opacity: 0.75;
-    }
-  }
-  .lw-loading {
-    animation: lw-pulse 1.4s ease-in-out infinite;
   }
 </style>
 
@@ -144,7 +131,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
         const tempEl = iconEl.nextElementSibling as HTMLElement | null
 
         if (!weather) {
-          tempEl?.classList.remove('lw-loading')
+          tempEl?.classList.remove('pill-loading')
           return
         }
 
@@ -152,7 +139,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 
         if (tempEl?.classList.contains('lw-weather-temp')) {
           tempEl.textContent = `${weather.temp}°`
-          tempEl.classList.remove('lw-loading')
+          tempEl.classList.remove('pill-loading')
         }
       })
   }
