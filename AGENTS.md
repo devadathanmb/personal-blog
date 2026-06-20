@@ -24,7 +24,7 @@ Pre-commit hook: `lint-staged` (ESLint fix) + full `prettier` + `astro check`. C
 - Pagefind for client-side search (runs post-build, strips `pre` elements, includes `<>` chars)
 - Giscus (GitHub Discussions) for comments
 - Last.fm API for now-playing widget; Trakt API for watching widget; Open-Meteo for weather (no key needed) — all fetched client-side
-- Satori + Sharp generate OG images at build time (`plugins/remark-generate-og-image.ts` + `plugins/og-template/`)
+- Satori + Sharp generate OG images at build time (`plugins/remark-generate-og-image.ts` + `plugins/og-template/`). `public/og-images/` is a **committed cache** — the plugin skips generation when the PNG already exists. After adding a page/post with `ogImage` enabled, commit the generated `public/og-images/<slug>.png`; otherwise every build regenerates it and leaves it untracked.
 
 ## Key Directories
 
