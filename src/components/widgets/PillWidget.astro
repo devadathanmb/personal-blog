@@ -6,21 +6,42 @@ interface Props {
 const { class: extraClass, ...attrs } = Astro.props
 ---
 
-<div
-  class:list={[
-    'pill',
-    'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full h-fit w-fit',
-    'bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a]',
-    'border border-gray-200 dark:border-[#333] transition-colors duration-200',
-    extraClass,
-  ]}
-  {...attrs}
->
+<div class:list={['pill', extraClass]} {...attrs}>
   <slot name="icon" />
   <slot />
 </div>
 
 <style is:global>
+  /* Pill shell. Authored as plain CSS rather than utility classes: Astro splits
+     UnoCSS utilities across per-component chunks and only links the ones a
+     loaded component uses, so utilities unique to this nested component were
+     silently dropped from the now page (padding, gap, background, border all
+     vanished). A component's own <style> is always bundled when it renders. */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem; /* gap-1.5 */
+    width: fit-content;
+    height: fit-content;
+    padding: 0.375rem 0.75rem; /* py-1.5 px-3 */
+    border: 1px solid #e5e7eb; /* gray-200 */
+    border-radius: 9999px; /* rounded-full */
+    background-color: #f3f4f6; /* gray-100 */
+    transition:
+      background-color 0.2s,
+      border-color 0.2s;
+  }
+  .pill:hover {
+    background-color: #e5e7eb; /* gray-200 */
+  }
+  :root.dark .pill {
+    background-color: #1f1f1f;
+    border-color: #333;
+  }
+  :root.dark .pill:hover {
+    background-color: #2a2a2a;
+  }
+
   @keyframes pill-pulse {
     0%,
     100% {
