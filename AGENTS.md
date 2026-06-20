@@ -70,6 +70,7 @@ toc: [true, { minHeadingLevel: 2, maxHeadingLevel: 5, displayPosition: 'right', 
 - Icons follow `i-<collection>-<icon>` or `i-<collection>:<icon>` format from `@iconify/json`
 - Content files (`src/content/**`) are not piped through Vite in Astro 6 — listed explicitly in `unocss.config.ts` `content.filesystem`
 - Custom breakpoint: `lgp` at `1128px` (in addition to standard Wind3 breakpoints)
+- Utility CSS is split into per-component chunks; a page only links the chunks its loaded components reference. Utilities that appear **only** in a shared/nested component (e.g. `PillWidget`, rendered via other widgets) can be dropped from a page's CSS. For a component's own **structural** styles that must always render, author them as plain CSS in the component's `<style>` block (always bundled when it renders) rather than utility classes — see `PillWidget.astro`'s `.pill` shell
 
 ## Markdown Pipeline
 
