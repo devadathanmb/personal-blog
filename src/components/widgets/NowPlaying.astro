@@ -1,10 +1,12 @@
 ---
 import PillWidget from './PillWidget.astro'
+import { PILL_WIDGET_ICON_CLASSES } from './pillIcons'
 import { FEATURES } from '~/config'
 
 const { nowPlaying } = FEATURES
 const enabled = Array.isArray(nowPlaying) && nowPlaying[0]
 const { lastfmUsername = '', lastfmApiKey = '' } = enabled ? nowPlaying[1] : {}
+const IDLE_ICON_CLASS = PILL_WIDGET_ICON_CLASSES.nowPlayingIdle
 ---
 
 {
@@ -19,7 +21,7 @@ const { lastfmUsername = '', lastfmApiKey = '' } = enabled ? nowPlaying[1] : {}
           id="np-fallback"
           class="w-full h-full flex items-center justify-center"
         >
-          <div class="i-fluent-emoji-headphone" />
+          <div class={IDLE_ICON_CLASS} />
         </div>
         <div
           id="np-bars"

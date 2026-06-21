@@ -1,5 +1,6 @@
 ---
 import PillWidget from './PillWidget.astro'
+import { PILL_WIDGET_ICON_CLASSES } from './pillIcons'
 import { FEATURES } from '~/config'
 
 interface Props {
@@ -20,13 +21,16 @@ const {
   lon = featureConfig?.lon,
 } = Astro.props
 
+const LOCATION_ICON_CLASS = PILL_WIDGET_ICON_CLASSES.location
+const TIME_ICON_CLASS = PILL_WIDGET_ICON_CLASSES.time
+
 const showWeather = lat !== undefined && lon !== undefined
 const mapsUrl = 'https://maps.app.goo.gl/2rykg2HR5Mb4gmzF9'
 const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 ---
 
 <PillWidget class="text-sm font-medium">
-  <div class="i-line-md-map-marker-alt-filled-loop shrink-0 text-sm"></div>
+  <div class={LOCATION_ICON_CLASS}></div>
   <a
     href={mapsUrl}
     target="_blank"
@@ -60,7 +64,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 
   <span class="op-20 select-none text-[10px] mx-0.5">|</span>
 
-  <div class="i-line-md-watch-twotone-loop shrink-0 text-base"></div>
+  <div class={TIME_ICON_CLASS}></div>
   <span
     class="font-mono text-emerald-600 dark:text-emerald-400 text-xs live-time-widget tracking-tight tabular-nums"
     data-timezone={timezone}

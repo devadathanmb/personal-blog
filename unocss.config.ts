@@ -11,6 +11,7 @@ import {
 import { UI } from './src/config'
 import usesData from './src/data/uses.json'
 import colophonData from './src/data/colophon.json'
+import { PILL_WIDGET_ICON_SAFE_LIST } from './src/components/widgets/pillIcons'
 import { WEATHER_ICON_CLASSES } from './src/utils/weather'
 
 import type {
@@ -145,6 +146,9 @@ export default defineConfig({
 
     /* Toc */
     'i-ri-menu-2-fill',
+
+    /* Pill widgets — classes are set through constants in src/components/widgets/pillIcons.ts */
+    ...PILL_WIDGET_ICON_SAFE_LIST,
 
     /* NowPlaying — floating note icons are constructed in JS at runtime */
     'i-ri-music-2-fill',

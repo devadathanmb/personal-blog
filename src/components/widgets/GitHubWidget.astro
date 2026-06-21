@@ -1,16 +1,18 @@
 ---
 import PillWidget from './PillWidget.astro'
+import { PILL_WIDGET_ICON_CLASSES } from './pillIcons'
 import { FEATURES } from '~/config'
 
 const { github } = FEATURES
 const enabled = Array.isArray(github) && github[0]
 const { username = '' } = enabled ? github[1] : {}
+const ICON_CLASS = PILL_WIDGET_ICON_CLASSES.github
 ---
 
 {
   enabled && username && (
     <PillWidget class="github-widget" data-username={username}>
-      <div slot="icon" class="i-line-md:github-loop shrink-0 text-lg" />
+      <div slot="icon" class={ICON_CLASS} />
       <a
         href={`https://github.com/${username}`}
         target="_blank"
