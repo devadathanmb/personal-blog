@@ -10,6 +10,7 @@ import PageLayout from '~/layouts/PageLayout.astro'
 import DesktopAside from '~/components/base/DesktopAside.astro'
 import MobileControl from '~/components/base/MobileControl.astro'
 import Link from '~/components/base/Link.astro'
+import ProseNote from '~/components/base/ProseNote.astro'
 import UsesSection from '~/components/widgets/UsesSection.astro'
 import LastUpdated from '~/components/widgets/LastUpdated.astro'
 import usesData from '~/data/uses.json'
@@ -55,13 +56,12 @@ Every tool here solved a problem at some point. The ones that remain are the one
   </Link>
 </div>
 
-<em>
-  {"If you're curious about this concept, "}
-  <Link href="https://uses.tech" external enableNewTabWarning>
-    {'uses.tech'}
-  </Link>
-  {' has the full story.'}
-</em>
+<ProseNote
+  before="If you're curious about this concept, "
+  href="https://uses.tech"
+  linkText="uses.tech"
+  after=" has the full story."
+/>
 
     </Fragment>
 

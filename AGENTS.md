@@ -80,6 +80,12 @@ Rehype: heading IDs, KaTeX, callouts (vitepress theme), external links (auto new
 
 Syntax highlighting: Expressive Code only — `syntaxHighlight: false` in astro.config (Astro's built-in is off).
 
+### MDX inline-JSX + Prettier gotcha
+
+Never hand-write a standalone inline JSX element that mixes text and tags in MDX, e.g. `<em>text <Link/> more text</em>` on its own line. Prettier expands it across lines, and MDX then parses the breaks as separate paragraphs (prettier [#16589](https://github.com/prettier/prettier/issues/16589)/[#6274](https://github.com/prettier/prettier/issues/6274)) — the line renders broken. Inline links _inside_ a normal prose paragraph are fine (`proseWrap: preserve` keeps them on one line); only standalone JSX blocks break.
+
+For the common "italic note with one link" case (the closing line on `/uses`, `/now`, `/colophon`), use `~/components/base/ProseNote.astro` — a prop-only self-closing tag Prettier can't split. For other one-off cases, move the markup into an `.astro` component so the MDX only holds a single self-closing tag.
+
 ## Design
 
 Minimal aesthetic — match the existing page. No decorative additions (animations, gradients, drop shadows) unless explicitly requested.
