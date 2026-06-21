@@ -66,7 +66,7 @@ toc: [true, { minHeadingLevel: 2, maxHeadingLevel: 5, displayPosition: 'right', 
 
 ## UnoCSS Gotchas
 
-- Dynamically constructed class strings (icons, uses.json items) must be added to the `safelist` in `unocss.config.ts` — UnoCSS won't detect them at build time
+- Dynamically constructed class strings (icons, uses.json items) must be added to the `safelist` in `unocss.config.ts` — UnoCSS won't detect them at build time. This includes literal class strings that live in a `.ts`/constants module and are applied via a `class={…}` binding (e.g. `src/components/widgets/pillIcons.ts`): static extraction can't follow the binding, so they need safelisting even though the token appears literally in a scanned file. A class written directly in markup (`.astro`/`.mdx`) does not.
 - Icons follow `i-<collection>-<icon>` or `i-<collection>:<icon>` format from `@iconify/json`
 - Content files (`src/content/**`) are not piped through Vite in Astro 6 — listed explicitly in `unocss.config.ts` `content.filesystem`
 - Custom breakpoint: `lgp` at `1128px` (in addition to standard Wind3 breakpoints)
