@@ -39,7 +39,7 @@ const watchingTiles = [
   { id: 'stat-movies', label: 'Movies' },
   { id: 'stat-shows', label: 'Shows' },
   { id: 'stat-episodes', label: 'Episodes' },
-  { id: 'stat-days', label: 'Days watched' },
+  { id: 'stat-days', label: 'Watch time' },
 ]
 const codeTiles = [
   { id: 'stat-repos', label: 'Public repos' },
@@ -624,6 +624,16 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
 
   const fmt = (n: number) => n.toLocaleString('en-US')
 
+  // Total watch time arrives in minutes; pick the largest unit that keeps the
+  // number meaningful so a small history reads honestly instead of "0 days".
+  function formatWatchTime(minutes: number): string {
+    const oneDecimal = (n: number) => n.toFixed(1).replace(/\.0$/, '')
+    if (minutes < 60) return `${minutes} min`
+    if (minutes < 1440) return `${oneDecimal(minutes / 60)} hrs`
+    const days = oneDecimal(minutes / 1440)
+    return `${days} ${days === '1' ? 'day' : 'days'}`
+  }
+
   const esc = (s: string) =>
     s.replace(
       /[&<>"]/g,
@@ -848,7 +858,7 @@ const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
       setNum('stat-episodes', fmt(Number(d?.episodes?.watched ?? 0)))
       const minutes =
         Number(d?.movies?.minutes ?? 0) + Number(d?.episodes?.minutes ?? 0)
-      setNum('stat-days', fmt(Math.round(minutes / 1440)))
+      setNum('stat-days', formatWatchTime(minutes))
     } catch {
       clearNums(['stat-movies', 'stat-shows', 'stat-episodes', 'stat-days'])
     }
