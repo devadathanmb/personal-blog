@@ -14,7 +14,7 @@ Devadathan's personal blog at devadathanmb.in — built with Astro 6, shipped as
 | `pnpm format:write` | Prettier with cache                    |
 | `pnpm deploy`       | Build + `wrangler deploy` (`dist/`)    |
 
-Pre-commit hook: `lint-staged` (ESLint fix) + full `prettier` + `astro check`. CI runs check + lint + build on push/PR to `v2`. Node ≥ 22.12, pnpm 10.
+Pre-commit hook: `lint-staged` (ESLint fix on JS/TS/Astro) + full `prettier` + `astro check`. `lint-staged` also runs `scripts/bump-last-updated.mjs` on any committed `src/pages/**/*.mdx`, rewriting its `<LastUpdated date="…" />` to today's date (no-op if already today or the page has no widget) and re-staging it — so a page's "last updated" always reflects its last shipped change, regardless of editor. CI runs check + lint + build on push/PR to `v2`. Node ≥ 22.12, pnpm 10.
 
 ## Stack
 

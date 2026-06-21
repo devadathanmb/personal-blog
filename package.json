@@ -82,6 +82,9 @@
   "lint-staged": {
     "*.{js,ts,mjs,cjs,astro}": [
       "eslint --fix --cache"
+    ],
+    "src/pages/**/*.mdx": [
+      "node scripts/bump-last-updated.mjs"
     ]
   },
   "pnpm": {
