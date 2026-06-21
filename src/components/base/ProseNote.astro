@@ -1,0 +1,35 @@
+---
+import Link from './Link.astro'
+
+/**
+ * An italic prose note with a single inline link.
+ *
+ * Why this exists: writing `<em>text <Link/> text</em>` directly in MDX is
+ * fragile. Prettier expands the standalone JSX block across lines, and MDX then
+ * parses the line breaks as separate paragraphs (prettier #16589/#6274). Because
+ * this is a self-closing tag with prop-only content, Prettier can wrap the
+ * attributes freely without ever splitting it into paragraphs.
+ */
+interface Props {
+  /** Text rendered before the link. Include a trailing space if needed. */
+  before?: string
+  /** Link target. Omit to render a plain italic note with no link. */
+  href?: string
+  /** Visible link text. */
+  linkText?: string
+  /** Text rendered after the link. Include a leading space/comma if needed. */
+  after?: string
+}
+
+const { before, href, linkText, after } = Astro.props
+---
+
+<em
+  >{before}{
+    href && (
+      <Link {href} external enableNewTabWarning>
+        {linkText}
+      </Link>
+    )
+  }{after}</em
+>

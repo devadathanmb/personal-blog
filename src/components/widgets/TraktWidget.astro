@@ -1,10 +1,12 @@
 ---
 import PillWidget from './PillWidget.astro'
+import { PILL_WIDGET_ICON_CLASSES } from './pillIcons'
 import { FEATURES } from '~/config'
 
 const { trakt } = FEATURES
 const enabled = Array.isArray(trakt) && trakt[0]
 const { username = '', clientId = '' } = enabled ? trakt[1] : {}
+const ICON_CLASS = PILL_WIDGET_ICON_CLASSES.trakt
 ---
 
 {
@@ -14,7 +16,7 @@ const { username = '', clientId = '' } = enabled ? trakt[1] : {}
       data-username={username}
       data-clientid={clientId}
     >
-      <div slot="icon" class="i-mdi:television-classic shrink-0 text-xl" />
+      <div slot="icon" class={ICON_CLASS} />
       <a
         href={`https://trakt.tv/users/${username}`}
         target="_blank"

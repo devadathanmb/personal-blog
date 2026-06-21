@@ -1,4 +1,6 @@
 ---
+import PillWidget from './PillWidget.astro'
+import { PILL_WIDGET_ICON_CLASSES } from './pillIcons'
 import { FEATURES } from '~/config'
 
 interface Props {
@@ -19,39 +21,40 @@ const {
   lon = featureConfig?.lon,
 } = Astro.props
 
+const LOCATION_ICON_CLASS = PILL_WIDGET_ICON_CLASSES.location
+const TIME_ICON_CLASS = PILL_WIDGET_ICON_CLASSES.time
+
 const showWeather = lat !== undefined && lon !== undefined
 const mapsUrl = 'https://maps.app.goo.gl/2rykg2HR5Mb4gmzF9'
 const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 ---
 
-<div
-  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a] border border-gray-200 dark:border-[#333] text-sm font-medium w-fit transition-colors duration-200"
->
-  <div class="i-line-md-map-marker-alt-filled-loop shrink-0 text-sm"></div>
+<PillWidget class="text-sm font-medium">
+  <div class={LOCATION_ICON_CLASS}></div>
   <a
     href={mapsUrl}
     target="_blank"
     rel="noopener noreferrer"
-    class="lw-link lw-location-link text-xs">{location}</a
+    class="pill-primary text-xs">{location}</a
   >
 
   {
     showWeather && (
       <>
         <span class="op-20 select-none text-[10px] mx-0.5">|</span>
-        {/* group on the anchor: only the temp span responds to hover, not the icon */}
+        {/* pill-widget-link: hovering the anchor tints only the pill-primary temp, not the icon */}
         <a
           href={weatherUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="lw-link group inline-flex items-center gap-1"
+          class="pill-widget-link inline-flex items-center gap-1"
         >
           <span
             class="lw-weather-icon shrink-0"
             data-lat={lat}
             data-lon={lon}
           />
-          <span class="lw-weather-temp font-mono text-xs tabular-nums lw-loading">
+          <span class="lw-weather-temp pill-primary font-mono text-xs tabular-nums pill-loading">
             --°
           </span>
         </a>
@@ -61,68 +64,22 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 
   <span class="op-20 select-none text-[10px] mx-0.5">|</span>
 
-  <div class="i-line-md-watch-twotone-loop shrink-0 text-base"></div>
+  <div class={TIME_ICON_CLASS}></div>
   <span
     class="font-mono text-emerald-600 dark:text-emerald-400 text-xs live-time-widget tracking-tight tabular-nums"
     data-timezone={timezone}
   >
     --:--:-- --
   </span>
-</div>
+</PillWidget>
 
 <style>
-  /* Kill underlines — theme draws them with border-bottom, not text-decoration */
-  .lw-link,
-  .lw-link:hover {
-    border-bottom: none !important;
-  }
-
-  /* Force neutral color on location — prose global `a { color }` beats Tailwind utilities */
-  .lw-location-link {
-    color: #e5e7eb !important;
-  } /* gray-200 */
-  .lw-location-link:hover {
-    color: #34d399 !important;
-  } /* emerald-400 */
-
-  :root:not(.dark) .lw-location-link {
-    color: #1f2937 !important;
-  } /* gray-800 */
-  :root:not(.dark) .lw-location-link:hover {
-    color: #059669 !important;
-  } /* emerald-600 */
-
-  /* Weather temp: neutral at rest, emerald on hover.
-     Handled in CSS (not Tailwind group-hover) so !important beats the prose anchor specificity. */
-  .lw-weather-temp {
-    color: #e5e7eb;
-  } /* gray-200 */
-  :root:not(.dark) .lw-weather-temp {
-    color: #1f2937;
-  } /* gray-800 */
-  .group:hover .lw-weather-temp {
-    color: #34d399 !important;
-  } /* emerald-400 */
-  :root:not(.dark) .group:hover .lw-weather-temp {
-    color: #059669 !important;
-  } /* emerald-600 */
-
+  /* Location link and weather temp use the shared `.pill-primary` color/hover
+     from PillWidget. Only JS hooks and presentation that PillWidget doesn't
+     own live here. */
   .lw-weather-icon-sized {
     width: 1.75rem !important;
     height: 1.75rem !important;
-  }
-
-  @keyframes lw-pulse {
-    0%,
-    100% {
-      opacity: 0.35;
-    }
-    50% {
-      opacity: 0.75;
-    }
-  }
-  .lw-loading {
-    animation: lw-pulse 1.4s ease-in-out infinite;
   }
 </style>
 
@@ -178,7 +135,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
         const tempEl = iconEl.nextElementSibling as HTMLElement | null
 
         if (!weather) {
-          tempEl?.classList.remove('lw-loading')
+          tempEl?.classList.remove('pill-loading')
           return
         }
 
@@ -186,7 +143,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 
         if (tempEl?.classList.contains('lw-weather-temp')) {
           tempEl.textContent = `${weather.temp}°`
-          tempEl.classList.remove('lw-loading')
+          tempEl.classList.remove('pill-loading')
         }
       })
   }

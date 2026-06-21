@@ -10,6 +10,8 @@ import {
 
 import { UI } from './src/config'
 import usesData from './src/data/uses.json'
+import colophonData from './src/data/colophon.json'
+import { PILL_WIDGET_ICON_SAFE_LIST } from './src/components/widgets/pillIcons'
 import { WEATHER_ICON_CLASSES } from './src/utils/weather'
 
 import type {
@@ -21,14 +23,18 @@ import type {
 
 const { internalNavs, socialLinks } = UI
 
-const usesIcons = usesData.flatMap((s) =>
-  s.categories.flatMap((c) => c.items.map((i) => i.icon))
-)
-const usesCardClasses = usesData.flatMap((s) =>
-  s.categories.flatMap((c) =>
-    c.items.map((i) => `card-${i.btnClass.replace('btn-', '')}`)
+interface CardSection {
+  categories: { items: { icon: string; btnClass: string }[] }[]
+}
+
+const cardIcons = (data: CardSection[]) =>
+  data.flatMap((s) => s.categories.flatMap((c) => c.items.map((i) => i.icon)))
+const cardClasses = (data: CardSection[]) =>
+  data.flatMap((s) =>
+    s.categories.flatMap((c) =>
+      c.items.map((i) => `card-${i.btnClass.replace('btn-', '')}`)
+    )
   )
-)
 const navIcons = internalNavs
   .filter(
     (item) =>
@@ -125,9 +131,11 @@ export default defineConfig({
     ...navIcons,
     ...socialIcons,
 
-    /* UsesSection — derived from uses.json, auto-updates when data changes */
-    ...usesIcons,
-    ...usesCardClasses,
+    /* UsesSection cards — derived from data files, auto-update when data changes */
+    ...cardIcons(usesData),
+    ...cardClasses(usesData),
+    ...cardIcons(colophonData),
+    ...cardClasses(colophonData),
 
     /* BaseLayout, TagSidebar, TocSidebar — skip-link and panel toggles */
     'focus:not-sr-only',
@@ -138,6 +146,9 @@ export default defineConfig({
 
     /* Toc */
     'i-ri-menu-2-fill',
+
+    /* Pill widgets — classes are set through constants in src/components/widgets/pillIcons.ts */
+    ...PILL_WIDGET_ICON_SAFE_LIST,
 
     /* NowPlaying — floating note icons are constructed in JS at runtime */
     'i-ri-music-2-fill',

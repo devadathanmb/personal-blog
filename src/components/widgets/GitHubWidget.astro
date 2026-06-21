@@ -1,16 +1,18 @@
 ---
 import PillWidget from './PillWidget.astro'
+import { PILL_WIDGET_ICON_CLASSES } from './pillIcons'
 import { FEATURES } from '~/config'
 
 const { github } = FEATURES
 const enabled = Array.isArray(github) && github[0]
 const { username = '' } = enabled ? github[1] : {}
+const ICON_CLASS = PILL_WIDGET_ICON_CLASSES.github
 ---
 
 {
   enabled && username && (
     <PillWidget class="github-widget" data-username={username}>
-      <div slot="icon" class="i-line-md:github-loop shrink-0 text-lg" />
+      <div slot="icon" class={ICON_CLASS} />
       <a
         href={`https://github.com/${username}`}
         target="_blank"
@@ -37,40 +39,113 @@ const { username = '' } = enabled ? github[1] : {}
 <script>
   import { getRelativeTime } from '~/utils/datetime'
 
+  // Only the fields we actually read from the events feed. Note the feed's
+  // pull_request object is truncated (no title), which is why PR activity is
+  // labelled by action rather than title.
   interface GitHubEvent {
     type: string
     created_at: string
     repo: { name: string }
     payload: {
-      head: string
-      commits?: { message: string }[]
+      action?: string // PullRequestEvent / IssuesEvent: opened, merged, …
+      number?: number // PullRequestEvent: PR number, for the link
+      head?: string // PushEvent: commit SHA, for the link
+      issue?: { html_url: string } // IssuesEvent
     }
   }
 
-  async function fetchLastPush(username: string): Promise<{
-    message: string
-    repo: string
-    time: string
-    commitUrl: string
-  } | null> {
+  // The curated set of events we surface, newest-first. Anything not listed
+  // here (branch create/delete, review comments, …) is skipped, and we fall
+  // through to the next event in the feed.
+  const CURATED = ['PushEvent', 'PullRequestEvent', 'WatchEvent', 'IssuesEvent']
+
+  interface Activity {
+    label: string // primary line — a terse "what kind of event" tag
+    url: string // where the pill links to
+  }
+
+  // Short repo name: `owner/name` → `name`.
+  function shortRepo(fullName: string): string {
+    return fullName.split('/')[1] ?? fullName
+  }
+
+  // 'opened' → 'Opened'. Used to build PR/issue labels from the event action.
+  function capitalize(s: string): string {
+    return s.charAt(0).toUpperCase() + s.slice(1)
+  }
+
+  /**
+   * Translate one GitHub event into the activity shown in the pill.
+   *
+   * The pill has two lines: the `label` here is line one — a terse tag for the
+   * *kind* of event (one or two words, never a sentence, so the pill stays
+   * small). Line two (repo + relative time) is added by the caller, so this
+   * function only decides the tag and the link target.
+   */
+  function describeEvent(e: GitHubEvent): Activity {
+    switch (e.type) {
+      case 'PushEvent':
+        return {
+          label: 'Pushed',
+          url: `https://github.com/${e.repo.name}/commit/${e.payload.head}`,
+        }
+
+      case 'WatchEvent':
+        return {
+          label: 'Starred',
+          url: `https://github.com/${e.repo.name}`,
+        }
+
+      case 'PullRequestEvent':
+        // action is merged | opened | closed | reopened → "Merged PR" etc.
+        return {
+          label: `${capitalize(e.payload.action ?? 'Updated')} PR`,
+          url: `https://github.com/${e.repo.name}/pull/${e.payload.number}`,
+        }
+
+      case 'IssuesEvent':
+        return {
+          label: `${capitalize(e.payload.action ?? 'Updated')} issue`,
+          url: e.payload.issue?.html_url ?? `https://github.com/${e.repo.name}`,
+        }
+
+      default:
+        return {
+          label: 'Active',
+          url: `https://github.com/${e.repo.name}`,
+        }
+    }
+  }
+
+  async function fetchLatestActivity(
+    username: string
+  ): Promise<(Activity & { repo: string; time: string }) | null> {
     try {
+      // Two quirks of this endpoint, so future debugging doesn't chase ghosts:
+      // 1. It only returns PUBLIC events — private-repo work never shows here,
+      //    so the widget can look "stale" while you've actually been busy.
+      // 2. GitHub serves it through a ~5 min CDN cache (Cache-Control max-age),
+      //    so the newest activity can take a few minutes to appear.
       const res = await fetch(
         `https://api.github.com/users/${username}/events/public?per_page=30`,
         { headers: { Accept: 'application/vnd.github+json' } }
       )
       if (!res.ok) return null
       const events: GitHubEvent[] = await res.json()
-      const push = events.find((e) => e.type === 'PushEvent')
-      if (!push) return null
+      // The feed is documented as reverse-chronological, but that's a
+      // convention, not a guarantee — sort by created_at so we always pick the
+      // genuinely newest curated event.
+      const event = events
+        .filter((e) => CURATED.includes(e.type))
+        .sort((a, b) => +new Date(b.created_at) - +new Date(a.created_at))[0]
+      if (!event) return null
 
-      const uts = Math.floor(new Date(push.created_at).getTime() / 1000)
-      const commits = push.payload.commits ?? []
-      const lastCommit = commits[commits.length - 1]
-      const message = lastCommit?.message.split('\n')[0] ?? 'pushed'
-      const repo = push.repo.name.split('/')[1] ?? push.repo.name
-      const commitUrl = `https://github.com/${push.repo.name}/commit/${push.payload.head}`
-
-      return { message, repo, time: getRelativeTime(uts), commitUrl }
+      const uts = Math.floor(new Date(event.created_at).getTime() / 1000)
+      return {
+        ...describeEvent(event),
+        repo: shortRepo(event.repo.name),
+        time: getRelativeTime(uts),
+      }
     } catch {
       return null
     }
@@ -86,11 +161,11 @@ const { username = '' } = enabled ? github[1] : {}
     const messageEl = widget.querySelector<HTMLElement>('#gh-message')
     const metaEl = widget.querySelector<HTMLElement>('#gh-meta')
 
-    const result = await fetchLastPush(username)
+    const result = await fetchLatestActivity(username)
 
-    if (linkEl && result) linkEl.href = result.commitUrl
+    if (linkEl && result) linkEl.href = result.url
     if (messageEl) {
-      messageEl.textContent = result?.message ?? 'github.com'
+      messageEl.textContent = result?.label ?? 'github.com'
       messageEl.classList.remove('pill-loading')
     }
     if (metaEl) {

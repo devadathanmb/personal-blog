@@ -1,6 +1,6 @@
 # Personal Blog
 
-Devadathan's personal blog at devadathanmb.in — built with Astro 6, shipped as a **fully static site** (`output` defaults to `static`; no SSR adapter) and deployed to Cloudflare Workers (static assets). Current dev branch is `v2`; `main` is the previous (production) version.
+Devadathan's personal blog at devadathanmb.in — built with Astro 6, shipped as a **fully static site** (`output` defaults to `static`; no SSR adapter) and deployed to Cloudflare Workers (static assets). **`v2` is the current production branch** — pushing to `v2` deploys to production (devadathanmb.in). `main` is a separate, older version of the site, not what's live.
 
 ## Commands
 
@@ -14,7 +14,7 @@ Devadathan's personal blog at devadathanmb.in — built with Astro 6, shipped as
 | `pnpm format:write` | Prettier with cache                    |
 | `pnpm deploy`       | Build + `wrangler deploy` (`dist/`)    |
 
-Pre-commit hook: `lint-staged` (ESLint fix) + full `prettier` + `astro check`. CI runs check + lint + build on push/PR to `main` only. Node ≥ 22.12, pnpm 10.
+Pre-commit hook: `lint-staged` (ESLint fix on JS/TS/Astro) + full `prettier` + `astro check`. `lint-staged` also runs `scripts/bump-last-updated.mjs` on any committed `src/pages/**/*.mdx`, rewriting its `<LastUpdated date="…" />` to today's date (no-op if already today or the page has no widget) and re-staging it — so a page's "last updated" always reflects its last shipped change, regardless of editor. CI runs check + lint + build on push/PR to `v2`. Node ≥ 22.12, pnpm 10.
 
 ## Stack
 
@@ -24,7 +24,7 @@ Pre-commit hook: `lint-staged` (ESLint fix) + full `prettier` + `astro check`. C
 - Pagefind for client-side search (runs post-build, strips `pre` elements, includes `<>` chars)
 - Giscus (GitHub Discussions) for comments
 - Last.fm API for now-playing widget; Trakt API for watching widget; Open-Meteo for weather (no key needed) — all fetched client-side
-- Satori + Sharp generate OG images at build time (`plugins/remark-generate-og-image.ts` + `plugins/og-template/`)
+- Satori + Sharp generate OG images at build time (`plugins/remark-generate-og-image.ts` + `plugins/og-template/`). `public/og-images/` is a **committed cache** — the plugin skips generation when the PNG already exists. After adding a page/post with `ogImage` enabled, commit the generated `public/og-images/<slug>.png`; otherwise every build regenerates it and leaves it untracked.
 
 ## Key Directories
 
@@ -70,6 +70,7 @@ toc: [true, { minHeadingLevel: 2, maxHeadingLevel: 5, displayPosition: 'right', 
 - Icons follow `i-<collection>-<icon>` or `i-<collection>:<icon>` format from `@iconify/json`
 - Content files (`src/content/**`) are not piped through Vite in Astro 6 — listed explicitly in `unocss.config.ts` `content.filesystem`
 - Custom breakpoint: `lgp` at `1128px` (in addition to standard Wind3 breakpoints)
+- Utility CSS is split into per-component chunks; a page only links the chunks its loaded components reference. Utilities that appear **only** in a shared/nested component (e.g. `PillWidget`, rendered via other widgets) can be dropped from a page's CSS. For a component's own **structural** styles that must always render, author them as plain CSS in the component's `<style>` block (always bundled when it renders) rather than utility classes — see `PillWidget.astro`'s `.pill` shell
 
 ## Markdown Pipeline
 
@@ -78,6 +79,12 @@ Remark: `remark-directive`, `remark-directive-sugar` (badge/link/image directive
 Rehype: heading IDs, KaTeX, callouts (vitepress theme), external links (auto new-tab + icon), autolink headings, table wrapping in `<div>`.
 
 Syntax highlighting: Expressive Code only — `syntaxHighlight: false` in astro.config (Astro's built-in is off).
+
+### MDX inline-JSX + Prettier gotcha
+
+Never hand-write a standalone inline JSX element that mixes text and tags in MDX, e.g. `<em>text <Link/> more text</em>` on its own line. Prettier expands it across lines, and MDX then parses the breaks as separate paragraphs (prettier [#16589](https://github.com/prettier/prettier/issues/16589)/[#6274](https://github.com/prettier/prettier/issues/6274)) — the line renders broken. Inline links _inside_ a normal prose paragraph are fine (`proseWrap: preserve` keeps them on one line); only standalone JSX blocks break.
+
+For the common "italic note with one link" case (the closing line on `/uses`, `/now`, `/colophon`), use `~/components/base/ProseNote.astro` — a prop-only self-closing tag Prettier can't split. For other one-off cases, move the markup into an `.astro` component so the MDX only holds a single self-closing tag.
 
 ## Design
 

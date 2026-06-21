@@ -12,7 +12,7 @@ import NowPlaying from '~/components/widgets/NowPlaying.astro'
 import GitHubWidget from '~/components/widgets/GitHubWidget.astro'
 import TraktWidget from '~/components/widgets/TraktWidget.astro'
 import LastUpdated from '~/components/widgets/LastUpdated.astro'
-import Link from '~/components/base/Link.astro'
+import ProseNote from '~/components/base/ProseNote.astro'
 
 <PageLayout
   title={frontmatter.title}
@@ -56,13 +56,12 @@ Lately, I've been reminded that some of the best parts of life happen away from 
 
 ---
 
-<em>
-  {"If you're curious about this concept, "}
-  <Link href="https://nownownow.com" external enableNewTabWarning>
-    {'nownownow.com'}
-  </Link>
-  {' has the full story.'}
-</em>
+<ProseNote
+  before="If you're curious about this concept, "
+  href="https://nownownow.com"
+  linkText="nownownow.com"
+  after=" has the full story."
+/>
 
     </Fragment>
 

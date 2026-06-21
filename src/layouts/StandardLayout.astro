@@ -26,6 +26,17 @@ const {
 >
   {title && <h1 class="font-medium">{title}</h1>}
   {subtitle && <p class="mt--4! op-50 italic">{subtitle}</p>}
+  {
+    /*
+    The `head` slot is intentionally inside this `.prose` header — it holds
+    title-block metadata (post date/reading time, "last updated", the now-page
+    widgets) that's positioned within the prose flow via negative margins
+    (e.g. `mt--6!`). Moving it out of `.prose` would break that spacing.
+    Embedded interactive widgets should stay prose-resistant by scoping their
+    own styles to a root class (see `.pill` in PillWidget.astro) rather than
+    fighting `.prose` with `!important`, or pulling this slot out of the header.
+  */
+  }
   <slot name="head" />
 </header>
 {

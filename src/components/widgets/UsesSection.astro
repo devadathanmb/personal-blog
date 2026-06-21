@@ -17,9 +17,11 @@ interface Props {
     title: string
     categories: UsesCategory[]
   }
+  /** Render the section's own <h2>. Off for pages that supply their own heading (e.g. /colophon). */
+  showHeading?: boolean
 }
 
-const { section } = Astro.props
+const { section, showHeading = true } = Astro.props
 
 const getColor = (btnClass: string) => btnClass.replace('btn-', '')
 const id = section.title
@@ -29,10 +31,14 @@ const id = section.title
 ---
 
 <div data-tags={section.title}>
-  <h2 {id}>
-    <a class="header-anchor" href={`#${id}`}>#</a>
-    {section.title}
-  </h2>
+  {
+    showHeading && (
+      <h2 {id}>
+        <a class="header-anchor" href={`#${id}`} set:text="#" />
+        {section.title}
+      </h2>
+    )
+  }
 
   <div class="flex flex-col mb-10">
     {

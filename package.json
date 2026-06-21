@@ -82,6 +82,9 @@
   "lint-staged": {
     "*.{js,ts,mjs,cjs,astro}": [
       "eslint --fix --cache"
+    ],
+    "src/pages/**/*.mdx": [
+      "node scripts/bump-last-updated.mjs"
     ]
   },
   "pnpm": {
@@ -96,7 +99,7 @@
       "flatted": ">=3.4.2",
       "picomatch": ">=4.0.4",
       "defu": ">=6.1.5",
-      "undici": ">=7.24.0",
+      "undici": ">=8.5.0",
       "fast-uri": ">=3.1.2",
       "fast-xml-builder": ">=1.1.7",
       "mdast-util-to-hast": ">=13.2.1",

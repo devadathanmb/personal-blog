@@ -9,6 +9,9 @@ ogImage: true
 import PageLayout from '~/layouts/PageLayout.astro'
 import LastUpdated from '~/components/widgets/LastUpdated.astro'
 import Link from '~/components/base/Link.astro'
+import ProseNote from '~/components/base/ProseNote.astro'
+import UsesSection from '~/components/widgets/UsesSection.astro'
+import colophonData from '~/data/colophon.json'
 
 <PageLayout
   title={frontmatter.title}
@@ -18,29 +21,32 @@ import Link from '~/components/base/Link.astro'
   ogImage={frontmatter.ogImage}
 >
     <div slot="head" class="-mt-5 mb-6 ml-1 slide-enter animate-delay-200!">
-      <LastUpdated date="2026-06-14" />
+      <LastUpdated date="2026-06-21" />
     </div>
     <Fragment slot="article">
 
-This site is built on top of <Link href="https://github.com/lin-stephanie/astro-antfustyle-theme" external>astro-antfustyle-theme</Link> by <Link href="https://github.com/lin-stephanie" external>Stephanie Lin</Link>, which draws design inspiration from <Link href="https://antfu.me" external>antfu.me</Link> by <Link href="https://github.com/antfu" external>Anthony Fu</Link>. The layout, typography, and overall feel come from that foundation. Credit where it's due.
+I bought this domain sometime in 2024. Before that I rolled through whatever free domains the GitHub Student Pack handed out, a `.tech` here, a `.me` there. At some point I wanted one that was actually mine. A small place on the internet to call home, and a handful of subdomains to tunnel my homelab services through.
+
+The site itself has been rebuilt more times than I'd like to admit. It started as a <Link href="https://nextjs.org" external>Next.js</Link> project. Then I moved to the <Link href="https://github.com/satnaing/astro-paper" external>AstroPaper</Link> theme and spent a while bending it into something that felt like mine. Eventually the obvious lesson caught up with me: simpler is usually better. That is roughly how it ended up here.
+
+This version is built on top of <Link href="https://github.com/lin-stephanie/astro-antfustyle-theme" external>astro-antfustyle-theme</Link> by <Link href="https://github.com/lin-stephanie" external>Stephanie Lin</Link>, which draws design inspiration from <Link href="https://antfu.me" external>antfu.me</Link> by <Link href="https://github.com/antfu" external>Anthony Fu</Link>. The layout, typography, and overall feel come from that foundation. Credit where it's due.
 
 Beyond that, this site exists because other people shared theirs first. Personal websites, open source projects, tools built and left available for anyone. I'm genuinely grateful for all of it.
 
 What I've tried to do here is give something back.
 
-## The /now page
+## Built with
 
-The part I've spent the most time on. It pulls live data from a few places: <Link href="https://www.last.fm/api" external>Last.fm</Link> for whatever I'm listening to, <Link href="https://open-meteo.com" external>Open-Meteo</Link> for the weather in Kerala, the <Link href="https://docs.github.com/en/rest/activity/events" external>GitHub public events API</Link> for my last commit, and <Link href="https://trakt.tv" external>Trakt</Link> for whatever I'm watching, scrobbled automatically from Jellyfin.
+Nothing here needs a backend. The site is static output served from the edge, the live bits on /now are fetched client-side, and the build-time tooling leaves nothing to manage in production.
 
-None of it needs a backend. Everything is fetched client-side. No tokens stored anywhere except the config.
+<UsesSection section={colophonData[0]} showHeading={false} />
 
-The goal was a page that actually reflects the moment, not a snapshot I remember to update once a quarter.
-
-## Everything else
-
-Comments are <Link href="https://giscus.app" external>Giscus</Link>, backed by GitHub Discussions. Search is <Link href="https://pagefind.app" external>Pagefind</Link>, which runs at build time and ships a static index. The site is deployed to <Link href="https://workers.cloudflare.com" external>Cloudflare Workers</Link> at the edge, with no server to manage.
-
-The source is on <Link href="https://github.com/devadathanmb/personal-blog" external>GitHub</Link>.
+<ProseNote
+  before="The source is on "
+  href="https://github.com/devadathanmb/personal-blog"
+  linkText="GitHub"
+  after=", if you want to see how any of this fits together."
+/>
 
     </Fragment>
 

@@ -6,20 +6,42 @@ interface Props {
 const { class: extraClass, ...attrs } = Astro.props
 ---
 
-<div
-  class:list={[
-    'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full h-fit w-fit',
-    'bg-gray-100 hover:bg-gray-200 dark:bg-[#1f1f1f] dark:hover:bg-[#2a2a2a]',
-    'border border-gray-200 dark:border-[#333] transition-colors duration-200',
-    extraClass,
-  ]}
-  {...attrs}
->
+<div class:list={['pill', extraClass]} {...attrs}>
   <slot name="icon" />
   <slot />
 </div>
 
 <style is:global>
+  /* Pill shell. Authored as plain CSS rather than utility classes: Astro splits
+     UnoCSS utilities across per-component chunks and only links the ones a
+     loaded component uses, so utilities unique to this nested component were
+     silently dropped from the now page (padding, gap, background, border all
+     vanished). A component's own <style> is always bundled when it renders. */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem; /* gap-1.5 */
+    width: fit-content;
+    height: fit-content;
+    padding: 0.375rem 0.75rem; /* py-1.5 px-3 */
+    border: 1px solid #e5e7eb; /* gray-200 */
+    border-radius: 9999px; /* rounded-full */
+    background-color: #f3f4f6; /* gray-100 */
+    transition:
+      background-color 0.2s,
+      border-color 0.2s;
+  }
+  .pill:hover {
+    background-color: #e5e7eb; /* gray-200 */
+  }
+  :root.dark .pill {
+    background-color: #1f1f1f;
+    border-color: #333;
+  }
+  :root.dark .pill:hover {
+    background-color: #2a2a2a;
+  }
+
   @keyframes pill-pulse {
     0%,
     100% {
@@ -33,29 +55,44 @@ const { class: extraClass, ...attrs } = Astro.props
     animation: pill-pulse 1.4s ease-in-out infinite;
   }
 
-  /* Primary text: bright, matches page text */
-  .pill-primary {
+  /* Primary text: bright, matches page text.
+     Scoped under `.pill` so the component owns these colors no matter which
+     element carries the class. The pills live inside `.prose`, whose global
+     `.prose a` rule (specificity 0,1,1) would otherwise outrank a bare
+     `.pill-primary` (0,1,0) — but only when the text is a link (the now-playing
+     title), which is exactly the inconsistency this guards against. */
+  .pill .pill-primary {
     color: #1f2937;
   }
-  :root.dark .pill-primary {
+  :root.dark .pill .pill-primary {
     color: #e5e7eb;
   }
 
-  /* Secondary text: 80% opacity of inherited text color */
-  .pill-secondary {
+  /* Secondary text: 80% opacity of inherited pill text color */
+  .pill .pill-secondary {
     opacity: 0.8;
   }
 
-  /* Shared link style for data widgets (GitHub, Trakt, etc.) */
-  .pill-widget-link,
-  .pill-widget-link:hover {
-    border-bottom: none !important;
-    color: inherit !important;
-  }
+  /* Primary turns emerald on hover, whether the link is the title itself
+     (now-playing) or wraps it (GitHub/Trakt via .pill-widget-link). */
+  a.pill-primary:hover,
   .pill-widget-link:hover .pill-primary {
-    color: #059669 !important;
+    color: #059669;
   }
+  :root.dark a.pill-primary:hover,
   :root.dark .pill-widget-link:hover .pill-primary {
-    color: #34d399 !important;
+    color: #34d399;
+  }
+
+  /* Pills never want the prose underline on any link. */
+  .pill a,
+  .pill a:hover {
+    border-bottom: none !important;
+  }
+
+  /* Data-widget links inherit the pill's text color so their secondary line
+     reads from it, not the brighter prose link color. */
+  .pill-widget-link {
+    color: inherit !important;
   }
 </style>
