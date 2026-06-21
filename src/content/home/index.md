@@ -28,6 +28,8 @@ Thanks for stopping by. I hope this place feels less like a portfolio and more l
         <span i-ri-macbook-line></span> Uses</a>
       <a href="/now" class="flex items-center gap-1 border-none! op-75 transition-all duration-300 hover:-translate-y-0.5 hover:op-100">
         <span i-ri-time-line></span> Now</a>
+      <a href="/colophon" class="flex items-center gap-1 border-none! op-75 transition-all duration-300 hover:-translate-y-0.5 hover:op-100">
+        <span i-ri-quill-pen-line></span> Colophon</a>
     </span>
   </div>
 
