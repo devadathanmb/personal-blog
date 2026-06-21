@@ -34,9 +34,7 @@ const id = section.title
   {
     showHeading && (
       <h2 {id}>
-        <a class="header-anchor" href={`#${id}`}>
-          #
-        </a>
+        <a class="header-anchor" href={`#${id}`} set:text="#" />
         {section.title}
       </h2>
     )
