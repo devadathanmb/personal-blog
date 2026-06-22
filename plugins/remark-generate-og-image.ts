@@ -7,30 +7,62 @@ import satori from 'satori'
 import sharp from 'sharp'
 import chalk from 'chalk'
 
-import { getCurrentFormattedTime } from '../src/utils/datetime'
+import { getCurrentFormattedTime, formatDate } from '../src/utils/datetime'
 import { checkFileExistsInDir } from '../src/utils/fs'
 import { ogImageMarkup } from './og-template/markup'
 import backgroundBase64 from './og-template/base64'
-import { FEATURES } from '../src/config'
+import { FEATURES, SITE } from '../src/config'
 
 import type { SatoriOptions } from 'satori'
 import type { html } from 'satori-html'
 import type { BgType } from '../src/types'
+import type { OgMeta } from './og-template/markup'
 
-const Inter = readFileSync('plugins/og-template/Inter-Regular-24pt.ttf')
+const InterRegular = readFileSync('plugins/og-template/Inter-Regular-24pt.ttf')
+const InterSemiBold = readFileSync(
+  'plugins/og-template/Inter-SemiBold-24pt.ttf'
+)
+const InterBold = readFileSync('plugins/og-template/Inter-Bold-24pt.ttf')
+
+// Site URL without protocol or trailing slash, e.g. "devadathanmb.in".
+const siteUrl = SITE.website.replace(/^https?:\/\//, '').replace(/\/$/, '')
 
 const satoriOptions: SatoriOptions = {
   // debug: true,
   width: 1200,
   height: 630,
   fonts: [
-    {
-      name: 'Inter',
-      weight: 400,
-      style: 'normal',
-      data: Inter,
-    },
+    { name: 'Inter', weight: 400, style: 'normal', data: InterRegular },
+    { name: 'Inter', weight: 600, style: 'normal', data: InterSemiBold },
+    { name: 'Inter', weight: 700, style: 'normal', data: InterBold },
   ],
+}
+
+/**
+ * Builds the adaptive secondary line shown under the title:
+ *  - posts: "Jun 22, 2026 · 5 min read"
+ *  - pages: the page subtitle
+ *  - otherwise: nothing
+ */
+function buildSecondaryLine(frontmatter: Record<string, unknown>): string {
+  const { pubDate, minutesRead, subtitle } = frontmatter
+
+  if (pubDate) {
+    try {
+      const date = formatDate(pubDate as string | Date)
+      return typeof minutesRead === 'number'
+        ? `${date} · ${minutesRead} min read`
+        : date
+    } catch {
+      // fall through to subtitle on an invalid date
+    }
+  }
+
+  if (typeof subtitle === 'string' && subtitle.trim().length) {
+    return subtitle.trim()
+  }
+
+  return ''
 }
 
 /**
@@ -61,7 +93,8 @@ async function generateOgImage(
   authorOrBrand: string,
   title: string,
   bgType: BgType,
-  output: string
+  output: string,
+  meta: OgMeta = {}
 ) {
   await mkdir(dirname(output), { recursive: true })
 
@@ -70,7 +103,7 @@ async function generateOgImage(
   )
 
   try {
-    const node = ogImageMarkup(authorOrBrand, title, bgType)
+    const node = ogImageMarkup(authorOrBrand, title, bgType, meta)
     unescapeHTML(node)
 
     const svg = await satori(node, satoriOptions)
@@ -112,7 +145,8 @@ function remarkGenerateOgImage() {
         authorOrBrand,
         fallbackTitle,
         fallbackBgType,
-        'public/og-images/og-image.png'
+        'public/og-images/og-image.png',
+        { url: siteUrl }
       )
     }
 
@@ -161,7 +195,11 @@ function remarkGenerateOgImage() {
       authorOrBrand,
       title.trim(),
       bgType,
-      `public/og-images/${nameWithoutExt}.png`
+      `public/og-images/${nameWithoutExt}.png`,
+      {
+        secondary: buildSecondaryLine(file.data.astro.frontmatter),
+        url: siteUrl,
+      }
     )
   }
 }
