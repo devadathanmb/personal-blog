@@ -1,19 +1,25 @@
 ---
-// Storm background: wind-driven rain + dynamic multi-bolt lightning.
+// Storm background: depth-layered wind-driven rain + drifting clouds that
+// lightning lights from within + dynamic multi-bolt lightning.
 //
 // Performance-first:
 //  - Rain drops are pre-partitioned into opacity buckets, so each frame is a
 //    single pass that both advances positions and batches strokes (4 draw
-//    calls total instead of one per drop).
+//    calls total instead of one per drop). The bucket also encodes depth
+//    (speed/length/wind-lean/width), so parallax costs nothing extra.
+//  - Clouds are rendered ONCE into small downscaled offscreen buffers and then
+//    blitted with a stretched drawImage (plus one additive blit while a bolt is
+//    flashing); no per-frame gradient fills.
 //  - Lightning glow is drawn as ONE batched shadow pass per bolt instead of
 //    toggling the expensive canvas shadow once per segment.
 //  - DPR-aware sizing, 30 fps throttle on mobile, and the RAF loop fully stops
 //    when the tab is hidden or when reduced motion is set.
 //
-// The effect is theme-aware: rain renders in both themes (soft grey-blue in
-// light mode), re-reading the theme every frame so it adapts on toggle. The
-// lightning is a night-time effect only — bolts strike, flash and flicker in
-// dark mode, while light mode is a calm daytime drizzle with no bolts.
+// The effect is theme-aware: rain and clouds render in both themes (soft
+// grey-blue rain and grey overcast in light mode), re-reading the theme every
+// frame so it adapts on toggle. The lightning is a night-time effect only —
+// bolts strike, flash and flicker and light the clouds in dark mode, while
+// light mode is a calm daytime drizzle under a grey ceiling with no bolts.
 //
 // Lightning strikes from randomised horizontal positions at the top of the
 // screen, each bolt with its own intensity tier (major / minor / distant) and
@@ -75,12 +81,19 @@
       let H = 0
 
       const resize = () => {
-        W = window.innerWidth
+        const newW = window.innerWidth
+        // Only react to WIDTH changes. On mobile, scrolling collapses/expands
+        // the address bar, firing resize with a changed HEIGHT only; rebuilding
+        // the canvas there clears it and resets every drop, which looks jarring
+        // mid-scroll. Keying off width keeps it stable (rotation still fires).
+        if (newW === W) return
+        W = newW
         H = window.innerHeight
         canvas.width = Math.round(W * DPR)
         canvas.height = Math.round(H * DPR)
         ctx.setTransform(DPR, 0, 0, DPR, 0, 0)
         initDrops()
+        buildClouds()
       }
 
       let resizeTimer: ReturnType<typeof setTimeout> | null = null
@@ -99,34 +112,125 @@
       interface Drop {
         x: number
         y: number
-        speed: number // px/frame (2–5)
-        length: number // streak px (10–28)
+        speed: number // px/frame
+        length: number // streak px
       }
 
-      // 4 tiers: very faint → slightly visible. Light-mode rain needs a touch
-      // more alpha to register against a bright page than dark-mode rain does.
+      // 4 tiers, far → near. The opacity bucket now also encodes DEPTH: nearer
+      // layers fall faster, streak longer, lean more with the wind and draw a
+      // touch thicker. This turns a flat sheet of rain into layered parallax at
+      // no extra cost (same drop count, same 4 batched strokes).
       const DARK_ALPHAS = [0.03, 0.055, 0.08, 0.11]
       const LIGHT_ALPHAS = [0.04, 0.065, 0.09, 0.12]
+      const DEPTH_SPEED = [1.6, 2.5, 3.6, 5.0] // base px/frame per bucket
+      const DEPTH_LEN = [7, 12, 18, 26] // base streak px per bucket
+      const DEPTH_DRIFT = [0.3, 0.5, 0.75, 1.0] // wind responsiveness per bucket
+      const DEPTH_WIDTH = [0.6, 0.8, 1.0, 1.3] // stroke width per bucket
       const BUCKETS = 4
 
       const DROP_COUNT = isMobile ? 100 : 180
       const buckets: Drop[][] = Array.from({ length: BUCKETS }, () => [])
 
-      const resetDrop = (d: Drop) => {
+      const resetDrop = (d: Drop, bucket: number) => {
         d.x = Math.random() * (W + 40) - 20
         d.y = -(10 + Math.random() * 28)
-        d.speed = 2 + Math.random() * 3
-        d.length = 10 + Math.random() * 18
+        d.speed = DEPTH_SPEED[bucket] * (0.85 + Math.random() * 0.4)
+        d.length = DEPTH_LEN[bucket] * (0.8 + Math.random() * 0.5)
       }
 
       const initDrops = () => {
         for (let b = 0; b < BUCKETS; b++) buckets[b].length = 0
         for (let i = 0; i < DROP_COUNT; i++) {
+          const bucket = i % BUCKETS // even density across depth layers
           const d: Drop = { x: 0, y: 0, speed: 0, length: 0 }
-          resetDrop(d)
+          resetDrop(d, bucket)
           d.y = Math.random() * H // spread across the screen on first frame
-          buckets[(Math.random() * BUCKETS) | 0].push(d)
+          buckets[bucket].push(d)
         }
+      }
+
+      // ─── Clouds ─────────────────────────────────────────────────────────────
+      //
+      // A soft cloud ceiling built from a few radial puffs. To keep the
+      // per-frame cost near zero, the puffs are rendered ONCE into small
+      // downscaled offscreen buffers (a resting tint, a bright "lit" tint, and
+      // a daytime grey); each frame is then just one or two stretched
+      // drawImage calls. In dark mode the lit buffer is composited additively,
+      // scaled by the current lightning flash — so bolts light the clouds from
+      // within rather than the storm being a line drawn on glass.
+      const CLOUD_DS = 3
+      const CLOUD_REGION = 0.6 // clouds occupy the top 60% of the viewport
+
+      interface Puff {
+        cx: number
+        cy: number
+        r: number
+      }
+
+      let puffs: Puff[] = []
+      let cloudDark: HTMLCanvasElement | null = null
+      let cloudLit: HTMLCanvasElement | null = null
+      let cloudLight: HTMLCanvasElement | null = null
+      let cbw = 0
+      let cbh = 0
+
+      const renderCloudBuf = (rgb: string, peakA: number) => {
+        const c = document.createElement('canvas')
+        c.width = cbw
+        c.height = cbh
+        const cc = c.getContext('2d')!
+        for (const p of puffs) {
+          const g = cc.createRadialGradient(p.cx, p.cy, 0, p.cx, p.cy, p.r)
+          g.addColorStop(0, `rgba(${rgb}, ${peakA})`)
+          g.addColorStop(1, `rgba(${rgb}, 0)`)
+          cc.fillStyle = g
+          cc.fillRect(p.cx - p.r, p.cy - p.r, p.r * 2, p.r * 2)
+        }
+        return c
+      }
+
+      const buildClouds = () => {
+        cbw = Math.max(1, Math.round(W / CLOUD_DS))
+        cbh = Math.max(1, Math.round((H * CLOUD_REGION) / CLOUD_DS))
+        const count = isMobile ? 3 : 4
+        puffs = []
+        for (let i = 0; i < count; i++) {
+          puffs.push({
+            // Inset from the buffer edges so the sway never reveals a hard edge.
+            cx: cbw * (0.1 + 0.8 * ((i + Math.random()) / count)),
+            cy: cbh * (0.15 + Math.random() * 0.5),
+            r: cbw * (0.16 + Math.random() * 0.12),
+          })
+        }
+        cloudDark = renderCloudBuf('120, 140, 172', 0.7)
+        cloudLit = renderCloudBuf('205, 228, 255', 0.85)
+        cloudLight = renderCloudBuf('150, 158, 170', 0.55)
+      }
+
+      const drawClouds = (
+        dark: boolean,
+        flash: number,
+        now: number,
+        wind: number
+      ) => {
+        const base = dark ? cloudDark : cloudLight
+        if (!base) return
+        const destH = H * CLOUD_REGION
+        // Gentle horizontal sway (slow sine + a little wind), small enough that
+        // the inset puffs never expose the buffer edges.
+        const sway = (Math.sin(now * 0.00004) * 0.5 + wind * 0.4) * (W * 0.03)
+
+        ctx.globalAlpha = dark ? 0.5 : 0.6
+        ctx.drawImage(base, sway, 0, W, destH)
+
+        // Lightning illuminates the clouds from within (dark mode only).
+        if (dark && flash > 0.02 && cloudLit) {
+          ctx.globalCompositeOperation = 'lighter'
+          ctx.globalAlpha = Math.min(1, flash * 0.9)
+          ctx.drawImage(cloudLit, sway, 0, W, destH)
+          ctx.globalCompositeOperation = 'source-over'
+        }
+        ctx.globalAlpha = 1
       }
 
       // ─── Lightning ────────────────────────────────────────────────────────
@@ -370,30 +474,41 @@
           activeBolts.length = 0
         }
 
-        // ── 2. Rain — wind-driven, batched by opacity bucket ─────────────────
+        // ── 2. Wind + drifting clouds ────────────────────────────────────────
         //
-        // A slowly varying global wind makes the rain sway and slant naturally
-        // instead of falling in perfectly vertical lines. The same wind value
-        // drives both horizontal drift and the streak lean.
+        // A slowly varying global wind, with a couple of incommensurate gust
+        // terms layered on, makes the rain sway and slant in natural waves
+        // instead of falling in straight lines. The same value gently sways the
+        // cloud layer, so wind, rain and clouds all move together.
         const wind =
-          Math.sin(now * 0.00018) * 0.7 + Math.sin(now * 0.00005) * 0.4
+          Math.sin(now * 0.00018) * 0.7 +
+          Math.sin(now * 0.00005) * 0.4 +
+          Math.sin(now * 0.00031 + 1.7) * 0.3 +
+          Math.sin(now * 0.000071) * 0.2
+
+        // Clouds render behind the rain; in dark mode their brightness is driven
+        // by the current lightning flash (see drawClouds).
+        drawClouds(dark, combinedFlash, now, wind)
+
+        // ── 3. Rain — wind-driven, batched by opacity bucket + depth ─────────
         const lightBoost = maxLightBoost * 0.1
         const alphaTable = dark ? DARK_ALPHAS : LIGHT_ALPHAS
         const rainColor = dark ? '180, 212, 238' : '45, 62, 92'
 
-        ctx.lineWidth = 1
         ctx.strokeStyle = `rgb(${rainColor})`
         for (let b = 0; b < BUCKETS; b++) {
           ctx.globalAlpha = Math.min(0.85, alphaTable[b] + lightBoost)
+          ctx.lineWidth = DEPTH_WIDTH[b]
+          const drift = DEPTH_DRIFT[b]
           ctx.beginPath()
           const bucket = buckets[b]
           for (const d of bucket) {
-            // Advance position (gravity + wind drift).
+            // Advance position (gravity + wind drift). Nearer layers (higher
+            // bucket) drift and lean more, which sells the parallax.
             d.y += d.speed
-            d.x += wind * 0.6
-            if (d.y - d.length > H) resetDrop(d)
-            // Streak leans with the wind for a gusty feel.
-            const lean = wind * d.length * 0.35
+            d.x += wind * 0.6 * drift
+            if (d.y - d.length > H) resetDrop(d, b)
+            const lean = wind * d.length * 0.35 * drift
             ctx.moveTo(d.x, d.y)
             ctx.lineTo(d.x + lean, d.y + d.length)
           }
@@ -401,7 +516,7 @@
         }
         ctx.globalAlpha = 1
 
-        // ── 3. Lightning: flash overlay + bolt segments ──────────────────────
+        // ── 4. Lightning: flash overlay + bolt segments ──────────────────────
         // Reached only in dark mode (bolts never spawn in light), so the flash
         // is always the night-time strength.
         if (activeBolts.length > 0) {
