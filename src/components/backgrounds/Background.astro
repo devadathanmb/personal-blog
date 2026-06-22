@@ -5,6 +5,7 @@ import Rose from '~/components/backgrounds/Rose.astro'
 import Particle from '~/components/backgrounds/Particle.astro'
 import Ocean from '~/components/backgrounds/Ocean.astro'
 import Storm from '~/components/backgrounds/Storm.astro'
+import Aurora from '~/components/backgrounds/Aurora.astro'
 
 interface Props {
   type: string
@@ -19,3 +20,4 @@ const { type } = Astro.props
 {type === 'particle' && <Particle />}
 {type === 'ocean' && <Ocean />}
 {type === 'storm' && <Storm />}
+{type === 'aurora' && <Aurora />}

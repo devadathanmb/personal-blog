@@ -1,0 +1,244 @@
+---
+// Aurora background: a few large, slow-drifting luminous blobs that blend into
+// soft shifting bands of light — a calmer, more ambient alternative to Storm.
+//
+// Performance-first:
+//  - The canvas backing store is rendered at a HEAVILY downscaled resolution
+//    (viewport / DOWNSCALE) and stretched to 100% via CSS. The effect is all
+//    soft gradients, so the upscale is invisible — but it cuts pixel-fill cost
+//    (the only real expense here) by ~16x. No blur filter is used at all; the
+//    softness comes for free from radial-gradient falloff.
+//  - Just a handful of `fillRect`s per frame (one per blob), each a cached-shape
+//    radial gradient rebuilt only because its centre moves.
+//  - 30 fps throttle (the drift is slow enough that more is wasteful), the RAF
+//    loop fully stops when the tab is hidden, and reduced-motion renders a
+//    single static frame with no loop.
+//
+// Theme-aware, re-read every frame so it adapts live on toggle:
+//  - Dark mode uses additive ('lighter') compositing for a glowing aurora.
+//  - Light mode uses normal compositing with low-alpha tints for a gentle wash
+//    that doesn't blow out toward white on a bright page.
+---
+
+<bg-aurora
+  class="z--1 fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden"
+>
+</bg-aurora>
+
+<style>
+  bg-aurora canvas {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  class BgAuroraElement extends HTMLElement {
+    private animId: number | null = null
+    private canvas: HTMLCanvasElement | null = null
+    private onResize: (() => void) | null = null
+    private onVisibility: (() => void) | null = null
+
+    connectedCallback() {
+      this.canvas = document.createElement('canvas')
+      this.canvas.style.width = '100%'
+      this.canvas.style.height = '100%'
+      this.appendChild(this.canvas)
+      this.init()
+    }
+
+    disconnectedCallback() {
+      if (this.animId !== null) {
+        cancelAnimationFrame(this.animId)
+        this.animId = null
+      }
+      if (this.onResize) window.removeEventListener('resize', this.onResize)
+      if (this.onVisibility)
+        document.removeEventListener('visibilitychange', this.onVisibility)
+    }
+
+    init() {
+      const canvas = this.canvas!
+      const ctx = canvas.getContext('2d')!
+
+      const isDark = () => document.documentElement.classList.contains('dark')
+
+      // ─── Device capability detection ─────────────────────────────────────
+      const isMobile = window.matchMedia('(max-width: 768px)').matches
+      const reduceMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches
+      // Render the backing store this many times smaller than the viewport.
+      // The blobs are soft, so the upscale never shows; this is where almost
+      // all the savings come from. Coarser still on mobile.
+      const DOWNSCALE = isMobile ? 6 : 4
+      // The drift is slow; 30 fps looks identical to 60 here and halves work.
+      const FRAME_MS = 1000 / 30
+      let lastFrameTime = 0
+
+      let W = 0 // internal (downscaled) buffer width
+      let H = 0 // internal (downscaled) buffer height
+
+      // ─── Blobs ───────────────────────────────────────────────────────────
+      //
+      // Each blob orbits a base point via two slow, out-of-phase sine waves so
+      // the field never repeats cleanly. Hues are fixed per blob; only the
+      // alpha and composite mode change with the theme.
+
+      interface Blob {
+        baseX: number // 0..1 of width
+        baseY: number // 0..1 of height
+        ampX: number // drift amplitude, fraction of width
+        ampY: number
+        freqX: number // radians/sec
+        freqY: number
+        phaseX: number
+        phaseY: number
+        radius: number // fraction of min(W, H)
+        hue: number
+      }
+
+      // A cool aurora palette: teal → cyan → blue → violet, with one warm
+      // ember for contrast.
+      const blobs: Blob[] = [
+        {
+          baseX: 0.25,
+          baseY: 0.3,
+          ampX: 0.12,
+          ampY: 0.1,
+          freqX: 0.05,
+          freqY: 0.07,
+          phaseX: 0,
+          phaseY: 1.7,
+          radius: 0.7,
+          hue: 165,
+        },
+        {
+          baseX: 0.7,
+          baseY: 0.25,
+          ampX: 0.14,
+          ampY: 0.09,
+          freqX: 0.043,
+          freqY: 0.061,
+          phaseX: 2.1,
+          phaseY: 0.6,
+          radius: 0.75,
+          hue: 200,
+        },
+        {
+          baseX: 0.55,
+          baseY: 0.65,
+          ampX: 0.1,
+          ampY: 0.12,
+          freqX: 0.037,
+          freqY: 0.052,
+          phaseX: 4.0,
+          phaseY: 3.3,
+          radius: 0.8,
+          hue: 265,
+        },
+        {
+          baseX: 0.85,
+          baseY: 0.7,
+          ampX: 0.09,
+          ampY: 0.08,
+          freqX: 0.058,
+          freqY: 0.04,
+          phaseX: 1.2,
+          phaseY: 5.1,
+          radius: 0.6,
+          hue: 315,
+        },
+      ]
+
+      const resize = () => {
+        W = Math.max(1, Math.round(window.innerWidth / DOWNSCALE))
+        H = Math.max(1, Math.round(window.innerHeight / DOWNSCALE))
+        canvas.width = W
+        canvas.height = H
+      }
+
+      let resizeTimer: ReturnType<typeof setTimeout> | null = null
+      this.onResize = () => {
+        if (resizeTimer) clearTimeout(resizeTimer)
+        resizeTimer = setTimeout(resize, 120)
+      }
+      window.addEventListener('resize', this.onResize)
+
+      // ─── Draw ──────────────────────────────────────────────────────────────
+      const drawFrame = (t: number) => {
+        const dark = isDark()
+        ctx.clearRect(0, 0, W, H)
+        ctx.globalCompositeOperation = dark ? 'lighter' : 'source-over'
+
+        const minDim = Math.min(W, H)
+        // Center alpha per blob. Additive glow in dark needs little; the light
+        // wash uses even less so it stays a hint, not a haze.
+        const centerAlpha = dark ? 0.22 : 0.07
+        // Light mode tints are darker/more saturated so they read on a bright bg.
+        const sat = dark ? 80 : 55
+        const light = dark ? 55 : 60
+
+        for (const b of blobs) {
+          const cx = (b.baseX + Math.sin(t * b.freqX + b.phaseX) * b.ampX) * W
+          const cy = (b.baseY + Math.cos(t * b.freqY + b.phaseY) * b.ampY) * H
+          const r = b.radius * minDim
+
+          const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r)
+          g.addColorStop(
+            0,
+            `hsla(${b.hue}, ${sat}%, ${light}%, ${centerAlpha})`
+          )
+          g.addColorStop(
+            0.5,
+            `hsla(${b.hue}, ${sat}%, ${light}%, ${centerAlpha * 0.35})`
+          )
+          g.addColorStop(1, `hsla(${b.hue}, ${sat}%, ${light}%, 0)`)
+
+          ctx.fillStyle = g
+          ctx.fillRect(0, 0, W, H)
+        }
+
+        ctx.globalCompositeOperation = 'source-over'
+      }
+
+      const draw = (timestamp: number) => {
+        this.animId = requestAnimationFrame(draw)
+
+        const elapsed = timestamp - lastFrameTime
+        if (elapsed < FRAME_MS) return
+        lastFrameTime = timestamp - (elapsed % FRAME_MS)
+
+        if (document.hidden) return
+
+        drawFrame(timestamp / 1000)
+      }
+
+      resize()
+
+      if (reduceMotion) {
+        // Honour the preference: one static frame, no loop.
+        drawFrame(0)
+        return
+      }
+
+      // Stop/restart the RAF loop around tab visibility to save battery.
+      this.onVisibility = () => {
+        if (document.hidden) {
+          if (this.animId !== null) {
+            cancelAnimationFrame(this.animId)
+            this.animId = null
+          }
+        } else if (this.animId === null) {
+          lastFrameTime = 0
+          this.animId = requestAnimationFrame(draw)
+        }
+      }
+      document.addEventListener('visibilitychange', this.onVisibility)
+
+      this.animId = requestAnimationFrame(draw)
+    }
+  }
+
+  customElements.define('bg-aurora', BgAuroraElement)
+</script>

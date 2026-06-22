@@ -24,7 +24,7 @@ export const pageSchema = z.object({
   bgType: z
     .union([
       z.literal(false),
-      z.enum(['plum', 'dot', 'rose', 'particle', 'ocean', 'storm']),
+      z.enum(['plum', 'dot', 'rose', 'particle', 'ocean', 'storm', 'aurora']),
     ])
     .default(false)
     .describe(
