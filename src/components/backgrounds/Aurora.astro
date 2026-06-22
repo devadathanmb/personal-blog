@@ -95,11 +95,15 @@
         phaseX: number
         phaseY: number
         radius: number // fraction of min(W, H)
-        hue: number
+        hue: number // dark-mode hue
+        hueLight: number // light-mode hue (kept in a tighter cool band)
       }
 
-      // A cool aurora palette: teal → cyan → blue → violet, with one warm
-      // ember for contrast.
+      // Dark mode: a wide aurora palette (teal → cyan → blue → violet, plus a
+      // warm ember) — the additive glow keeps disparate hues vivid.
+      // Light mode: a tighter cool band (teal → sky → periwinkle). On a white
+      // page, source-over blends of clashing hues grey out into mud, so the
+      // light hues are kept close together to stay a clean, harmonious wash.
       const blobs: Blob[] = [
         {
           baseX: 0.25,
@@ -112,6 +116,7 @@
           phaseY: 1.7,
           radius: 0.7,
           hue: 165,
+          hueLight: 185,
         },
         {
           baseX: 0.7,
@@ -124,6 +129,7 @@
           phaseY: 0.6,
           radius: 0.75,
           hue: 200,
+          hueLight: 205,
         },
         {
           baseX: 0.55,
@@ -136,6 +142,7 @@
           phaseY: 3.3,
           radius: 0.8,
           hue: 265,
+          hueLight: 225,
         },
         {
           baseX: 0.85,
@@ -148,14 +155,29 @@
           phaseY: 5.1,
           radius: 0.6,
           hue: 315,
+          hueLight: 245,
         },
       ]
 
       const resize = () => {
-        W = Math.max(1, Math.round(window.innerWidth / DOWNSCALE))
-        H = Math.max(1, Math.round(window.innerHeight / DOWNSCALE))
+        const newW = Math.max(1, Math.round(window.innerWidth / DOWNSCALE))
+        const newH = Math.max(1, Math.round(window.innerHeight / DOWNSCALE))
+        // Only react to WIDTH changes. On mobile, scrolling collapses/expands
+        // the browser address bar, which fires `resize` with a changed HEIGHT.
+        // Reassigning canvas.width/height clears the backing store to
+        // transparent, and against the throttled draw loop that blank frame
+        // shows as a flicker on every scroll. Ignoring height-only changes
+        // removes it; the canvas (CSS height 100%) just stretches the buffer,
+        // which is invisible on a soft blurred effect. Rotation changes width,
+        // so it's still handled.
+        if (newW === W) return
+        W = newW
+        H = newH
         canvas.width = W
         canvas.height = H
+        // Redraw at once so the freshly-cleared buffer is never shown blank.
+        lastFrameTime = 0
+        drawFrame(performance.now() / 1000)
       }
 
       let resizeTimer: ReturnType<typeof setTimeout> | null = null
@@ -175,26 +197,25 @@
         // Center alpha per blob, kept low so the aurora reads as a faint shift
         // behind content and never competes with text. The visible movement
         // comes from drift speed/travel, not brightness.
-        const centerAlpha = dark ? 0.13 : 0.045
-        // Light mode tints are darker/more saturated so they read on a bright bg.
-        const sat = dark ? 75 : 55
-        const light = dark ? 55 : 60
+        const centerAlpha = dark ? 0.13 : 0.06
+        // Light mode uses medium-saturation pastels so each blob actually tints
+        // the white page (rather than washing out) while staying gentle.
+        const sat = dark ? 75 : 62
+        const light = dark ? 55 : 64
 
         for (const b of blobs) {
+          const hue = dark ? b.hue : b.hueLight
           const cx = (b.baseX + Math.sin(t * b.freqX + b.phaseX) * b.ampX) * W
           const cy = (b.baseY + Math.cos(t * b.freqY + b.phaseY) * b.ampY) * H
           const r = b.radius * minDim
 
           const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r)
-          g.addColorStop(
-            0,
-            `hsla(${b.hue}, ${sat}%, ${light}%, ${centerAlpha})`
-          )
+          g.addColorStop(0, `hsla(${hue}, ${sat}%, ${light}%, ${centerAlpha})`)
           g.addColorStop(
             0.5,
-            `hsla(${b.hue}, ${sat}%, ${light}%, ${centerAlpha * 0.35})`
+            `hsla(${hue}, ${sat}%, ${light}%, ${centerAlpha * 0.35})`
           )
-          g.addColorStop(1, `hsla(${b.hue}, ${sat}%, ${light}%, 0)`)
+          g.addColorStop(1, `hsla(${hue}, ${sat}%, ${light}%, 0)`)
 
           ctx.fillStyle = g
           ctx.fillRect(0, 0, W, H)
