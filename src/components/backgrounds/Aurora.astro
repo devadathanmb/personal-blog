@@ -104,10 +104,10 @@
         {
           baseX: 0.25,
           baseY: 0.3,
-          ampX: 0.12,
-          ampY: 0.1,
-          freqX: 0.05,
-          freqY: 0.07,
+          ampX: 0.2,
+          ampY: 0.17,
+          freqX: 0.14,
+          freqY: 0.19,
           phaseX: 0,
           phaseY: 1.7,
           radius: 0.7,
@@ -116,10 +116,10 @@
         {
           baseX: 0.7,
           baseY: 0.25,
-          ampX: 0.14,
-          ampY: 0.09,
-          freqX: 0.043,
-          freqY: 0.061,
+          ampX: 0.22,
+          ampY: 0.15,
+          freqX: 0.12,
+          freqY: 0.17,
           phaseX: 2.1,
           phaseY: 0.6,
           radius: 0.75,
@@ -128,10 +128,10 @@
         {
           baseX: 0.55,
           baseY: 0.65,
-          ampX: 0.1,
-          ampY: 0.12,
-          freqX: 0.037,
-          freqY: 0.052,
+          ampX: 0.18,
+          ampY: 0.2,
+          freqX: 0.1,
+          freqY: 0.15,
           phaseX: 4.0,
           phaseY: 3.3,
           radius: 0.8,
@@ -140,10 +140,10 @@
         {
           baseX: 0.85,
           baseY: 0.7,
-          ampX: 0.09,
-          ampY: 0.08,
-          freqX: 0.058,
-          freqY: 0.04,
+          ampX: 0.16,
+          ampY: 0.14,
+          freqX: 0.16,
+          freqY: 0.11,
           phaseX: 1.2,
           phaseY: 5.1,
           radius: 0.6,
@@ -172,11 +172,12 @@
         ctx.globalCompositeOperation = dark ? 'lighter' : 'source-over'
 
         const minDim = Math.min(W, H)
-        // Center alpha per blob. Additive glow in dark needs little; the light
-        // wash uses even less so it stays a hint, not a haze.
-        const centerAlpha = dark ? 0.22 : 0.07
+        // Center alpha per blob, kept low so the aurora reads as a faint shift
+        // behind content and never competes with text. The visible movement
+        // comes from drift speed/travel, not brightness.
+        const centerAlpha = dark ? 0.13 : 0.045
         // Light mode tints are darker/more saturated so they read on a bright bg.
-        const sat = dark ? 80 : 55
+        const sat = dark ? 75 : 55
         const light = dark ? 55 : 60
 
         for (const b of blobs) {
