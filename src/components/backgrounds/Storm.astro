@@ -115,20 +115,31 @@
       const DROP_COUNT = isMobile ? 100 : 180
       const buckets: Drop[][] = Array.from({ length: BUCKETS }, () => [])
 
-      const resetDrop = (d: Drop) => {
+      // `bucket` is the drop's opacity tier (0 = faintest/furthest,
+      // BUCKETS-1 = brightest/closest). Use it to give each depth layer its own
+      // speed/length so the rain reads as 3D parallax instead of a flat sheet.
+      const resetDrop = (d: Drop, bucket: number) => {
+        // depth: 0 (far) → 1 (near). Drives the parallax mapping below.
+        const depth = bucket / (BUCKETS - 1)
+
         d.x = Math.random() * (W + 40) - 20
         d.y = -(10 + Math.random() * 28)
-        d.speed = 2 + Math.random() * 3
-        d.length = 10 + Math.random() * 18
+
+        // Nearer rain (depth→1) falls faster and streaks longer; distant rain
+        // (depth→0) drifts slow and short. The base scales with depth, then a
+        // small random term keeps each layer from looking like a rigid band.
+        d.speed = 1.9 + depth * 2.6 + Math.random() * 0.7 // ~1.9–5.2 px/frame
+        d.length = 8 + depth * 13 + Math.random() * 6 // ~8–27 px
       }
 
       const initDrops = () => {
         for (let b = 0; b < BUCKETS; b++) buckets[b].length = 0
         for (let i = 0; i < DROP_COUNT; i++) {
+          const bucket = (Math.random() * BUCKETS) | 0
           const d: Drop = { x: 0, y: 0, speed: 0, length: 0 }
-          resetDrop(d)
+          resetDrop(d, bucket)
           d.y = Math.random() * H // spread across the screen on first frame
-          buckets[(Math.random() * BUCKETS) | 0].push(d)
+          buckets[bucket].push(d)
         }
       }
 
@@ -155,6 +166,7 @@
         flashMult: number
         glowBlur: number
         coreWidth: number
+        restrikesLeft: number // remaining return-strokes before final fade
       }
 
       const MAX_BOLTS = 3
@@ -177,6 +189,7 @@
           flashMult: number
           glowBlur: number
           branchProb: number
+          restrikes: number
         }
       > = {
         major: {
@@ -190,6 +203,7 @@
           flashMult: 1.0,
           glowBlur: 16,
           branchProb: 0.38,
+          restrikes: 2, // big strikes flicker-flash down the same channel
         },
         minor: {
           peakAlpha: 0.78,
@@ -202,6 +216,7 @@
           flashMult: 0.6,
           glowBlur: isMobile ? 0 : 8,
           branchProb: 0.28,
+          restrikes: 1,
         },
         distant: {
           peakAlpha: 0.55,
@@ -214,6 +229,7 @@
           flashMult: 0.35,
           glowBlur: 0,
           branchProb: 0.15,
+          restrikes: 0, // far-off flashes read as a single dim pulse
         },
       }
 
@@ -301,6 +317,8 @@
           flashMult: cfg.flashMult,
           glowBlur: cfg.glowBlur,
           coreWidth: cfg.initWidth,
+          // Randomise 0..restrikes so strikes don't all re-flash identically.
+          restrikesLeft: (Math.random() * (cfg.restrikes + 1)) | 0,
         })
       }
 
@@ -352,7 +370,16 @@
             } else if (b.phase === 'hold') {
               b.alpha = b.peakAlpha
               if (bElapsed >= b.boltHold) {
-                b.phase = 'out'
+                if (b.restrikesLeft > 0) {
+                  // Return-stroke: drop dark, then re-flash down the same
+                  // channel a touch dimmer for a natural strobe.
+                  b.restrikesLeft--
+                  b.peakAlpha *= 0.82
+                  b.phase = 'in'
+                  b.alpha = 0
+                } else {
+                  b.phase = 'out'
+                }
                 b.phaseStart = now
               }
             } else {
@@ -390,11 +417,13 @@
           ctx.globalAlpha = Math.min(0.85, alphaTable[b] + lightBoost)
           ctx.beginPath()
           const bucket = buckets[b]
+          // Nearer layers (higher bucket) get blown around more by the wind.
+          const swayMult = 0.35 + (b / (BUCKETS - 1)) * 0.75
           for (const d of bucket) {
             // Advance position (gravity + wind drift).
             d.y += d.speed
-            d.x += wind * 0.6
-            if (d.y - d.length > H) resetDrop(d)
+            d.x += wind * swayMult
+            if (d.y - d.length > H) resetDrop(d, b)
             // Streak leans with the wind for a gusty feel.
             const lean = wind * d.length * 0.35
             ctx.moveTo(d.x, d.y)
