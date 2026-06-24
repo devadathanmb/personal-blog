@@ -340,6 +340,7 @@
         // drizzle, so we clear any in-flight bolts and skip the storm logic.
         let combinedFlash = 0
         let maxLightBoost = 0
+        let flashX = W / 2 // x of the brightest bolt — anchors the flash glow
 
         if (dark) {
           // Spawn new bolts.
@@ -392,7 +393,11 @@
             }
 
             combinedFlash += b.alpha * b.flashMult
-            maxLightBoost = Math.max(maxLightBoost, b.alpha * b.peakAlpha)
+            const boost = b.alpha * b.peakAlpha
+            if (boost > maxLightBoost) {
+              maxLightBoost = boost
+              flashX = b.segs.length ? b.segs[0].x1 : flashX
+            }
           }
 
           combinedFlash = Math.min(combinedFlash, 1)
@@ -438,8 +443,14 @@
         // is always the night-time strength.
         if (activeBolts.length > 0) {
           if (combinedFlash > 0.05) {
+            // Sky glow radiates from the strike: brightest at the bolt's
+            // column, falling to a dim ambient wash at the screen edges (the
+            // outer stop stays non-zero so the whole sky still lifts a little).
             const flashAlpha = combinedFlash * combinedFlash * 0.055
-            ctx.fillStyle = `rgba(200, 220, 255, ${flashAlpha})`
+            const grad = ctx.createRadialGradient(flashX, 0, 0, flashX, 0, W)
+            grad.addColorStop(0, `rgba(210, 226, 255, ${flashAlpha})`)
+            grad.addColorStop(1, `rgba(200, 220, 255, ${flashAlpha * 0.3})`)
+            ctx.fillStyle = grad
             ctx.fillRect(0, 0, W, H)
           }
 
