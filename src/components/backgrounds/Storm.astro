@@ -37,6 +37,7 @@
     private animId: number | null = null
     private canvas: HTMLCanvasElement | null = null
     private onVisibility: (() => void) | null = null
+    private onResize: (() => void) | null = null
     private sync: (() => void) | null = null
 
     connectedCallback() {
@@ -54,6 +55,7 @@
       }
       if (this.onVisibility)
         document.removeEventListener('visibilitychange', this.onVisibility)
+      if (this.onResize) window.removeEventListener('resize', this.onResize)
     }
 
     init() {
@@ -84,10 +86,11 @@
       }
 
       let resizeTimer: ReturnType<typeof setTimeout> | null = null
-      window.addEventListener('resize', () => {
+      this.onResize = () => {
         if (resizeTimer) clearTimeout(resizeTimer)
         resizeTimer = setTimeout(resize, 120)
-      })
+      }
+      window.addEventListener('resize', this.onResize)
 
       // ─── Rain ─────────────────────────────────────────────────────────────
       //
