@@ -15,9 +15,14 @@
 // lightning is a night-time effect only — bolts strike, flash and flicker in
 // dark mode, while light mode is a calm daytime drizzle with no bolts.
 //
+// Rain has depth: each opacity bucket is also a parallax layer, so nearer
+// drops fall faster, streak longer and sway more in the wind than distant ones.
+//
 // Lightning strikes from randomised horizontal positions at the top of the
-// screen, each bolt with its own intensity tier (major / minor / distant) and
-// a subtle channel flicker for a more natural strobe.
+// screen, each bolt with its own intensity tier (major / minor / distant), a
+// subtle channel flicker, and 0–2 dimmer return-strokes down the same channel.
+// The screen flash radiates from the brightest bolt's column rather than
+// washing the whole sky uniformly.
 ---
 
 <bg-storm
@@ -102,8 +107,8 @@
       interface Drop {
         x: number
         y: number
-        speed: number // px/frame (2–5)
-        length: number // streak px (10–28)
+        speed: number // px/frame, depth-scaled (~1.9–5.2)
+        length: number // streak px, depth-scaled (~8–27)
       }
 
       // 4 tiers: very faint → slightly visible. Light-mode rain needs a touch
@@ -201,7 +206,7 @@
           initSegLen: 52,
           initWidth: 2.4,
           flashMult: 1.0,
-          glowBlur: 16,
+          glowBlur: isMobile ? 8 : 16, // shadowBlur is costly — halve on mobile
           branchProb: 0.38,
           restrikes: 2, // big strikes flicker-flash down the same channel
         },
@@ -396,7 +401,7 @@
             const boost = b.alpha * b.peakAlpha
             if (boost > maxLightBoost) {
               maxLightBoost = boost
-              flashX = b.segs.length ? b.segs[0].x1 : flashX
+              flashX = b.segs[0].x1 // genBolt always emits ≥1 segment
             }
           }
 
