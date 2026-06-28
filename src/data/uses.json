@@ -120,6 +120,95 @@
         ]
       },
       {
+        "label": "VS Code Extensions",
+        "items": [
+          {
+            "name": "GitLens",
+            "url": "https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens",
+            "icon": "i-ph-git-commit-duotone",
+            "btnClass": "btn-orange",
+            "title": "Inline git blame. I ignore the other 90% of what it does."
+          },
+          {
+            "name": "Error Lens",
+            "url": "https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens",
+            "icon": "i-ph-x-circle-duotone",
+            "btnClass": "btn-red",
+            "title": "Errors inline, where you're actually looking."
+          },
+          {
+            "name": "VsCodeVim",
+            "url": "https://marketplace.visualstudio.com/items?itemName=vscodevim.vim",
+            "icon": "i-simple-icons-vim",
+            "btnClass": "btn-slate",
+            "title": "Vim keybindings in VS Code. Muscle memory wins."
+          },
+          {
+            "name": "Which Key",
+            "url": "https://marketplace.visualstudio.com/items?itemName=vspacecode.whichkey",
+            "icon": "i-ph-question-duotone",
+            "btnClass": "btn-zinc",
+            "title": "Vim leader key discovery. Amnesia-free."
+          },
+          {
+            "name": "Material Icon Theme",
+            "url": "https://marketplace.visualstudio.com/items?itemName=pkief.material-icon-theme",
+            "icon": "i-ph-sparkle-duotone",
+            "btnClass": "btn-amber",
+            "title": "Files finally look like what they are."
+          },
+          {
+            "name": "Path Intellisense",
+            "url": "https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense",
+            "icon": "i-ph-path-duotone",
+            "btnClass": "btn-teal",
+            "title": "Autocomplete for file paths. Sounds trivial, saves you constantly."
+          },
+          {
+            "name": "Indent Rainbow",
+            "url": "https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow",
+            "icon": "i-ph-text-indent-duotone",
+            "btnClass": "btn-rose",
+            "title": "Colors indentation levels. Helps with deeply nested code."
+          },
+          {
+            "name": "Color Highlight",
+            "url": "https://marketplace.visualstudio.com/items?itemName=naumovs.color-highlight",
+            "icon": "i-ph-paint-bucket-duotone",
+            "btnClass": "btn-lime",
+            "title": "Previews CSS colors inline. No more hex guessing."
+          },
+          {
+            "name": "File Utils",
+            "url": "https://marketplace.visualstudio.com/items?itemName=sleistner.vscode-fileutils",
+            "icon": "i-ph-note-pencil-duotone",
+            "btnClass": "btn-cyan",
+            "title": "Rename, move, duplicate files from the command palette."
+          },
+          {
+            "name": "Bookmarks",
+            "url": "https://marketplace.visualstudio.com/items?itemName=alefragnani.bookmarks",
+            "icon": "i-ph-bookmarks-duotone",
+            "btnClass": "btn-yellow",
+            "title": "Mark lines in a file and jump between them instantly."
+          },
+          {
+            "name": "Project Manager",
+            "url": "https://marketplace.visualstudio.com/items?itemName=alefragnani.project-manager",
+            "icon": "i-ph-briefcase-duotone",
+            "btnClass": "btn-indigo",
+            "title": "Switch between projects from the command palette."
+          },
+          {
+            "name": "Rainbow CSV",
+            "url": "https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv",
+            "icon": "i-ph-table-duotone",
+            "btnClass": "btn-green",
+            "title": "Colors CSV columns. Makes tabular data actually readable."
+          }
+        ]
+      },
+      {
         "label": "Shell",
         "items": [
           {
