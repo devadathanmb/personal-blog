@@ -10,21 +10,21 @@
             "url": "https://astro.build",
             "icon": "i-simple-icons-astro",
             "btnClass": "btn-orange",
-            "title": "Static site generator. Ships as plain HTML."
+            "description": "Static site generator. Ships as plain HTML."
           },
           {
             "name": "MDX",
             "url": "https://mdxjs.com",
             "icon": "i-simple-icons-mdx",
             "btnClass": "btn-yellow",
-            "title": "Markdown with components. Powers every page here."
+            "description": "Markdown with components. Powers every page here."
           },
           {
             "name": "UnoCSS",
             "url": "https://unocss.dev",
             "icon": "i-simple-icons-unocss",
             "btnClass": "btn-cyan",
-            "title": "Atomic CSS engine. No Tailwind."
+            "description": "Atomic CSS engine. No Tailwind."
           }
         ]
       },
@@ -36,28 +36,28 @@
             "url": "https://www.last.fm/api",
             "icon": "i-simple-icons-lastdotfm",
             "btnClass": "btn-red",
-            "title": "Whatever I'm listening to, scrobbled in real time."
+            "description": "Whatever I'm listening to, scrobbled in real time."
           },
           {
             "name": "Open-Meteo",
             "url": "https://open-meteo.com",
             "icon": "i-ph-cloud-sun-duotone",
             "btnClass": "btn-sky",
-            "title": "Weather in Kerala. Free, no key needed."
+            "description": "Weather in Kerala. Free, no key needed."
           },
           {
             "name": "GitHub Events API",
             "url": "https://docs.github.com/en/rest/activity/events",
             "icon": "i-simple-icons-github",
             "btnClass": "btn-zinc",
-            "title": "My latest public activity, straight from the source."
+            "description": "My latest public activity, straight from the source."
           },
           {
             "name": "Trakt",
             "url": "https://trakt.tv",
             "icon": "i-simple-icons-trakt",
             "btnClass": "btn-orange",
-            "title": "Whatever I'm watching, scrobbled automatically from Jellyfin."
+            "description": "Whatever I'm watching, scrobbled automatically from Jellyfin."
           }
         ]
       },
@@ -69,14 +69,14 @@
             "url": "https://giscus.app",
             "icon": "i-ph-chats-circle-duotone",
             "btnClass": "btn-violet",
-            "title": "Comments backed by GitHub Discussions."
+            "description": "Comments backed by GitHub Discussions."
           },
           {
             "name": "Pagefind",
             "url": "https://pagefind.app",
             "icon": "i-ph-magnifying-glass-duotone",
             "btnClass": "btn-emerald",
-            "title": "Static search index, built at build time."
+            "description": "Static search index, built at build time."
           }
         ]
       },
@@ -88,21 +88,21 @@
             "url": "https://github.com/vercel/satori",
             "icon": "i-ph-image-duotone",
             "btnClass": "btn-slate",
-            "title": "Generates the OG images from JSX at build time."
+            "description": "Generates the OG images from JSX at build time."
           },
           {
             "name": "Cloudflare Workers",
             "url": "https://workers.cloudflare.com",
             "icon": "i-simple-icons-cloudflare",
             "btnClass": "btn-amber",
-            "title": "Static assets served from the edge. No server to manage."
+            "description": "Static assets served from the edge. No server to manage."
           },
           {
             "name": "Hostinger",
             "url": "https://www.hostinger.com",
             "icon": "i-simple-icons-hostinger",
             "btnClass": "btn-purple",
-            "title": "Domain registrar. Where this corner of the internet lives."
+            "description": "Domain registrar. Where this corner of the internet lives."
           }
         ]
       },
@@ -114,21 +114,21 @@
             "url": "https://zed.dev",
             "icon": "i-simple-icons-zedindustries",
             "btnClass": "btn-emerald",
-            "title": "Built most of this site in here. Fast when it feels like it."
+            "description": "Built most of this site in here. Fast when it feels like it."
           },
           {
             "name": "VS Code",
             "url": "https://code.visualstudio.com",
             "icon": "i-mdi-microsoft-visual-studio-code",
             "btnClass": "btn-blue",
-            "title": "The old reliable. Picks up whatever Zed drops."
+            "description": "The old reliable. Picks up whatever Zed drops."
           },
           {
             "name": "Claude Code",
             "url": "https://claude.com/product/claude-code",
             "icon": "i-simple-icons-claude",
             "btnClass": "btn-orange",
-            "title": "Paired with me through most of this rebuild."
+            "description": "Paired with me through most of this rebuild."
           }
         ]
       }

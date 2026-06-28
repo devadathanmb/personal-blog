@@ -4,7 +4,7 @@ interface UsesItem {
   url: string
   icon: string
   btnClass: string
-  title: string
+  description: string
 }
 
 interface UsesCategory {
@@ -62,7 +62,7 @@ const id = section.title
                     {item.name}
                   </span>
                   <span class="text-xs op-50 leading-snug mt-1">
-                    {item.title}
+                    {item.description}
                   </span>
                 </div>
               </a>

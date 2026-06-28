@@ -10,14 +10,14 @@
             "url": "https://www.apple.com/macbook-pro/",
             "icon": "i-ph-laptop-duotone",
             "btnClass": "btn-slate",
-            "title": "24 GB RAM, 512 GB SSD. Daily driver."
+            "description": "24 GB RAM, 512 GB SSD. Daily driver."
           },
           {
             "name": "ASUS VivoBook 14",
             "url": "https://www.asus.com/laptops/for-home/vivobook/vivobook-14-m413/",
             "icon": "i-ph-laptop-duotone",
             "btnClass": "btn-zinc",
-            "title": "Ryzen 5 4500U, 8 GB RAM, 512 GB SSD. Still special. Everything started here."
+            "description": "Ryzen 5 4500U, 8 GB RAM, 512 GB SSD. Still special. Everything started here."
           }
         ]
       },
@@ -29,7 +29,7 @@
             "url": "https://store.google.com/product/pixel_7a",
             "icon": "i-ph-device-mobile-duotone",
             "btnClass": "btn-slate",
-            "title": "8 GB RAM, 128 GB storage. More flaws than I'd like, fewer reasons to replace it."
+            "description": "8 GB RAM, 128 GB storage. More flaws than I'd like, fewer reasons to replace it."
           }
         ]
       },
@@ -41,7 +41,7 @@
             "url": "https://www.oneplus.in/oneplus-buds-pro-3",
             "icon": "i-cbi:apple-airpods-pro",
             "btnClass": "btn-red",
-            "title": "Earphones. A surprisingly effective coping mechanism."
+            "description": "Earphones. A surprisingly effective coping mechanism."
           }
         ]
       }
@@ -58,14 +58,14 @@
             "url": "https://www.apple.com/macos/",
             "icon": "i-simple-icons-apple",
             "btnClass": "btn-slate",
-            "title": "macOS Tahoe."
+            "description": "macOS Tahoe."
           },
           {
             "name": "Arch Linux",
             "url": "https://archlinux.org",
             "icon": "i-simple-icons-archlinux",
             "btnClass": "btn-blue",
-            "title": "On the VivoBook. And yeah, btw!"
+            "description": "On the VivoBook. And yeah, btw!"
           }
         ]
       },
@@ -77,7 +77,7 @@
             "url": "https://github.com/primer/github-vscode-theme",
             "icon": "i-ph-palette-duotone",
             "btnClass": "btn-zinc",
-            "title": "One theme for the editor's pride."
+            "description": "One theme for the editor's pride."
           }
         ]
       },
@@ -89,14 +89,14 @@
             "url": "https://www.jetbrains.com/lp/mono/",
             "icon": "i-simple-icons-jetbrains",
             "btnClass": "btn-slate",
-            "title": "The evergeen coding font."
+            "description": "The evergeen coding font."
           },
           {
             "name": "Maple Mono",
             "url": "https://github.com/subframe7536/maple-font",
             "icon": "i-ph-text-t-duotone",
             "btnClass": "btn-slate",
-            "title": "I stopped looking after this one."
+            "description": "I stopped looking after this one."
           }
         ]
       },
@@ -108,14 +108,14 @@
             "url": "https://zed.dev/",
             "icon": "i-simple-icons-zedindustries",
             "btnClass": "btn-emerald",
-            "title": "Giving it another shot. Still not convinced."
+            "description": "Giving it another shot. Still not convinced."
           },
           {
             "name": "VS Code",
             "url": "https://code.visualstudio.com/",
             "icon": "i-mdi-microsoft-visual-studio-code",
             "btnClass": "btn-blue",
-            "title": "There to save me when Zed gives up."
+            "description": "There to save me when Zed gives up."
           }
         ]
       },
@@ -127,84 +127,84 @@
             "url": "https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens",
             "icon": "i-ph-git-commit-duotone",
             "btnClass": "btn-orange",
-            "title": "Inline git blame. I ignore the other 90% of what it does."
+            "description": "Inline git blame. I ignore the other 90% of what it does."
           },
           {
             "name": "Error Lens",
             "url": "https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens",
             "icon": "i-ph-x-circle-duotone",
             "btnClass": "btn-red",
-            "title": "Errors inline, where you're actually looking."
+            "description": "Errors inline, where you're actually looking."
           },
           {
             "name": "VsCodeVim",
             "url": "https://marketplace.visualstudio.com/items?itemName=vscodevim.vim",
             "icon": "i-simple-icons-vim",
             "btnClass": "btn-slate",
-            "title": "Vim keybindings in VS Code. Muscle memory wins."
+            "description": "Vim keybindings in VS Code. Muscle memory wins."
           },
           {
             "name": "Which Key",
             "url": "https://marketplace.visualstudio.com/items?itemName=vspacecode.whichkey",
             "icon": "i-ph-question-duotone",
             "btnClass": "btn-zinc",
-            "title": "Vim leader key discovery. Amnesia-free."
+            "description": "Vim leader key discovery. Amnesia-free."
           },
           {
             "name": "Material Icon Theme",
             "url": "https://marketplace.visualstudio.com/items?itemName=pkief.material-icon-theme",
             "icon": "i-ph-sparkle-duotone",
             "btnClass": "btn-amber",
-            "title": "Files finally look like what they are."
+            "description": "Files finally look like what they are."
           },
           {
             "name": "Path Intellisense",
             "url": "https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense",
             "icon": "i-ph-path-duotone",
             "btnClass": "btn-teal",
-            "title": "Autocomplete for file paths. Sounds trivial, saves you constantly."
+            "description": "Autocomplete for file paths. Sounds trivial, saves you constantly."
           },
           {
             "name": "Indent Rainbow",
             "url": "https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow",
             "icon": "i-ph-text-indent-duotone",
             "btnClass": "btn-rose",
-            "title": "Colors indentation levels. Helps with deeply nested code."
+            "description": "Colors indentation levels. Helps with deeply nested code."
           },
           {
             "name": "Color Highlight",
             "url": "https://marketplace.visualstudio.com/items?itemName=naumovs.color-highlight",
             "icon": "i-ph-paint-bucket-duotone",
             "btnClass": "btn-lime",
-            "title": "Previews CSS colors inline. No more hex guessing."
+            "description": "Previews CSS colors inline. No more hex guessing."
           },
           {
             "name": "File Utils",
             "url": "https://marketplace.visualstudio.com/items?itemName=sleistner.vscode-fileutils",
             "icon": "i-ph-note-pencil-duotone",
             "btnClass": "btn-cyan",
-            "title": "Rename, move, duplicate files from the command palette."
+            "description": "Rename, move, duplicate files from the command palette."
           },
           {
             "name": "Bookmarks",
             "url": "https://marketplace.visualstudio.com/items?itemName=alefragnani.bookmarks",
             "icon": "i-ph-bookmarks-duotone",
             "btnClass": "btn-yellow",
-            "title": "Mark lines in a file and jump between them instantly."
+            "description": "Mark lines in a file and jump between them instantly."
           },
           {
             "name": "Project Manager",
             "url": "https://marketplace.visualstudio.com/items?itemName=alefragnani.project-manager",
             "icon": "i-ph-briefcase-duotone",
             "btnClass": "btn-indigo",
-            "title": "Switch between projects from the command palette."
+            "description": "Switch between projects from the command palette."
           },
           {
             "name": "Rainbow CSV",
             "url": "https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv",
             "icon": "i-ph-table-duotone",
             "btnClass": "btn-green",
-            "title": "Colors CSV columns. Makes tabular data actually readable."
+            "description": "Colors CSV columns. Makes tabular data actually readable."
           }
         ]
       },
@@ -216,7 +216,7 @@
             "url": "https://fishshell.com/",
             "icon": "i-simple-icons-fishshell",
             "btnClass": "btn-sky",
-            "title": "My default shell these days. Turns out life exists outside POSIX."
+            "description": "My default shell these days. Turns out life exists outside POSIX."
           }
         ]
       },
@@ -228,14 +228,14 @@
             "url": "https://ghostty.org/",
             "icon": "i-simple-icons-ghostty",
             "btnClass": "btn-purple",
-            "title": "Primary terminal. It's good but the internet made it sound revolutionary."
+            "description": "Primary terminal. It's good but the internet made it sound revolutionary."
           },
           {
             "name": "iTerm2",
             "url": "https://iterm2.com/",
             "icon": "i-simple-icons-iterm2",
             "btnClass": "btn-slate",
-            "title": "Ex primary terminal. Still have it installed for backup and some nostalgia."
+            "description": "Ex primary terminal. Still have it installed for backup and some nostalgia."
           }
         ]
       },
@@ -247,7 +247,7 @@
             "url": "https://github.com/tmux/tmux",
             "icon": "i-simple-icons-tmux",
             "btnClass": "btn-amber",
-            "title": "Multiplexing babe!"
+            "description": "Multiplexing babe!"
           }
         ]
       },
@@ -259,56 +259,56 @@
             "url": "https://github.com/ajeetdsouza/zoxide",
             "icon": "i-ph-folder-simple-duotone",
             "btnClass": "btn-rose",
-            "title": "Smarter cd command."
+            "description": "Smarter cd command."
           },
           {
             "name": "fzf",
             "url": "https://github.com/junegunn/fzf",
             "icon": "i-codicon:search-fuzzy",
             "btnClass": "btn-orange",
-            "title": "Fuzzy finder for everything. I literally have everything piped to this, no joke."
+            "description": "Fuzzy finder for everything. I literally have everything piped to this, no joke."
           },
           {
             "name": "atuin",
             "url": "https://github.com/atuinsh/atuin",
             "icon": "i-f7:tortoise-fill",
             "btnClass": "btn-cyan",
-            "title": "Magical shell history."
+            "description": "Magical shell history."
           },
           {
             "name": "eza",
             "url": "https://github.com/eza-community/eza",
             "icon": "i-ph-list-bullets-duotone",
             "btnClass": "btn-teal",
-            "title": "ls but with fancy icons."
+            "description": "ls but with fancy icons."
           },
           {
             "name": "bat",
             "url": "https://github.com/sharkdp/bat",
             "icon": "i-ph-file-text-duotone",
             "btnClass": "btn-yellow",
-            "title": "cat with syntax highlighting."
+            "description": "cat with syntax highlighting."
           },
           {
             "name": "lazygit",
             "url": "https://github.com/jesseduffield/lazygit",
             "icon": "i-simple-icons-git",
             "btnClass": "btn-green",
-            "title": "Terminal UI for git. I use this more than git cli."
+            "description": "Terminal UI for git. I use this more than git cli."
           },
           {
             "name": "lazydocker",
             "url": "https://github.com/jesseduffield/lazydocker",
             "icon": "i-simple-icons-docker",
             "btnClass": "btn-blue",
-            "title": "Terminal UI for Docker."
+            "description": "Terminal UI for Docker."
           },
           {
             "name": "k9s",
             "url": "https://k9scli.io",
             "icon": "i-simple-icons-kubernetes",
             "btnClass": "btn-lime",
-            "title": "K9s is awesome, trust me!"
+            "description": "K9s is awesome, trust me!"
           }
         ]
       },
@@ -320,56 +320,56 @@
             "url": "https://arc.net/",
             "icon": "i-simple-icons-arc",
             "btnClass": "btn-sky",
-            "title": "Browser of choice."
+            "description": "Browser of choice."
           },
           {
             "name": "Raycast",
             "url": "https://www.raycast.com/",
             "icon": "i-simple-icons-raycast",
             "btnClass": "btn-slate",
-            "title": "Keyboard-driven productivity launcher."
+            "description": "Keyboard-driven productivity launcher."
           },
           {
             "name": "Snapzy",
             "url": "https://snapzy.app/",
             "icon": "i-ph-camera-duotone",
             "btnClass": "btn-orange",
-            "title": "Open-source version of Cleanshot X. Works flawlessly."
+            "description": "Open-source version of Cleanshot X. Works flawlessly."
           },
           {
             "name": "AltTab",
             "url": "https://github.com/lwouis/alt-tab-macos",
             "icon": "i-ph-windows-logo-duotone",
             "btnClass": "btn-indigo",
-            "title": "MacOS window management sucks. This makes it livable."
+            "description": "MacOS window management sucks. This makes it livable."
           },
           {
             "name": "Stats",
             "url": "https://mac-stats.com/",
             "icon": "i-ph-activity-duotone",
             "btnClass": "btn-cyan",
-            "title": "Open-source iStat Menus alternative. Works flawlessly."
+            "description": "Open-source iStat Menus alternative. Works flawlessly."
           },
           {
             "name": "Ice",
             "url": "https://github.com/jordanbaird/Ice",
             "icon": "i-ph-snowflake-duotone",
             "btnClass": "btn-sky",
-            "title": "Open-source Bartender alternative. Keeps the menu bar tidy on a notch Mac."
+            "description": "Open-source Bartender alternative. Keeps the menu bar tidy on a notch Mac."
           },
           {
             "name": "MPV",
             "url": "https://mpv.io/",
             "icon": "i-simple-icons-mpv",
             "btnClass": "btn-rose",
-            "title": "Open-source media player. Minimal and keyboard-driven."
+            "description": "Open-source media player. Minimal and keyboard-driven."
           },
           {
             "name": "Calibre",
             "url": "https://calibre-ebook.com/",
             "icon": "i-ph-books-duotone",
             "btnClass": "btn-amber",
-            "title": "Open-source e-book manager and reader."
+            "description": "Open-source e-book manager and reader."
           }
         ]
       }
@@ -386,7 +386,7 @@
             "url": "https://superwhisper.com/",
             "icon": "i-mingcute:voice-fill",
             "btnClass": "btn-pink",
-            "title": "Voice-to-text for everything."
+            "description": "Voice-to-text for everything."
           }
         ]
       },
@@ -398,21 +398,21 @@
             "url": "https://github.com/earendil-works/pi-coding-agent",
             "icon": "i-tabler:math-pi",
             "btnClass": "btn-cyan",
-            "title": "Minimalist, highly customizable open-source terminal-based harness. Trying to see if the hype checks out."
+            "description": "Minimalist, highly customizable open-source terminal-based harness. Trying to see if the hype checks out."
           },
           {
             "name": "Opencode",
             "url": "https://opencode.ai",
             "icon": "i-ph-terminal-window-duotone",
             "btnClass": "btn-violet",
-            "title": "Feature-rich, opinionated open-source coding agent for the terminal."
+            "description": "Feature-rich, opinionated open-source coding agent for the terminal."
           },
           {
             "name": "Claude Code",
             "url": "https://claude.com/product/claude-code",
             "icon": "i-simple-icons:claude",
             "btnClass": "btn-orange",
-            "title": "Anthropic's terminal-based coding agent. Because they will ban you if you use anything else."
+            "description": "Anthropic's terminal-based coding agent. Because they will ban you if you use anything else."
           }
         ]
       },
@@ -424,28 +424,28 @@
             "url": "https://exa.ai",
             "icon": "i-tabler:world-search",
             "btnClass": "btn-amber",
-            "title": "Web search designed for AI agents."
+            "description": "Web search designed for AI agents."
           },
           {
             "name": "Context7",
             "url": "https://context7.com",
             "icon": "i-tabler:book-2",
             "btnClass": "btn-emerald",
-            "title": "Up-to-date library docs, on demand."
+            "description": "Up-to-date library docs, on demand."
           },
           {
             "name": "DeepWiki",
             "url": "https://deepwiki.com",
             "icon": "i-tabler:bookmarks",
             "btnClass": "btn-sky",
-            "title": "Ask any public repo how it works."
+            "description": "Ask any public repo how it works."
           },
           {
             "name": "Grep.app",
             "url": "https://grep.app",
             "icon": "i-tabler:regex",
             "btnClass": "btn-zinc",
-            "title": "Regex search across a million public repos."
+            "description": "Regex search across a million public repos."
           }
         ]
       }
@@ -462,21 +462,21 @@
             "url": "https://github.com/MetrolistGroup/Metrolist",
             "icon": "i-ph-music-note-duotone",
             "btnClass": "btn-red",
-            "title": "YouTube Music client for Android."
+            "description": "YouTube Music client for Android."
           },
           {
             "name": "ReVanced YT",
             "url": "https://revanced.app",
             "icon": "i-ph-youtube-logo-duotone",
             "btnClass": "btn-blue",
-            "title": "Patched YouTube with no ads."
+            "description": "Patched YouTube with no ads."
           },
           {
             "name": "Seal",
             "url": "https://github.com/JunkFood02/Seal",
             "icon": "i-fluent-emoji-flat:seal",
             "btnClass": "btn-teal",
-            "title": "Video and audio downloader based on yt-dlp."
+            "description": "Video and audio downloader based on yt-dlp."
           }
         ]
       },
@@ -488,14 +488,14 @@
             "url": "https://github.com/Acclorite/book-story",
             "icon": "i-ph-book-open-duotone",
             "btnClass": "btn-amber",
-            "title": "Material You ebook reader."
+            "description": "Material You ebook reader."
           },
           {
             "name": "FeedMe",
             "url": "https://github.com/seazon/FeedMe",
             "icon": "i-ph-rss-duotone",
             "btnClass": "btn-orange",
-            "title": "RSS reader, pairs with my self-hosted FreshRSS."
+            "description": "RSS reader, pairs with my self-hosted FreshRSS."
           }
         ]
       },
@@ -507,21 +507,21 @@
             "url": "https://github.com/localsend/localsend",
             "icon": "i-simple-icons:localsend",
             "btnClass": "btn-cyan",
-            "title": "Open-source AirDrop alternative."
+            "description": "Open-source AirDrop alternative."
           },
           {
             "name": "LibreTorrent",
             "url": "https://github.com/proninyaroslav/libretorrent",
             "icon": "i-arcticons:libretorrent",
             "btnClass": "btn-green",
-            "title": "Free and open-source torrent client."
+            "description": "Free and open-source torrent client."
           },
           {
             "name": "Termux",
             "url": "https://termux.dev",
             "icon": "i-ph-terminal-duotone",
             "btnClass": "btn-zinc",
-            "title": "Linux terminal environment on Android."
+            "description": "Linux terminal environment on Android."
           }
         ]
       }
@@ -538,14 +538,14 @@
             "url": "https://ublockorigin.com",
             "icon": "i-simple-icons:ublockorigin",
             "btnClass": "btn-red",
-            "title": "The only ad blocker you need."
+            "description": "The only ad blocker you need."
           },
           {
             "name": "I still don't care about cookies",
             "url": "https://github.com/OhMyGuus/I-Still-Dont-Care-About-Cookies",
             "icon": "i-ph-cookie-duotone",
             "btnClass": "btn-slate",
-            "title": "Dismisses cookie consent banners automatically."
+            "description": "Dismisses cookie consent banners automatically."
           }
         ]
       },
@@ -557,14 +557,14 @@
             "url": "https://github.com/refined-github/refined-github",
             "icon": "i-simple-icons-github",
             "btnClass": "btn-zinc",
-            "title": "Simplifies the GitHub interface and adds useful features."
+            "description": "Simplifies the GitHub interface and adds useful features."
           },
           {
             "name": "SponsorBlock",
             "url": "https://sponsor.ajay.app",
             "icon": "i-ph-skip-forward-duotone",
             "btnClass": "btn-lime",
-            "title": "Skip sponsored segments in YouTube videos."
+            "description": "Skip sponsored segments in YouTube videos."
           }
         ]
       }
@@ -581,7 +581,7 @@
             "url": "https://www.raspberrypi.com/products/raspberry-pi-5/",
             "icon": "i-simple-icons-raspberrypi",
             "btnClass": "btn-rose",
-            "title": "Low power, runs all my services."
+            "description": "Low power, runs all my services."
           }
         ]
       },
@@ -593,7 +593,7 @@
             "url": "https://www.debian.org/",
             "icon": "i-simple-icons-debian",
             "btnClass": "btn-red",
-            "title": "Solid, headless server OS."
+            "description": "Solid, headless server OS."
           }
         ]
       },
@@ -605,49 +605,49 @@
             "url": "https://adguard.com/en/adguard-home/overview.html",
             "icon": "i-simple-icons-adguard",
             "btnClass": "btn-green",
-            "title": "Network-wide ad blocker."
+            "description": "Network-wide ad blocker."
           },
           {
             "name": "Jellyfin",
             "url": "https://jellyfin.org/",
             "icon": "i-simple-icons-jellyfin",
             "btnClass": "btn-purple",
-            "title": "Media system."
+            "description": "Media system."
           },
           {
             "name": "FreshRSS",
             "url": "https://freshrss.org/",
             "icon": "i-ph-rss-duotone",
             "btnClass": "btn-orange",
-            "title": "RSS aggregator."
+            "description": "RSS aggregator."
           },
           {
             "name": "Miniflux",
             "url": "https://miniflux.app/",
             "icon": "i-ph-article-duotone",
             "btnClass": "btn-slate",
-            "title": "Minimalist RSS reader."
+            "description": "Minimalist RSS reader."
           },
           {
             "name": "Portainer",
             "url": "https://www.portainer.io/",
             "icon": "i-simple-icons-portainer",
             "btnClass": "btn-blue",
-            "title": "Container management."
+            "description": "Container management."
           },
           {
             "name": "qBittorrent",
             "url": "https://www.qbittorrent.org/",
             "icon": "i-simple-icons-qbittorrent",
             "btnClass": "btn-sky",
-            "title": "Torrent client."
+            "description": "Torrent client."
           },
           {
             "name": "Stirling-PDF",
             "url": "https://github.com/Stirling-Tools/Stirling-PDF",
             "icon": "i-ph-file-pdf-duotone",
             "btnClass": "btn-amber",
-            "title": "PDF manipulation."
+            "description": "PDF manipulation."
           }
         ]
       },
@@ -659,14 +659,14 @@
             "url": "https://tailscale.com",
             "icon": "i-simple-icons:tailscale",
             "btnClass": "btn-teal",
-            "title": "Mesh VPN that just works."
+            "description": "Mesh VPN that just works."
           },
           {
             "name": "Ansible",
             "url": "https://www.ansible.com",
             "icon": "i-simple-icons:ansible",
             "btnClass": "btn-indigo",
-            "title": "Agentless config management. Playbooks do the work."
+            "description": "Agentless config management. Playbooks do the work."
           }
         ]
       }
