@@ -25,6 +25,22 @@ const exactDate = then.toLocaleDateString('en-US', {
   month: 'short',
   day: 'numeric',
 })
+
+// Build-time snapshot of the relative label so the chip never renders empty.
+// Mirrors relativeTime() in the client script below, which re-renders it with
+// the visitor's actual "now" on page load (build time drifts as days pass).
+const initialRel =
+  days <= 0
+    ? 'today'
+    : days === 1
+      ? 'yesterday'
+      : days < 7
+        ? `${days} days ago`
+        : days < 31
+          ? `${Math.round(days / 7)} week${Math.round(days / 7) > 1 ? 's' : ''} ago`
+          : days < 365
+            ? `${Math.round(days / 30)} month${Math.round(days / 30) > 1 ? 's' : ''} ago`
+            : `${Math.floor(days / 365)} year${Math.floor(days / 365) > 1 ? 's' : ''} ago`
 ---
 
 <span
@@ -38,7 +54,7 @@ const exactDate = then.toLocaleDateString('en-US', {
   </span>
   <span class="lu-label font-normal">{label}</span>
   <span class="lu-rel font-mono font-medium" style="letter-spacing:0.03em;">
-    <!-- filled by client script -->
+    {initialRel}
   </span>
 </span>
 

@@ -275,10 +275,18 @@ const IDLE_ICON_CLASS = PILL_WIDGET_ICON_CLASSES.nowPlayingIdle
     const track = await fetchRecentTrack(username, apiKey)
 
     // Stop loading animation once the first fetch completes (success or failure)
-    document.getElementById('np-track')?.classList.remove('pill-loading')
+    const trackEl = document.getElementById('np-track')
+    trackEl?.classList.remove('pill-loading')
     document.getElementById('np-artist-time')?.classList.remove('pill-loading')
 
-    if (!track) return
+    if (!track) {
+      // First fetch failed: replace the placeholder so "Loading..." can't
+      // become the pill's permanent text. Later interval failures keep
+      // whatever track was last shown.
+      if (trackEl?.textContent?.trim() === 'Loading...')
+        trackEl.textContent = 'Nothing recent'
+      return
+    }
 
     const isPlaying = track['@attr']?.nowplaying === 'true'
 
