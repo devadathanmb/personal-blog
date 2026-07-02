@@ -105,8 +105,10 @@ summary::-webkit-details-marker {
     --enter-initial: 0ms;
     --enter-stage: 0;
     animation: slide-enter 1s both 1;
+    /* Stagger is capped at stage 9: on content-heavy pages everything past
+       the fold enters together instead of trickling in for seconds. */
     animation-delay: calc(
-      var(--enter-initial) + var(--enter-step) * var(--enter-stage)
+      var(--enter-initial) + var(--enter-step) * min(var(--enter-stage), 9)
     );
   }
 
@@ -137,38 +139,11 @@ summary::-webkit-details-marker {
   .slide-enter-content > *:nth-child(9) {
     --enter-stage: 9 !important;
   }
-  .slide-enter-content > *:nth-child(10) {
+  /* Everything from the 10th child on shares one stage (the delay calc caps
+     at 9 anyway) — this also keeps children past the old hard-coded 20th from
+     popping in with no delay at all. */
+  .slide-enter-content > *:nth-child(n + 10) {
     --enter-stage: 10 !important;
-  }
-  .slide-enter-content > *:nth-child(11) {
-    --enter-stage: 11 !important;
-  }
-  .slide-enter-content > *:nth-child(12) {
-    --enter-stage: 12 !important;
-  }
-  .slide-enter-content > *:nth-child(13) {
-    --enter-stage: 13 !important;
-  }
-  .slide-enter-content > *:nth-child(14) {
-    --enter-stage: 14 !important;
-  }
-  .slide-enter-content > *:nth-child(15) {
-    --enter-stage: 15 !important;
-  }
-  .slide-enter-content > *:nth-child(16) {
-    --enter-stage: 16 !important;
-  }
-  .slide-enter-content > *:nth-child(17) {
-    --enter-stage: 17 !important;
-  }
-  .slide-enter-content > *:nth-child(18) {
-    --enter-stage: 18 !important;
-  }
-  .slide-enter-content > *:nth-child(19) {
-    --enter-stage: 19 !important;
-  }
-  .slide-enter-content > *:nth-child(20) {
-    --enter-stage: 20 !important;
   }
 }
 
