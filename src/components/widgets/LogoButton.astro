@@ -11,13 +11,12 @@ import { SITE } from '~/config'
   aria-current={Astro.url.pathname === `${withBasePath('/')}` ? 'page' : false}
 >
   <!--
-    SVG logo: Dancing Script Bold "Dev" glyph extracted as a path,
-    animated via the Web Animations API (not CSS keyframes) so that
-    numeric stroke-dasharray values are interpolated correctly.
+    SVG logo: Dancing Script Bold "Dev" glyph extracted as a path.
 
-    The font outline path is rendered as a *stroke* (fill="none"),
-    which lets us animate stroke-dasharray to simulate a pen drawing
-    and un-drawing the letters along their actual contours.
+    Only the filled glyph lives in the markup. The handwriting animation
+    (script below) reads its `d`, splits it into per-letter subpaths, and
+    builds stroked copies whose stroke-dasharray simulates a pen writing
+    and un-writing each letter along its actual contour.
   -->
   <svg
     class="logo-svg"
@@ -25,24 +24,13 @@ import { SITE } from '~/config'
     aria-hidden="true"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <!-- Fill layer: same glyph, filled, fades in after the stroke draws on -->
+    <!-- Filled glyph: fades in once the strokes finish writing -->
     <path
       class="logo-fill"
       transform="translate(3,82)"
       fill="currentColor"
       stroke="none"
       opacity="0"
-      d="M19.10 8.70Q15.60 8.70 12.45 7.75Q9.30 6.80 7 3.70Q7.30 1.30 8.45-3.30Q9.60-7.90 11.30-13.75Q13-19.60 14.90-25.80Q16.80-32 18.65-37.65Q20.50-43.30 21.95-47.55Q23.40-51.80 24.10-53.70Q24.40-54.50 25.10-56.10Q25.80-57.70 26.90-59.40Q28-61.10 29.45-62.25Q30.90-63.40 32.60-63.40Q34.30-63.40 36.40-62Q33.30-55 30.15-46.45Q27-37.90 24.15-28.85Q21.30-19.80 18.95-11.25Q16.60-2.70 15.10 4.40Q15.90 4.70 17.35 4.85Q18.80 5 20.10 5Q26.60 5 32.50 1.85Q38.40-1.30 43.35-6.55Q48.30-11.80 52-18.35Q55.70-24.90 57.70-31.80Q59.70-38.70 59.70-45Q59.70-53.10 56.95-58.15Q54.20-63.20 49.40-65.55Q44.60-67.90 38.40-67.90Q31.90-67.90 26.70-65.55Q21.50-63.20 18.55-59.15Q15.60-55.10 15.60-49.90Q15.60-48.80 15.80-47.55Q16-46.30 16.50-45.10Q12.20-45.10 10.35-46.95Q8.50-48.80 8.50-51.50Q8.50-55 11.05-58.60Q13.60-62.20 18.15-65.25Q22.70-68.30 28.70-70.15Q34.70-72 41.70-72Q51.50-72 57.40-68.25Q63.30-64.50 65.95-58.15Q68.60-51.80 68.60-44Q68.60-35.40 65.85-27.55Q63.10-19.70 58.25-13.10Q53.40-6.50 47.05-1.60Q40.70 3.30 33.55 6Q26.40 8.70 19.10 8.70M79.40 4.40Q73 4.40 69.55 0.95Q66.10-2.50 66.10-7.70Q66.10-12.10 68.35-17.05Q70.60-22 74.40-26.35Q78.20-30.70 82.80-33.40Q87.40-36.10 92-36.10Q94.60-36.10 96.95-34.75Q99.30-33.40 99.30-29.40Q99.30-25.60 97.10-22.30Q94.90-19 91.20-16.40Q87.50-13.80 83.05-12.15Q78.60-10.50 74.10-10Q74-9.60 73.95-9.15Q73.90-8.70 73.90-7.70Q73.90-7.20 74.05-5.95Q74.20-4.70 74.90-3.30Q75.60-1.90 77.20-0.90Q78.80 0.10 81.60 0.10Q85.80 0.10 90.05-2.25Q94.30-4.60 98.05-8.50Q101.80-12.40 104.30-17.20L106.30-15.60Q103.60-9.60 99.35-5.10Q95.10-0.60 89.95 1.90Q84.80 4.40 79.40 4.40M75.20-13.70Q77.80-14 81-15.50Q84.20-17 87.15-19.30Q90.10-21.60 92-24.35Q93.90-27.10 93.90-29.90Q93.90-31 93.50-31.40Q93.10-31.80 92.20-31.80Q89.90-31.80 87.40-30.15Q84.90-28.50 82.50-25.85Q80.10-23.20 78.20-20Q76.30-16.80 75.20-13.70M109.30 3.90Q105.60 3.90 104.15 0.55Q102.70-2.80 102.70-8.10Q102.70-9.20 102.80-12.05Q102.90-14.90 103.10-20Q103.20-23 103.75-24.10Q104.30-25.20 106.90-25.20Q109.30-25.20 109.75-24.25Q110.20-23.30 110.20-20.40Q110.20-17.40 109.95-14Q109.70-10.60 109.70-7.40Q109.70-4.30 110-2.85Q110.30-1.40 111.50-1.40Q113.30-1.40 115.40-3.35Q117.50-5.30 119.65-8.35Q121.80-11.40 123.75-14.95Q125.70-18.50 127.20-21.80Q127.40-28.60 128.80-30.90Q130.20-33.20 132.40-33.20Q134.90-33.20 135.80-31.60Q136.70-30 136.70-28.80Q136.70-27.30 135.90-26.10Q135.10-24.90 134.30-22.80Q133.50-20.70 133.50-16.40Q133.50-15 133.75-13.35Q134-11.70 134.95-10.55Q135.90-9.40 137.80-9.40Q139.80-9.40 141.65-11.05Q143.50-12.70 145.60-16.80L146.70-15.90Q144.40-10.40 141.55-8.20Q138.70-6 136.10-6Q132.80-6 130.75-8.65Q128.70-11.30 127.60-15.30Q125.20-10.80 122.15-6.40Q119.10-2 115.80 0.95Q112.50 3.90 109.30 3.90"
-    ></path>
-    <!-- Stroke layer: drawn on / erased via stroke-dasharray animation -->
-    <path
-      class="logo-path"
-      transform="translate(3,82)"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
       d="M19.10 8.70Q15.60 8.70 12.45 7.75Q9.30 6.80 7 3.70Q7.30 1.30 8.45-3.30Q9.60-7.90 11.30-13.75Q13-19.60 14.90-25.80Q16.80-32 18.65-37.65Q20.50-43.30 21.95-47.55Q23.40-51.80 24.10-53.70Q24.40-54.50 25.10-56.10Q25.80-57.70 26.90-59.40Q28-61.10 29.45-62.25Q30.90-63.40 32.60-63.40Q34.30-63.40 36.40-62Q33.30-55 30.15-46.45Q27-37.90 24.15-28.85Q21.30-19.80 18.95-11.25Q16.60-2.70 15.10 4.40Q15.90 4.70 17.35 4.85Q18.80 5 20.10 5Q26.60 5 32.50 1.85Q38.40-1.30 43.35-6.55Q48.30-11.80 52-18.35Q55.70-24.90 57.70-31.80Q59.70-38.70 59.70-45Q59.70-53.10 56.95-58.15Q54.20-63.20 49.40-65.55Q44.60-67.90 38.40-67.90Q31.90-67.90 26.70-65.55Q21.50-63.20 18.55-59.15Q15.60-55.10 15.60-49.90Q15.60-48.80 15.80-47.55Q16-46.30 16.50-45.10Q12.20-45.10 10.35-46.95Q8.50-48.80 8.50-51.50Q8.50-55 11.05-58.60Q13.60-62.20 18.15-65.25Q22.70-68.30 28.70-70.15Q34.70-72 41.70-72Q51.50-72 57.40-68.25Q63.30-64.50 65.95-58.15Q68.60-51.80 68.60-44Q68.60-35.40 65.85-27.55Q63.10-19.70 58.25-13.10Q53.40-6.50 47.05-1.60Q40.70 3.30 33.55 6Q26.40 8.70 19.10 8.70M79.40 4.40Q73 4.40 69.55 0.95Q66.10-2.50 66.10-7.70Q66.10-12.10 68.35-17.05Q70.60-22 74.40-26.35Q78.20-30.70 82.80-33.40Q87.40-36.10 92-36.10Q94.60-36.10 96.95-34.75Q99.30-33.40 99.30-29.40Q99.30-25.60 97.10-22.30Q94.90-19 91.20-16.40Q87.50-13.80 83.05-12.15Q78.60-10.50 74.10-10Q74-9.60 73.95-9.15Q73.90-8.70 73.90-7.70Q73.90-7.20 74.05-5.95Q74.20-4.70 74.90-3.30Q75.60-1.90 77.20-0.90Q78.80 0.10 81.60 0.10Q85.80 0.10 90.05-2.25Q94.30-4.60 98.05-8.50Q101.80-12.40 104.30-17.20L106.30-15.60Q103.60-9.60 99.35-5.10Q95.10-0.60 89.95 1.90Q84.80 4.40 79.40 4.40M75.20-13.70Q77.80-14 81-15.50Q84.20-17 87.15-19.30Q90.10-21.60 92-24.35Q93.90-27.10 93.90-29.90Q93.90-31 93.50-31.40Q93.10-31.80 92.20-31.80Q89.90-31.80 87.40-30.15Q84.90-28.50 82.50-25.85Q80.10-23.20 78.20-20Q76.30-16.80 75.20-13.70M109.30 3.90Q105.60 3.90 104.15 0.55Q102.70-2.80 102.70-8.10Q102.70-9.20 102.80-12.05Q102.90-14.90 103.10-20Q103.20-23 103.75-24.10Q104.30-25.20 106.90-25.20Q109.30-25.20 109.75-24.25Q110.20-23.30 110.20-20.40Q110.20-17.40 109.95-14Q109.70-10.60 109.70-7.40Q109.70-4.30 110-2.85Q110.30-1.40 111.50-1.40Q113.30-1.40 115.40-3.35Q117.50-5.30 119.65-8.35Q121.80-11.40 123.75-14.95Q125.70-18.50 127.20-21.80Q127.40-28.60 128.80-30.90Q130.20-33.20 132.40-33.20Q134.90-33.20 135.80-31.60Q136.70-30 136.70-28.80Q136.70-27.30 135.90-26.10Q135.10-24.90 134.30-22.80Q133.50-20.70 133.50-16.40Q133.50-15 133.75-13.35Q134-11.70 134.95-10.55Q135.90-9.40 137.80-9.40Q139.80-9.40 141.65-11.05Q143.50-12.70 145.60-16.80L146.70-15.90Q144.40-10.40 141.55-8.20Q138.70-6 136.10-6Q132.80-6 130.75-8.65Q128.70-11.30 127.60-15.30Q125.20-10.80 122.15-6.40Q119.10-2 115.80 0.95Q112.50 3.90 109.30 3.90"
     ></path>
   </svg>
@@ -60,7 +48,7 @@ import { SITE } from '~/config'
    * value with the dash animation, which is why this uses rAF instead of
    * WAAPI/CSS (their eased output can't be read back per frame).
    *
-   * Cycle: write (per stroke, ~2.6s) → fill fades in → brightness rises →
+   * Cycle: write (per stroke, ~4s) → fill fades in → brightness rises →
    * hold → back to base → fill fades out → un-write in reverse stroke order
    * → blank pause → repeat.
    */
@@ -74,14 +62,13 @@ import { SITE } from '~/config'
   function initLogo() {
     cancelLogoLoop?.()
 
-    const template = document.querySelector<SVGPathElement>('.logo-path')
-    const fill = document.querySelector<SVGPathElement>('.logo-fill')
-    if (!template || !fill) return
-
-    const fillPath = fill
-    const logoSvg = template.closest<SVGSVGElement>('svg')
-    if (!logoSvg) return
-    const svg = logoSvg
+    // Re-assigned to fresh consts so TS keeps the non-null narrowing
+    // inside the async closures below.
+    const fillEl = document.querySelector<SVGPathElement>('.logo-fill')
+    const svgEl = fillEl?.closest<SVGSVGElement>('svg')
+    if (!fillEl || !svgEl) return
+    const fillPath = fillEl
+    const svg = svgEl
 
     let alive = true
     cancelLogoLoop = () => {
@@ -96,22 +83,24 @@ import { SITE } from '~/config'
       return
     }
 
-    // ── Build one stroke path per letter from the compound glyph path ──────
+    // ── Build one stroke path per letter from the filled glyph's subpaths ──
     // (Idempotent: a re-init replaces the previous group.)
     svg.querySelector('.logo-strokes')?.remove()
     const group = document.createElementNS(SVG_NS, 'g')
     group.setAttribute('class', 'logo-strokes')
 
-    const strokes = (template.getAttribute('d') ?? '')
+    const strokes = (fillPath.getAttribute('d') ?? '')
       .split(/(?=M)/)
       .filter((d) => d.trim())
       .map((d) => {
-        const p = template.cloneNode() as SVGPathElement
-        // Drop the class (scoped CSS hides the template) and any inline
-        // styles a previous init may have left on the template.
-        p.removeAttribute('class')
-        p.removeAttribute('style')
+        const p = document.createElementNS(SVG_NS, 'path')
         p.setAttribute('d', d)
+        p.setAttribute('transform', 'translate(3,82)') // same space as the glyph
+        p.setAttribute('fill', 'none')
+        p.setAttribute('stroke', 'currentColor')
+        p.setAttribute('stroke-width', '5')
+        p.setAttribute('stroke-linecap', 'round')
+        p.setAttribute('stroke-linejoin', 'round')
         p.style.visibility = 'hidden'
         group.appendChild(p)
         return p
@@ -120,7 +109,7 @@ import { SITE } from '~/config'
     const pen = document.createElementNS(SVG_NS, 'circle')
     pen.setAttribute('r', '4.5')
     pen.setAttribute('fill', 'currentColor')
-    pen.setAttribute('transform', 'translate(3,82)') // same space as the glyph
+    pen.setAttribute('transform', 'translate(3,82)')
     pen.style.opacity = '0'
     group.appendChild(pen)
 
@@ -278,14 +267,8 @@ import { SITE } from '~/config'
     }
   }
 
-  /* Both layers start invisible — JS drives all animation. The stroke path
-     is only a template: JS splits it into per-letter clones and animates
-     those, so the original never shows (round linecaps would otherwise
-     render zero-length dashes as dots). */
-  .logo-path {
-    visibility: hidden;
-  }
-
+  /* Starts invisible — JS writes the stroked letters first, then fades
+     the fill in. */
   .logo-fill {
     opacity: 0;
   }
