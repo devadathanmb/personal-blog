@@ -14,9 +14,9 @@ import { SITE } from '~/config'
     SVG logo: Dancing Script Bold "Dev" glyph extracted as a path.
 
     Only the filled glyph lives in the markup. The handwriting animation
-    (script below) reads its `d`, splits it into per-letter subpaths, and
-    builds stroked copies whose stroke-dasharray simulates a pen writing
-    and un-writing each letter along its actual contour.
+    (script below) builds one stroked path per letter from hand-authored
+    pen centerlines and animates their stroke-dasharray to simulate a pen
+    writing and un-writing each letter along its real trajectory.
   -->
   <svg
     class="logo-svg"
@@ -24,7 +24,7 @@ import { SITE } from '~/config'
     aria-hidden="true"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <!-- Filled glyph: fades in once the strokes finish writing -->
+    <!-- Filled glyph: static fallback for prefers-reduced-motion only -->
     <path
       class="logo-fill"
       transform="translate(3,82)"
@@ -40,24 +40,36 @@ import { SITE } from '~/config'
   /**
    * Handwriting animation, driven by a single rAF tween per phase.
    *
-   * The glyph's compound path is split into its subpaths (D, e, e-inner, v)
-   * so each letter is written as a separate pen stroke: duration proportional
-   * to the stroke's real length (constant pen speed), a gentle in/out ease per
-   * stroke, and a short pen lift between letters. A small "nib" dot rides the
+   * Each letter is written as a separate pen stroke along a hand-authored
+   * centerline (the pen's real trajectory through the glyph — D: stem, bowl,
+   * curl in one motion; e: eye loop, exit; v: arm, rise, top loop, tail),
+   * not the glyph's outline contour, whose doubled-back edges made the D
+   * read as a hollow sketch. Duration is proportional to the stroke's real
+   * length (constant pen speed), a gentle in/out ease per stroke, and a
+   * short pen lift between letters. A small "nib" dot rides the
    * stroke tip via getPointAtLength — it must share the exact eased progress
    * value with the dash animation, which is why this uses rAF instead of
    * WAAPI/CSS (their eased output can't be read back per frame).
    *
-   * Cycle: write (per stroke, ~4s) → fill fades in → brightness rises →
-   * hold → back to base → fill fades out → un-write in reverse stroke order
-   * → blank pause → repeat.
+   * Cycle: write (per stroke, ~4s) → brightness rises → hold → back to
+   * base → un-write in reverse stroke order → blank pause → repeat.
+   * The logo stays as the handwritten line signature throughout; the
+   * filled glyph is only shown statically for prefers-reduced-motion.
    */
   let cancelLogoLoop: (() => void) | undefined
 
   const SVG_NS = 'http://www.w3.org/2000/svg'
   const WRITE_MS = 3400 // total pen-on-paper time, shared across strokes
   const ERASE_MS = 1900
-  const LIFT_MS = 180 // pen travel between letters
+  const LIFT_MS_PER_UNIT = 3.5 // pen travel between letters scales with distance
+  const PEN_OPACITY = 0.95
+
+  // Pen centerlines, in the glyph's coordinate space (translate(3,82)).
+  const PEN_STROKES = [
+    'M 34 -61 C 29 -50 22 -32 16 -14 C 13 -5 10 2 10 5 C 10 7.5 15 7 20 6.5 C 33 4.5 45 -3 52 -13 C 58 -21 64 -33 64 -44 C 64 -55 55 -66 44 -69.5 C 33 -72 21 -66 15 -58 C 11 -53 10 -49 12.5 -47.2 C 13.2 -46.7 13.8 -46.4 14.5 -46.6',
+    'M 74.5 -11.5 C 82 -14 92 -20 95.5 -27.5 C 97.5 -32 93 -35.5 87 -32.5 C 80 -29 72 -20 70.5 -12 C 69 -4 73 2 81 1.5 C 89 1 99 -6 105.5 -16',
+    'M 108 -24.5 C 105.5 -17 104.5 -6 108 -0.5 C 110 2.5 114 0 117.5 -4.5 C 122 -10 126 -17 128.5 -24 C 130 -29 132.5 -33 134.5 -31 C 136 -29 133 -19 132 -13.5 C 131.5 -9.5 133.5 -6.5 137.5 -7.5 C 141 -8.5 144.5 -12 146.3 -16.3',
+  ]
 
   function initLogo() {
     cancelLogoLoop?.()
@@ -76,35 +88,34 @@ import { SITE } from '~/config'
       cancelLogoLoop = undefined
     }
 
+    // Reset any state a previous run left behind (the nav can persist
+    // across astro:page-load, so a re-init must start from a clean slate).
     fillPath.style.opacity = '0'
+    svg.style.filter = ''
+    svg.querySelector('.logo-strokes')?.remove()
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       fillPath.style.opacity = '1'
       return
     }
 
-    // ── Build one stroke path per letter from the filled glyph's subpaths ──
-    // (Idempotent: a re-init replaces the previous group.)
-    svg.querySelector('.logo-strokes')?.remove()
+    // ── Build one stroke path per letter from its pen centerline ──────────
     const group = document.createElementNS(SVG_NS, 'g')
     group.setAttribute('class', 'logo-strokes')
 
-    const strokes = (fillPath.getAttribute('d') ?? '')
-      .split(/(?=M)/)
-      .filter((d) => d.trim())
-      .map((d) => {
-        const p = document.createElementNS(SVG_NS, 'path')
-        p.setAttribute('d', d)
-        p.setAttribute('transform', 'translate(3,82)') // same space as the glyph
-        p.setAttribute('fill', 'none')
-        p.setAttribute('stroke', 'currentColor')
-        p.setAttribute('stroke-width', '5')
-        p.setAttribute('stroke-linecap', 'round')
-        p.setAttribute('stroke-linejoin', 'round')
-        p.style.visibility = 'hidden'
-        group.appendChild(p)
-        return p
-      })
+    const strokes = PEN_STROKES.map((d) => {
+      const p = document.createElementNS(SVG_NS, 'path')
+      p.setAttribute('d', d)
+      p.setAttribute('transform', 'translate(3,82)') // same space as the glyph
+      p.setAttribute('fill', 'none')
+      p.setAttribute('stroke', 'currentColor')
+      p.setAttribute('stroke-width', '5')
+      p.setAttribute('stroke-linecap', 'round')
+      p.setAttribute('stroke-linejoin', 'round')
+      p.style.visibility = 'hidden'
+      group.appendChild(p)
+      return p
+    })
 
     const pen = document.createElementNS(SVG_NS, 'circle')
     pen.setAttribute('r', '4.5')
@@ -160,16 +171,20 @@ import { SITE } from '~/config'
     }
 
     /** Pen hops from the end of one stroke to the start of the next: it
-     *  rises off the paper (fades, arcs up) and lands at the new point. */
-    async function penLift(fromPath: SVGPathElement, toPath: SVGPathElement) {
-      const a = fromPath.getPointAtLength(fromPath.getTotalLength())
-      const b = toPath.getPointAtLength(0)
-      await tween(LIFT_MS, (p) => {
+     *  rises off the paper (fades, arcs up) and lands at the new point.
+     *  Travel time scales with the hop distance, so the long D→e hop
+     *  takes visibly longer than the short e→v one. */
+    async function penLift(from: number, to: number) {
+      const a = strokes[from]!.getPointAtLength(lengths[from]!)
+      const b = strokes[to]!.getPointAtLength(0)
+      const dist = Math.hypot(b.x - a.x, b.y - a.y)
+      const duration = Math.min(280, Math.max(110, dist * LIFT_MS_PER_UNIT))
+      await tween(duration, (p) => {
         const hover = Math.sin(p * Math.PI)
         movePen(a.x + (b.x - a.x) * p, a.y + (b.y - a.y) * p - hover * 5)
-        pen.style.opacity = String(0.95 - hover * 0.65)
+        pen.style.opacity = String(PEN_OPACITY - hover * 0.65)
       })
-      pen.style.opacity = '0.95'
+      pen.style.opacity = String(PEN_OPACITY)
     }
 
     async function eraseStroke(i: number) {
@@ -187,28 +202,26 @@ import { SITE } from '~/config'
       await sleep(600) // brief pause before the first write
 
       while (alive) {
-        // ── 1. Write: pen touches down, writes each letter, flicks away ────
+        // ── 1. Write: pen descends onto the paper, writes each letter,
+        //      then flicks away ─────────────────────────────────────────────
         const start = strokes[0]!.getPointAtLength(0)
-        movePen(start.x, start.y)
-        await tween(150, (p) => (pen.style.opacity = String(p * 0.95)))
+        await tween(220, (p) => {
+          movePen(start.x - 7 * (1 - p), start.y - 11 * (1 - p)) // land in an arc
+          pen.style.opacity = String(p * PEN_OPACITY)
+        })
         for (let i = 0; i < strokes.length && alive; i++) {
           await drawStroke(i)
-          if (alive && i < strokes.length - 1)
-            await penLift(strokes[i]!, strokes[i + 1]!)
+          if (alive && i < strokes.length - 1) await penLift(i, i + 1)
         }
         if (!alive) break
         const end = strokes.at(-1)!.getPointAtLength(lengths.at(-1)!)
         await tween(160, (p) => {
           movePen(end.x + p * 8, end.y - p * 7) // flick up and away
-          pen.style.opacity = String(0.95 * (1 - p))
+          pen.style.opacity = String(PEN_OPACITY * (1 - p))
         })
         if (!alive) break
 
-        // ── 2. Fill fades in ───────────────────────────────────────────────
-        await tween(500, (p) => (fillPath.style.opacity = String(p)))
-        if (!alive) break
-
-        // ── 3. Brightness rises slowly after fill lands ────────────────────
+        // ── 2. Brightness rises slowly once the word is written ───────────
         const isDark = document.documentElement.classList.contains('dark')
         const peak = isDark ? 1.6 : 0.5
         await tween(
@@ -217,29 +230,25 @@ import { SITE } from '~/config'
         )
         if (!alive) break
 
-        // ── 4. Hold: fully written, filled, at peak brightness ─────────────
+        // ── 3. Hold: fully written, at peak brightness ─────────────────────
         await sleep(2000)
         if (!alive) break
 
-        // ── 5. Return to normal ────────────────────────────────────────────
+        // ── 4. Return to normal ────────────────────────────────────────────
         await tween(
           400,
           (p) => (svg.style.filter = `brightness(${peak + (1 - peak) * p})`)
         )
         if (!alive) break
 
-        // ── 6. Fill fades out ──────────────────────────────────────────────
-        await tween(500, (p) => (fillPath.style.opacity = String(1 - p)))
-        if (!alive) break
-
-        // ── 7. Un-write: strokes retreat in reverse writing order ──────────
+        // ── 5. Un-write: strokes retreat in reverse writing order ──────────
         for (let i = strokes.length - 1; i >= 0 && alive; i--) {
           await eraseStroke(i)
           if (alive && i > 0) await sleep(60)
         }
         if (!alive) break
 
-        // ── 8. Pause blank ─────────────────────────────────────────────────
+        // ── 6. Pause blank ─────────────────────────────────────────────────
         await sleep(1800)
       }
     }
@@ -250,6 +259,10 @@ import { SITE } from '~/config'
   initLogo()
   document.addEventListener('astro:before-swap', () => cancelLogoLoop?.())
   document.addEventListener('astro:page-load', initLogo)
+  // Re-init if the user toggles reduced motion mid-session.
+  window
+    .matchMedia('(prefers-reduced-motion: reduce)')
+    .addEventListener('change', initLogo)
 </script>
 
 <style>
@@ -267,8 +280,8 @@ import { SITE } from '~/config'
     }
   }
 
-  /* Starts invisible — JS writes the stroked letters first, then fades
-     the fill in. */
+  /* Hidden while the animation runs — the stroked signature is the logo.
+     JS un-hides it only as the prefers-reduced-motion static fallback. */
   .logo-fill {
     opacity: 0;
   }
