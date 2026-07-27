@@ -1,0 +1,24 @@
+---
+title: Stats
+subtitle: A few numbers behind the writing, listening, watching, and tinkering.
+description: By the numbers — Devadathan's writing, music, watching, and code stats.
+bgType: storm
+ogImage: true
+---
+
+import PageLayout from '~/layouts/PageLayout.astro'
+import StatsBoard from '~/components/widgets/StatsBoard.astro'
+
+<PageLayout
+  title={frontmatter.title}
+  subtitle={frontmatter.subtitle}
+  description={frontmatter.description}
+  bgType={frontmatter.bgType}
+  ogImage={frontmatter.ogImage}
+>
+  <Fragment slot="article">
+
+<StatsBoard />
+
+  </Fragment>
+</PageLayout>

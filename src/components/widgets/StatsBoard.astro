@@ -1,0 +1,1075 @@
+---
+import Link from '~/components/base/Link.astro'
+import { getFilteredPosts } from '~/utils/data'
+import { FEATURES } from '~/config'
+
+// --- Build-time writing stats (from content collections) ---
+const blogPosts = await getFilteredPosts('blog')
+const thoughts = await getFilteredPosts('thoughts')
+const allPosts = [...blogPosts, ...thoughts]
+
+const countWords = (text: string) =>
+  text.trim().split(/\s+/).filter(Boolean).length
+const totalWords = allPosts.reduce(
+  (sum, p) => sum + countWords(p.body ?? ''),
+  0
+)
+
+const uniqueTags = new Set<string>()
+for (const p of allPosts) for (const t of p.data.tags ?? []) uniqueTags.add(t)
+
+const years = allPosts.map((p) => p.data.pubDate.getFullYear())
+const sinceYear = years.length ? Math.min(...years) : new Date().getFullYear()
+
+const fmt = (n: number) => n.toLocaleString('en-US')
+
+const writingTiles = [
+  { label: 'Posts', value: fmt(blogPosts.length) },
+  { label: 'Thoughts', value: fmt(thoughts.length) },
+  { label: 'Words', value: fmt(totalWords) },
+  { label: 'Topics', value: fmt(uniqueTags.size) },
+]
+
+// Placeholder tiles filled in client-side; `id` is the hook the script writes to.
+const musicTiles = [
+  { id: 'stat-scrobbles', label: 'Scrobbles' },
+  { id: 'stat-artists-count', label: 'Artists' },
+]
+const watchingTiles = [
+  { id: 'stat-movies', label: 'Movies' },
+  { id: 'stat-shows', label: 'Shows' },
+  { id: 'stat-episodes', label: 'Episodes' },
+  { id: 'stat-days', label: 'Watch time' },
+]
+const codeTiles = [
+  { id: 'stat-repos', label: 'Public repos' },
+  { id: 'stat-followers', label: 'Followers' },
+  { id: 'stat-stars', label: 'Stars earned' },
+  { id: 'stat-forks', label: 'Forks' },
+  { id: 'stat-gists', label: 'Gists' },
+  { id: 'stat-gh-since', label: 'On GitHub since' },
+]
+
+// --- Data-source config (reused from existing features) ---
+const { nowPlaying, trakt, github } = FEATURES
+
+const lastfm = Array.isArray(nowPlaying) && nowPlaying[0] ? nowPlaying[1] : null
+const traktCfg = Array.isArray(trakt) && trakt[0] ? trakt[1] : null
+const githubCfg = Array.isArray(github) && github[0] ? github[1] : null
+---
+
+<div
+  id="stats-board"
+  data-lastfm-user={lastfm?.lastfmUsername}
+  data-lastfm-key={lastfm?.lastfmApiKey}
+  data-trakt-user={traktCfg?.username}
+  data-trakt-key={traktCfg?.clientId}
+  data-gh-user={githubCfg?.username}
+>
+  {/* Writing — rendered at build time */}
+  <section>
+    <h2 id="writing">
+      <a class="header-anchor" href="#writing">#</a>
+      Writing
+    </h2>
+    <p>Everything I've published here, since {sinceYear}.</p>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 stat-grid">
+      {
+        writingTiles.map((t) => (
+          <div class="flex flex-col">
+            <span class="stat-value">{t.value}</span>
+            <span class="stat-label">{t.label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* Music — fetched client-side from Last.fm */}
+  {
+    lastfm && (
+      <section>
+        <h2 id="music">
+          <a class="header-anchor" href="#music">
+            #
+          </a>
+          Music
+        </h2>
+        <p>
+          What I've been listening to, all time.{' '}
+          <Link
+            href={`https://www.last.fm/user/${lastfm.lastfmUsername}`}
+            external
+            enableNewTabWarning
+            class="op-60"
+          >
+            via Last.fm
+          </Link>
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 stat-grid">
+          {musicTiles.map((t) => (
+            <div class="flex flex-col">
+              <span id={t.id} class="stat-value stat-pulse">
+                —
+              </span>
+              <span class="stat-label">{t.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Top albums — cover art */}
+        <div class="mt-8">
+          <div class="stat-label stat-heading">Top albums</div>
+          <div id="stat-top-albums" class="cover-grid">
+            {Array.from({ length: 5 }).map(() => (
+              <div class="cover-card">
+                <span class="cover-art stat-pulse" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Top artists + Top tracks */}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-7 mt-8">
+          <div>
+            <div class="stat-label stat-heading">Top artists</div>
+            <div id="stat-top-artists" class="stat-list">
+              <div class="stat-row stat-pulse">Loading…</div>
+            </div>
+          </div>
+          <div>
+            <div class="stat-label stat-heading">Top tracks</div>
+            <div id="stat-top-tracks" class="track-list">
+              {Array.from({ length: 5 }).map(() => (
+                <div class="track-row">
+                  <div class="track-thumb stat-pulse" />
+                  <div class="track-meta">
+                    <span class="track-name stat-pulse">Loading…</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {/* Watching — fetched client-side from Trakt */}
+  {
+    traktCfg && (
+      <section>
+        <h2 id="watching">
+          <a class="header-anchor" href="#watching">
+            #
+          </a>
+          Watching
+        </h2>
+        <p>
+          Films and shows I've tracked over the years.{' '}
+          <Link
+            href={`https://trakt.tv/users/${traktCfg.username}`}
+            external
+            enableNewTabWarning
+            class="op-60"
+          >
+            via Trakt
+          </Link>
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 stat-grid">
+          {watchingTiles.map((t) => (
+            <div class="flex flex-col">
+              <span id={t.id} class="stat-value stat-pulse">
+                —
+              </span>
+              <span class="stat-label">{t.label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {/* Code — fetched client-side from GitHub */}
+  {
+    githubCfg && (
+      <section>
+        <h2 id="code">
+          <a class="header-anchor" href="#code">
+            #
+          </a>
+          Code
+        </h2>
+        <p>
+          What I've been building over on GitHub.{' '}
+          <Link
+            href={`https://github.com/${githubCfg.username}`}
+            external
+            enableNewTabWarning
+            class="op-60"
+          >
+            via GitHub
+          </Link>
+        </p>
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 stat-grid">
+          <div
+            id="stat-gh-avatar"
+            class="gh-avatar stat-pulse"
+            role="img"
+            aria-label="GitHub profile photo"
+          />
+          <div class="grid grid-cols-3 gap-x-6 gap-y-6 flex-1 w-full">
+            {codeTiles.map((t) => (
+              <div class="flex flex-col">
+                <span id={t.id} class="stat-value stat-pulse">
+                  —
+                </span>
+                <span class="stat-label">{t.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Most starred repos + language breakdown */}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-7 mt-8">
+          <div>
+            <div class="stat-label stat-heading">Most starred</div>
+            <div id="stat-top-repos" class="stat-list">
+              <div class="stat-row stat-pulse">Loading…</div>
+            </div>
+          </div>
+          <div>
+            <div class="stat-label stat-heading">Languages</div>
+            <div id="stat-languages" class="stat-list">
+              <div class="stat-row stat-pulse">Loading…</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Contribution heatmap — fetched from a public no-auth proxy */}
+        <div class="mt-8">
+          <div class="hm-head">
+            <span class="stat-label">Contributions</span>
+            <span id="stat-contrib-total" class="hm-total" />
+          </div>
+          <div id="stat-heatmap" class="heatmap-scroll">
+            <div class="hm-loading stat-pulse">Loading contribution graph…</div>
+          </div>
+          <div class="hm-legend" aria-hidden="true">
+            <span>Less</span>
+            <span class="hm-cell" />
+            <span class="hm-cell l1" />
+            <span class="hm-cell l2" />
+            <span class="hm-cell l3" />
+            <span class="hm-cell l4" />
+            <span>More</span>
+          </div>
+          <div id="stat-contrib-alltime" class="hm-alltime" />
+        </div>
+      </section>
+    )
+  }
+</div>
+
+{
+  /* Styles are global but scoped under #stats-board so they also apply to
+    list/cover markup injected client-side via innerHTML (which does not
+    carry Astro's scoped-style attribute). */
+}
+<style is:global>
+  /* Heatmap hover tooltip. Lives on <body> (not under #stats-board) so it can
+     be pinned to the viewport without the heatmap's horizontal scroll clipping
+     it. Inverted bubble — text color on background color — so it reads in both
+     themes. */
+  .hm-tooltip {
+    position: fixed;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, calc(-100% - 7px));
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.35rem;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    font-family: 'DM Mono', 'Input Mono', 'Fira Code', monospace;
+    white-space: nowrap;
+    color: var(--c-bg);
+    background: var(--c-text);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    transition: opacity 0.12s ease;
+  }
+  .hm-tooltip.is-visible {
+    opacity: 1;
+  }
+
+  #stats-board .stat-grid {
+    margin-top: 1.25rem;
+  }
+
+  /* The big number on each tile (replaces a repeated utility-class string). */
+  #stats-board .stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Section label — mirrors the uppercase mono label used on /uses. */
+  #stats-board .stat-label {
+    margin-top: 0.4rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: 'DM Mono', 'Input Mono', 'Fira Code', monospace;
+    opacity: 0.45;
+  }
+
+  /* Section headings above each ranked list (Top albums, Most starred, …).
+     Slightly larger than the tile captions that share .stat-label. */
+  #stats-board .stat-heading {
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* Ranked text list (top artists). */
+  #stats-board .stat-list {
+    margin-top: 0.85rem;
+    counter-reset: stat;
+  }
+  #stats-board .stat-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    padding: 0.32rem 0;
+    font-size: 0.9rem;
+  }
+  #stats-board .stat-row::before {
+    counter-increment: stat;
+    content: counter(stat);
+    flex-shrink: 0;
+    width: 1.1rem;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    opacity: 0.35;
+  }
+  #stats-board .stat-row.stat-pulse::before {
+    content: none;
+  }
+  #stats-board .stat-name {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #stats-board .stat-count {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.5;
+  }
+
+  /* Repo rows are links; strip the prose underline and dim on hover like the
+     other linked lists (top albums/tracks). */
+  #stats-board .stat-row.repo-row {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none !important;
+  }
+  #stats-board .repo-row:hover .stat-name {
+    opacity: 0.7;
+  }
+
+  /* Album cover grid. */
+  #stats-board .cover-grid {
+    margin-top: 0.85rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    align-items: start;
+  }
+  #stats-board .cover-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none !important;
+  }
+  /* Fixed square box so cards with and without art align identically. */
+  #stats-board .cover-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 0.4rem;
+    border: 1px solid rgba(125, 125, 125, 0.18);
+    background: rgba(125, 125, 125, 0.08);
+  }
+  #stats-board .cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #stats-board .cover-fallback {
+    font-size: 1.4rem;
+    opacity: 0.4;
+  }
+  #stats-board .cover-name {
+    font-size: 0.76rem;
+    font-weight: 500;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #stats-board .cover-sub {
+    font-size: 0.7rem;
+    opacity: 0.5;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #stats-board .cover-card:hover .cover-img {
+    opacity: 0.85;
+  }
+
+  /* Top tracks list with thumbnails. */
+  #stats-board .track-list {
+    margin-top: 0.85rem;
+    display: flex;
+    flex-direction: column;
+  }
+  #stats-board .track-row {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.3rem 0;
+    font-size: 0.9rem;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none !important;
+  }
+  #stats-board .track-thumb {
+    width: 2.2rem;
+    height: 2.2rem;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 0.3rem;
+    border: 1px solid rgba(125, 125, 125, 0.18);
+    background: rgba(125, 125, 125, 0.08);
+  }
+  #stats-board .track-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    opacity: 0.4;
+  }
+  #stats-board .track-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  #stats-board .track-name {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #stats-board .track-sub {
+    font-size: 0.78rem;
+    opacity: 0.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #stats-board .track-row:hover .track-name {
+    opacity: 0.7;
+  }
+
+  /* GitHub avatar. */
+  #stats-board .gh-avatar {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(125, 125, 125, 0.12);
+    border: 1px solid rgba(125, 125, 125, 0.2);
+  }
+
+  /* GitHub contribution heatmap. Monochrome shades of the text color so it
+     adapts to light/dark automatically (color-mix). */
+  #stats-board .hm-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  #stats-board .hm-total {
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    font-family: 'DM Mono', 'Input Mono', 'Fira Code', monospace;
+    opacity: 0.45;
+  }
+  /* All-time total + per-year breakdown under the last-year heatmap. */
+  #stats-board .hm-alltime {
+    margin-top: 0.7rem;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+    font-family: 'DM Mono', 'Input Mono', 'Fira Code', monospace;
+    opacity: 0.45;
+  }
+  #stats-board .hm-alltime:empty {
+    display: none;
+  }
+  #stats-board .heatmap-scroll {
+    margin-top: 0.85rem;
+    min-height: 95px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  #stats-board .heatmap {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(7, 11px);
+    grid-auto-columns: 11px;
+    gap: 3px;
+    width: max-content;
+  }
+  #stats-board .hm-cell {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--c-text) 8%, transparent);
+  }
+  #stats-board .hm-cell.empty {
+    background: transparent;
+  }
+  #stats-board .hm-cell.l1 {
+    background: color-mix(in srgb, var(--c-text) 24%, transparent);
+  }
+  #stats-board .hm-cell.l2 {
+    background: color-mix(in srgb, var(--c-text) 44%, transparent);
+  }
+  #stats-board .hm-cell.l3 {
+    background: color-mix(in srgb, var(--c-text) 66%, transparent);
+  }
+  #stats-board .hm-cell.l4 {
+    background: color-mix(in srgb, var(--c-text) 90%, transparent);
+  }
+  #stats-board .hm-loading {
+    font-size: 0.85rem;
+    opacity: 0.5;
+  }
+  #stats-board .hm-legend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 0.6rem;
+    font-size: 0.7rem;
+    opacity: 0.5;
+  }
+  #stats-board .hm-legend .hm-cell {
+    width: 10px;
+    height: 10px;
+  }
+
+  #stats-board .stat-pulse {
+    animation: stats-pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes stats-pulse {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+
+  @media (min-width: 640px) {
+    #stats-board .cover-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #stats-board .stat-pulse {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  // Last.fm deprecated artist/track images; they return this placeholder hash.
+  const PLACEHOLDER = '2a96cbd8b46e442fc41c2b86b821562f'
+
+  interface LfmImage {
+    'size': string
+    '#text': string
+  }
+
+  const fmt = (n: number) => n.toLocaleString('en-US')
+
+  // Total watch time arrives in minutes; pick the largest unit that keeps the
+  // number meaningful so a small history reads honestly instead of "0 days".
+  function formatWatchTime(minutes: number): string {
+    const oneDecimal = (n: number) => n.toFixed(1).replace(/\.0$/, '')
+    if (minutes < 60) return `${minutes} min`
+    if (minutes < 1440) return `${oneDecimal(minutes / 60)} hrs`
+    const days = oneDecimal(minutes / 1440)
+    return `${days} ${days === '1' ? 'day' : 'days'}`
+  }
+
+  const esc = (s: string) =>
+    s.replace(
+      /[&<>"]/g,
+      (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] ?? c
+    )
+
+  // Pick the best real (non-placeholder) image URL from a Last.fm image array.
+  function pickImage(
+    images: LfmImage[] | undefined,
+    preferred: string
+  ): string {
+    if (!Array.isArray(images)) return ''
+    const bySize: Record<string, string> = {}
+    for (const im of images) bySize[im.size] = im['#text']
+    for (const size of [preferred, 'extralarge', 'large', 'medium', 'small']) {
+      const url = bySize[size]
+      if (url && !url.includes(PLACEHOLDER)) return url
+    }
+    return ''
+  }
+
+  function setNum(id: string, value: string | null) {
+    const el = document.getElementById(id)
+    if (!el) return
+    el.textContent = value ?? '—'
+    el.classList.remove('stat-pulse')
+  }
+
+  const clearNums = (ids: string[]) => ids.forEach((id) => setNum(id, null))
+
+  // Render a list of items into #id, or a placeholder row when empty.
+  function renderInto<T>(
+    id: string,
+    items: T[],
+    row: (item: T) => string,
+    empty = '<div class="stat-row">—</div>'
+  ) {
+    const el = document.getElementById(id)
+    if (!el) return
+    el.innerHTML = items.length ? items.map(row).join('') : empty
+  }
+
+  function renderArtists(items: { name: string; count: number }[]) {
+    renderInto(
+      'stat-top-artists',
+      items,
+      (it) =>
+        `<div class="stat-row"><span class="stat-name">${esc(
+          it.name
+        )}</span><span class="stat-count">${fmt(it.count)}</span></div>`
+    )
+  }
+
+  function renderAlbums(
+    items: { name: string; artist: string; url: string; image: LfmImage[] }[]
+  ) {
+    renderInto('stat-top-albums', items, (it) => {
+      const img = pickImage(it.image, 'extralarge')
+      const art = img
+        ? `<img class="cover-img" src="${esc(img)}" alt="" loading="lazy" />`
+        : `<span class="cover-fallback">♪</span>`
+      return `<a class="cover-card" href="${esc(
+        it.url || '#'
+      )}" target="_blank" rel="noopener noreferrer" title="${esc(
+        it.name
+      )} · ${esc(
+        it.artist
+      )}"><span class="cover-art">${art}</span><span class="cover-name">${esc(
+        it.name
+      )}</span><span class="cover-sub">${esc(it.artist)}</span></a>`
+    })
+  }
+
+  function renderTracks(
+    items: {
+      name: string
+      artist: string
+      url: string
+      image: LfmImage[]
+      count: number
+    }[]
+  ) {
+    renderInto(
+      'stat-top-tracks',
+      items,
+      (it) => {
+        const img = pickImage(it.image, 'large')
+        const thumb = img
+          ? `<img class="track-thumb" src="${esc(
+              img
+            )}" alt="" loading="lazy" width="80" height="80" />`
+          : `<div class="track-thumb track-fallback">♪</div>`
+        return `<a class="track-row" href="${esc(
+          it.url || '#'
+        )}" target="_blank" rel="noopener noreferrer">${thumb}<span class="track-meta"><span class="track-name">${esc(
+          it.name
+        )}</span><span class="track-sub">${esc(
+          it.artist
+        )}</span></span><span class="stat-count">${fmt(it.count)}</span></a>`
+      },
+      '<div class="track-row">—</div>'
+    )
+  }
+
+  function renderRepos(items: { name: string; stars: number; url: string }[]) {
+    renderInto(
+      'stat-top-repos',
+      items,
+      (it) =>
+        `<a class="stat-row repo-row" href="${esc(
+          it.url
+        )}" target="_blank" rel="noopener noreferrer"><span class="stat-name">${esc(
+          it.name
+        )}</span><span class="stat-count">★ ${fmt(it.stars)}</span></a>`
+    )
+  }
+
+  function renderLanguages(items: { name: string; count: number }[]) {
+    renderInto(
+      'stat-languages',
+      items,
+      (it) =>
+        `<div class="stat-row"><span class="stat-name">${esc(
+          it.name
+        )}</span><span class="stat-count">${fmt(it.count)}</span></div>`
+    )
+  }
+
+  async function loadLastfm(user: string, key: string) {
+    const base = 'https://ws.audioscrobbler.com/2.0/'
+    const call = async (params: Record<string, string>) => {
+      const url = new URL(base)
+      url.search = new URLSearchParams({
+        api_key: key,
+        format: 'json',
+        ...params,
+      }).toString()
+      const res = await fetch(url)
+      if (!res.ok) throw new Error('lastfm')
+      return res.json()
+    }
+
+    try {
+      const info = await call({ method: 'user.getinfo', user })
+      setNum('stat-scrobbles', fmt(Number(info?.user?.playcount ?? 0)))
+      setNum('stat-artists-count', fmt(Number(info?.user?.artist_count ?? 0)))
+    } catch {
+      setNum('stat-scrobbles', null)
+      setNum('stat-artists-count', null)
+    }
+
+    const top = (method: string) =>
+      call({ method, user, period: 'overall', limit: '5' })
+
+    try {
+      const [artists, albums, tracks] = await Promise.all([
+        top('user.gettopartists'),
+        top('user.gettopalbums'),
+        top('user.gettoptracks'),
+      ])
+      renderArtists(
+        (artists?.topartists?.artist ?? []).map(
+          (a: { name: string; playcount: string }) => ({
+            name: a.name,
+            count: Number(a.playcount),
+          })
+        )
+      )
+      renderAlbums(
+        (albums?.topalbums?.album ?? []).map(
+          (a: {
+            name: string
+            url: string
+            artist?: { name: string }
+            image: LfmImage[]
+          }) => ({
+            name: a.name,
+            artist: a.artist?.name ?? '',
+            url: a.url,
+            image: a.image,
+          })
+        )
+      )
+      renderTracks(
+        (tracks?.toptracks?.track ?? []).map(
+          (t: {
+            name: string
+            url: string
+            playcount: string
+            artist?: { name: string }
+            image: LfmImage[]
+          }) => ({
+            name: t.name,
+            artist: t.artist?.name ?? '',
+            url: t.url,
+            image: t.image,
+            count: Number(t.playcount),
+          })
+        )
+      )
+    } catch {
+      renderArtists([])
+      renderAlbums([])
+      renderTracks([])
+    }
+  }
+
+  async function loadTrakt(user: string, key: string) {
+    try {
+      const res = await fetch(`https://api.trakt.tv/users/${user}/stats`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'trakt-api-version': '2',
+          'trakt-api-key': key,
+        },
+      })
+      if (!res.ok) throw new Error('trakt')
+      const d = await res.json()
+      setNum('stat-movies', fmt(Number(d?.movies?.watched ?? 0)))
+      setNum('stat-shows', fmt(Number(d?.shows?.watched ?? 0)))
+      setNum('stat-episodes', fmt(Number(d?.episodes?.watched ?? 0)))
+      const minutes =
+        Number(d?.movies?.minutes ?? 0) + Number(d?.episodes?.minutes ?? 0)
+      setNum('stat-days', formatWatchTime(minutes))
+    } catch {
+      clearNums(['stat-movies', 'stat-shows', 'stat-episodes', 'stat-days'])
+    }
+  }
+
+  async function loadGitHub(user: string) {
+    const avatar = document.getElementById('stat-gh-avatar')
+    try {
+      const res = await fetch(`https://api.github.com/users/${user}`, {
+        headers: { Accept: 'application/vnd.github+json' },
+      })
+      if (!res.ok) throw new Error('github')
+      const d = await res.json()
+      setNum('stat-repos', fmt(Number(d?.public_repos ?? 0)))
+      setNum('stat-followers', fmt(Number(d?.followers ?? 0)))
+      setNum('stat-gists', fmt(Number(d?.public_gists ?? 0)))
+      setNum(
+        'stat-gh-since',
+        d?.created_at ? String(new Date(d.created_at).getFullYear()) : null
+      )
+      if (avatar && d?.avatar_url) {
+        avatar.style.backgroundImage = `url("${d.avatar_url}")`
+      }
+    } catch {
+      clearNums(['stat-repos', 'stat-followers', 'stat-gists', 'stat-gh-since'])
+    } finally {
+      avatar?.classList.remove('stat-pulse')
+    }
+  }
+
+  async function loadRepos(user: string) {
+    try {
+      const res = await fetch(
+        `https://api.github.com/users/${user}/repos?per_page=100&sort=pushed`,
+        { headers: { Accept: 'application/vnd.github+json' } }
+      )
+      if (!res.ok) throw new Error('repos')
+      const repos: {
+        name: string
+        html_url: string
+        stargazers_count: number
+        forks_count: number
+        language: string | null
+      }[] = await res.json()
+
+      let stars = 0
+      let forks = 0
+      const langs: Record<string, number> = {}
+      for (const r of repos) {
+        stars += Number(r.stargazers_count) || 0
+        forks += Number(r.forks_count) || 0
+        if (r.language) langs[r.language] = (langs[r.language] ?? 0) + 1
+      }
+      setNum('stat-stars', fmt(stars))
+      setNum('stat-forks', fmt(forks))
+
+      renderRepos(
+        [...repos]
+          .sort((a, b) => b.stargazers_count - a.stargazers_count)
+          .slice(0, 5)
+          .map((r) => ({
+            name: r.name,
+            stars: r.stargazers_count,
+            url: r.html_url,
+          }))
+      )
+      renderLanguages(
+        Object.entries(langs)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5)
+          .map(([name, count]) => ({ name, count }))
+      )
+    } catch {
+      setNum('stat-stars', null)
+      setNum('stat-forks', null)
+      renderRepos([])
+      renderLanguages([])
+    }
+  }
+
+  // Custom hover tooltip for the heatmap — GitHub-style instant, themed bubble
+  // built from each cell's data-label. Replaces the slow native title tooltip.
+  // A single element is reused for every cell and pinned to the viewport.
+  function setupHeatmapTooltip(wrap: HTMLElement) {
+    if (wrap.dataset.tipBound) return
+    wrap.dataset.tipBound = '1'
+
+    let tip = document.getElementById('hm-tooltip')
+    if (!tip) {
+      tip = document.createElement('div')
+      tip.id = 'hm-tooltip'
+      tip.className = 'hm-tooltip'
+      tip.setAttribute('role', 'status')
+      document.body.appendChild(tip)
+    }
+    const tooltip = tip
+
+    const hide = () => tooltip.classList.remove('is-visible')
+
+    const show = (cell: HTMLElement) => {
+      const label = cell.dataset.label
+      if (!label) return
+      tooltip.textContent = label
+      const r = cell.getBoundingClientRect()
+      // Center over the cell, clamped so the bubble never leaves the viewport.
+      const half = tooltip.offsetWidth / 2
+      const x = Math.min(
+        Math.max(r.left + r.width / 2, half + 4),
+        window.innerWidth - half - 4
+      )
+      tooltip.style.left = `${x}px`
+      tooltip.style.top = `${r.top}px`
+      tooltip.classList.add('is-visible')
+    }
+
+    wrap.addEventListener('pointerover', (e) => {
+      const cell = (e.target as HTMLElement).closest<HTMLElement>(
+        '.hm-cell[data-label]'
+      )
+      if (cell) show(cell)
+    })
+    wrap.addEventListener('pointerout', hide)
+    wrap.addEventListener('pointerleave', hide)
+    wrap.addEventListener('scroll', hide, { passive: true })
+  }
+
+  async function loadHeatmap(user: string) {
+    const wrap = document.getElementById('stat-heatmap')
+    if (!wrap) return
+    try {
+      const res = await fetch(
+        `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(
+          user
+        )}?y=last`
+      )
+      if (!res.ok) throw new Error('contrib')
+      const data = await res.json()
+      const days: { date: string; count: number; level: number }[] =
+        data?.contributions ?? []
+      if (!days.length) throw new Error('empty')
+
+      // Pad the first column so day 1 lands on its weekday row (0 = Sunday).
+      const offset = new Date(`${days[0].date}T00:00:00`).getDay()
+      let cells = ''
+      for (let i = 0; i < offset; i++)
+        cells += '<div class="hm-cell empty"></div>'
+      for (const d of days) {
+        const level = Math.max(0, Math.min(4, Number(d.level) || 0))
+        const cls = level ? `hm-cell l${level}` : 'hm-cell'
+        const label = `${fmt(d.count)} contribution${
+          d.count === 1 ? '' : 's'
+        } on ${d.date}`
+        cells += `<div class="${cls}" data-label="${esc(label)}"></div>`
+      }
+      wrap.innerHTML = `<div class="heatmap">${cells}</div>`
+      setupHeatmapTooltip(wrap)
+
+      const total =
+        Number(data?.total?.lastYear) ||
+        days.reduce((sum, d) => sum + (Number(d.count) || 0), 0)
+      const totalEl = document.getElementById('stat-contrib-total')
+      if (totalEl) totalEl.textContent = `${fmt(total)} in the last year`
+    } catch {
+      wrap.innerHTML = '<div class="hm-loading">Unavailable</div>'
+    }
+  }
+
+  // All-time totals come from the same proxy with ?y=all, whose `total` field
+  // is a per-year map. Kept separate from the heatmap so a failure here never
+  // affects the last-year graph above.
+  async function loadContribTotals(user: string) {
+    const el = document.getElementById('stat-contrib-alltime')
+    if (!el) return
+    try {
+      const res = await fetch(
+        `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(
+          user
+        )}?y=all`
+      )
+      if (!res.ok) throw new Error('alltime')
+      const data = await res.json()
+      const totals: Record<string, number> = data?.total ?? {}
+      const years = Object.keys(totals)
+        .filter((y) => /^\d{4}$/.test(y))
+        .sort()
+      if (!years.length) return
+      const all = years.reduce((sum, y) => sum + (Number(totals[y]) || 0), 0)
+      const breakdown = years
+        .map((y) => `${y} ${fmt(Number(totals[y]) || 0)}`)
+        .join('  ·  ')
+      el.textContent = `${fmt(all)} all time  —  ${breakdown}`
+    } catch {
+      // Leave it empty; the last-year heatmap stays the primary view.
+    }
+  }
+
+  function initStats() {
+    const board = document.getElementById('stats-board')
+    if (!board) return
+
+    const lfUser = board.dataset.lastfmUser
+    const lfKey = board.dataset.lastfmKey
+    if (lfUser && lfKey) loadLastfm(lfUser, lfKey)
+
+    const tkUser = board.dataset.traktUser
+    const tkKey = board.dataset.traktKey
+    if (tkUser && tkKey) loadTrakt(tkUser, tkKey)
+
+    const ghUser = board.dataset.ghUser
+    if (ghUser) {
+      loadGitHub(ghUser)
+      loadRepos(ghUser)
+      loadHeatmap(ghUser)
+      loadContribTotals(ghUser)
+    }
+  }
+
+  document.addEventListener('astro:page-load', initStats)
+</script>
