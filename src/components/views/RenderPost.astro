@@ -75,7 +75,14 @@ in production. Set the post's <code>draft</code> property in
 frontmatter to <code>false</code> or remove it to publish the post.`
 ---
 
-<BaseLayout {title} {description} {ogImage} {pubDate} {lastModDate}>
+<BaseLayout
+  {title}
+  {description}
+  bgType="dot"
+  {ogImage}
+  {pubDate}
+  {lastModDate}
+>
   <ReadingProgress />
   <StandardLayout {title} {subtitle} {isSearchable} {searchFilter}>
     <Fragment slot="head">
