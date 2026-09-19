@@ -1,6 +1,7 @@
 {
   "name": "devadathanmb-blog",
   "version": "2.4.0",
+  "packageManager": "pnpm@10.34.5",
   "type": "module",
   "private": true,
   "license": "MIT",
