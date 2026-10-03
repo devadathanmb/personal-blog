@@ -165,46 +165,11 @@
             "description": "Autocomplete for file paths. Sounds trivial, saves you constantly."
           },
           {
-            "name": "Indent Rainbow",
-            "url": "https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow",
-            "icon": "i-ph-text-indent-duotone",
-            "btnClass": "btn-rose",
-            "description": "Colors indentation levels. Helps with deeply nested code."
-          },
-          {
-            "name": "Color Highlight",
-            "url": "https://marketplace.visualstudio.com/items?itemName=naumovs.color-highlight",
-            "icon": "i-ph-paint-bucket-duotone",
-            "btnClass": "btn-lime",
-            "description": "Previews CSS colors inline. No more hex guessing."
-          },
-          {
-            "name": "File Utils",
-            "url": "https://marketplace.visualstudio.com/items?itemName=sleistner.vscode-fileutils",
-            "icon": "i-ph-note-pencil-duotone",
-            "btnClass": "btn-cyan",
-            "description": "Rename, move, duplicate files from the command palette."
-          },
-          {
-            "name": "Bookmarks",
-            "url": "https://marketplace.visualstudio.com/items?itemName=alefragnani.bookmarks",
-            "icon": "i-ph-bookmarks-duotone",
-            "btnClass": "btn-yellow",
-            "description": "Mark lines in a file and jump between them instantly."
-          },
-          {
             "name": "Project Manager",
             "url": "https://marketplace.visualstudio.com/items?itemName=alefragnani.project-manager",
             "icon": "i-ph-briefcase-duotone",
             "btnClass": "btn-indigo",
             "description": "Switch between projects from the command palette."
-          },
-          {
-            "name": "Rainbow CSV",
-            "url": "https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv",
-            "icon": "i-ph-table-duotone",
-            "btnClass": "btn-green",
-            "description": "Colors CSV columns. Makes tabular data actually readable."
           }
         ]
       },
@@ -351,10 +316,10 @@
             "description": "Open-source iStat Menus alternative. Works flawlessly."
           },
           {
-            "name": "Ice",
-            "url": "https://github.com/jordanbaird/Ice",
-            "icon": "i-ph-snowflake-duotone",
-            "btnClass": "btn-sky",
+            "name": "Thaw",
+            "url": "https://github.com/thaw-app/Thaw",
+            "icon": "i-ph-sun-duotone",
+            "btnClass": "btn-amber",
             "description": "Open-source Bartender alternative. Keeps the menu bar tidy on a notch Mac."
           },
           {
@@ -382,17 +347,24 @@
         "label": "Dictation",
         "items": [
           {
-            "name": "Superwhisper",
-            "url": "https://superwhisper.com/",
+            "name": "FluidVoice",
+            "url": "https://fluidvoice.org/",
             "icon": "i-mingcute:voice-fill",
             "btnClass": "btn-pink",
-            "description": "Voice-to-text for everything."
+            "description": "Local voice-to-text for everything."
           }
         ]
       },
       {
         "label": "Harness",
         "items": [
+          {
+            "name": "OpenCode",
+            "url": "https://opencode.ai",
+            "icon": "i-ph-terminal-window-duotone",
+            "btnClass": "btn-violet",
+            "description": "Feature-rich, opinionated open-source coding agent for the terminal."
+          },
           {
             "name": "Pi Coding Agent",
             "url": "https://github.com/earendil-works/pi-coding-agent",
@@ -401,18 +373,18 @@
             "description": "Minimalist, highly customizable open-source terminal-based harness. Trying to see if the hype checks out."
           },
           {
-            "name": "Opencode",
-            "url": "https://opencode.ai",
-            "icon": "i-ph-terminal-window-duotone",
-            "btnClass": "btn-violet",
-            "description": "Feature-rich, opinionated open-source coding agent for the terminal."
-          },
-          {
             "name": "Claude Code",
             "url": "https://claude.com/product/claude-code",
             "icon": "i-simple-icons:claude",
             "btnClass": "btn-orange",
             "description": "Anthropic's terminal-based coding agent. Because they will ban you if you use anything else."
+          },
+          {
+            "name": "Codex",
+            "url": "https://openai.com/codex/",
+            "icon": "i-simple-icons-openai",
+            "btnClass": "btn-green",
+            "description": "OpenAI's coding agent for the terminal, IDE, and cloud."
           }
         ]
       },
@@ -553,6 +525,13 @@
         "label": "Dev & Media",
         "items": [
           {
+            "name": "Vimium",
+            "url": "https://github.com/philc/vimium",
+            "icon": "i-simple-icons-vim",
+            "btnClass": "btn-emerald",
+            "description": "Vim keybindings for the browser. Muscle memory wins here too."
+          },
+          {
             "name": "Refined GitHub",
             "url": "https://github.com/refined-github/refined-github",
             "icon": "i-simple-icons-github",
@@ -565,6 +544,13 @@
             "icon": "i-ph-skip-forward-duotone",
             "btnClass": "btn-lime",
             "description": "Skip sponsored segments in YouTube videos."
+          },
+          {
+            "name": "Web Scrobbler",
+            "url": "https://github.com/web-scrobbler/web-scrobbler",
+            "icon": "i-simple-icons-lastdotfm",
+            "btnClass": "btn-red",
+            "description": "Scrobbles music from the browser to Last.fm."
           }
         ]
       }

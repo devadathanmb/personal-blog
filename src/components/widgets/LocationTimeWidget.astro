@@ -30,7 +30,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 ---
 
 <PillWidget class="text-sm font-medium">
-  <div class={LOCATION_ICON_CLASS}></div>
+  <div class:list={[LOCATION_ICON_CLASS, 'lw-location-icon']}></div>
   <a
     href={mapsUrl}
     target="_blank"
@@ -64,7 +64,7 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 
   <span class="op-20 select-none text-[10px] mx-0.5">|</span>
 
-  <div class={TIME_ICON_CLASS}></div>
+  <div class:list={[TIME_ICON_CLASS, 'lw-time-icon']}></div>
   <span
     class="font-mono text-emerald-600 dark:text-emerald-400 text-xs live-time-widget tracking-tight tabular-nums"
     data-timezone={timezone}
@@ -76,10 +76,16 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 <style>
   /* Location link and weather temp use the shared `.pill-primary` color/hover
      from PillWidget. Only JS hooks and presentation that PillWidget doesn't
-     own live here. */
+     own live here. Icon sizes: see pillIcons.ts. */
+  .lw-location-icon {
+    font-size: 1.125rem;
+  }
+  .lw-time-icon {
+    font-size: 1.25rem;
+  }
   .lw-weather-icon-sized {
-    width: 1.75rem !important;
-    height: 1.75rem !important;
+    width: 2rem !important;
+    height: 2rem !important;
   }
 </style>
 

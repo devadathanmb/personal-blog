@@ -50,10 +50,7 @@ const githubRepo = 'https://github.com/devadathanmb/personal-blog'
       {
         commitHash !== 'unknown' && (
           <div class="mt-2 sm:mt-0 flex items-center gap-1">
-            <span>
-              <span class="i-mage-zap-fill deployed-zap" aria-hidden="true" />
-              Deployed commit:
-            </span>
+            <span>Deployed commit:</span>
             <a
               class="shine-hash font-mono decoration-dashed hover:decoration-solid underline underline-offset-2"
               href={`${githubRepo}/commit/${commitHash}`}
@@ -147,42 +144,6 @@ const githubRepo = 'https://github.com/devadathanmb/personal-blog'
     100% {
       transform: scale(1);
     } /* long rest before next cycle */
-  }
-
-  /* ── Zap icon ── */
-  .deployed-zap {
-    color: #fbbf24;
-    animation: zap-strike 5s ease-in-out infinite;
-  }
-
-  @keyframes zap-strike {
-    0%,
-    70%,
-    100% {
-      transform: scale(1);
-      color: #fbbf24;
-      filter: drop-shadow(0 0 0px transparent);
-    }
-    76% {
-      transform: scale(1.35) rotate(-10deg);
-      color: #fff;
-      filter: drop-shadow(0 0 5px #fbbf24);
-    }
-    82% {
-      transform: scale(0.9) rotate(4deg);
-      color: #fde68a;
-      filter: drop-shadow(0 0 2px #fbbf24);
-    }
-    88% {
-      transform: scale(1.2);
-      color: #fff;
-      filter: drop-shadow(0 0 8px #fde68a);
-    }
-    94% {
-      transform: scale(1);
-      color: #fbbf24;
-      filter: drop-shadow(0 0 0px transparent);
-    }
   }
 
   /* ── Astro icon & text ── */

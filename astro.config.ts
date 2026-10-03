@@ -43,6 +43,9 @@ export default defineConfig({
 
   vite: {
     server: {
+      // Forward the Worker API to `pnpm dev:worker` (wrangler dev) so the
+      // widgets exercise the real /api/watching handler during `astro dev`.
+      proxy: { '/api': 'http://127.0.0.1:8787' },
       headers: {
         // Allow Giscus iframe to load local styles in dev
         'Access-Control-Allow-Origin': 'https://giscus.app',

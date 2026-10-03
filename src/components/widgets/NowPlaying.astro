@@ -35,7 +35,7 @@ const IDLE_ICON_CLASS = PILL_WIDGET_ICON_CLASSES.nowPlayingIdle
         <div id="np-notes" aria-hidden="true" />
       </div>
 
-      <div class="flex flex-col justify-center max-w-[200px] sm:max-w-[250px]">
+      <div class="pill-stack max-w-[160px] sm:max-w-[200px]">
         <div id="np-track-wrapper" class="np-marquee flex overflow-hidden">
           <a
             id="np-track"
@@ -64,6 +64,11 @@ const IDLE_ICON_CLASS = PILL_WIDGET_ICON_CLASSES.nowPlayingIdle
 }
 
 <style>
+  /* Idle icon has no size class (it'd fall back to 1em ≈ 16px), which reads
+     smaller than the GitHub/SIMKL icons. */
+  #np-fallback > div {
+    font-size: 1.375rem;
+  }
   /* Equalizer bars: hidden by default, shown when playing */
   #np-bars {
     display: none;
@@ -107,20 +112,21 @@ const IDLE_ICON_CLASS = PILL_WIDGET_ICON_CLASSES.nowPlayingIdle
       transform: translateX(var(--np-shift));
     }
   }
-  /* Fade edges only when text is scrolling */
+  /* Fade edges only when text is scrolling. Fixed-px fades (not %) so both
+     edges and the loop seam look identical at any text length. */
   .np-marquee.is-scrolling {
     -webkit-mask-image: linear-gradient(
       to right,
-      transparent 0%,
-      black 10%,
-      black 85%,
+      transparent 0,
+      black 10px,
+      black calc(100% - 10px),
       transparent 100%
     );
     mask-image: linear-gradient(
       to right,
-      transparent 0%,
-      black 10%,
-      black 85%,
+      transparent 0,
+      black 10px,
+      black calc(100% - 10px),
       transparent 100%
     );
   }
@@ -207,7 +213,7 @@ const IDLE_ICON_CLASS = PILL_WIDGET_ICON_CLASSES.nowPlayingIdle
         const containerW = wrapper.offsetWidth
         const textW = textEl.scrollWidth
         if (textW > containerW) {
-          const GAP = 48
+          const GAP = 28
           const SPEED = 40
           const dup = textEl.cloneNode(true) as HTMLElement
           dup.classList.add('np-dup')

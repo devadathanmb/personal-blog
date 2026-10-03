@@ -1,0 +1,129 @@
+---
+import PillWidget from './PillWidget.astro'
+import { PILL_WIDGET_ICON_CLASSES } from './pillIcons'
+import { FEATURES } from '~/config'
+
+const { simkl } = FEATURES
+const enabled = Array.isArray(simkl) && simkl[0]
+const { profileUrl = '' } = enabled ? simkl[1] : {}
+const ICON_CLASS = PILL_WIDGET_ICON_CLASSES.simkl
+---
+
+{
+  enabled && profileUrl && (
+    <PillWidget class="simkl-widget">
+      <div slot="icon" id="simkl-icon" class="simkl-icon shrink-0">
+        <div class={ICON_CLASS} />
+        <span class="simkl-live" aria-hidden="true" />
+      </div>
+      <a
+        href={profileUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="pill-widget-link pill-stack max-w-[200px] sm:max-w-[250px]"
+      >
+        <span
+          id="simkl-title"
+          class="pill-primary text-xs font-medium leading-tight pill-loading truncate"
+        >
+          Loading...
+        </span>
+        <span
+          id="simkl-meta"
+          class="pill-secondary text-[11px] leading-tight pill-loading truncate"
+        >
+          SIMKL
+        </span>
+      </a>
+    </PillWidget>
+  )
+}
+
+<style>
+  .simkl-icon {
+    display: inline-flex;
+  }
+  /* The bx glyph has built-in padding, so it needs a larger box to read at
+     the same visual size as the other pill icons. */
+  .simkl-icon > div {
+    font-size: 1.5rem;
+  }
+  /* Playing: emerald icon that breathes slowly (opacity only, no extra shape). */
+  .simkl-icon.is-playing {
+    color: #10b981; /* emerald-500 */
+    animation: simkl-breathe 2.4s ease-in-out infinite;
+  }
+  @keyframes simkl-breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.45;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .simkl-icon.is-playing {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import { fetchWatching } from '~/utils/simkl'
+  import { getRelativeTime } from '~/utils/datetime'
+  let pollTimer: ReturnType<typeof setInterval> | undefined
+  let loading = false
+
+  async function initSimklWidget() {
+    const widget = document.querySelector<HTMLElement>('.simkl-widget')
+    if (!widget || loading || document.hidden) return
+    loading = true
+
+    const titleEl = widget.querySelector<HTMLElement>('#simkl-title')
+    const metaEl = widget.querySelector<HTMLElement>('#simkl-meta')
+    const result = await fetchWatching()
+    loading = false
+    if (!widget.isConnected) return
+    widget
+      .querySelector('#simkl-icon')
+      ?.classList.toggle('is-playing', result.status === 'playing')
+    if (titleEl) {
+      titleEl.textContent =
+        result.status === 'watched' ||
+        result.status === 'playing' ||
+        result.status === 'paused'
+          ? result.item.title
+          : 'SIMKL'
+      titleEl.classList.remove('pill-loading')
+    }
+    if (metaEl) {
+      if (result.status === 'playing' || result.status === 'paused') {
+        const state = result.status === 'playing' ? 'Watching now' : 'Paused'
+        const progress =
+          result.item.progress === null ? '' : ` • ${result.item.progress}%`
+        metaEl.textContent = `${state}${result.item.subtitle ? ` • ${result.item.subtitle}` : ''}${progress}`
+      } else if (result.status === 'watched') {
+        const time = `Watched ${getRelativeTime(result.item.watchedAt)}`
+        metaEl.textContent = result.item.subtitle
+          ? `SIMKL • ${result.item.subtitle} • ${time}`
+          : `SIMKL • ${time}`
+      } else {
+        metaEl.textContent =
+          result.status === 'empty' ? 'No watches yet' : 'History unavailable'
+      }
+      metaEl.classList.remove('pill-loading')
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    clearInterval(pollTimer)
+    initSimklWidget()
+    if (document.querySelector('.simkl-widget'))
+      pollTimer = setInterval(initSimklWidget, 15_000)
+  })
+  document.addEventListener('astro:before-swap', () => clearInterval(pollTimer))
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) initSimklWidget()
+  })
+</script>
