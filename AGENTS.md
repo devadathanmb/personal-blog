@@ -13,6 +13,8 @@ Devadathan's personal blog at devadathanmb.in — built with Astro 6, shipped as
 | `pnpm lint`         | ESLint (0 warnings allowed)            |
 | `pnpm format:write` | Prettier with cache                    |
 | `pnpm deploy`       | Build + `wrangler deploy` (`dist/`)    |
+| `pnpm dev:worker`   | `wrangler dev` on :8787 (real Worker)  |
+| `pnpm sim:watch`    | Fake playback for the watching widget  |
 
 Pre-commit hook: `lint-staged` (ESLint fix on JS/TS/Astro) + full `prettier` + `astro check`. `lint-staged` also runs `scripts/bump-last-updated.mjs` on any committed `src/pages/**/*.mdx`, rewriting its `<LastUpdated date="…" />` to today's date (no-op if already today or the page has no widget) and re-staging it — so a page's "last updated" always reflects its last shipped change, regardless of editor. CI runs check + lint + build on push/PR to `v2`. Node ≥ 22.12, pnpm 10.
 
@@ -23,7 +25,7 @@ Pre-commit hook: `lint-staged` (ESLint fix on JS/TS/Astro) + full `prettier` + `
 - Expressive Code for syntax highlighting (config in `ec.config.mjs`; themes vitesse-dark / vitesse-light, toggled by `:root.dark`)
 - Pagefind for client-side search (runs post-build, strips `pre` elements, includes `<>` chars)
 - Giscus (GitHub Discussions) for comments
-- Last.fm API for now-playing widget; SIMKL API for last-watched widget (private token in a small Cloudflare Worker route at `/api/watching`); Open-Meteo for weather (no key needed). Pages remain fully static; no Astro SSR adapter.
+- Last.fm API for now-playing widget; SIMKL API for last-watched widget + live Jellyfin playback webhook (private tokens in a small Cloudflare Worker route at `/api/watching`); Open-Meteo for weather (no key needed). Pages remain fully static; no Astro SSR adapter.
 - Satori + Sharp generate OG images at build time (`plugins/remark-generate-og-image.ts` + `plugins/og-template/`). `public/og-images/` is a **committed cache** — the plugin skips generation when the PNG already exists. After adding a page/post with `ogImage` enabled, commit the generated `public/og-images/<slug>.png`; otherwise every build regenerates it and leaves it untracked.
 
 ## Key Directories
@@ -36,7 +38,7 @@ Pre-commit hook: `lint-staged` (ESLint fix on JS/TS/Astro) + full `prettier` + `
 - `src/layouts/` — `BaseLayout` (root HTML shell), `PageLayout` (aside + panel composition), `StandardLayout` (title/subtitle wrapper for content pages)
 - `src/components/` — grouped by role: `base/`, `nav/`, `tags/`, `toc/`, `views/` (list/post renderers), `widgets/` (now-playing, GitHub, SIMKL, weather, share, etc.), `backgrounds/` (the `bgType` options)
 - `src/utils/` — `data.ts`, `datetime.ts`, `fs.ts` (build-time file checks), `lastfm.ts`, `misc.ts` (DOM/scroll utilities), `path.ts`, `toc.ts`, `simkl.ts`, `weather.ts`
-- `worker/` — five-minute scheduled SIMKL refresh into `WATCH_HISTORY` KV + read-only public latest-watch response. Credentials are Worker secrets / gitignored `.dev.vars`, never client-side config. Visitor requests never call SIMKL. Only `/api/*` runs Worker-first; static assets retain their normal routing.
+- `worker/` — five-minute scheduled SIMKL refresh into `WATCH_HISTORY` KV + read-only public latest-watch response, plus a Jellyfin playback webhook (`/api/watching/webhook`, bearer auth) whose live state lives in a SQLite Durable Object; the widget falls back to the SIMKL snapshot on stop or after three minutes without events. Credentials (`SIMKL_*`, `JELLYFIN_*`) are Worker secrets / gitignored `.dev.vars` (see `.dev.vars.example`), never client-side config. Visitor requests never call SIMKL. Only `/api/*` runs Worker-first; static assets retain their normal routing. `pnpm sim:watch playing|paused|watched|stop` fakes playback locally (run `pnpm dev:worker` alongside `pnpm dev`; the dev server proxies `/api` to it).
 - `src/styles/` — `main.css`, `prose.css`, `markdown.css`
 - `plugins/` — `index.ts` (remark + rehype pipeline), `remark-reading-time.ts`, `remark-generate-og-image.ts`, `og-template/`
 - `src/data/uses.json` — powers /uses page + UnoCSS safelist
