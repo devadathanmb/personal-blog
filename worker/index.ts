@@ -3,6 +3,10 @@ import type { WatchedItem } from '../src/utils/simkl'
 
 interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> }
+  WATCH_HISTORY: {
+    get(key: string, type: 'json'): Promise<Snapshot | null>
+    put(key: string, value: string): Promise<void>
+  }
   SIMKL_CLIENT_ID?: string
   SIMKL_ACCESS_TOKEN?: string
 }
@@ -21,6 +25,8 @@ const publicHeaders = {
   'Cache-Control': 'public, max-age=60, s-maxage=300',
   'X-Content-Type-Options': 'nosniff',
 }
+
+const snapshotKey = 'simkl'
 
 async function fetchSimkl(
   path: string,
@@ -41,54 +47,34 @@ async function fetchSimkl(
   return response.json()
 }
 
-async function watchHistory(
-  url: URL,
+async function refreshHistory(
+  env: Env,
   credentials: Credentials
-): Promise<Response> {
-  // Scope caches to credentials, not query strings or caller-supplied account IDs.
-  const digest = await crypto.subtle.digest(
-    'SHA-256',
-    new TextEncoder().encode(
-      `${credentials.clientId}:${credentials.accessToken}`
-    )
-  )
-  const account = Array.from(new Uint8Array(digest), (byte) =>
-    byte.toString(16).padStart(2, '0')
-  ).join('')
-  const cache = (caches as CacheStorage & { default: Cache }).default
-  const cacheKey = new Request(`${url.origin}/__watch-cache/${account}`)
-  const stateKey = new Request(`${url.origin}/__watch-state/${account}`)
-  const cached = await cache.match(cacheKey)
-  if (cached) return cached
-
-  const stored = await cache.match(stateKey)
-  const previous = stored ? ((await stored.json()) as Snapshot) : null
+): Promise<void> {
+  const previous = await env.WATCH_HISTORY.get(snapshotKey, 'json')
   // Check activities before pulling the library, as required by SIMKL's sync API.
   const activity = JSON.stringify(
     await fetchSimkl('/sync/activities', credentials)
   )
-  const latest =
-    previous?.activity === activity
-      ? previous.latest
-      : latestWatched(
-          await fetchSimkl('/sync/all-items?extended=full', credentials)
-        )
-
-  await cache.put(
-    stateKey,
-    Response.json(
-      { activity, latest },
-      {
-        headers: { 'Cache-Control': 'public, max-age=86400' },
-      }
-    )
+  if (previous?.activity === activity) return
+  const latest = latestWatched(
+    await fetchSimkl('/sync/all-items?extended=full', credentials)
   )
-  const response = Response.json({ latest }, { headers: publicHeaders })
-  await cache.put(cacheKey, response.clone())
-  return response
+  // Only replace the last successful snapshot after both upstream calls succeed.
+  await env.WATCH_HISTORY.put(snapshotKey, JSON.stringify({ activity, latest }))
 }
 
 export default {
+  async scheduled(_event: unknown, env: Env): Promise<void> {
+    if (!env.SIMKL_CLIENT_ID || !env.SIMKL_ACCESS_TOKEN) {
+      throw new Error('SIMKL credentials are not configured')
+    }
+    await refreshHistory(env, {
+      clientId: env.SIMKL_CLIENT_ID,
+      accessToken: env.SIMKL_ACCESS_TOKEN,
+    })
+  },
+
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url)
     if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(request)
@@ -101,27 +87,19 @@ export default {
       })
     }
     let response: Response
-    if (!env.SIMKL_CLIENT_ID || !env.SIMKL_ACCESS_TOKEN) {
+    try {
+      const snapshot = await env.WATCH_HISTORY.get(snapshotKey, 'json')
+      response = snapshot
+        ? Response.json({ latest: snapshot.latest }, { headers: publicHeaders })
+        : Response.json(
+            { error: 'Watch history is not available yet' },
+            { status: 503, headers: { 'Cache-Control': 'no-store' } }
+          )
+    } catch {
       response = Response.json(
-        { error: 'Watch history is not configured' },
-        {
-          status: 503,
-          headers: { 'Cache-Control': 'no-store' },
-        }
+        { error: 'Watch history is temporarily unavailable' },
+        { status: 503, headers: { 'Cache-Control': 'no-store' } }
       )
-    } else {
-      try {
-        response = await watchHistory(url, {
-          clientId: env.SIMKL_CLIENT_ID,
-          accessToken: env.SIMKL_ACCESS_TOKEN,
-        })
-      } catch {
-        // Do not expose upstream responses, tokens, or other account data.
-        response = Response.json(
-          { error: 'Watch history is temporarily unavailable' },
-          { status: 502, headers: { 'Cache-Control': 'no-store' } }
-        )
-      }
     }
     return request.method === 'HEAD'
       ? new Response(null, {

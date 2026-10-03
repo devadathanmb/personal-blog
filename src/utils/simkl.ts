@@ -12,8 +12,7 @@ type WatchResult =
 export async function fetchLastWatched(): Promise<WatchResult> {
   try {
     const response = await fetch('/api/watching', {
-      // A cache miss can require two sequential upstream requests.
-      signal: AbortSignal.timeout(25_000),
+      signal: AbortSignal.timeout(10_000),
     })
     if (!response.ok) return { status: 'unavailable' }
     const data = await response.json()

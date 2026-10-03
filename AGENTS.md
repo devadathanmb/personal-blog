@@ -36,7 +36,7 @@ Pre-commit hook: `lint-staged` (ESLint fix on JS/TS/Astro) + full `prettier` + `
 - `src/layouts/` — `BaseLayout` (root HTML shell), `PageLayout` (aside + panel composition), `StandardLayout` (title/subtitle wrapper for content pages)
 - `src/components/` — grouped by role: `base/`, `nav/`, `tags/`, `toc/`, `views/` (list/post renderers), `widgets/` (now-playing, GitHub, SIMKL, weather, share, etc.), `backgrounds/` (the `bgType` options)
 - `src/utils/` — `data.ts`, `datetime.ts`, `fs.ts` (build-time file checks), `lastfm.ts`, `misc.ts` (DOM/scroll utilities), `path.ts`, `toc.ts`, `simkl.ts`, `weather.ts`
-- `worker/` — private SIMKL API fetch + minimal public latest-watch response. Credentials are Worker secrets / gitignored `.dev.vars`, never client-side config. Only `/api/*` runs Worker-first; static assets retain their normal routing.
+- `worker/` — five-minute scheduled SIMKL refresh into `WATCH_HISTORY` KV + read-only public latest-watch response. Credentials are Worker secrets / gitignored `.dev.vars`, never client-side config. Visitor requests never call SIMKL. Only `/api/*` runs Worker-first; static assets retain their normal routing.
 - `src/styles/` — `main.css`, `prose.css`, `markdown.css`
 - `plugins/` — `index.ts` (remark + rehype pipeline), `remark-reading-time.ts`, `remark-generate-og-image.ts`, `og-template/`
 - `src/data/uses.json` — powers /uses page + UnoCSS safelist
