@@ -54,9 +54,18 @@ or polling job is needed.
 
 ### Local development
 
-For local development, copy `.dev.vars.example` to `.dev.vars`, supply the
-credentials, and run `pnpm preview`. `pnpm dev` serves only the static site,
-without the Worker API.
+For local development, copy `.dev.vars.example` to `.dev.vars` and supply the
+credentials. Run `pnpm dev:worker` (the real Worker, with local KV and Durable
+Object state) alongside `pnpm dev`; the dev server proxies `/api` to it.
+
+To exercise the "watching" widget without a real player:
+
+```sh
+pnpm sim:watch playing --progress 77   # Ctrl+C ends the session
+pnpm sim:watch paused
+pnpm sim:watch watched                 # seeds the local KV snapshot
+pnpm sim:watch stop
+```
 
 ## Credits
 

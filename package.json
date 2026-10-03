@@ -9,6 +9,8 @@
     "astro": "astro",
     "sync": "astro sync",
     "dev": "astro dev",
+    "dev:worker": "wrangler dev --port 8787",
+    "sim:watch": "node scripts/sim-watch.mjs",
     "check": "astro check",
     "build": "astro build",
     "preview": "pnpm run build && wrangler dev",
