@@ -23,7 +23,7 @@ Pre-commit hook: `lint-staged` (ESLint fix on JS/TS/Astro) + full `prettier` + `
 - Expressive Code for syntax highlighting (config in `ec.config.mjs`; themes vitesse-dark / vitesse-light, toggled by `:root.dark`)
 - Pagefind for client-side search (runs post-build, strips `pre` elements, includes `<>` chars)
 - Giscus (GitHub Discussions) for comments
-- Last.fm API for now-playing widget; Trakt API for watching widget; Open-Meteo for weather (no key needed) — all fetched client-side
+- Last.fm API for now-playing widget; SIMKL API for last-watched widget (private token in a small Cloudflare Worker route at `/api/watching`); Open-Meteo for weather (no key needed). Pages remain fully static; no Astro SSR adapter.
 - Satori + Sharp generate OG images at build time (`plugins/remark-generate-og-image.ts` + `plugins/og-template/`). `public/og-images/` is a **committed cache** — the plugin skips generation when the PNG already exists. After adding a page/post with `ogImage` enabled, commit the generated `public/og-images/<slug>.png`; otherwise every build regenerates it and leaves it untracked.
 
 ## Key Directories
@@ -34,8 +34,9 @@ Pre-commit hook: `lint-staged` (ESLint fix on JS/TS/Astro) + full `prettier` + `
 - `src/schema.ts` — `postSchema`, `pageSchema` (zod); each field carries a `.describe()` doc string — read it before adding frontmatter
 - `src/pages/` — MDX pages (index, blog/index, thoughts, uses, now, colophon, 404, rss.xml) + dynamic `blog/[...slug]` and `thoughts/[...slug]`
 - `src/layouts/` — `BaseLayout` (root HTML shell), `PageLayout` (aside + panel composition), `StandardLayout` (title/subtitle wrapper for content pages)
-- `src/components/` — grouped by role: `base/`, `nav/`, `tags/`, `toc/`, `views/` (list/post renderers), `widgets/` (now-playing, GitHub, Trakt, weather, share, etc.), `backgrounds/` (the `bgType` options)
-- `src/utils/` — `data.ts`, `datetime.ts`, `fs.ts` (build-time file checks), `lastfm.ts`, `misc.ts` (DOM/scroll utilities), `path.ts`, `toc.ts`, `trakt.ts`, `weather.ts`
+- `src/components/` — grouped by role: `base/`, `nav/`, `tags/`, `toc/`, `views/` (list/post renderers), `widgets/` (now-playing, GitHub, SIMKL, weather, share, etc.), `backgrounds/` (the `bgType` options)
+- `src/utils/` — `data.ts`, `datetime.ts`, `fs.ts` (build-time file checks), `lastfm.ts`, `misc.ts` (DOM/scroll utilities), `path.ts`, `toc.ts`, `simkl.ts`, `weather.ts`
+- `worker/` — private SIMKL API fetch + minimal public latest-watch response. Credentials are Worker secrets / gitignored `.dev.vars`, never client-side config. Only `/api/*` runs Worker-first; static assets retain their normal routing.
 - `src/styles/` — `main.css`, `prose.css`, `markdown.css`
 - `plugins/` — `index.ts` (remark + rehype pipeline), `remark-reading-time.ts`, `remark-generate-og-image.ts`, `og-template/`
 - `src/data/uses.json` — powers /uses page + UnoCSS safelist
