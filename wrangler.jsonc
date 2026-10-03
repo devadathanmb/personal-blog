@@ -12,6 +12,10 @@
   "triggers": {
     "crons": ["*/5 * * * *"],
   },
+  "durable_objects": {
+    "bindings": [{ "name": "LIVE_WATCHING", "class_name": "LiveWatching" }],
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["LiveWatching"] }],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

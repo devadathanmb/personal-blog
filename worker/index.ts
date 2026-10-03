@@ -1,7 +1,10 @@
 import { latestWatched } from './simkl'
-import type { WatchedItem } from '../src/utils/simkl'
+import { handleWebhook } from './webhook'
+import type { WebhookEnv } from './webhook'
+import type { LiveWatch, WatchedItem } from '../src/utils/simkl'
+export { LiveWatching } from './live-watching'
 
-interface Env {
+interface Env extends WebhookEnv {
   ASSETS: { fetch(request: Request): Promise<Response> }
   WATCH_HISTORY: {
     get(key: string, type: 'json'): Promise<Snapshot | null>
@@ -22,7 +25,7 @@ interface Credentials {
 }
 
 const publicHeaders = {
-  'Cache-Control': 'public, max-age=60, s-maxage=300',
+  'Cache-Control': 'no-store',
   'X-Content-Type-Options': 'nosniff',
 }
 
@@ -78,6 +81,8 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url)
     if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(request)
+    if (url.pathname === '/api/watching/webhook')
+      return handleWebhook(request, env)
     if (url.pathname !== '/api/watching')
       return new Response('Not found', { status: 404 })
     if (request.method !== 'GET' && request.method !== 'HEAD') {
@@ -88,13 +93,29 @@ export default {
     }
     let response: Response
     try {
-      const snapshot = await env.WATCH_HISTORY.get(snapshotKey, 'json')
-      response = snapshot
-        ? Response.json({ latest: snapshot.latest }, { headers: publicHeaders })
-        : Response.json(
-            { error: 'Watch history is not available yet' },
-            { status: 503, headers: { 'Cache-Control': 'no-store' } }
-          )
+      const [snapshot, current] = await Promise.all([
+        env.WATCH_HISTORY.get(snapshotKey, 'json').catch(() => null),
+        env.LIVE_WATCHING.get(env.LIVE_WATCHING.idFromName('watching'))
+          .fetch(new Request('https://live.internal/'))
+          .then(async (response) => {
+            if (!response.ok) throw new Error('Playback storage is unavailable')
+            const data = (await response.json()) as {
+              current: LiveWatch | null
+            }
+            return data.current
+          })
+          .catch(() => null),
+      ])
+      response =
+        snapshot || current
+          ? Response.json(
+              { latest: snapshot?.latest ?? null, current },
+              { headers: publicHeaders }
+            )
+          : Response.json(
+              { error: 'Watch history is not available yet' },
+              { status: 503, headers: { 'Cache-Control': 'no-store' } }
+            )
     } catch {
       response = Response.json(
         { error: 'Watch history is temporarily unavailable' },

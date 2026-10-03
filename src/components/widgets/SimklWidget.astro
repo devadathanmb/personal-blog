@@ -37,23 +37,37 @@ const ICON_CLASS = PILL_WIDGET_ICON_CLASSES.simkl
 }
 
 <script>
-  import { fetchLastWatched } from '~/utils/simkl'
+  import { fetchWatching } from '~/utils/simkl'
   import { getRelativeTime } from '~/utils/datetime'
+  let pollTimer: ReturnType<typeof setInterval> | undefined
+  let loading = false
 
   async function initSimklWidget() {
     const widget = document.querySelector<HTMLElement>('.simkl-widget')
-    if (!widget) return
+    if (!widget || loading || document.hidden) return
+    loading = true
 
     const titleEl = widget.querySelector<HTMLElement>('#simkl-title')
     const metaEl = widget.querySelector<HTMLElement>('#simkl-meta')
-    const result = await fetchLastWatched()
+    const result = await fetchWatching()
+    loading = false
+    if (!widget.isConnected) return
     if (titleEl) {
       titleEl.textContent =
-        result.status === 'watched' ? result.item.title : 'SIMKL'
+        result.status === 'watched' ||
+        result.status === 'playing' ||
+        result.status === 'paused'
+          ? result.item.title
+          : 'SIMKL'
       titleEl.classList.remove('pill-loading')
     }
     if (metaEl) {
-      if (result.status === 'watched') {
+      if (result.status === 'playing' || result.status === 'paused') {
+        const state = result.status === 'playing' ? 'Watching now' : 'Paused'
+        const progress =
+          result.item.progress === null ? '' : ` • ${result.item.progress}%`
+        metaEl.textContent = `${state}${result.item.subtitle ? ` • ${result.item.subtitle}` : ''}${progress}`
+      } else if (result.status === 'watched') {
         const time = `Watched ${getRelativeTime(result.item.watchedAt)}`
         metaEl.textContent = result.item.subtitle
           ? `SIMKL • ${result.item.subtitle} • ${time}`
@@ -67,6 +81,13 @@ const ICON_CLASS = PILL_WIDGET_ICON_CLASSES.simkl
   }
 
   document.addEventListener('astro:page-load', () => {
+    clearInterval(pollTimer)
     initSimklWidget()
+    if (document.querySelector('.simkl-widget'))
+      pollTimer = setInterval(initSimklWidget, 15_000)
+  })
+  document.addEventListener('astro:before-swap', () => clearInterval(pollTimer))
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) initSimklWidget()
   })
 </script>
