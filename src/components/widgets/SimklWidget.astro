@@ -12,12 +12,15 @@ const ICON_CLASS = PILL_WIDGET_ICON_CLASSES.simkl
 {
   enabled && profileUrl && (
     <PillWidget class="simkl-widget">
-      <div slot="icon" class={ICON_CLASS} />
+      <div slot="icon" id="simkl-icon" class="simkl-icon shrink-0">
+        <div class={ICON_CLASS} />
+        <span class="simkl-live" aria-hidden="true" />
+      </div>
       <a
         href={profileUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="pill-widget-link flex flex-col justify-center max-w-[200px] sm:max-w-[250px]"
+        class="pill-widget-link pill-stack max-w-[200px] sm:max-w-[250px]"
       >
         <span
           id="simkl-title"
@@ -36,6 +39,36 @@ const ICON_CLASS = PILL_WIDGET_ICON_CLASSES.simkl
   )
 }
 
+<style>
+  .simkl-icon {
+    display: inline-flex;
+  }
+  /* The bx glyph has built-in padding, so it needs a larger box to read at
+     the same visual size as the other pill icons. */
+  .simkl-icon > div {
+    font-size: 1.5rem;
+  }
+  /* Playing: emerald icon that breathes slowly (opacity only, no extra shape). */
+  .simkl-icon.is-playing {
+    color: #10b981; /* emerald-500 */
+    animation: simkl-breathe 2.4s ease-in-out infinite;
+  }
+  @keyframes simkl-breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.45;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .simkl-icon.is-playing {
+      animation: none;
+    }
+  }
+</style>
+
 <script>
   import { fetchWatching } from '~/utils/simkl'
   import { getRelativeTime } from '~/utils/datetime'
@@ -52,6 +85,9 @@ const ICON_CLASS = PILL_WIDGET_ICON_CLASSES.simkl
     const result = await fetchWatching()
     loading = false
     if (!widget.isConnected) return
+    widget
+      .querySelector('#simkl-icon')
+      ?.classList.toggle('is-playing', result.status === 'playing')
     if (titleEl) {
       titleEl.textContent =
         result.status === 'watched' ||
