@@ -1,6 +1,6 @@
 # Personal Blog
 
-Devadathan's personal blog at devadathanmb.in — built with Astro 6, shipped as a **fully static site** (`output` defaults to `static`; no SSR adapter) and deployed to Cloudflare Workers (static assets). **`v2` is the current production branch** — pushing to `v2` deploys to production (devadathanmb.in). `main` is a separate, older version of the site, not what's live.
+Devadathan's personal blog at devadathanmb.in — built with Astro 7, shipped as a **fully static site** (`output` defaults to `static`; no SSR adapter) and deployed to Cloudflare Workers (static assets). **`v2` is the current production branch** — pushing to `v2` deploys to production (devadathanmb.in). `main` is a separate, older version of the site, not what's live.
 
 ## Commands
 
@@ -20,7 +20,7 @@ Pre-commit hook: `lint-staged` (ESLint fix on JS/TS/Astro) + full `prettier` + `
 
 ## Stack
 
-- Astro 6 + MDX — static output (no adapter). `wrangler deploy` serves `dist/` as static assets (`wrangler.jsonc`, `not_found_handling: 404-page`)
+- Astro 7 + MDX — static output (no adapter). `wrangler deploy` serves `dist/` as static assets (`wrangler.jsonc`, `not_found_handling: 404-page`)
 - UnoCSS (Wind3 + Attributify `u-` prefix + Icons + WebFonts: Inter / DM Mono / Roboto Condensed) — no Tailwind
 - Expressive Code for syntax highlighting (config in `ec.config.mjs`; themes vitesse-dark / vitesse-light, toggled by `:root.dark`)
 - Pagefind for client-side search (runs post-build, strips `pre` elements, includes `<>` chars)
@@ -71,7 +71,7 @@ toc: [true, { minHeadingLevel: 2, maxHeadingLevel: 5, displayPosition: 'right', 
 
 - Dynamically constructed class strings (icons, uses.json items) must be added to the `safelist` in `unocss.config.ts` — UnoCSS won't detect them at build time. This includes literal class strings that live in a `.ts`/constants module and are applied via a `class={…}` binding (e.g. `src/components/widgets/pillIcons.ts`): static extraction can't follow the binding, so they need safelisting even though the token appears literally in a scanned file. A class written directly in markup (`.astro`/`.mdx`) does not.
 - Icons follow `i-<collection>-<icon>` or `i-<collection>:<icon>` format from `@iconify/json`
-- Content files (`src/content/**`) are not piped through Vite in Astro 6 — listed explicitly in `unocss.config.ts` `content.filesystem`
+- Content files (`src/content/**`) are not piped through Vite in Astro 7 — listed explicitly in `unocss.config.ts` `content.filesystem`
 - Custom breakpoint: `lgp` at `1128px` (in addition to standard Wind3 breakpoints)
 - Utility CSS is split into per-component chunks; a page only links the chunks its loaded components reference. Utilities that appear **only** in a shared/nested component (e.g. `PillWidget`, rendered via other widgets) can be dropped from a page's CSS. For a component's own **structural** styles that must always render, author them as plain CSS in the component's `<style>` block (always bundled when it renders) rather than utility classes — see `PillWidget.astro`'s `.pill` shell
 
