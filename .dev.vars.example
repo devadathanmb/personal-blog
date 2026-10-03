@@ -1,0 +1,3 @@
+# Private server-side credentials. Never copy these into src/config.ts.
+SIMKL_CLIENT_ID=""
+SIMKL_ACCESS_TOKEN=""

@@ -53,9 +53,9 @@
             "description": "My latest public activity, straight from the source."
           },
           {
-            "name": "Trakt",
-            "url": "https://trakt.tv",
-            "icon": "i-simple-icons-trakt",
+            "name": "SIMKL",
+            "url": "https://simkl.com",
+            "icon": "i-bx:movie-play",
             "btnClass": "btn-orange",
             "description": "Whatever I'm watching, scrobbled automatically from Jellyfin."
           }

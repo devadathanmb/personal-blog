@@ -728,17 +728,11 @@ interface TagConfig {
   filterMode: 'AND' | 'OR'
 }
 
-interface TraktConfig {
+interface SimklConfig {
   /**
-   * Trakt username whose watch history powers the widget.
+   * SIMKL profile URL opened when the watch-history widget is clicked.
    */
-  username: string
-
-  /**
-   * Trakt API client ID. Public value — safe to ship in client-side config.
-   * Get one at https://trakt.tv/oauth/applications
-   */
-  clientId: string
+  profileUrl: string
 }
 
 interface GitHubConfig {
@@ -868,10 +862,9 @@ export interface Features {
   github: FeatureConfig<GitHubConfig>
 
   /**
-   * Whether to enable the Trakt "currently watching" widget on the /now page.
+   * Whether to enable the SIMKL "last watched" widget on the /now page.
    *
-   * Set to `false` to hide it. To enable, provide your Trakt username and
-   * a client ID from https://trakt.tv/oauth/applications (public value, not a secret).
+   * Set to `false` to hide it. Account credentials live only in Worker secrets.
    */
-  trakt: FeatureConfig<TraktConfig>
+  simkl: FeatureConfig<SimklConfig>
 }

@@ -1,9 +1,21 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "personal-blog",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-06-13",
+  "kv_namespaces": [
+    {
+      "binding": "WATCH_HISTORY",
+      "id": "96bcfa97415c4baa82b81fc22c538390",
+    },
+  ],
+  "triggers": {
+    "crons": ["*/5 * * * *"],
+  },
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
     "not_found_handling": "404-page",
   },
 }

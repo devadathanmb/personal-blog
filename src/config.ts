@@ -179,12 +179,10 @@ export const FEATURES: Features = {
       username: 'devadathanmb',
     },
   ],
-  trakt: [
+  simkl: [
     true,
     {
-      username: 'dev_on_trakt',
-      clientId:
-        '81610e023d5a909cbf0c42bf4e52b000d47fe05859930fe86f0974ee83119c5b',
+      profileUrl: 'https://simkl.com/9095741/',
     },
   ],
 }

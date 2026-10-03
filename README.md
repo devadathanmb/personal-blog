@@ -18,6 +18,20 @@ pnpm build
 pnpm preview
 ```
 
+## Watch-history widget
+
+The `/now` widget displays the latest watch from SIMKL through a server-side
+Worker route. Set `SIMKL_CLIENT_ID` and `SIMKL_ACCESS_TOKEN` as Worker secrets;
+never include the account token in client-side configuration.
+
+A five-minute scheduled refresh stores the latest watch in KV. The public API
+only reads that snapshot; visitors never trigger SIMKL requests. Failed refreshes
+retain the last successful result.
+
+For local development, copy `.dev.vars.example` to `.dev.vars`, supply the
+credentials, and run `pnpm preview`. `pnpm dev` serves only the static site,
+without the Worker API.
+
 ## Credits
 
 This blog is built on top of [astro-antfustyle-theme](https://github.com/lin-stephanie/astro-antfustyle-theme) by [Stephanie Lin](https://github.com/lin-stephanie), which itself draws design inspiration from [antfu.me](https://antfu.me) by [Anthony Fu](https://github.com/antfu).

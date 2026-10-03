@@ -1,0 +1,72 @@
+---
+import PillWidget from './PillWidget.astro'
+import { PILL_WIDGET_ICON_CLASSES } from './pillIcons'
+import { FEATURES } from '~/config'
+
+const { simkl } = FEATURES
+const enabled = Array.isArray(simkl) && simkl[0]
+const { profileUrl = '' } = enabled ? simkl[1] : {}
+const ICON_CLASS = PILL_WIDGET_ICON_CLASSES.simkl
+---
+
+{
+  enabled && profileUrl && (
+    <PillWidget class="simkl-widget">
+      <div slot="icon" class={ICON_CLASS} />
+      <a
+        href={profileUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="pill-widget-link flex flex-col justify-center max-w-[200px] sm:max-w-[250px]"
+      >
+        <span
+          id="simkl-title"
+          class="pill-primary text-xs font-medium leading-tight pill-loading truncate"
+        >
+          Loading...
+        </span>
+        <span
+          id="simkl-meta"
+          class="pill-secondary text-[11px] leading-tight pill-loading truncate"
+        >
+          SIMKL
+        </span>
+      </a>
+    </PillWidget>
+  )
+}
+
+<script>
+  import { fetchLastWatched } from '~/utils/simkl'
+  import { getRelativeTime } from '~/utils/datetime'
+
+  async function initSimklWidget() {
+    const widget = document.querySelector<HTMLElement>('.simkl-widget')
+    if (!widget) return
+
+    const titleEl = widget.querySelector<HTMLElement>('#simkl-title')
+    const metaEl = widget.querySelector<HTMLElement>('#simkl-meta')
+    const result = await fetchLastWatched()
+    if (titleEl) {
+      titleEl.textContent =
+        result.status === 'watched' ? result.item.title : 'SIMKL'
+      titleEl.classList.remove('pill-loading')
+    }
+    if (metaEl) {
+      if (result.status === 'watched') {
+        const time = `Watched ${getRelativeTime(result.item.watchedAt)}`
+        metaEl.textContent = result.item.subtitle
+          ? `SIMKL • ${result.item.subtitle} • ${time}`
+          : `SIMKL • ${time}`
+      } else {
+        metaEl.textContent =
+          result.status === 'empty' ? 'No watches yet' : 'History unavailable'
+      }
+      metaEl.classList.remove('pill-loading')
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initSimklWidget()
+  })
+</script>
