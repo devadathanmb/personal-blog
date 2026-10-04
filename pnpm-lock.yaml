@@ -26,6 +26,11 @@ overrides:
   fflate: '>=0.7.5'
   sharp: '>=0.35.4'
 
+patchedDependencies:
+  http-cache-semantics@4.2.0:
+    hash: bfcf00566a3fdf00a595f838b4fb57e05aed93d48de2192d046459540f4fb98a
+    path: patches/http-cache-semantics@4.2.0.patch
+
 importers:
 
   .:
@@ -5700,7 +5705,7 @@ snapshots:
       get-tsconfig: 5.0.0-beta.4
       github-slugger: 2.0.0
       html-escaper: 3.0.3
-      http-cache-semantics: 4.2.0
+      http-cache-semantics: 4.2.0(patch_hash=bfcf00566a3fdf00a595f838b4fb57e05aed93d48de2192d046459540f4fb98a)
       js-yaml: 5.4.2
       jsonc-parser: 3.3.1
       magic-string: 1.4.1
@@ -6819,7 +6824,7 @@ snapshots:
 
   html-void-elements@3.0.0: {}
 
-  http-cache-semantics@4.2.0: {}
+  http-cache-semantics@4.2.0(patch_hash=bfcf00566a3fdf00a595f838b4fb57e05aed93d48de2192d046459540f4fb98a): {}
 
   human-signals@5.0.0: {}
 
