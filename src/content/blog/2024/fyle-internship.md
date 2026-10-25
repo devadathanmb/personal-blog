@@ -9,7 +9,7 @@ tags:
   - internship
   - fyle
   - work
-description: That's how I got a job
+description: Hundreds of applications, mostly silence, and how I finally landed an internship at Fyle. Written down so I don't forget.
 ---
 
 While writing this blog, I'm currently working as an **MTS - 1** at [Fyle](https://www.fylehq.com/).

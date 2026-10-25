@@ -118,7 +118,11 @@ export default defineConfig({
       fonts: {
         // italic: real Inter italics for subtitles/captions instead of the
         // browser's synthesized slant
-        sans: { name: 'Inter', weights: ['400', '600', '800'], italic: true },
+        sans: {
+          name: 'Inter',
+          weights: ['400', '500', '600', '800'],
+          italic: true,
+        },
         mono: 'DM Mono:400,600',
         condensed: 'Roboto Condensed',
       },

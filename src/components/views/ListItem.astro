@@ -1,7 +1,7 @@
 ---
 import Link from '~/components/base/Link.astro'
 
-import { withBasePath } from '~/utils/path'
+import { withBasePath, postTitleTransitionName } from '~/utils/path'
 import { formatDate } from '~/utils/datetime'
 
 interface Props {
@@ -45,7 +45,20 @@ const {
     external={redirect ? true : false}
     enableNewTabWarning={redirect ? true : false}
   >
-    <Fragment slot="title">{title}</Fragment>
+    <Fragment slot="title">
+      {
+        postSlug && !redirect ? (
+          <span
+            class="post-title-vt"
+            transition:name={postTitleTransitionName(collectionType, postSlug)}
+          >
+            {title}
+          </span>
+        ) : (
+          title
+        )
+      }
+    </Fragment>
     {
       description && (
         <span slot="description" class="list-item-desc">
@@ -101,6 +114,11 @@ const {
 </div>
 
 <style>
+  /* View-transition snapshots need a box, not a fragmented inline run. */
+  .post-title-vt {
+    display: inline-block;
+  }
+
   /* One quiet line of context between the title and the meta row. */
   .list-item-desc {
     display: -webkit-box;

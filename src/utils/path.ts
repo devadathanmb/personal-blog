@@ -22,3 +22,11 @@ export function ensureTrailingSlash(pathname: string): string {
 export function resolvePath(pathname: string): string {
   return withBasePath(ensureTrailingSlash(pathname))
 }
+
+/**
+ * View-transition name shared by a post's title in lists and its page heading,
+ * so the title glides between the two on navigation. Must be a valid CSS ident.
+ */
+export function postTitleTransitionName(collection: string, id: string) {
+  return `post-title-${collection}-${id}`.replace(/[^a-zA-Z0-9_-]/g, '-')
+}

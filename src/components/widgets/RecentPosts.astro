@@ -1,7 +1,7 @@
 ---
 import { getFilteredPosts, getSortedPosts } from '~/utils/data'
 import { formatDate } from '~/utils/datetime'
-import { withBasePath } from '~/utils/path'
+import { withBasePath, postTitleTransitionName } from '~/utils/path'
 
 interface Props {
   /** How many of the newest blog posts and thoughts (combined) to list. */
@@ -29,7 +29,15 @@ const KIND = { blog: 'Blog', thoughts: 'Thought' } as const
         {posts.map((post) => (
           <li>
             <a href={withBasePath(`/${post.collection}/${post.id}/`)}>
-              {post.data.title}
+              <span
+                class="recent-posts-title"
+                transition:name={postTitleTransitionName(
+                  post.collection,
+                  post.id
+                )}
+              >
+                {post.data.title}
+              </span>
             </a>
             <span class="recent-posts-meta">
               <time datetime={post.data.pubDate.toISOString()}>
@@ -87,6 +95,11 @@ const KIND = { blog: 'Blog', thoughts: 'Thought' } as const
   .recent-posts a:hover {
     border-bottom: none;
     opacity: 1;
+  }
+
+  /* View-transition snapshots need a box, not a fragmented inline run. */
+  .recent-posts-title {
+    display: inline-block;
   }
 
   .recent-posts-meta {

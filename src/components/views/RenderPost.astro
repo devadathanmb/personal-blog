@@ -17,6 +17,7 @@ import ReadingProgress from '~/components/widgets/ReadingProgress.astro'
 
 import { getMinutesRead } from '~/utils/data'
 import { FEATURES } from '~/config'
+import { postTitleTransitionName } from '~/utils/path'
 
 import type { CollectionEntry } from 'astro:content'
 import type { SeriesNavData, AdjacentPosts } from '~/utils/data'
@@ -90,7 +91,13 @@ frontmatter to <code>false</code> or remove it to publish the post.`
   {hasMath}
 >
   <ReadingProgress />
-  <StandardLayout {title} {subtitle} {isSearchable} {searchFilter}>
+  <StandardLayout
+    {title}
+    {subtitle}
+    {isSearchable}
+    {searchFilter}
+    titleTransitionName={postTitleTransitionName(post.collection, post.id)}
+  >
     <Fragment slot="head">
       <PostMeta {pubDate} {lastModDate} {minutesRead} {tags} />
     </Fragment>

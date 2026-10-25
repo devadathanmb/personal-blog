@@ -5,6 +5,8 @@ interface Props {
   isCentered?: boolean
   isSearchable?: boolean
   searchFilter?: string
+  /** Shared with the post's list entry so the title glides between pages. */
+  titleTransitionName?: string
   class?: string
 }
 
@@ -14,6 +16,7 @@ const {
   isCentered = false,
   isSearchable,
   searchFilter,
+  titleTransitionName,
   class: className,
 } = Astro.props
 ---
@@ -24,7 +27,16 @@ const {
     'text-center': isCentered,
   }}
 >
-  {title && <h1 class="font-medium">{title}</h1>}
+  {
+    title &&
+      (titleTransitionName ? (
+        <h1 class="font-medium" transition:name={titleTransitionName}>
+          {title}
+        </h1>
+      ) : (
+        <h1 class="font-medium">{title}</h1>
+      ))
+  }
   {subtitle && <p class="mt--4! op-50 italic">{subtitle}</p>}
   {
     /*
