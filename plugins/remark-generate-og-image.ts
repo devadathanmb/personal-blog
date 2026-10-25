@@ -7,17 +7,18 @@ import satori from 'satori'
 import sharp from 'sharp'
 import chalk from 'chalk'
 
-import { getCurrentFormattedTime } from '../src/utils/datetime'
+import { formatDate, getCurrentFormattedTime } from '../src/utils/datetime'
 import { checkFileExistsInDir } from '../src/utils/fs'
 import { ogImageMarkup } from './og-template/markup'
 import backgroundBase64 from './og-template/base64'
-import { FEATURES } from '../src/config'
+import { FEATURES, SITE } from '../src/config'
 
 import type { SatoriOptions } from 'satori'
 import type { html } from 'satori-html'
 import type { BgType } from '../src/types'
 
 const Inter = readFileSync('plugins/og-template/Inter-Regular-24pt.ttf')
+const InterBold = readFileSync('plugins/og-template/Inter-Bold.ttf')
 
 const satoriOptions: SatoriOptions = {
   // debug: true,
@@ -29,6 +30,12 @@ const satoriOptions: SatoriOptions = {
       weight: 400,
       style: 'normal',
       data: Inter,
+    },
+    {
+      name: 'Inter',
+      weight: 700,
+      style: 'normal',
+      data: InterBold,
     },
   ],
 }
@@ -61,7 +68,8 @@ async function generateOgImage(
   authorOrBrand: string,
   title: string,
   bgType: BgType,
-  output: string
+  output: string,
+  meta: string = new URL(SITE.website).hostname
 ) {
   await mkdir(dirname(output), { recursive: true })
 
@@ -70,7 +78,7 @@ async function generateOgImage(
   )
 
   try {
-    const node = ogImageMarkup(authorOrBrand, title, bgType)
+    const node = ogImageMarkup(authorOrBrand, title, bgType, meta)
     unescapeHTML(node)
 
     const svg = await satori(node, satoriOptions)
@@ -156,12 +164,26 @@ function remarkGenerateOgImage() {
         ? (pageBgType as BgType)
         : fallbackBgType
 
+    // meta line: domain · date · reading time (posts only)
+    const { pubDate, minutesRead } = file.data.astro.frontmatter
+    const meta = [
+      new URL(SITE.website).hostname,
+      pubDate && formatDate(new Date(pubDate)),
+      pubDate &&
+        typeof minutesRead === 'number' &&
+        minutesRead > 0 &&
+        `${minutesRead} min read`,
+    ]
+      .filter(Boolean)
+      .join('  ·  ')
+
     // generate og images
     await generateOgImage(
       authorOrBrand,
       title.trim(),
       bgType,
-      `public/og-images/${nameWithoutExt}.png`
+      `public/og-images/${nameWithoutExt}.png`,
+      meta
     )
   }
 }

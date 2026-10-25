@@ -7,6 +7,7 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
+import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local'
 
 import { UI } from './src/config'
 import usesData from './src/data/uses.json'
@@ -115,10 +116,15 @@ export default defineConfig({
     }),
     presetWebFonts({
       fonts: {
-        sans: 'Inter:400,600,800',
+        // italic: real Inter italics for subtitles/captions instead of the
+        // browser's synthesized slant
+        sans: { name: 'Inter', weights: ['400', '600', '800'], italic: true },
         mono: 'DM Mono:400,600',
         condensed: 'Roboto Condensed',
       },
+      // Self-host: font files are downloaded at build time into
+      // public/assets/fonts (committed) and served from our own origin.
+      processors: createLocalFontProcessor(),
     }),
   ],
 
@@ -146,6 +152,16 @@ export default defineConfig({
 
     /* Toc */
     'i-ri-menu-2-fill',
+
+    /* HomeLinks — icons are applied through a `class={item.icon}` binding */
+    'i-ri-article-line',
+    'i-ri-lightbulb-line',
+    'i-ri-macbook-line',
+    'i-ri-time-line',
+    'i-ri-quill-pen-line',
+    'i-icon-park-solid-globe',
+    'i-material-symbols-keyboard-double-arrow-left',
+    'i-material-symbols-keyboard-double-arrow-right',
 
     /* Pill widgets — classes are set through constants in src/components/widgets/pillIcons.ts */
     ...PILL_WIDGET_ICON_SAFE_LIST,

@@ -1,0 +1,91 @@
+---
+import { withBasePath } from '~/utils/path'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  newerPost: CollectionEntry<'blog' | 'thoughts'> | null
+  olderPost: CollectionEntry<'blog' | 'thoughts'> | null
+}
+
+const { newerPost, olderPost } = Astro.props
+
+const href = (post: CollectionEntry<'blog' | 'thoughts'>) =>
+  withBasePath(`/${post.collection}/${post.id}/`)
+---
+
+{
+  (newerPost || olderPost) && (
+    <nav class="post-nav" aria-label="More posts">
+      {olderPost ? (
+        <a class="post-nav-link" href={href(olderPost)} rel="prev">
+          <span class="post-nav-label">← Older</span>
+          <span class="post-nav-title">{olderPost.data.title}</span>
+        </a>
+      ) : (
+        <span />
+      )}
+      {newerPost && (
+        <a
+          class="post-nav-link post-nav-next"
+          href={href(newerPost)}
+          rel="next"
+        >
+          <span class="post-nav-label">Newer →</span>
+          <span class="post-nav-title">{newerPost.data.title}</span>
+        </a>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  /* Plain CSS so the structure always ships with the component. */
+  .post-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2.5rem;
+  }
+
+  .post-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    border-bottom: none !important;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+
+  .post-nav-link:hover {
+    opacity: 1;
+  }
+
+  .post-nav-next {
+    grid-column: 2;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .post-nav-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .post-nav-title {
+    color: var(--fg-deep);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 639.9px) {
+    .post-nav {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .post-nav-next {
+      grid-column: 1;
+    }
+  }
+</style>

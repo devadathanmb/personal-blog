@@ -1,0 +1,81 @@
+---
+interface LinkItem {
+  href: string
+  text?: string
+  icon: string
+  title?: string
+}
+
+const explore: LinkItem[] = [
+  { href: '/blog', text: 'Blog', icon: 'i-ri-article-line' },
+  { href: '/thoughts', text: 'Thoughts', icon: 'i-ri-lightbulb-line' },
+  { href: '/uses', text: 'Uses', icon: 'i-ri-macbook-line' },
+  { href: '/now', text: 'Now', icon: 'i-ri-time-line' },
+  { href: '/colophon', text: 'Colophon', icon: 'i-ri-quill-pen-line' },
+]
+
+const findMe: LinkItem[] = [
+  {
+    href: 'https://github.com/devadathanmb',
+    text: 'GitHub',
+    icon: 'i-uil-github-alt',
+  },
+  {
+    href: 'https://www.linkedin.com/in/devadathanmb/',
+    text: 'LinkedIn',
+    icon: 'i-ri-linkedin-box-fill',
+  },
+  {
+    href: 'mailto:devadathanmb@gmail.com',
+    text: 'Email',
+    icon: 'i-ri-mail-line',
+  },
+]
+
+const webring: LinkItem[] = [
+  {
+    href: 'https://xn--sr8hvo.ws/previous',
+    title: 'Previous · IndieWeb Webring',
+    icon: 'i-material-symbols-keyboard-double-arrow-left',
+  },
+  {
+    href: 'https://xn--sr8hvo.ws',
+    text: 'IndieWeb',
+    title: 'IndieWeb Webring',
+    icon: 'i-icon-park-solid-globe',
+  },
+  {
+    href: 'https://xn--sr8hvo.ws/next',
+    title: 'Next · IndieWeb Webring',
+    icon: 'i-material-symbols-keyboard-double-arrow-right',
+  },
+]
+
+const rows = [
+  { label: 'Explore', items: explore },
+  { label: 'Find me on', items: findMe },
+  { label: 'Webring', items: webring },
+]
+---
+
+<div class="flex flex-col gap-4 my-5">
+  {
+    rows.map((row) => (
+      <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+        <span class="op-75">{row.label}</span>
+        <span class="flex flex-wrap items-center gap-3">
+          {row.items.map((item) => (
+            <a
+              href={item.href}
+              title={item.title}
+              class="flex items-center gap-1 border-none! op-75 transition-all duration-300 hover:-translate-y-0.5 hover:op-100"
+            >
+              <span class={item.icon} aria-hidden="true" />
+              {item.text}
+            </a>
+          ))}
+        </span>
+      </div>
+    ))
+  }
+</div>

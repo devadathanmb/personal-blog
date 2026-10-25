@@ -2,7 +2,7 @@
    override matching selectors in prose.css — import order is load-bearing. */
 @import 'viewerjs/dist/viewer.css';
 @import 'rehype-callouts/theme/vitepress';
-@import url('https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css');
+/* KaTeX CSS is linked from Head.astro only on pages that render math. */
 
 /* Prose Complement */
 .prose {
@@ -183,6 +183,30 @@ html.dark .prose code:not(.expressive-code code) {
 
 article img:not(.no-zoom):not(a img) {
   cursor: zoom-in;
+}
+
+/* Keep tall portrait photos from filling several screens; click to zoom
+   still opens the full image. */
+.prose p > img {
+  max-height: 75vh;
+  width: auto;
+  margin-inline: auto;
+}
+
+/* A paragraph of only images (`![a](x) ![b](y)`) lays them side by side. */
+.prose p:has(> img + img):not(:has(> :not(img))) {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  margin-block: 2em;
+}
+
+.prose p:has(> img + img):not(:has(> :not(img))) > img {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  object-fit: cover;
 }
 
 /* rehype-autolink-headings */

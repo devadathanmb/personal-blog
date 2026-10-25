@@ -12,9 +12,11 @@ interface Props {
   ogImage?: string | boolean
   pubDate?: string
   lastModDate?: string
+  hasMath?: boolean
 }
 
-const { title, description, ogImage, pubDate, lastModDate } = Astro.props
+const { title, description, ogImage, pubDate, lastModDate, hasMath } =
+  Astro.props
 
 const siteName = new URL(SITE.website).hostname
 
@@ -181,6 +183,16 @@ const webPageData = {
   title={`${SITE.title} Feed`}
   href="/rss.xml"
 />
+
+<!-- KaTeX (only on pages that render math) -->
+{
+  hasMath && (
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+    />
+  )
+}
 
 <!-- Google JSON-LD Structured Data -->
 {

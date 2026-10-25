@@ -30,6 +30,9 @@ patchedDependencies:
   http-cache-semantics@4.2.0:
     hash: bfcf00566a3fdf00a595f838b4fb57e05aed93d48de2192d046459540f4fb98a
     path: patches/http-cache-semantics@4.2.0.patch
+  remark-imgattr@1.1.1:
+    hash: 4fc12c82d8462d07a31bab7fb0e8d382215a8f1bdf2587f89d476104d3cff662
+    path: patches/remark-imgattr@1.1.1.patch
 
 importers:
 
@@ -77,6 +80,9 @@ importers:
       '@unocss/astro':
         specifier: 66.10.5
         version: 66.10.5(cac@7.0.0)(srvx@1.0.5)(vite@8.3.0(@types/node@24.13.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+      '@unocss/preset-web-fonts':
+        specifier: 66.10.5
+        version: 66.10.5
       '@unocss/reset':
         specifier: 66.10.5
         version: 66.10.5
@@ -160,7 +166,7 @@ importers:
         version: 2.0.1(remark-directive@4.0.0)
       remark-imgattr:
         specifier: ^1.1.1
-        version: 1.1.1
+        version: 1.1.1(patch_hash=4fc12c82d8462d07a31bab7fb0e8d382215a8f1bdf2587f89d476104d3cff662)
       remark-math:
         specifier: ^6.0.0
         version: 6.0.0
@@ -8142,7 +8148,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-imgattr@1.1.1: {}
+  remark-imgattr@1.1.1(patch_hash=4fc12c82d8462d07a31bab7fb0e8d382215a8f1bdf2587f89d476104d3cff662): {}
 
   remark-math@6.0.0:
     dependencies:

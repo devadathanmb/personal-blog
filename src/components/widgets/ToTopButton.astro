@@ -7,7 +7,7 @@
   class="z-50 fixed right-5 bottom-6
     w-10 h-10 rounded-full
     op-0 pointer-events-none op-transition
-    lt-lgp:(op-50! bg-#8883 dark:bg-#8886 pointer-events-auto!)
+    lt-lgp:(bg-#8883 dark:bg-#8886)
     hover:(op-100! bg-#8883) print:hidden"
   title="Scroll to top"
 >
@@ -21,22 +21,25 @@
     }
     const toTopButton = document.getElementById('to-top-button')
     toTopButton?.addEventListener('click', handleClick)
+    handleScroll()
   })
 
-  const handleScroll = () => {
+  // Hidden near the top of the page at every width. Below `lgp` there's no
+  // hover state to reveal it, so it rests at a higher opacity there.
+  function handleScroll() {
     const scrollThreshold = 300
     const toTopButton = document.getElementById('to-top-button')
+    if (!toTopButton) return
 
-    if (toTopButton && window.matchMedia('(min-width: 1024px)').matches) {
-      const scrollY = window.scrollY || document.documentElement.scrollTop
-      if (scrollY <= scrollThreshold) {
-        toTopButton.style.opacity = '0'
-        toTopButton.style.pointerEvents = 'none'
-      } else {
-        toTopButton.style.opacity = '0.3'
-        toTopButton.style.pointerEvents = 'auto'
-      }
+    const scrollY = window.scrollY || document.documentElement.scrollTop
+    if (scrollY <= scrollThreshold) {
+      toTopButton.style.opacity = '0'
+      toTopButton.style.pointerEvents = 'none'
+    } else {
+      const isWide = window.matchMedia('(min-width: 1128px)').matches
+      toTopButton.style.opacity = isWide ? '0.3' : '0.5'
+      toTopButton.style.pointerEvents = 'auto'
     }
   }
-  window.addEventListener('scroll', handleScroll)
+  window.addEventListener('scroll', handleScroll, { passive: true })
 </script>

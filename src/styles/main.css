@@ -350,6 +350,19 @@ html.dark .search-kbd-key {
   opacity: 1;
 }
 
+/* Thin rail beside the TOC; the active entry gets a solid marker so the
+   current section reads at a glance, not just by a brightness change. */
+#toc-sidebar ul > li > a,
+#toc-panel ul > li > a {
+  padding-left: 0.625rem;
+  box-shadow: inset 1px 0 0 #8883;
+}
+
+#toc-sidebar ul > li > a[aria-current='true'],
+#toc-panel ul > li > a[aria-current='true'] {
+  box-shadow: inset 2px 0 0 currentColor;
+}
+
 /* Tag */
 .inner-x-scroll {
   width: 100%;

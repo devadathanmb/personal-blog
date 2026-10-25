@@ -2,7 +2,7 @@
 author: Devadathan M B
 pubDate: 2025-06-22T15:20:35Z
 lastModDate: 2026-03-22T13:30:20Z
-title: Giving My Old USB Printer a New Life with a Raspberry Pi
+title: Giving my old USB printer a new life with a Raspberry Pi
 featured: true
 draft: false
 tags:
@@ -168,13 +168,13 @@ sudo vim /etc/cups/cupsd.conf
 
 Replace `Listen localhost:631` with:
 
-```
+```apache title="/etc/cups/cupsd.conf"
 Port 631
 ```
 
 #### 5.2 Allow access from LAN
 
-```
+```apache title="/etc/cups/cupsd.conf"
 <Location />
   Order allow,deny
   Allow @LOCAL
@@ -188,7 +188,7 @@ Port 631
 
 #### 5.3 Enable the web interface
 
-```
+```apache title="/etc/cups/cupsd.conf"
 WebInterface Yes
 ```
 
@@ -196,7 +196,7 @@ WebInterface Yes
 
 By default, CUPS has `IdleExitTimeout 60` — it exits after 60 seconds of inactivity (socket activation brings it back on demand, but it causes unnecessary latency for a print server). Set it to 0:
 
-```
+```apache title="/etc/cups/cupsd.conf"
 IdleExitTimeout 0
 ```
 
@@ -204,7 +204,7 @@ IdleExitTimeout 0
 
 Make sure this line is present (it enables [AirPrint](https://en.wikipedia.org/wiki/AirPrint)/[Mopria](https://mopria.org/) discovery):
 
-```
+```apache title="/etc/cups/cupsd.conf"
 BrowseLocalProtocols dnssd
 ```
 

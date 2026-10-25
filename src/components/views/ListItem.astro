@@ -9,6 +9,7 @@ interface Props {
   idx: number
   postSlug?: string
   title: string
+  description?: string
   tags?: string[]
   minutesRead?: number
   date: string | Date
@@ -23,6 +24,7 @@ const {
   idx,
   postSlug,
   title,
+  description,
   tags,
   minutesRead,
   date,
@@ -35,7 +37,7 @@ const {
 
 <div class="slide-enter" style={{ '--enter-stage': idx }} data-tags={tags}>
   <Link
-    u-flex={tags && tags.length > 0
+    u-flex={(tags && tags.length > 0) || description
       ? '~ col items-start gap-2'
       : '~ items-center lt-md:(col items-start) gap-2'}
     class="border-b-none! mb-6 mt-2 op-transition! overflow-hidden"
@@ -44,6 +46,13 @@ const {
     enableNewTabWarning={redirect ? true : false}
   >
     <Fragment slot="title">{title}</Fragment>
+    {
+      description && (
+        <span slot="description" class="list-item-desc">
+          {description}
+        </span>
+      )
+    }
     <span slot="end" u-flex="~ gap-2 items-center" class="max-w-full">
       {
         video && (
@@ -90,3 +99,17 @@ const {
     </span>
   </Link>
 </div>
+
+<style>
+  /* One quiet line of context between the title and the meta row. */
+  .list-item-desc {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    max-width: 100%;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    opacity: 0.65;
+  }
+</style>

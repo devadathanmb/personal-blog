@@ -40,6 +40,7 @@
     "@types/p5": "^1.7.7",
     "@typescript-eslint/parser": "^8.61.0",
     "@unocss/astro": "66.10.5",
+    "@unocss/preset-web-fonts": "66.10.5",
     "@unocss/reset": "66.10.5",
     "astro": "^7.3.3",
     "astro-expressive-code": "^0.44.2",
@@ -120,7 +121,8 @@
       "sharp": ">=0.35.4"
     },
     "patchedDependencies": {
-      "http-cache-semantics@4.2.0": "patches/http-cache-semantics@4.2.0.patch"
+      "http-cache-semantics@4.2.0": "patches/http-cache-semantics@4.2.0.patch",
+      "remark-imgattr@1.1.1": "patches/remark-imgattr@1.1.1.patch"
     }
   },
   "engines": {

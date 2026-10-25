@@ -8,6 +8,8 @@ ogImage: false
 
 import PageLayout from '~/layouts/PageLayout.astro'
 import RenderPage from '~/components/views/RenderPage.astro'
+import RecentPosts from '~/components/widgets/RecentPosts.astro'
+import HomeLinks from '~/components/widgets/HomeLinks.astro'
 
 <PageLayout
   title={frontmatter.title}
@@ -16,5 +18,10 @@ import RenderPage from '~/components/views/RenderPage.astro'
   bgType={frontmatter.bgType}
   ogImage={frontmatter.ogImage}
 >
-  <RenderPage slot="article" collectionType="home" id="index" />
+  <Fragment slot="article">
+    <RenderPage collectionType="home" id="index" />
+    <hr />
+    <RecentPosts />
+    <HomeLinks />
+  </Fragment>
 </PageLayout>

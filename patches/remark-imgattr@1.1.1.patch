@@ -1,0 +1,25 @@
+diff --git a/index.js b/index.js
+index 704cd8daac89c6a0af3bf02b7f845870f528f238..55c82fd04241f36dad5a215e2ca858115178b4b3 100644
+--- a/index.js
++++ b/index.js
+@@ -146,6 +146,20 @@ export default function imgAttr({ defaults = {} } = {}) {
+           let attributeString = "";
+           let j = i + 1;
+ 
++          // Only consume following nodes when they actually start an
++          // attribute string. Otherwise the scan below runs to the end of the
++          // paragraph and the splice deletes everything after this image,
++          // including a second image on the same line.
++          const nextNode = node.children[j];
++          if (
++            !nextNode ||
++            nextNode.type !== "text" ||
++            !nextNode.value.trimStart().startsWith("(")
++          ) {
++            currentNode.data.hProperties = { ...defaults };
++            continue;
++          }
++
+           while (j < node.children.length) {
+             const nextNode = node.children[j];
+             if (nextNode.type === "text" || nextNode.type === "textDirective") {

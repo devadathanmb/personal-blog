@@ -25,9 +25,10 @@ interface Props {
   bgType?: BgType | false
   pubDate?: string
   lastModDate?: string
+  hasMath?: boolean
 }
 
-const { title, description, ogImage, bgType, pubDate, lastModDate } =
+const { title, description, ogImage, bgType, pubDate, lastModDate, hasMath } =
   Astro.props
 
 let style: Record<string, string> = {}
@@ -48,7 +49,7 @@ if (hasCustomCursor) style['--external-link-cursor'] = cursorType
 <!doctype html>
 <html lang={SITE.lang}>
   <head>
-    <Head {title} {description} {ogImage} {pubDate} {lastModDate} />
+    <Head {title} {description} {ogImage} {pubDate} {lastModDate} {hasMath} />
   </head>
 
   <body
@@ -87,6 +88,7 @@ if (hasCustomCursor) style['--external-link-cursor'] = cursorType
               </div>
               <slot name="series-nav" />
             </div>
+            <slot name="post-nav" />
           </footer>
         )
       }

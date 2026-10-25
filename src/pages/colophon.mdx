@@ -8,7 +8,6 @@ ogImage: true
 
 import PageLayout from '~/layouts/PageLayout.astro'
 import LastUpdated from '~/components/widgets/LastUpdated.astro'
-import Link from '~/components/base/Link.astro'
 import ProseNote from '~/components/base/ProseNote.astro'
 import UsesSection from '~/components/widgets/UsesSection.astro'
 import colophonData from '~/data/colophon.json'
@@ -21,15 +20,15 @@ import colophonData from '~/data/colophon.json'
   ogImage={frontmatter.ogImage}
 >
     <div slot="head" class="-mt-5 mb-6 ml-1 slide-enter animate-delay-200!">
-      <LastUpdated date="2026-10-03" />
+      <LastUpdated date="2026-10-25" />
     </div>
     <Fragment slot="article">
 
 I bought this domain sometime in 2024. Before that I rolled through whatever free domains the GitHub Student Pack handed out, a `.tech` here, a `.me` there. At some point I wanted one that was actually mine. A small place on the internet to call home, and a handful of subdomains to tunnel my homelab services through.
 
-The site itself has been rebuilt more times than I'd like to admit. It started as a <Link href="https://nextjs.org" external>Next.js</Link> project. Then I moved to the <Link href="https://github.com/satnaing/astro-paper" external>AstroPaper</Link> theme and spent a while bending it into something that felt like mine. Eventually the obvious lesson caught up with me: simpler is usually better. That is roughly how it ended up here.
+The site itself has been rebuilt more times than I'd like to admit. It started as a [Next.js](https://nextjs.org) project. Then I moved to the [AstroPaper](https://github.com/satnaing/astro-paper) theme and spent a while bending it into something that felt like mine. Eventually the obvious lesson caught up with me: simpler is usually better. That is roughly how it ended up here.
 
-This version is built on top of <Link href="https://github.com/lin-stephanie/astro-antfustyle-theme" external>astro-antfustyle-theme</Link> by <Link href="https://github.com/lin-stephanie" external>Stephanie Lin</Link>, which draws design inspiration from <Link href="https://antfu.me" external>antfu.me</Link> by <Link href="https://github.com/antfu" external>Anthony Fu</Link>. The layout, typography, and overall feel come from that foundation. Credit where it's due.
+This version is built on top of [astro-antfustyle-theme](https://github.com/lin-stephanie/astro-antfustyle-theme) by [Stephanie Lin](https://github.com/lin-stephanie), which draws design inspiration from [antfu.me](https://antfu.me) by [Anthony Fu](https://github.com/antfu). The layout, typography, and overall feel come from that foundation. Credit where it's due.
 
 Beyond that, this site exists because other people shared theirs first. Personal websites, open source projects, tools built and left available for anyone. I'm genuinely grateful for all of it.
 

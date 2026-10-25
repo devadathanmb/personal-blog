@@ -1,7 +1,7 @@
 ---
 author: Devadathan M B
 pubDate: 2024-09-16T15:20:35Z
-title: My Journey to an Internship at Fyle
+title: My journey to an internship at Fyle
 featured: true
 draft: false
 tags:

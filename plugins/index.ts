@@ -5,6 +5,7 @@ import remarkDirectiveSugar from 'remark-directive-sugar'
 import remarkImgattr from 'remark-imgattr'
 import remarkMath from 'remark-math'
 import remarkReadingTime from './remark-reading-time'
+import remarkHasMath from './remark-has-math'
 import remarkGenerateOgImage from './remark-generate-og-image'
 
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
@@ -56,6 +57,7 @@ export const remarkPlugins: RemarkPlugins = [
   remarkImgattr,
   // https://github.com/remarkjs/remark-math/tree/main/packages/remark-math
   remarkMath,
+  remarkHasMath,
   remarkReadingTime,
   ...(Array.isArray(FEATURES.ogImage) && FEATURES.ogImage[0]
     ? [remarkGenerateOgImage]

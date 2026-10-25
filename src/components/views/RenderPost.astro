@@ -10,6 +10,7 @@ import MobileControl from '~/components/base/MobileControl.astro'
 import PostCover from '~/components/base/PostCover.astro'
 import ShareLink from '~/components/widgets/ShareLink.astro'
 import SeriesNav from '~/components/widgets/SeriesNav.astro'
+import PostNav from '~/components/widgets/PostNav.astro'
 import Giscus from '~/components/widgets/Giscus.astro'
 import ImageViewer from '~/components/widgets/ImageViewer.astro'
 import ReadingProgress from '~/components/widgets/ReadingProgress.astro'
@@ -18,11 +19,13 @@ import { getMinutesRead } from '~/utils/data'
 import { FEATURES } from '~/config'
 
 import type { CollectionEntry } from 'astro:content'
-import type { SeriesNavData } from '~/utils/data'
+import type { SeriesNavData, AdjacentPosts } from '~/utils/data'
 
 interface Props {
   post: CollectionEntry<'blog' | 'thoughts'>
   seriesNav?: SeriesNavData | null
+  /** Chronological neighbours; shown only when there's no series nav. */
+  adjacent?: AdjacentPosts<'blog' | 'thoughts'> | null
   isCommentable?: boolean
   pageToc?: boolean
 }
@@ -30,6 +33,7 @@ interface Props {
 const {
   post,
   seriesNav = null,
+  adjacent = null,
   isCommentable = false,
   pageToc = true,
 } = Astro.props
@@ -49,6 +53,7 @@ const minutesRead = getMinutesRead(
   frontmatter.minutesRead,
   remarkPluginFrontmatter.minutesRead as number
 )
+const hasMath = remarkPluginFrontmatter.hasMath === true
 const tags = frontmatter.tags
 const isDraft = frontmatter.draft
 
@@ -82,6 +87,7 @@ frontmatter to <code>false</code> or remove it to publish the post.`
   {ogImage}
   {pubDate}
   {lastModDate}
+  {hasMath}
 >
   <ReadingProgress />
   <StandardLayout {title} {subtitle} {isSearchable} {searchFilter}>
@@ -109,6 +115,13 @@ frontmatter to <code>false</code> or remove it to publish the post.`
     seriesNav && (
       <Fragment slot="series-nav">
         <SeriesNav {seriesNav} />
+      </Fragment>
+    )
+  }
+  {
+    !seriesNav && adjacent && (
+      <Fragment slot="post-nav">
+        <PostNav {...adjacent} />
       </Fragment>
     )
   }

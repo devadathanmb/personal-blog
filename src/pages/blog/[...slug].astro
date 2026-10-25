@@ -1,6 +1,10 @@
 ---
 import RenderPost from '~/components/views/RenderPost.astro'
-import { getFilteredPosts, getSeriesNavigation } from '~/utils/data'
+import {
+  getAdjacentPosts,
+  getFilteredPosts,
+  getSeriesNavigation,
+} from '~/utils/data'
 import type { CollectionEntry } from 'astro:content'
 
 interface Props {
@@ -19,6 +23,7 @@ export async function getStaticPaths() {
 
 const { post, allPosts } = Astro.props
 const seriesNav = getSeriesNavigation(post, allPosts)
+const adjacent = getAdjacentPosts(post, allPosts)
 ---
 
-<RenderPost {post} {seriesNav} isCommentable={true} />
+<RenderPost {post} {seriesNav} {adjacent} isCommentable={true} />

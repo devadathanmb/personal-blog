@@ -123,6 +123,31 @@ export function getSeriesNavigation(
   }
 }
 
+export interface AdjacentPosts<K extends 'blog' | 'thoughts'> {
+  newerPost: CollectionEntry<K> | null
+  olderPost: CollectionEntry<K> | null
+}
+
+/**
+ * Returns the chronologically adjacent posts (by `pubDate`) within the same
+ * collection. Redirect-only entries are skipped since they have no page here.
+ */
+export function getAdjacentPosts<K extends 'blog' | 'thoughts'>(
+  currentPost: CollectionEntry<K>,
+  allPosts: CollectionEntry<K>[]
+): AdjacentPosts<K> {
+  const sorted = [...allPosts]
+    .filter((p) => !p.data.redirect || p.id === currentPost.id)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  const idx = sorted.findIndex((p) => p.id === currentPost.id)
+  if (idx === -1) return { newerPost: null, olderPost: null }
+
+  return {
+    newerPost: idx > 0 ? sorted[idx - 1] : null,
+    olderPost: idx < sorted.length - 1 ? sorted[idx + 1] : null,
+  }
+}
+
 /**
  * Build tag relations from input shapes.
  */

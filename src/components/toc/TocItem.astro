@@ -17,6 +17,7 @@ const { heading, anchors } = Astro.props
       {heading.slug && (
         <Link
           href={`#${heading.slug}`}
+          title={heading.text}
           aria-label={`Scroll to ${heading.text}`}
         >
           {heading.text}

@@ -29,19 +29,19 @@ const mapsUrl = 'https://maps.app.goo.gl/2rykg2HR5Mb4gmzF9'
 const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
 ---
 
-<PillWidget class="text-sm font-medium">
+<PillWidget class="lw-pill text-sm font-medium">
   <div class:list={[LOCATION_ICON_CLASS, 'lw-location-icon']}></div>
   <a
     href={mapsUrl}
     target="_blank"
     rel="noopener noreferrer"
-    class="pill-primary text-xs">{location}</a
+    class="pill-primary text-xs whitespace-nowrap">{location}</a
   >
 
   {
     showWeather && (
       <>
-        <span class="op-20 select-none text-[10px] mx-0.5">|</span>
+        <span class="lw-sep op-20 select-none text-[10px] mx-0.5">|</span>
         {/* pill-widget-link: hovering the anchor tints only the pill-primary temp, not the icon */}
         <a
           href={weatherUrl}
@@ -62,11 +62,11 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
     )
   }
 
-  <span class="op-20 select-none text-[10px] mx-0.5">|</span>
+  <span class="lw-sep op-20 select-none text-[10px] mx-0.5">|</span>
 
   <div class:list={[TIME_ICON_CLASS, 'lw-time-icon']}></div>
   <span
-    class="font-mono text-emerald-600 dark:text-emerald-400 text-xs live-time-widget tracking-tight tabular-nums"
+    class="font-mono text-emerald-600 dark:text-emerald-400 text-xs live-time-widget tracking-tight tabular-nums whitespace-nowrap"
     data-timezone={timezone}
   >
     --:--:-- --
@@ -86,6 +86,22 @@ const weatherUrl = `https://wttr.in/${encodeURIComponent(location)}`
   .lw-weather-icon-sized {
     width: 2rem !important;
     height: 2rem !important;
+  }
+
+  /* Three readouts on one line don't fit a phone-width pill at the default
+     spacing; tighten it so nothing wraps or overflows. */
+  @media (max-width: 639.9px) {
+    :global(.pill.lw-pill) {
+      gap: 0.375rem;
+      padding-inline: 0.75rem;
+    }
+    .lw-sep {
+      margin-inline: 0 !important;
+    }
+    .lw-weather-icon-sized {
+      width: 1.5rem !important;
+      height: 1.5rem !important;
+    }
   }
 </style>
 

@@ -1,0 +1,97 @@
+---
+import { getFilteredPosts, getSortedPosts } from '~/utils/data'
+import { formatDate } from '~/utils/datetime'
+import { withBasePath } from '~/utils/path'
+
+interface Props {
+  /** How many of the newest blog posts and thoughts (combined) to list. */
+  limit?: number
+  label?: string
+}
+
+const { limit = 3, label = 'Recently' } = Astro.props
+
+const posts = getSortedPosts([
+  ...(await getFilteredPosts('blog')),
+  ...(await getFilteredPosts('thoughts')),
+])
+  .filter((post) => !post.data.redirect)
+  .slice(0, limit)
+
+const KIND = { blog: 'Blog', thoughts: 'Thought' } as const
+---
+
+{
+  posts.length > 0 && (
+    <section class="recent-posts" aria-label={label}>
+      <div class="recent-posts-label">{label}</div>
+      <ul>
+        {posts.map((post) => (
+          <li>
+            <a href={withBasePath(`/${post.collection}/${post.id}/`)}>
+              {post.data.title}
+            </a>
+            <span class="recent-posts-meta">
+              <time datetime={post.data.pubDate.toISOString()}>
+                {formatDate(post.data.pubDate)}
+              </time>
+              {` · ${KIND[post.collection]}`}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  /* Plain CSS (not utilities) so the structure always ships with the
+     component; see the UnoCSS chunking note in CLAUDE.md. */
+  .recent-posts-label {
+    margin-bottom: 0.75rem;
+    font-family:
+      'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      monospace;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0.45;
+  }
+
+  .recent-posts ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .recent-posts li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.75rem;
+    margin: 0 0 0.6rem;
+    padding: 0;
+  }
+
+  .recent-posts li::before {
+    display: none;
+  }
+
+  .recent-posts a {
+    border-bottom: none;
+    color: var(--fg-deep);
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+  }
+
+  .recent-posts a:hover {
+    border-bottom: none;
+    opacity: 1;
+  }
+
+  .recent-posts-meta {
+    font-size: 0.875rem;
+    white-space: nowrap;
+    opacity: 0.5;
+  }
+</style>
