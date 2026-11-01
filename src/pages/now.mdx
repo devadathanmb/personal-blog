@@ -22,7 +22,7 @@ import ProseNote from '~/components/base/ProseNote.astro'
   ogImage={frontmatter.ogImage}
 >
     <div slot="head" class="-mt-5 mb-6 ml-1 slide-enter animate-delay-200!">
-      <LastUpdated date="2026-10-03" />
+      <LastUpdated date="2026-11-01" />
     </div>
     <div slot="head" class="flex flex-col items-start gap-4 sm:gap-6 mb-4 slide-enter animate-delay-300!">
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -42,7 +42,9 @@ This page is a snapshot in time. The funny thing about "now" is how quickly it b
 
 Work has not changed much. I am still building backend systems and caring more than I probably should about performance, reliability, and what happens after software reaches production.
 
-Most of my tinkering lately has been around coding agents. [OpenCode](https://opencode.ai) is my go-to right now. I use [Codex](https://openai.com/codex/) too, and spent time with [Pi](https://github.com/earendil-works/pi-coding-agent), [Cline](https://cline.bot/), and a few others before settling here. OpenCode has the best mix for me: the TUI is good, I can configure almost everything, and it does not force me into somebody else's idea of a workflow.
+Most of my tinkering lately has been around coding agents, tuning harnesses, and finding a setup that works for me. After spending time with [Pi](https://github.com/earendil-works/pi-coding-agent) and [Cline](https://cline.bot/), I have settled back on [OpenCode](https://opencode.ai), especially since v2 dropped.
+
+Cline has the better TUI, but its harness still misses things I consider basic, like respecting a setting to disable automatic skill invocation. Pi is minimal and lets you build almost everything yourself, but for practical coding I would rather have a powerful harness ready to use. Saving tokens and saving time are different things, and in my experience OpenCode does a better job of the latter.
 
 Repeated instructions are slowly becoming skills. I have been routing tasks to different models and watching token usage instead of blindly reaching for the strongest model. Markdown files are doing more work in my setup than I expected.
 
@@ -50,19 +52,13 @@ I have not gone all the way into running a factory of agents. I still like seein
 
 ## Learning
 
-I finally started learning Rust. I wanted to understand why people consider it both special and notoriously difficult, and how it gets memory safety from compile-time checks without a garbage collector. I am going through [The Rust Programming Language](https://doc.rust-lang.org/book/) slowly, and I am beginning to understand the trade-offs. Ownership and borrowing let the compiler make strong guarantees, but they can also make seemingly ordinary code surprisingly difficult.
-
-Rust also feels a little like a cult. It comes with its own vocabulary: ownership, borrowing, lifetimes, the borrow checker. All of it makes sense inside Rust, but very little of it transfers cleanly to the languages I already know. I am still early, so this may be an unfair diagnosis. It is interesting enough that I keep reading.
-
-Separately, I have been cloning mature open-source repositories and stepping through them with a debugger. [SQLAlchemy](https://github.com/sqlalchemy/sqlalchemy) is the latest one. There is no particular goal beyond following real execution paths and understanding why the code is shaped the way it is.
-
-I am reading [Refactoring](https://martinfowler.com/books/refactoring.html) by Martin Fowler as well.
+I am reading [Refactoring](https://martinfowler.com/books/refactoring.html) by Martin Fowler.
 
 ## Chess
 
 I used to [play chess professionally](https://players.chessbase.com/en/player/Devadathan_MB/435082), then stopped years ago. During Covid, I found my way back as a spectator through [ChessBase India](https://www.chessbase.in/), comedians streaming chess, and the wider boom around the game.
 
-I kept following after that, though not very actively for the last eight or nine months. The recent [Global Chess League](https://www.globalchessleague.com/) and the ongoing [Chess Olympiad](https://chessolympiad2026.fide.com/) have pulled me back. For now, I am following games and trying to recover the enthusiasm to play.
+I kept following after that, though not very actively for the last eight or nine months. I am playing again and looking forward to the next World Chess Championship.
 
 ---
 
